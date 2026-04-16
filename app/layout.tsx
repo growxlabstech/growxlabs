@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { GlobalBackground } from "@/components/layout/GlobalBackground";
+import { ChatAssistant } from "@/components/ui/ChatAssistant";
 import { DottedSurface } from "@/components/ui/dotted-surface";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <ChatAssistant />
         </ThemeProvider>
       </body>
     </html>
