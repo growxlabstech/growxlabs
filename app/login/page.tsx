@@ -22,8 +22,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      const role = (session?.user as any)?.role;
-      router.push(role === "ADMIN" ? "/admin/search" : "/dashboard");
+      router.push("/admin");
     }
   }, [status, session, router]);
 
@@ -43,7 +42,7 @@ export default function LoginPage() {
         throw new Error("Invalid email or password. Please try again.");
       }
 
-      router.push("/dashboard");
+      router.push("/admin");
       router.refresh();
     } catch (err: any) {
       setError(err.message);

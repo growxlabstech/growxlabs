@@ -6,13 +6,18 @@ export default withAuth(
     const token = req.nextauth.token;
     const path = req.nextUrl.pathname;
 
-    // Role-based Access Control logic
-    if (path.startsWith("/admin") && token?.role !== "ADMIN") {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
+    // 1. Admin/Co-Admin Protection
+    if (path.startsWith("/admin")) {
+      if (!["ADMIN", "CO_ADMIN"].includes(token?.role as string)) {
+        return NextResponse.redirect(new URL("/client/dashboard", req.url));
+      }
     }
 
-    if (path.startsWith("/coadmin") && !["ADMIN", "CO_ADMIN"].includes(token?.role as string)) {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
+    // 2. Client Portal Protection
+    if (path.startsWith("/client")) {
+      if (token?.role !== "CLIENT") {
+        return NextResponse.redirect(new URL("/admin/leads", req.url));
+      }
     }
   },
   {
@@ -25,7 +30,7 @@ export default withAuth(
 export const config = {
   matcher: [
     "/admin/:path*",
-    "/coadmin/:path*",
-    "/dashboard/:path*",
+    "/client/:path*",
+    "/onboarding/:path*",
   ],
 };

@@ -1,0 +1,287 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { 
+  ArrowLeft, Mail, Phone, Globe, MapPin, 
+  Target, ShieldCheck, Zap, Camera, 
+  User, Star, MessageSquare, Save,
+  CheckCircle2, XCircle, Clock
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { Lead } from "@/types";
+
+export default function LeadDetailsPage() {
+  const router = useRouter();
+  const params = useParams();
+  const id = params?.id as string;
+  
+  const [lead, setLead] = useState<Lead | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (id) fetchLead();
+  }, [id]);
+
+  const fetchLead = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await fetch(`/api/leads/${id}`);
+      const data = await res.json();
+      
+      console.log("FETCHED LEAD DATA:", data);
+
+      if (!res.ok || data.error) {
+        throw new Error(data.error || "Failed to fetch lead details");
+      }
+      
+      setLead(data);
+      setNotes(data.notes || "");
+    } catch (e: any) {
+      console.error("FETCH ERROR:", e.message);
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateLead = async (updates: Partial<Lead>) => {
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/leads/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      const updated = await res.json();
+      setLead(updated);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return (
+    <div className="h-[60vh] flex items-center justify-center">
+       <div className="h-8 w-8 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+    </div>
+  );
+
+  if (error) return (
+    <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
+       <div className="p-6 bg-red-500/10 border border-red-500/20 rounded-2xl text-center max-w-md">
+          <XCircle className="text-red-500 h-10 w-10 mx-auto mb-4" />
+          <h2 className="text-white font-bold text-lg">Failed to load lead</h2>
+          <p className="text-white/40 text-sm mt-2">{error}</p>
+          <Button onClick={fetchLead} variant="outline" className="mt-6 border-white/10 hover:bg-white/5">
+             Try Again
+          </Button>
+       </div>
+    </div>
+  );
+
+  if (!lead) return (
+    <div className="h-[60vh] flex flex-col items-center justify-center text-center space-y-4">
+       <Target className="text-white/10 h-16 w-16" />
+       <div className="space-y-1">
+         <h2 className="text-white font-bold text-xl">Lead not found</h2>
+         <p className="text-white/20 text-sm">The ID provided does not match any existing record.</p>
+       </div>
+       <Button onClick={() => router.push('/admin/leads')} className="bg-white text-black">
+          Back to Pipeline
+       </Button>
+    </div>
+  );
+
+  return (
+    <div className="space-y-10 pb-20">
+      <div className="flex items-center justify-between">
+        <Button 
+          variant="outline" 
+          onClick={() => router.back()}
+          className="border-white/5 hover:bg-white/5 text-white/60"
+        >
+          <ArrowLeft size={16} className="mr-2" /> Back to Leads
+        </Button>
+        <div className="flex gap-3">
+           <Button 
+            onClick={() => updateLead({ status: "contacted" })}
+            disabled={saving || lead.status === "contacted"}
+            className="bg-white/5 border border-white/10 hover:bg-white/10 text-white"
+           >
+             <MessageSquare size={16} className="mr-2 text-white/40" /> Mark Contacted
+           </Button>
+           <Button 
+            onClick={() => updateLead({ status: "closed" })}
+            disabled={saving || lead.status === "closed"}
+            className="bg-green-500/10 border border-green-500/20 hover:bg-green-500/20 text-green-500"
+           >
+             <CheckCircle2 size={16} className="mr-2" /> Mark Closed
+           </Button>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Main Info */}
+        <div className="lg:col-span-2 space-y-8">
+          <Card className="p-8 border-white/5 bg-white/[0.02] rounded-2xl">
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <div className="h-20 w-20 rounded-2xl bg-white/5 flex items-center justify-center text-white/20 border border-white/5 shrink-0">
+                <Target size={40} />
+              </div>
+              <div className="space-y-4 flex-1">
+                <div>
+                  <h1 className="text-4xl font-bold text-white tracking-tight">{lead.business_name || lead.name}</h1>
+                  <div className="flex items-center gap-3 mt-3">
+                    <span className={cn(
+                      "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border",
+                      lead.status === "new" ? "text-yellow-500 border-yellow-500/20 bg-yellow-500/5" : "text-green-500 border-green-500/20 bg-green-500/5"
+                    )}>
+                      {lead.status}
+                    </span>
+                    <span className="text-white/20 text-xs font-medium flex items-center gap-1">
+                      <MapPin size={12} /> {lead.city || "Unknown City"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4 mt-8">
+                   <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
+                      <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Phone</p>
+                      <p className="text-sm font-medium text-white flex items-center gap-2">
+                         <Phone size={14} className="text-white/20" /> {lead.phone || "No phone provided"}
+                      </p>
+                   </div>
+                   <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
+                      <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Email</p>
+                      <p className="text-sm font-medium text-white flex items-center gap-2">
+                         <Mail size={14} className="text-white/20" /> {lead.email || "No email available"}
+                      </p>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="p-6 border-white/5 bg-white/[0.02] rounded-2xl space-y-6">
+               <h3 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                  <ShieldCheck size={16} className="text-white/40" /> Digital Status
+               </h3>
+               <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/5">
+                    <span className="text-xs text-white/40 font-medium flex items-center gap-2">
+                       <Globe size={14} /> Website
+                    </span>
+                    <span className={cn("text-xs font-bold", lead.has_website ? "text-green-500" : "text-red-500")}>
+                       {lead.has_website ? "LIVE" : "MISSING"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/5 opacity-50">
+                    <span className="text-xs text-white/40 font-medium flex items-center gap-2">
+                       <Camera size={14} /> Instagram followers
+                    </span>
+                    <span className="text-xs font-bold text-white">
+                       {lead.instagram_followers || 0}
+                    </span>
+                  </div>
+               </div>
+            </Card>
+
+            <Card className="p-6 border-white/5 bg-white/[0.02] rounded-2xl space-y-6">
+               <h3 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                  <Zap size={16} className="text-white/40" /> Performance Metrics
+               </h3>
+               <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5 text-center">
+                    <p className="text-[10px] font-bold text-white/20 uppercase mb-1">Google Rating</p>
+                    <div className="flex items-center justify-center gap-1 text-white text-lg font-bold">
+                       <Star size={16} className="fill-yellow-500 text-yellow-500" /> {lead.google_rating || 0}
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5 text-center">
+                    <p className="text-[10px] font-bold text-white/20 uppercase mb-1">Reviews</p>
+                    <p className="text-white text-lg font-bold">{lead.reviews_count || 0}</p>
+                  </div>
+               </div>
+            </Card>
+          </div>
+
+          <Card className="p-8 border-white/5 bg-white/[0.02] rounded-2xl space-y-6">
+             <div className="flex items-center justify-between">
+               <h3 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                  <MessageSquare size={16} className="text-white/40" /> Internal Notes
+               </h3>
+               <Button 
+                onClick={() => updateLead({ notes })}
+                disabled={saving || notes === lead.notes}
+                className="h-8 bg-white hover:bg-white/90 text-black px-4 text-xs font-bold"
+               >
+                 <Save size={12} className="mr-2" /> Save Notes
+               </Button>
+             </div>
+             <textarea 
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Record outreach attempts, client requirements, or specific pain points..."
+              className="w-full h-40 bg-white/[0.03] border border-white/5 rounded-xl p-4 text-sm font-medium text-white/60 focus:outline-none focus:border-white/10 transition-colors"
+             />
+          </Card>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-8">
+           <Card className="p-8 border-white/5 bg-white/[0.05] rounded-2xl border-l-4 border-white/40 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-5">
+                 <Target size={80} />
+              </div>
+              <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-4">Opportunity Score</p>
+              <h2 className="text-7xl font-black text-white tracking-tighter mb-2">{lead.lead_score}</h2>
+              <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden mt-6">
+                 <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(lead.lead_score || 0) * 10}%` }}
+                  className="h-full bg-white" 
+                 />
+              </div>
+              <p className="text-xs text-white/40 font-medium mt-4">This business has a {(lead.lead_score || 0) * 10}% conversion potential based on gaps in their digital presence.</p>
+           </Card>
+
+           <Card className="p-8 border-white/5 bg-white/[0.02] rounded-2xl space-y-6">
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider">System Timeline</h3>
+              <div className="space-y-6">
+                 <div className="flex gap-4">
+                    <div className="h-8 w-8 rounded-full bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                       <ShieldCheck size={14} className="text-white/40" />
+                    </div>
+                    <div>
+                       <p className="text-xs font-bold text-white">Lead Ingested</p>
+                       <p className="text-[10px] text-white/20 font-medium">Scraped from Google Maps • {new Date(lead.created_at!).toLocaleDateString()}</p>
+                    </div>
+                 </div>
+                 {lead.status !== 'new' && (
+                    <div className="flex gap-4">
+                       <div className="h-8 w-8 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center shrink-0">
+                          <CheckCircle2 size={14} className="text-green-500" />
+                       </div>
+                       <div>
+                          <p className="text-xs font-bold text-white">Status Updated</p>
+                          <p className="text-[10px] text-white/20 font-medium">Marked as {lead.status}</p>
+                       </div>
+                    </div>
+                 )}
+              </div>
+           </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

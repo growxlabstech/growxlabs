@@ -9,9 +9,7 @@ const openrouter = new OpenAI({
   apiKey: process.env.OPENROUTER_API_KEY || "",
 });
 
-const CONFIRMATION_MESSAGE = `Thank you. Your project requirements have been successfully recorded. 
-
-Our engineering team will review your details and contact you shortly to discuss the next steps for your GrowX Labs partnership.`;
+const CONFIRMATION_MESSAGE = "Our team will contact you shortly";
 
 const SYSTEM_PROMPT = `You are the GrowX Labs AI Agent. You are a high-performance specialist representing a premium engineering agency.
 
@@ -19,24 +17,11 @@ const SYSTEM_PROMPT = `You are the GrowX Labs AI Agent. You are a high-performan
 Collect project requirements and convert prospective clients into leads for GrowX Labs.
 
 ### STRICT OPERATING RULES:
-1. DOMAIN RESTRICTION: You ONLY assist with GrowX Labs services:
-   - Custom Website & Platform Development
-   - Automation Systems (n8n, Custom Logic)
-   - Search Engine Optimization (SEO)
-   - Premium Infrastructure & Hosting
-   - AI Strategy & System Integrations
-
-2. REJECT UNRELATED QUERIES: You are NOT a general-purpose assistant. If a user asks for jokes, general facts, or anything unrelated to our business services, you MUST politely redirect them.
-   - Response Tone: "I focus on helping businesses grow through high-performance websites and automation. Let me know what you're looking to build."
-
+1. DOMAIN RESTRICTION: You ONLY assist with GrowX Labs services.
+2. REJECT UNRELATED QUERIES: You are NOT a general-purpose assistant.
 3. LEAD CONVERSION: Always guide the conversation toward active project requirements.
-   - Required Data: Name, Email, Phone Number, and Project Requirement.
+   - Required Data: Business Name, City, Phone Number, and Email.
    - Action: Once all fields are collected, call the 'save_lead' tool immediately.
-
-4. FORBIDDEN BEHAVIOR:
-   - Never say "I am just an AI" or "I am an AI assistant".
-   - Never say "I can help with anything" or "Ask me anything".
-   - Never say "I am not authorized" to collect data.
 
 ### TONE:
 - Confident & Authoritative
@@ -49,12 +34,12 @@ const LEAD_TOOL = {
   parameters: {
     type: "object",
     properties: {
-      name: { type: "string" },
+      business_name: { type: "string" },
+      city: { type: "string" },
       phone: { type: "string" },
-      email: { type: "string" },
-      requirement: { type: "string" }
+      email: { type: "string" }
     },
-    required: ["name", "email", "phone", "requirement"]
+    required: ["business_name", "city", "email", "phone"]
   }
 };
 
@@ -62,19 +47,18 @@ async function persistLead(data: any) {
   try {
     const supabase = await createClient();
     const { error } = await supabase.from("leads").insert([{
-      name: data.name,
+      business_name: data.business_name,
+      city: data.city,
       email: data.email,
       phone: data.phone,
-      requirement: data.requirement,
-      message: data.requirement, // Map requirement to message to satisfy DB constraint
-      status: "NEW"
+      status: "new",
+      lead_score: 5 // Default score for AI leads
     }]);
 
     if (error) {
       console.error("Supabase Insert Error:", error);
       return { success: false, error: error.message };
     }
-    console.log("Lead Successfully Persisted:", data.email);
     return { success: true };
   } catch (e: any) {
     console.error("Persist Function Failure:", e);
