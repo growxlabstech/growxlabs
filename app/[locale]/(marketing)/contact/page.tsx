@@ -5,13 +5,15 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
-import { Card } from "@/components/ui/Card";
-import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mail, Phone, MapPin, CheckCircle2, AlertCircle, MessageCircle, ShieldCheck, Clock, Sparkles } from "lucide-react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
+    service: "",
+    budget: "",
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -34,7 +36,7 @@ export default function ContactPage() {
       }
 
       setStatus("success");
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", service: "", budget: "", message: "" });
     } catch (err: any) {
       setStatus("error");
       setErrorMessage(err.message || "An unexpected error occurred. Please try again.");
@@ -42,58 +44,81 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pt-32 pb-48 bg-[#030303]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-24">
+    <div className="pt-32 pb-24">
+      <div className="max-w-6xl mx-auto px-6 md:px-16">
+        <div className="text-center mb-20">
+          <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B] mb-4 block">
+            GET IN TOUCH
+          </span>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter"
+            className="text-[48px] md:text-[72px] font-bold text-white mb-8 tracking-tight"
           >
             Start Your <span className="text-gradient">Project.</span>
           </motion.h1>
-          <p className="text-xl text-white/40 max-w-2xl mx-auto font-light leading-relaxed">
-            We review documentation and respond to all project inquiries within 24 business hours.
-            Secure your growth infrastructure today.
+          <p className="text-[18px] text-[#A0A0A0] max-w-[520px] mx-auto leading-[1.7]">
+            Tell us about your project and we will respond within 4 hours with a custom plan.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+        {/* WhatsApp CTA */}
+        <div className="flex justify-center mb-16">
+          <a
+            href="https://wa.me/919121600000"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-[#00A86B] text-white font-semibold rounded-full hover:bg-[#00A86B]/90 hover:scale-105 transition-all text-base"
+          >
+            <MessageCircle size={20} />
+            Chat on WhatsApp
+          </a>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Information */}
-          <div className="space-y-12">
+          <div className="space-y-10">
             <div>
-              <h2 className="text-3xl font-black text-white tracking-tight mb-6 uppercase">Consultation Office</h2>
-              <p className="text-white/40 leading-relaxed text-lg font-light">
-                We are currently accepting high-impact partnerships for Q3. 
-                Use the portal below or contact our strategy team directly.
+              <h2 className="text-2xl font-bold text-white mb-4">Direct Contact</h2>
+              <p className="text-[#A0A0A0] leading-[1.7] text-[15px]">
+                We are currently accepting new projects. Use the form or contact us directly.
               </p>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-6">
               {[
-                { icon: Mail, label: "Direct Email", value: "partnerships@growxlabs.tech" },
-                { icon: Phone, label: "Strategy Line", value: "+91 91216 00000" },
-                { icon: MapPin, label: "Global HQ", value: "Engineering Block, Guntur, India" },
+                { icon: Mail, label: "Email", value: "hello@growxlabs.tech", href: "mailto:hello@growxlabs.tech" },
+                { icon: Phone, label: "Phone", value: "+91 91216 00000", href: "tel:+919121600000" },
+                { icon: MapPin, label: "Location", value: "Guntur, Andhra Pradesh, India" },
               ].map((item, i) => (
-                <div key={i} className="flex items-center space-x-6 group">
-                  <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110">
-                    <item.icon className="text-white h-6 w-6" />
+                <div key={i} className="flex items-center space-x-5 group">
+                  <div className="w-12 h-12 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-xl flex items-center justify-center transition-all group-hover:border-[rgba(0,168,107,0.3)]">
+                    <item.icon className="text-[#00A86B] h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.2em]">{item.label}</p>
-                    <p className="text-white font-bold text-lg tracking-tight">{item.value}</p>
+                    <p className="text-[11px] text-[#A0A0A0]/60 uppercase tracking-widest font-semibold">{item.label}</p>
+                    {item.href ? (
+                      <a href={item.href} className="text-white font-semibold text-base hover:text-[#00A86B] transition-colors">{item.value}</a>
+                    ) : (
+                      <p className="text-white font-semibold text-base">{item.value}</p>
+                    )}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="pt-12 border-t border-white/5">
-              <p className="text-[10px] font-black text-white/20 mb-8 uppercase tracking-[0.3em]">Industry Recognized Excellence</p>
-              <div className="flex flex-wrap gap-10 opacity-30 grayscale items-center">
-                 <span className="text-xl font-black text-white tracking-widest leading-none">TECHCORP</span>
-                 <span className="text-xl font-black text-white tracking-widest leading-none">SKYLAB</span>
-                 <span className="text-xl font-black text-white tracking-widest leading-none">NEXUS</span>
-              </div>
+            {/* Trust Signals */}
+            <div className="pt-8 border-t border-white/5 space-y-4">
+              {[
+                { icon: ShieldCheck, text: "Registered Business — UDYAM-AP-22-0063260" },
+                { icon: Clock, text: "Response within 4 hours" },
+                { icon: Sparkles, text: "Free 15-minute discovery call" },
+              ].map((signal, i) => (
+                <div key={i} className="flex items-center gap-3 text-[13px] text-[#A0A0A0]">
+                  <signal.icon size={16} className="text-[#00A86B] shrink-0" />
+                  <span>{signal.text}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -102,58 +127,102 @@ export default function ContactPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            <Card className="p-10 md:p-16 glass border-white/5 rounded-[3rem] shadow-2xl shadow-black/50">
+            <div className="p-8 md:p-10 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)]">
               {status === "success" ? (
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-12 space-y-8"
+                  className="text-center py-12 space-y-6"
                 >
-                  <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="text-white w-12 h-12" />
+                  <div className="w-20 h-20 bg-[#00A86B]/10 border border-[#00A86B]/20 rounded-full flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="text-[#00A86B] w-10 h-10" />
                   </div>
-                  <div className="space-y-4">
-                    <h3 className="text-3xl font-black text-white tracking-tighter">Transmission Secured.</h3>
-                    <p className="text-white/40 font-light text-lg">
-                      Your inquiry has been logged. A partner strategy expert 
-                      will contact you via email shortly.
+                  <div className="space-y-3">
+                    <h3 className="text-2xl font-bold text-white">Message Sent!</h3>
+                    <p className="text-[#A0A0A0] text-[15px]">
+                      We will get back to you within 4 hours.
                     </p>
                   </div>
-                  <Button onClick={() => setStatus("idle")} variant="outline" className="rounded-full px-10 h-14 border-white/10 hover:bg-white/5 text-white/60 hover:text-white transition-all">
-                    Initialize New Inquiry
+                  <Button onClick={() => setStatus("idle")} variant="outline" className="rounded-full px-8 h-11 border-white/10 hover:bg-white/5 text-white/60 hover:text-white transition-all">
+                    Send Another Message
                   </Button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Full Name</label>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A0]/60 ml-1">Full Name</label>
                     <Input 
                       required
-                      placeholder="Jane Cooper"
+                      placeholder="Your name"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="h-14 rounded-2xl bg-white/[0.03] border-white/5 pl-6 text-white focus:border-white/20 transition-all font-medium"
+                      className="h-12 rounded-xl bg-white/[0.03] border-white/5 pl-4 text-white focus:border-[#00A86B]/40 transition-all"
                     />
                   </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Corporate Email Address</label>
-                    <Input 
-                      required
-                      type="email"
-                      placeholder="j.cooper@enterprise.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="h-14 rounded-2xl bg-white/[0.03] border-white/5 pl-6 text-white focus:border-white/20 transition-all font-medium"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A0]/60 ml-1">Email</label>
+                      <Input 
+                        required
+                        type="email"
+                        placeholder="you@company.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="h-12 rounded-xl bg-white/[0.03] border-white/5 pl-4 text-white focus:border-[#00A86B]/40 transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A0]/60 ml-1">Phone</label>
+                      <Input 
+                        type="tel"
+                        placeholder="+91 98765 43210"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="h-12 rounded-xl bg-white/[0.03] border-white/5 pl-4 text-white focus:border-[#00A86B]/40 transition-all"
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Project Scope & Requirements</label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A0]/60 ml-1">Service Needed</label>
+                      <select
+                        required
+                        value={formData.service}
+                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                        className="w-full h-12 rounded-xl bg-white/[0.03] border border-white/5 pl-4 pr-4 text-white focus:border-[#00A86B]/40 transition-all text-sm appearance-none cursor-pointer"
+                      >
+                        <option value="" className="bg-black">Select a service</option>
+                        <option value="website" className="bg-black">Website Development</option>
+                        <option value="automation" className="bg-black">n8n Automation</option>
+                        <option value="hosting" className="bg-black">Hosting and Maintenance</option>
+                        <option value="ai" className="bg-black">AI Integration</option>
+                        <option value="bundle" className="bg-black">Full Bundle</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A0]/60 ml-1">Budget Range</label>
+                      <select
+                        value={formData.budget}
+                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                        className="w-full h-12 rounded-xl bg-white/[0.03] border border-white/5 pl-4 pr-4 text-white focus:border-[#00A86B]/40 transition-all text-sm appearance-none cursor-pointer"
+                      >
+                        <option value="" className="bg-black">Select budget</option>
+                        <option value="under-15k" className="bg-black">Under ₹15,000</option>
+                        <option value="15k-35k" className="bg-black">₹15,000 – ₹35,000</option>
+                        <option value="35k-70k" className="bg-black">₹35,000 – ₹70,000</option>
+                        <option value="above-70k" className="bg-black">Above ₹70,000</option>
+                        <option value="overseas" className="bg-black">Overseas project (USD)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-[#A0A0A0]/60 ml-1">Message</label>
                     <Textarea 
                       required
-                      placeholder="Discuss your growth objectives, desired timeline, and technical constraints..."
+                      placeholder="Tell us about your project goals, timeline, and any specific requirements..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="min-h-[160px] rounded-3xl bg-white/[0.03] border-white/5 p-6 text-white focus:border-white/20 transition-all font-medium leading-relaxed"
+                      className="min-h-[140px] rounded-xl bg-white/[0.03] border-white/5 p-4 text-white focus:border-[#00A86B]/40 transition-all leading-relaxed"
                     />
                   </div>
 
@@ -161,31 +230,26 @@ export default function ContactPage() {
                     <motion.div 
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
-                      className="flex items-center space-x-3 text-red-500 text-xs bg-red-500/10 p-5 rounded-2xl border border-red-500/20"
+                      className="flex items-center space-x-3 text-red-500 text-xs bg-red-500/10 p-4 rounded-xl border border-red-500/20"
                     >
-                      <AlertCircle size={18} />
-                      <span className="font-bold leading-tight">{errorMessage}</span>
+                      <AlertCircle size={16} />
+                      <span className="font-medium">{errorMessage}</span>
                     </motion.div>
                   )}
 
                   <Button 
                     type="submit" 
-                    className="w-full h-16 text-lg font-black bg-white text-black hover:bg-neutral-200 transition-all rounded-2xl shadow-xl shadow-white/5" 
+                    className="w-full h-12 text-base font-semibold bg-[#00A86B] text-white hover:bg-[#00A86B]/90 rounded-xl shadow-none transition-all" 
                     disabled={status === "loading"}
                   >
-                    {status === "loading" ? "Initializing Transmission..." : "Get a Custom Quote"}
-                    <Send className="ml-2 h-5 w-5" />
+                    {status === "loading" ? "Sending..." : "Get a Custom Quote →"}
                   </Button>
-                  <p className="text-[10px] text-center text-white/20 font-medium uppercase tracking-widest">
-                    Encrypted Protocol &bull; Secure Data Handling &bull; NDAs Active
-                  </p>
                 </form>
               )}
-            </Card>
+            </div>
           </motion.div>
         </div>
       </div>
     </div>
   );
 }
-

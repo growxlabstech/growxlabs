@@ -9,7 +9,6 @@ import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "@/navigation";
 import { Link } from "@/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -40,109 +39,140 @@ export function Navbar() {
     };
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isMobileMenuOpen]);
+
   const isLoggedIn = status === "authenticated";
   const userRole = (session?.user as any)?.role;
   const dashboardPath = (userRole === "ADMIN" || userRole === "CO_ADMIN") ? "/admin/leads" : "/client/dashboard";
 
   return (
-    <nav
-      className={cn(
-        "fixed top-0 w-full z-50 transition-[background-color,border-color,backdrop-filter] duration-700 ease-in-out py-4",
-        isScrolled 
-          ? "glass border-b border-white/10" 
-          : "bg-transparent border-b border-transparent"
-      )}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          <Link href="/" className="flex items-center group">
-            <div className="relative h-12 w-48 transition-transform group-hover:scale-[1.02] duration-300">
-              <Image 
-                src="/logo.svg" 
-                alt="GrowX Labs" 
-                fill 
-                className="object-contain"
-                priority
-              />
-            </div>
-          </Link>
+    <>
+      <nav
+        className={cn(
+          "fixed top-0 w-full z-50 transition-all duration-500 py-4",
+          isScrolled 
+            ? "bg-black/80 backdrop-blur-md border-b border-white/10" 
+            : "bg-transparent border-b border-transparent"
+        )}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
+            <Link href="/" className="flex items-center group">
+              <div className="relative h-12 w-48 transition-transform group-hover:scale-[1.02] duration-300">
+                <Image 
+                  src="/logo.svg" 
+                  alt="GrowX Labs" 
+                  fill 
+                  className="object-contain"
+                  priority
+                />
+              </div>
+            </Link>
 
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-white transition-colors"
-              >
-                {link.name}
-              </Link>
-            ))}
-            <div className="flex items-center space-x-6">
-              <LanguageSwitcher />
-              <Link href={isLoggedIn ? dashboardPath : "/register"}>
-                <Button size="sm" variant="primary">
-                  {isLoggedIn ? t("dashboard") : t("get_started")}
-                </Button>
-              </Link>
-              {isLoggedIn && (
-                <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className="text-muted-foreground hover:text-red-400 transition-colors p-2 rounded-full hover:bg-white/5"
-                  title="Sign Out"
+            {/* Desktop Nav */}
+            <div className="hidden md:flex items-center space-x-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="text-sm font-medium text-[#A0A0A0] hover:text-white transition-colors duration-200"
                 >
-                  <LogOut className="h-5 w-5" />
-                </button>
-              )}
+                  {link.name}
+                </Link>
+              ))}
+              <div className="flex items-center space-x-4">
+                <Link href={isLoggedIn ? dashboardPath : "/register"}>
+                  <Button size="sm" variant="primary" className="bg-[#00A86B] hover:bg-[#00A86B]/90 shadow-none text-white font-semibold px-6">
+                    {isLoggedIn ? t("dashboard") : t("get_started")}
+                  </Button>
+                </Link>
+                {isLoggedIn && (
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="text-[#A0A0A0] hover:text-red-400 transition-colors p-2 rounded-full hover:bg-white/5"
+                    title="Sign Out"
+                  >
+                    <LogOut className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-4">
-            <LanguageSwitcher />
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-muted-foreground hover:text-white"
-            >
-              {isMobileMenuOpen ? <X /> : <Menu />}
-            </button>
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 text-[#A0A0A0] hover:text-white z-[60]"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden glass absolute top-full w-full py-4 px-4 space-y-4 shadow-xl border-t border-white/5">
+      {/* Mobile Menu — Full Screen Overlay */}
+      <div
+        className={cn(
+          "fixed inset-0 z-[55] md:hidden transition-all duration-500",
+          isMobileMenuOpen 
+            ? "opacity-100 pointer-events-auto" 
+            : "opacity-0 pointer-events-none"
+        )}
+      >
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black/95 backdrop-blur-md" />
+        
+        {/* Menu Content — slides from right */}
+        <div
+          className={cn(
+            "absolute inset-0 flex flex-col items-center justify-center space-y-8 transition-transform duration-500 ease-out",
+            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          )}
+        >
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-base font-medium text-muted-foreground hover:text-white"
+              className="text-2xl font-semibold text-white hover:text-[#00A86B] transition-colors"
             >
               {link.name}
             </Link>
           ))}
-          <Link href={isLoggedIn ? dashboardPath : "/register"} className="block w-full">
-            <Button className="w-full" onClick={() => setIsMobileMenuOpen(false)}>
-              {isLoggedIn ? t("dashboard") : t("get_started")}
-            </Button>
-          </Link>
-          {isLoggedIn && (
-            <Button 
-              variant="outline" 
-              className="w-full border-white/5 text-white/40"
-              onClick={() => {
-                signOut();
-                setIsMobileMenuOpen(false);
-              }}
-            >
-              Sign Out
-            </Button>
-          )}
+          
+          <div className="pt-8 flex flex-col items-center space-y-4 w-64">
+            <Link href={isLoggedIn ? dashboardPath : "/register"} className="block w-full">
+              <Button 
+                className="w-full bg-[#00A86B] hover:bg-[#00A86B]/90 shadow-none text-white font-semibold h-12 rounded-full" 
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {isLoggedIn ? t("dashboard") : t("get_started")}
+              </Button>
+            </Link>
+            {isLoggedIn && (
+              <Button 
+                variant="outline" 
+                className="w-full border-white/10 text-white/40 h-12 rounded-full"
+                onClick={() => {
+                  signOut();
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Sign Out
+              </Button>
+            )}
+          </div>
         </div>
-      )}
-    </nav>
+      </div>
+    </>
   );
 }

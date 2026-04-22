@@ -1,57 +1,85 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card } from "./Card";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
+import { ExternalLink } from "lucide-react";
+import { CaseStudy } from "@/lib/data/projects";
 
-interface ProjectCardProps {
-  title: string;
-  category: string;
-  description: string;
-  image: string;
-  href: string;
-}
+type ProjectCardProps = Pick<CaseStudy, "title" | "tag" | "description" | "tech" | "metric" | "link" | "status"> & {
+  href?: string;
+  // Keep backward compat with old props
+  category?: string;
+  image?: string;
+};
 
-export function ProjectCard({ title, category, description, image, href }: ProjectCardProps) {
+export function ProjectCard({ title, tag, category, description, tech, metric, link, status, href }: ProjectCardProps) {
+  const displayTag = tag || category || "";
+  
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group"
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.3 }}
+      className="group h-full"
     >
-      <Link href={href}>
-        <Card className="p-0 overflow-hidden bg-white/[0.02] border-white/5 hover:border-primary/50 transition-all duration-500 shadow-2xl hover:shadow-primary/20">
-          <div className="aspect-[16/10] relative overflow-hidden">
-            <Image
-              src={image}
-              alt={title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60" />
-            
-            {/* Category Tag */}
-            <div className="absolute top-4 left-4">
-              <span className="px-3 py-1 rounded-full glass text-[10px] font-bold uppercase tracking-widest text-white/80">
-                {category}
+      <div className="h-full flex flex-col bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] rounded-2xl p-6 transition-all duration-300 hover:border-[rgba(0,168,107,0.3)]">
+        {/* Tag Badge */}
+        <div className="mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-[#00A86B]/10 text-[#00A86B] border border-[#00A86B]/20">
+            {displayTag}
+          </span>
+        </div>
+
+        {/* Title + Description */}
+        <h3 className="text-[20px] font-semibold text-white mb-3">{title}</h3>
+        <p className="text-[#A0A0A0] text-[14px] leading-[1.7] mb-6 flex-1">
+          {description}
+        </p>
+
+        {/* Tech Tags */}
+        <div className="flex flex-wrap gap-2 mb-5">
+          {tech?.map((t, i) => (
+            <span
+              key={i}
+              className="px-2.5 py-1 rounded-md text-[11px] font-medium bg-white/5 text-white/60 border border-white/5"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        {/* Footer: Status + Metric + Link */}
+        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+          <div className="flex items-center gap-3">
+            {/* Live Status Badge */}
+            {status === "Live" && (
+              <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#00A86B]">
+                <span className="w-2 h-2 rounded-full bg-[#00A86B] animate-pulse" />
+                Live
               </span>
-            </div>
+            )}
+            {/* Metric */}
+            {metric && (
+              <span className="text-[12px] font-semibold text-white/50">
+                {metric}
+              </span>
+            )}
           </div>
-          
-          <div className="p-6 space-y-3">
-            <h3 className="text-2xl font-bold text-white tracking-tight">{title}</h3>
-            <p className="text-white/50 text-sm line-clamp-2 leading-relaxed">{description}</p>
-            <div className="pt-2 flex items-center text-primary text-xs font-black uppercase tracking-widest group-hover:translate-x-1 transition-transform">
-              Read Case Study <ArrowRight size={14} className="ml-2" />
-            </div>
-          </div>
-        </Card>
-      </Link>
+
+          {/* Visit Link */}
+          {link && (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-[12px] font-medium text-[#00A86B] hover:text-[#00A86B]/80 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Visit <ExternalLink size={12} />
+            </a>
+          )}
+        </div>
+      </div>
     </motion.div>
   );
 }

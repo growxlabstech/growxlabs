@@ -162,10 +162,13 @@ export default function LeadsAdminPage() {
   };
 
   const getPriority = (score: number) => {
-    if (score >= 7) return { label: "HOT", color: "text-red-500 bg-red-500/10 border-red-500/20" };
-    if (score >= 5) return { label: "WARM", color: "text-orange-500 bg-orange-500/10 border-orange-500/20" };
-    return { label: "COLD", color: "text-blue-500 bg-blue-500/10 border-blue-500/20" };
+    if (score >= 7) return { label: "HOT", color: "text-green-500 bg-green-500/10 border-green-500/20" };
+    if (score >= 4) return { label: "WARM", color: "text-yellow-500 bg-yellow-500/10 border-yellow-500/20" };
+    return { label: "COLD", color: "text-gray-400 bg-gray-400/10 border-gray-400/20" };
   };
+
+  const hotLeadsCount = leads.filter(l => (l.lead_score || 0) >= 7).length;
+  const totalLeads = leads.length;
 
   return (
     <div className="relative min-h-screen">
@@ -187,14 +190,29 @@ export default function LeadsAdminPage() {
           )}
         </AnimatePresence>
 
+        {/* Stat Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { label: "Total Leads", value: totalLeads.toString() },
+            { label: "Hot Leads Today", value: hotLeadsCount.toString() },
+            { label: "Active Clients", value: "—" },
+            { label: "Revenue This Month", value: "—" },
+          ].map((stat, i) => (
+            <div key={i} className="p-5 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)]">
+              <p className="text-[11px] font-semibold text-[#A0A0A0] uppercase tracking-widest mb-2">{stat.label}</p>
+              <p className="text-2xl font-bold text-[#00A86B]">{stat.value}</p>
+            </div>
+          ))}
+        </div>
+
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-1">
             <h1 className="text-3xl font-bold text-white tracking-tight">Sales Pipeline</h1>
-            <p className="text-white/40 font-medium whitespace-nowrap">Enterprise CRM Interface • Real-time Business Intelligence</p>
+            <p className="text-white/40 font-medium">Real-time Business Intelligence</p>
           </div>
           <div className="flex gap-3">
             <Link href="/admin/leads/scrape">
-              <Button className="bg-white text-black hover:bg-neutral-200 shadow-xl px-8 h-11 font-bold">
+              <Button className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90 shadow-lg shadow-[#00A86B]/10 px-8 h-11 font-bold">
                 <Zap size={16} className="mr-2 fill-current" /> Hunt Leads
               </Button>
             </Link>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Check, Mail, Phone, MapPin, Globe, Download, Printer, ShieldCheck } from 'lucide-react';
+import { Check, Mail, Phone, MapPin, Globe, Printer, ShieldCheck, Pencil, Eye } from 'lucide-react';
 
 interface AgreementProps {
   data?: {
@@ -19,8 +19,34 @@ interface AgreementProps {
   };
 }
 
+// Editable field wrapper moved OUTSIDE to prevent re-renders losing focus
+const EditableText = ({ isEditing, value, onChange, placeholder, className, type = "text" }: {
+  isEditing: boolean;
+  value: string | number;
+  onChange: (val: string) => void;
+  placeholder?: string;
+  className?: string;
+  type?: string;
+}) => {
+  if (!isEditing) {
+    return <span className={className}>{value || placeholder || "—"}</span>;
+  }
+  return (
+    <input
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      className={`${className} bg-yellow-50/80 border-b-2 border-[#00A86B] outline-none px-1 rounded transition-colors text-neutral-900`}
+      style={{ minWidth: type === "date" ? 140 : 80, width: "auto", color: "inherit" }}
+    />
+  );
+};
+
 export default function AgreementContract({ data = {} }: AgreementProps) {
-  const [formData] = useState({
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [formData, setFormData] = useState({
     invoiceNumber: data.invoice_no || `GX-${new Date().getFullYear()}-001`,
     date: new Date().toLocaleDateString(),
     clientName: data.client_name || "",
@@ -28,11 +54,18 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
     clientEmail: data.email || "",
     clientPhone: data.phone || "",
     projectName: data.service_type || "Digital Transformation Project",
+    projectDescription: data.project_description || "",
     totalValue: data.total_amount || "0",
     advanceAmount: data.advance_amount || "0",
     startDate: data.start_date || "",
     deliveryDate: data.delivery_date || "",
-    scope: ["", "", "", "", ""],
+    scope: [
+      data.project_description || "",
+      "",
+      "",
+      "",
+      ""
+    ],
     notIncluded: "Content creation, Third-party licensing fees, SEO beyond basic metadata.",
     serviceTypes: {
       website: true,
@@ -41,6 +74,25 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
       bundle: false
     }
   });
+
+  const update = (field: string, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updateScope = (index: number, value: string) => {
+    setFormData(prev => {
+      const newScope = [...prev.scope];
+      newScope[index] = value;
+      return { ...prev, scope: newScope };
+    });
+  };
+
+  const toggleService = (key: string) => {
+    setFormData(prev => ({
+      ...prev,
+      serviceTypes: { ...prev.serviceTypes, [key]: !(prev.serviceTypes as any)[key] }
+    }));
+  };
 
   const handlePrint = () => {
     window.print();
@@ -54,13 +106,35 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
            <ShieldCheck className="text-green-600 h-5 w-5" />
            <span className="text-xs font-bold uppercase tracking-widest leading-none">Legal Standard Enforcement</span>
         </div>
-        <button 
-          onClick={handlePrint}
-          className="flex items-center gap-2 bg-[#0D1B4B] text-white px-6 py-3 rounded-xl font-bold hover:shadow-2xl transition-all active:scale-95"
-        >
-          <Printer className="h-4 w-4" /> Download & Print Agreement
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setIsEditing(!isEditing)}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all active:scale-95 ${
+              isEditing
+                ? 'bg-[#00A86B] text-white hover:bg-[#00A86B]/90'
+                : 'bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50'
+            }`}
+          >
+            {isEditing ? <><Eye className="h-4 w-4" /> Preview Mode</> : <><Pencil className="h-4 w-4" /> Edit Live</>}
+          </button>
+          <button 
+            onClick={handlePrint}
+            className="flex items-center gap-2 bg-[#0D1B4B] text-white px-6 py-3 rounded-xl font-bold hover:shadow-2xl transition-all active:scale-95"
+          >
+            <Printer className="h-4 w-4" /> Download & Print Agreement
+          </button>
+        </div>
       </div>
+
+      {/* Edit Indicator Banner */}
+      {isEditing && (
+        <div className="max-w-[850px] mx-auto mb-4 px-4 py-3 bg-[#00A86B]/10 border border-[#00A86B]/20 rounded-xl flex items-center gap-3 print:hidden">
+          <Pencil className="h-4 w-4 text-[#00A86B]" />
+          <p className="text-sm font-medium text-[#00A86B]">
+            <strong>Edit Mode Active</strong> — Click any highlighted field to edit. Changes update the document in real-time.
+          </p>
+        </div>
+      )}
 
       {/* The Agreement Page */}
       <div className="max-w-[850px] mx-auto bg-white shadow-2xl print:shadow-none min-h-[1100px] flex flex-col font-sans border border-neutral-200 print:border-none">
@@ -78,7 +152,9 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
                  <div className="flex gap-4 mt-4 text-[10px] items-center justify-end font-bold opacity-80">
                     <div className="flex flex-col border-r border-white/10 pr-4">
                        <span className="uppercase tracking-widest text-[#00A86B]">Agreement ID</span>
-                       <span className="text-sm mt-1">{formData.invoiceNumber}</span>
+                       <span className="text-sm mt-1">
+                         <EditableText isEditing={isEditing} value={formData.invoiceNumber} onChange={(v) => update('invoiceNumber', v)} className="text-sm text-white" />
+                       </span>
                     </div>
                     <div className="flex flex-col">
                        <span className="uppercase tracking-widest text-[#00A86B]">Issue Date</span>
@@ -90,7 +166,7 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
         </div>
 
         {/* DETAILS GRID */}
-        <div className="grid grid-cols-2 h-44 border-b border-neutral-100">
+        <div className="grid grid-cols-2 min-h-[176px] border-b border-neutral-100">
            <div className="p-10 border-r border-neutral-100 flex flex-col justify-center">
               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00A86B] mb-4">From: Service Provider</span>
               <h3 className="font-bold text-lg text-[#0D1B4B]">GrowX Labs</h3>
@@ -102,11 +178,22 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
            </div>
            <div className="p-10 flex flex-col justify-center bg-neutral-50/50">
               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00A86B] mb-4 text-right">To: Client Party</span>
-              <h3 className="font-bold text-lg text-[#0D1B4B] text-right">{formData.businessName || "Valued Client"}</h3>
+              <h3 className="font-bold text-lg text-[#0D1B4B] text-right">
+                <EditableText isEditing={isEditing} value={formData.businessName} onChange={(v) => update('businessName', v)} placeholder="Client Business Name" className="font-bold text-lg text-[#0D1B4B]" />
+              </h3>
               <div className="mt-2 space-y-1 text-xs text-neutral-500 font-medium text-right leading-tight">
-                 <p className="justify-end flex items-center gap-2">{formData.clientEmail || "Email Not Provided"} <Mail className="h-3 w-3" /></p>
-                 <p className="justify-end flex items-center gap-2">{formData.clientPhone || "Phone Not Provided"} <Phone className="h-3 w-3" /></p>
-                 <p className="justify-end flex items-center gap-2 italic">{formData.clientName || "Authorized Signatory"} <Check className="h-3 w-3 text-green-600" /></p>
+                 <p className="justify-end flex items-center gap-2">
+                   <EditableText isEditing={isEditing} value={formData.clientEmail} onChange={(v) => update('clientEmail', v)} placeholder="client@email.com" className="text-neutral-500" />
+                   <Mail className="h-3 w-3" />
+                 </p>
+                 <p className="justify-end flex items-center gap-2">
+                   <EditableText isEditing={isEditing} value={formData.clientPhone} onChange={(v) => update('clientPhone', v)} placeholder="+91 XXXXX XXXXX" className="text-neutral-500" />
+                   <Phone className="h-3 w-3" />
+                 </p>
+                 <p className="justify-end flex items-center gap-2 italic">
+                   <EditableText isEditing={isEditing} value={formData.clientName} onChange={(v) => update('clientName', v)} placeholder="Authorized Signatory" className="text-neutral-500 italic" />
+                   <Check className="h-3 w-3 text-green-600" />
+                 </p>
               </div>
            </div>
         </div>
@@ -117,11 +204,17 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
               <div className="grid grid-cols-3 gap-y-10">
                  <div className="col-span-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400 block mb-2">Project Classification</label>
-                    <p className="text-xl font-bold text-[#0D1B4B] leading-tight">{formData.projectName}</p>
+                    <p className="text-xl font-bold text-[#0D1B4B] leading-tight">
+                      <EditableText isEditing={isEditing} value={formData.projectName} onChange={(v) => update('projectName', v)} placeholder="Service Type" className="text-xl font-bold text-[#0D1B4B]" />
+                    </p>
                  </div>
                  <div className="text-right">
                     <label className="text-[10px] font-black uppercase tracking-widest text-neutral-400 block mb-2">Execution Period</label>
-                    <p className="text-sm font-bold text-[#0D1B4B]">{formData.startDate || "TBD"} — {formData.deliveryDate || "TBD"}</p>
+                    <p className="text-sm font-bold text-[#0D1B4B]">
+                      <EditableText isEditing={isEditing} value={formData.startDate} onChange={(v) => update('startDate', v)} placeholder="Start Date" type="date" className="text-sm font-bold text-[#0D1B4B]" />
+                      {" — "}
+                      <EditableText isEditing={isEditing} value={formData.deliveryDate} onChange={(v) => update('deliveryDate', v)} placeholder="End Date" type="date" className="text-sm font-bold text-[#0D1B4B]" />
+                    </p>
                  </div>
                  
                  <div className="col-span-3 pt-6 border-t border-dashed border-neutral-100">
@@ -129,9 +222,14 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
                     <div className="flex gap-8">
                        {Object.entries(formData.serviceTypes).map(([type, checked]) => (
                          <div key={type} className="flex items-center gap-2.5">
-                            <div className={`h-4 w-4 rounded border flex items-center justify-center ${checked ? 'bg-[#00A86B] border-[#00A86B]' : 'border-neutral-200'}`}>
+                            <button
+                              onClick={() => isEditing && toggleService(type)}
+                              className={`h-4 w-4 rounded border flex items-center justify-center transition-colors ${
+                                checked ? 'bg-[#00A86B] border-[#00A86B]' : 'border-neutral-200'
+                              } ${isEditing ? 'cursor-pointer hover:border-[#00A86B]' : ''}`}
+                            >
                                {checked && <Check className="text-white h-2.5 w-2.5" strokeWidth={4} />}
-                            </div>
+                            </button>
                             <span className="text-[10px] font-black uppercase tracking-widest text-neutral-700">{type}</span>
                          </div>
                        ))}
@@ -147,19 +245,36 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
                  <div className="h-px bg-[#00A86B] flex-1 opacity-10" />
               </div>
               <div className="space-y-4">
-                 {[1,2,3,4,5].map((i) => (
+                 {formData.scope.map((item, i) => (
                    <div key={i} className="flex items-start gap-4">
-                      <span className="h-5 w-5 rounded-full bg-[#00A86B] text-white text-[9px] font-black flex items-center justify-center shrink-0">{i}</span>
-                      <div className="min-h-[2.5rem] border-b border-neutral-100 flex-1 flex items-center text-sm font-medium text-neutral-600 px-2 italic">
-                         {i === 1 && data.project_description}
-                      </div>
+                      <span className="h-5 w-5 rounded-full bg-[#00A86B] text-white text-[9px] font-black flex items-center justify-center shrink-0">{i + 1}</span>
+                      {isEditing ? (
+                        <input
+                          value={item}
+                          onChange={(e) => updateScope(i, e.target.value)}
+                          placeholder={`Deliverable ${i + 1}...`}
+                          className="min-h-[2.5rem] border-b border-neutral-100 flex-1 text-sm font-medium text-neutral-900 px-2 bg-yellow-50/80 border-b-2 !border-[#00A86B] outline-none rounded transition-colors"
+                        />
+                      ) : (
+                        <div className="min-h-[2.5rem] border-b border-neutral-100 flex-1 flex items-center text-sm font-medium text-neutral-600 px-2 italic">
+                           {item || "—"}
+                        </div>
+                      )}
                    </div>
                  ))}
                  <div className="pt-6">
                     <label className="text-[9px] font-black uppercase tracking-widest text-red-600 mb-2 block">Excluded from this agreement</label>
-                    <div className="p-4 bg-red-500/[0.03] border border-red-500/10 rounded-xl text-[11px] font-medium text-neutral-500 italic leading-relaxed">
-                       {formData.notIncluded}
-                    </div>
+                    {isEditing ? (
+                      <textarea
+                        value={formData.notIncluded}
+                        onChange={(e) => update('notIncluded', e.target.value)}
+                        className="w-full p-4 bg-yellow-50/80 border-2 border-[#00A86B] rounded-xl text-[11px] font-medium text-neutral-900 italic leading-relaxed outline-none transition-colors min-h-[60px]"
+                      />
+                    ) : (
+                      <div className="p-4 bg-red-500/[0.03] border border-red-500/10 rounded-xl text-[11px] font-medium text-neutral-500 italic leading-relaxed">
+                         {formData.notIncluded}
+                      </div>
+                    )}
                  </div>
               </div>
            </div>
@@ -178,7 +293,9 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
                     <tr className="border-b border-neutral-100">
                        <td className="p-4">Project Kickoff & Resource Allocation (Advance)</td>
                        <td className="p-4 text-right text-neutral-400">50%</td>
-                       <td className="p-4 text-right text-[#00A86B] text-base">₹{formData.advanceAmount}</td>
+                       <td className="p-4 text-right text-[#00A86B] text-base">
+                         ₹<EditableText isEditing={isEditing} value={formData.advanceAmount} onChange={(v) => update('advanceAmount', v)} className="text-[#00A86B] text-base font-bold" />
+                       </td>
                     </tr>
                     <tr className="border-b border-neutral-100">
                        <td className="p-4">Final Testing & Knowledge Transfer</td>
@@ -188,7 +305,9 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
                     <tr className="bg-neutral-50 border-b-2 border-[#0D1B4B]">
                        <td className="p-4">Total Contract Commitment</td>
                        <td className="p-4 text-right italic font-black text-[#00A86B]">LUMP SUM</td>
-                       <td className="p-4 text-right text-xl">₹{formData.totalValue}</td>
+                       <td className="p-4 text-right text-xl">
+                         ₹<EditableText isEditing={isEditing} value={formData.totalValue} onChange={(v) => update('totalValue', v)} className="text-xl font-bold text-[#0D1B4B]" />
+                       </td>
                     </tr>
                     <tr>
                        <td colSpan={3} className="p-4 text-[10px] font-medium text-neutral-400 italic">
@@ -249,12 +368,13 @@ export default function AgreementContract({ data = {} }: AgreementProps) {
       {/* Print Specific CSS Overrides */}
       <style jsx global>{`
         @media print {
-          body { background: white !important; -webkit-print-color-adjust: exact; }
-          .print-hidden { display: none !important; }
+          body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          .print\\:hidden, [class*="print:hidden"] { display: none !important; }
           @page { margin: 1cm; size: A4; }
           .shadow-2xl { box-shadow: none !important; }
           .min-h-screen { min-height: auto !important; padding: 0 !important; }
           .bg-neutral-100 { background: white !important; }
+          input, textarea { border: none !important; background: none !important; }
         }
       `}</style>
     </div>

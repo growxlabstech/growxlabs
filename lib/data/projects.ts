@@ -2,11 +2,15 @@ export interface CaseStudy {
   slug: string;
   title: string;
   category: string;
+  tag: string;
   description: string;
   image: string;
   problem: string;
   solution: string;
   tech: string[];
+  metric: string;
+  link?: string;
+  status: "Live" | "Beta" | "Development";
   results: {
     label: string;
     value: string;
@@ -16,60 +20,62 @@ export interface CaseStudy {
 
 export const projects: CaseStudy[] = [
   {
-    slug: "ecommerce-performance",
-    title: "Global Commerce Scaling",
-    category: "Web Engineering",
-    description: "Architected a sub-second headless commerce platform for an international lifestyle brand, driving unprecedented conversion growth.",
-    image: "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=1200",
-    problem: "The client was losing 40% of potential revenue due to legacy platform latency and checkout failures during high-traffic global sales.",
-    solution: "We engineered a high-performance Next.js engine with a distributed headless backend, eliminating load-time bottlenecks and stabilizing the checkout pipeline.",
-    tech: ["Next.js", "Shopify Hydrogen", "Tailwind CSS", "Vercel"],
+    slug: "resumeforgeai",
+    title: "ResumeForgeAI",
+    tag: "AI Product",
+    category: "AI Product",
+    description: "AI-powered career platform for Indian professionals. Resume builder, ATS optimizer, job matching. 500+ active users.",
+    image: "",
+    problem: "Indian job seekers lack affordable, ATS-compliant resume tools tailored to the local market, resulting in low interview conversion rates.",
+    solution: "Built an AI-powered platform using Claude AI for intelligent resume generation, ATS scoring, and job-resume matching — all optimized for Indian hiring patterns.",
+    tech: ["Next.js", "Claude AI", "Supabase"],
+    metric: "500+ Users",
+    link: "https://resumeforgeai.in",
+    status: "Live",
     results: [
-      { label: "Conversion Lift", value: "3.2x" },
-      { label: "LCP Performance", value: "0.4s" },
-      { label: "Cart Abandonment", value: "-62%" }
+      { label: "Active Users", value: "500+" },
+      { label: "Resumes Generated", value: "2,000+" },
+      { label: "ATS Score Avg", value: "92%" }
     ],
-    gallery: [
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800"
-    ]
+    gallery: []
   },
   {
-    slug: "enterprise-automation",
-    title: "Operational Efficiency Engine",
-    category: "AI & Automation",
-    description: "Developed an autonomous workflow ecosystem for a B2B SaaS leader, eliminating thousands of manual processing hours annually.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
-    problem: "Manual data entry and fragmented onboarding processes were costing the operations team 160+ hours per month and increasing churn risk.",
-    solution: "We deployed an AI-powered automation layer using n8n and custom logic to centralize customer intelligence and automate the entire onboarding lifecycle.",
-    tech: ["n8n", "Supabase", "Node.js", "OpenAI"],
+    slug: "universalai",
+    title: "UniversalAI",
+    tag: "AI Platform",
+    category: "AI Platform",
+    description: "Multi-model AI chat platform supporting Claude, GPT-4, and Gemini in one unified interface with plugin marketplace.",
+    image: "",
+    problem: "Users need to switch between multiple AI platforms to access different models, losing context and productivity.",
+    solution: "Created a unified AI chat interface that aggregates Claude, GPT-4, and Gemini into one platform with a plugin marketplace for extended capabilities.",
+    tech: ["Next.js", "OpenAI", "Anthropic"],
+    metric: "3 AI Models",
+    status: "Live",
     results: [
-      { label: "Ops Hours Saved", value: "2,000+" },
-      { label: "Onboarding Speed", value: "4.5x" },
-      { label: "Process Accuracy", value: "100%" }
+      { label: "AI Models", value: "3" },
+      { label: "Response Time", value: "<2s" },
+      { label: "Plugin System", value: "Active" }
     ],
-    gallery: [
-      "https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=800"
-    ]
+    gallery: []
   },
   {
-    slug: "fintech-intelligence",
-    title: "Asset Management Portal",
-    category: "Financial Systems",
-    description: "Designed a high-security, real-time data orchestration platform for high-net-worth wealth management.",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1200",
-    problem: "Inconsistent data visualization and complex navigation were hindering client engagement and increasing support overhead.",
-    solution: "We built a specialized data portal with real-time financial streaming and intuitive performance analytics, focusing on high-trust user experience.",
-    tech: ["React", "D3.js", "Framer Motion", "Tailwind"],
+    slug: "recruitai",
+    title: "RecruitAI",
+    tag: "Automation Platform",
+    category: "Automation Platform",
+    description: "AI recruitment automation with intelligent screening, lead scoring, and n8n workflow integration.",
+    image: "",
+    problem: "Recruitment agencies spend 70% of their time on repetitive screening and follow-up tasks instead of closing candidates.",
+    solution: "Built an AI-powered recruitment pipeline with automated candidate screening, intelligent lead scoring, and n8n workflow integration for end-to-end automation.",
+    tech: ["Next.js", "n8n", "Supabase"],
+    metric: "15+ Automations",
+    link: "https://recruitaitech.in",
+    status: "Live",
     results: [
-      { label: "User Engagement", value: "+85%" },
-      { label: "Support Vol.", value: "-40%" },
-      { label: "NPS Growth", value: "+22pts" }
+      { label: "Automations", value: "15+" },
+      { label: "Time Saved", value: "70%" },
+      { label: "Accuracy", value: "95%" }
     ],
-    gallery: [
-      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1450101496173-ec413b681f4c?auto=format&fit=crop&q=80&w=800"
-    ]
+    gallery: []
   }
 ];

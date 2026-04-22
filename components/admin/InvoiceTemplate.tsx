@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { CreditCard, Download, Printer, Send, ShieldCheck, Mail, Phone, Globe, MapPin, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Printer, ShieldCheck, Mail, CheckCircle2, Pencil, Eye, Plus, Trash2 } from 'lucide-react';
 
 interface InvoiceProps {
   data?: {
@@ -14,8 +14,41 @@ interface InvoiceProps {
   };
 }
 
+interface LineItem {
+  id: number;
+  desc: string;
+  qty: number;
+  rate: number;
+}
+
+// Editable field moved OUTSIDE to prevent focus loss
+const EditField = ({ isEditing, value, onChange, placeholder, className, type = "text" }: {
+  isEditing: boolean;
+  value: string | number;
+  onChange: (val: string) => void;
+  placeholder?: string;
+  className?: string;
+  type?: string;
+}) => {
+  if (!isEditing) {
+    return <span className={className}>{value || placeholder || "—"}</span>;
+  }
+  return (
+    <input
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      className={`${className} bg-yellow-50/80 border-b-2 border-[#00A86B] outline-none px-1 rounded text-neutral-900`}
+      style={{ minWidth: type === "number" ? 60 : 80, color: "inherit" }}
+    />
+  );
+};
+
 export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
-  const [items, setItems] = useState([
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [items, setItems] = useState<LineItem[]>([
     { id: 1, desc: data.description || "Digital Services", qty: 1, rate: data.amount || 0 },
     { id: 2, desc: "", qty: 1, rate: 0 },
     { id: 3, desc: "", qty: 1, rate: 0 },
@@ -27,12 +60,34 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
     dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString(),
     clientName: data.client_name || "",
     businessName: data.business_name || "",
+    clientEmail: data.email || "",
     advancePaid: 0
   });
 
+  // Live calculations
   const subtotal = items.reduce((acc, item) => acc + (item.qty * item.rate), 0);
-  const totalPayable = subtotal; // 0% GST as per user request
+  const totalPayable = subtotal;
   const balanceDue = totalPayable - metadata.advancePaid;
+
+  const updateItem = (id: number, field: keyof LineItem, value: string | number) => {
+    setItems(prev => prev.map(item => 
+      item.id === id ? { ...item, [field]: field === 'desc' ? value : Number(value) || 0 } : item
+    ));
+  };
+
+  const addItem = () => {
+    const maxId = Math.max(...items.map(i => i.id), 0);
+    setItems(prev => [...prev, { id: maxId + 1, desc: "", qty: 1, rate: 0 }]);
+  };
+
+  const removeItem = (id: number) => {
+    if (items.length <= 1) return;
+    setItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const updateMeta = (field: string, value: any) => {
+    setMetadata(prev => ({ ...prev, [field]: value }));
+  };
 
   const handlePrint = () => window.print();
 
@@ -50,6 +105,16 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
            </div>
         </div>
         <div className="flex gap-3">
+           <button
+             onClick={() => setIsEditing(!isEditing)}
+             className={`flex items-center gap-2 px-6 h-12 rounded-xl font-bold transition-all active:scale-95 text-sm ${
+               isEditing
+                 ? 'bg-[#00A86B] text-white hover:bg-[#00A86B]/90'
+                 : 'bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-50'
+             }`}
+           >
+             {isEditing ? <><Eye className="h-4 w-4" /> Preview</> : <><Pencil className="h-4 w-4" /> Edit Live</>}
+           </button>
            <button 
              onClick={handlePrint}
              className="flex items-center gap-2 bg-[#0D1B4B] text-white px-6 h-12 rounded-xl text-sm font-black uppercase tracking-widest hover:shadow-2xl hover:shadow-[#0D1B4B]/20 transition-all active:scale-95"
@@ -58,6 +123,16 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
            </button>
         </div>
       </div>
+
+      {/* Edit Indicator */}
+      {isEditing && (
+        <div className="max-w-[850px] mx-auto mb-4 px-4 py-3 bg-[#00A86B]/10 border border-[#00A86B]/20 rounded-xl flex items-center gap-3 print:hidden">
+          <Pencil className="h-4 w-4 text-[#00A86B]" />
+          <p className="text-sm font-medium text-[#00A86B]">
+            <strong>Edit Mode</strong> — All fields are editable. Totals recalculate live.
+          </p>
+        </div>
+      )}
 
       {/* DOCUMENT CONTAINER */}
       <div className="max-w-[850px] mx-auto bg-white shadow-[0_40px_100px_rgba(0,0,0,0.04)] print:shadow-none min-h-[1100px] flex flex-col border border-neutral-100 print:border-none relative">
@@ -84,14 +159,16 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
                  <p>hello@growxlabs.tech</p>
                  <p>growxlabs.tech</p>
                  <p>Guntur, Andhra Pradesh, India</p>
-                 <p className="text-[9px] font-bold text-neutral-300 mt-3 tracking-widest uppercase">GSTIN / TAX: UDYAM-AP-XX-XXXXXXX</p>
+                 <p className="text-[9px] font-bold text-neutral-300 mt-3 tracking-widest uppercase">UDYAM: UDYAM-AP-22-0063260</p>
               </div>
            </div>
 
            <div className="text-right space-y-8">
               <div className="space-y-1">
                  <h2 className="text-6xl font-black text-neutral-900/5 tracking-tighter italic select-none">INVOICE</h2>
-                 <p className="text-sm font-black text-[#0D1B4B] uppercase tracking-[0.2em] relative -top-6"># {metadata.invoiceNo}</p>
+                 <p className="text-sm font-black text-[#0D1B4B] uppercase tracking-[0.2em] relative -top-6">
+                   # <EditField isEditing={isEditing} value={metadata.invoiceNo} onChange={(v) => updateMeta('invoiceNo', v)} className="text-sm font-black text-[#0D1B4B]" />
+                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-8 text-right bg-neutral-50 p-6 rounded-2xl border border-neutral-100">
@@ -123,9 +200,15 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
               </div>
               <h3 className="text-[10px] font-black uppercase tracking-widest text-neutral-300 mb-6">Billing To</h3>
               <div className="space-y-1">
-                 <p className="text-lg font-black text-[#0D1B4B] tracking-tight">{metadata.businessName || "Client Business Entity"}</p>
-                 <p className="text-xs font-bold text-[#00A86B] uppercase tracking-widest italic">{metadata.clientName || "Authorized Signatory"}</p>
-                 <p className="text-xs font-medium text-neutral-400 mt-2">{data.email || "recipient@company.com"}</p>
+                 <p className="text-lg font-black text-[#0D1B4B] tracking-tight">
+                   <EditField isEditing={isEditing} value={metadata.businessName} onChange={(v) => updateMeta('businessName', v)} placeholder="Client Business Name" className="text-lg font-black text-[#0D1B4B]" />
+                 </p>
+                 <p className="text-xs font-bold text-[#00A86B] uppercase tracking-widest italic">
+                   <EditField isEditing={isEditing} value={metadata.clientName} onChange={(v) => updateMeta('clientName', v)} placeholder="Contact Name" className="text-xs font-bold text-[#00A86B]" />
+                 </p>
+                 <p className="text-xs font-medium text-neutral-400 mt-2">
+                   <EditField isEditing={isEditing} value={metadata.clientEmail} onChange={(v) => updateMeta('clientEmail', v)} placeholder="email@company.com" className="text-xs text-neutral-400" />
+                 </p>
               </div>
            </div>
         </div>
@@ -140,6 +223,7 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
                     <th className="py-4 text-center text-[10px] font-black uppercase tracking-[0.2em] w-24">Unit</th>
                     <th className="py-4 text-right text-[10px] font-black uppercase tracking-[0.2em] w-32">Rate (₹)</th>
                     <th className="py-4 text-right text-[10px] font-black uppercase tracking-[0.2em] w-32">Total (₹)</th>
+                    {isEditing && <th className="py-4 w-10 print:hidden"></th>}
                  </tr>
               </thead>
               <tbody className="text-xs font-bold text-[#0D1B4B]">
@@ -148,30 +232,61 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
                       <td className="py-6 text-neutral-300 font-mono tracking-tighter">0{i+1}</td>
                       <td className="py-6 pr-4">
                          <input 
-                           defaultValue={item.desc}
+                           value={item.desc}
+                           onChange={(e) => updateItem(item.id, 'desc', e.target.value)}
                            placeholder="Describe the engineering output..."
-                           className="bg-transparent w-full focus:outline-none focus:text-[#00A86B] placeholder:font-normal placeholder:opacity-30 text-sm font-bold tracking-tight"
+                           className={`bg-transparent w-full focus:outline-none placeholder:font-normal placeholder:opacity-30 text-sm font-bold tracking-tight ${
+                             isEditing ? 'bg-yellow-50/80 border-b-2 border-[#00A86B] rounded px-1' : 'focus:text-[#00A86B]'
+                           }`}
+                           readOnly={!isEditing}
                          />
                       </td>
                       <td className="py-6 text-center text-neutral-400">
                          <input 
                            type="number"
-                           defaultValue={item.qty}
-                           className="bg-transparent w-full text-center focus:outline-none"
+                           value={item.qty}
+                           onChange={(e) => updateItem(item.id, 'qty', e.target.value)}
+                           className={`bg-transparent w-full text-center focus:outline-none ${
+                             isEditing ? 'bg-yellow-50/80 border-b-2 border-[#00A86B] rounded' : ''
+                           }`}
+                           readOnly={!isEditing}
+                           min={0}
                          />
                       </td>
                       <td className="py-6 text-right font-mono tracking-tighter">
                          <input 
                            type="number"
-                           defaultValue={item.rate}
-                           className="bg-transparent w-full text-right focus:outline-none"
+                           value={item.rate}
+                           onChange={(e) => updateItem(item.id, 'rate', e.target.value)}
+                           className={`bg-transparent w-full text-right focus:outline-none ${
+                             isEditing ? 'bg-yellow-50/80 border-b-2 border-[#00A86B] rounded' : ''
+                           }`}
+                           readOnly={!isEditing}
+                           min={0}
                          />
                       </td>
                       <td className="py-6 text-right tabular-nums text-sm font-black tracking-tighter">₹{(item.qty * item.rate).toLocaleString()}</td>
+                      {isEditing && (
+                        <td className="py-6 text-center print:hidden">
+                          <button onClick={() => removeItem(item.id)} className="text-red-400 hover:text-red-600 transition-colors">
+                            <Trash2 size={14} />
+                          </button>
+                        </td>
+                      )}
                    </tr>
                  ))}
               </tbody>
            </table>
+
+           {/* Add Line Item */}
+           {isEditing && (
+             <button
+               onClick={addItem}
+               className="mt-4 flex items-center gap-2 text-[#00A86B] text-xs font-bold uppercase tracking-widest hover:text-[#00A86B]/80 transition-colors print:hidden"
+             >
+               <Plus size={14} /> Add Line Item
+             </button>
+           )}
         </div>
 
         {/* RECAP MODAL STYLE */}
@@ -218,7 +333,17 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
               <div className="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-4">
                  <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest opacity-40">
                     <span>Credit Received</span>
-                    <span className="text-[#00A86B]">- ₹{metadata.advancePaid.toLocaleString()}</span>
+                    <span className="text-[#00A86B]">
+                      - ₹{isEditing ? (
+                        <input
+                          type="number"
+                          value={metadata.advancePaid}
+                          onChange={(e) => updateMeta('advancePaid', Number(e.target.value) || 0)}
+                          className="bg-yellow-50/20 border-b-2 border-[#00A86B] outline-none text-center w-24 text-[#00A86B] rounded"
+                          min={0}
+                        />
+                      ) : metadata.advancePaid.toLocaleString()}
+                    </span>
                  </div>
                  <div className="flex justify-between items-center">
                     <span className="text-sm font-black uppercase tracking-widest text-[#00A86B]">Balance Due</span>
@@ -251,12 +376,14 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
       {/* CORE PRINT STYLE */}
       <style jsx global>{`
         @media print {
-          body { background: white !important; margin: 0 !important; -webkit-print-color-adjust: exact; }
-          .print-hidden { display: none !important; }
+          body { background: white !important; margin: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          .print\\:hidden, [class*="print:hidden"] { display: none !important; }
           @page { margin: 1cm; size: A4 portrait; }
           .min-h-screen { min-height: auto !important; padding: 0 !important; margin: 0 !important; }
-          .bg-neutral-50\/50 { background: white !important; }
-          .shadow-\[0_40px_100px_rgba\(0\,0\,0\,0\.04\)\] { box-shadow: none !important; }
+          .bg-neutral-50\\/50 { background: white !important; }
+          .shadow-\\[0_40px_100px_rgba\\(0\\,0\\,0\\,0\\.04\\)\\] { box-shadow: none !important; }
+          input, textarea { border: none !important; background: none !important; }
+          button { display: none !important; }
         }
       `}</style>
     </div>

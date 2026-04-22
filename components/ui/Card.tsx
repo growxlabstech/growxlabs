@@ -4,7 +4,10 @@ export function Card({ className, children, onClick }: { className?: string; chi
   return (
     <div
       onClick={onClick}
-      className={cn("glass rounded-xl p-6 transition-all hover:border-primary/50", className)}
+      className={cn(
+        "rounded-2xl p-6 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] transition-all duration-300 hover:border-[rgba(0,168,107,0.3)]",
+        className
+      )}
     >
       {children}
     </div>

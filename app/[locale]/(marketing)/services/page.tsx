@@ -48,52 +48,53 @@ const allServices = [
 
 export default function ServicesPage() {
   return (
-    <div className="pt-32 pb-48">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-32">
+    <div className="pt-32 pb-24">
+      <div className="max-w-6xl mx-auto px-6 md:px-16">
+        <div className="text-center mb-20">
+          <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B] mb-4 block">
+            WHAT WE BUILD
+          </span>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter"
+            className="text-[48px] font-bold text-white mb-6 tracking-tight"
           >
-            Engineering <span className="text-gradient">Potential.</span>
+            Core Capabilities
           </motion.h1>
-          <p className="text-xl text-white/40 max-w-3xl mx-auto font-light leading-relaxed">
-            We provide direct, high-impact technical services designed to solve 
-            real business problems and accelerate your path to scale.
+          <p className="text-[#A0A0A0] max-w-[560px] mx-auto text-base leading-relaxed">
+            Direct results-oriented technical solutions for businesses that prioritize speed and reliability.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {allServices.map((service, index) => (
             <ServiceCard key={index} {...service} />
           ))}
         </div>
 
         {/* Value Props */}
-        <div className="glass rounded-[3rem] p-12 md:p-24 border border-white/5 relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-full h-full bg-white/[0.01] -z-10" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 text-center relative z-10">
-            <div className="space-y-6">
-              <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110">
-                <Shield className="text-white h-8 w-8" />
+        <div className="rounded-2xl p-10 md:p-16 border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] relative overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center relative z-10">
+            <div className="space-y-4">
+              <div className="w-14 h-14 bg-[#00A86B]/10 border border-[#00A86B]/20 rounded-2xl flex items-center justify-center mx-auto">
+                <Shield className="text-[#00A86B] h-7 w-7" />
               </div>
-              <h3 className="text-xl font-bold text-white tracking-tight">Enterprise Security</h3>
-              <p className="text-white/40 text-sm font-light leading-relaxed">Every solution is built with rigorous security standards to protect your business data.</p>
+              <h3 className="text-lg font-semibold text-white">Enterprise Security</h3>
+              <p className="text-[#A0A0A0] text-sm leading-relaxed">Every solution is built with rigorous security standards to protect your business data.</p>
             </div>
-            <div className="space-y-6">
-              <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110" style={{ transitionDelay: '0.1s' }}>
-                <Clock className="text-white h-8 w-8" />
+            <div className="space-y-4">
+              <div className="w-14 h-14 bg-[#00A86B]/10 border border-[#00A86B]/20 rounded-2xl flex items-center justify-center mx-auto">
+                <Clock className="text-[#00A86B] h-7 w-7" />
               </div>
-              <h3 className="text-xl font-bold text-white tracking-tight">On-Time Delivery</h3>
-              <p className="text-white/40 text-sm font-light leading-relaxed">We respect your timeline. Fixed-price, fixed-date projects delivered with absolute precision.</p>
+              <h3 className="text-lg font-semibold text-white">On-Time Delivery</h3>
+              <p className="text-[#A0A0A0] text-sm leading-relaxed">We respect your timeline. Fixed-price, fixed-date projects delivered with absolute precision.</p>
             </div>
-            <div className="space-y-6">
-              <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110" style={{ transitionDelay: '0.2s' }}>
-                <Zap className="text-white h-8 w-8" />
+            <div className="space-y-4">
+              <div className="w-14 h-14 bg-[#00A86B]/10 border border-[#00A86B]/20 rounded-2xl flex items-center justify-center mx-auto">
+                <Zap className="text-[#00A86B] h-7 w-7" />
               </div>
-              <h3 className="text-xl font-bold text-white tracking-tight">Precision Performance</h3>
-              <p className="text-white/40 text-sm font-light leading-relaxed">We optimize for speed and reliability, ensuring your systems perform under massive traffic.</p>
+              <h3 className="text-lg font-semibold text-white">Precision Performance</h3>
+              <p className="text-[#A0A0A0] text-sm leading-relaxed">We optimize for speed and reliability, ensuring your systems perform under massive traffic.</p>
             </div>
           </div>
         </div>
@@ -101,4 +102,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-

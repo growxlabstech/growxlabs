@@ -8,37 +8,31 @@ import {
   Settings,
   TrendingUp,
   Server,
-  ArrowRight,
-  ChevronRight
 } from "lucide-react";
 import { Link } from "@/navigation";
 import { projects } from "@/lib/data/projects";
 import { ProjectCard } from "@/components/ui/ProjectCard";
-import { useTranslations } from "next-intl";
 
 export default function Home() {
-  const t = useTranslations("Hero");
-  const ts = useTranslations("Services");
-
   const mainServices = [
     {
-      title: ts("items.web_engineering.title"),
-      description: ts("items.web_engineering.description"),
+      title: "Web Engineering",
+      description: "We build high-performance digital platforms that turn visitors into customers at scale.",
       icon: Code,
     },
     {
-      title: ts("items.ai_automation.title"),
-      description: ts("items.ai_automation.description"),
+      title: "AI & Automation",
+      description: "Custom AI workflows and automation systems that eliminate manual overhead and speed up your growth.",
       icon: Settings,
     },
     {
-      title: ts("items.technical_seo.title"),
-      description: ts("items.technical_seo.description"),
+      title: "Technical SEO",
+      description: "Dominant search visibility engineered to capture high-intent organic traffic and drive revenue.",
       icon: TrendingUp,
     },
     {
-      title: ts("items.cloud_infra.title"),
-      description: ts("items.cloud_infra.description"),
+      title: "Cloud Infrastructure",
+      description: "Secure, scalable hosting and maintenance designed for 100% reliability and business continuity.",
       icon: Server,
     },
   ];
@@ -46,76 +40,72 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-32 md:pt-56 md:pb-48 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6 md:px-16 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center px-4 py-1.5 rounded-full glass mb-8 border border-white/10"
+            className="mb-8"
           >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-              {t("label")}
+            <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B]">
+              AI-Native Digital Agency
             </span>
           </motion.div>
           
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-6xl md:text-9xl font-black text-white mb-10 tracking-tighter leading-[0.9]"
+            className="text-white font-bold mb-10 leading-[1.1] max-w-[800px] mx-auto"
+            style={{ fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 700 }}
           >
-             {t("title1")} <br />
-            <span className="opacity-70">{t("title2")}</span>
+            Digital Systems That Drive Growth.
           </motion.h1>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl md:text-2xl text-white/40 max-w-3xl mx-auto mb-14 leading-relaxed font-light"
+            className="text-[18px] text-[#A0A0A0] max-w-[520px] mx-auto mb-14 leading-[1.7]"
           >
-            {t("subtitle")}
+            We build high-performance websites and automation systems that help businesses grow faster.
           </motion.p>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="flex flex-col sm:flex-row justify-center gap-6"
+            className="flex flex-col sm:flex-row justify-center gap-4"
           >
             <Link href="/contact">
-              <Button size="lg" className="h-16 px-12 text-lg rounded-full font-black bg-white text-black hover:bg-neutral-200 transition-all shadow-xl shadow-white/5">
-                {t("cta_start")} <ChevronRight className="ml-2 h-5 w-5" />
+              <Button size="lg" className="h-12 px-8 py-3 text-base rounded-full font-semibold bg-[#00A86B] text-white hover:bg-[#00A86B]/90 hover:scale-105 transition-all shadow-none">
+                Start Your Project →
               </Button>
             </Link>
             <Link href="/portfolio">
-              <Button size="lg" variant="outline" className="h-16 px-12 text-lg rounded-full font-black border-white/10 hover:bg-white/5 transition-all text-white/60 hover:text-white">
-                {t("cta_portfolio")}
+              <Button size="lg" variant="outline" className="h-12 px-8 py-3 text-base rounded-full font-semibold border-white/20 hover:border-white hover:bg-white/5 transition-all text-white">
+                View Portfolio
               </Button>
             </Link>
           </motion.div>
         </div>
         
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[500px] bg-white/[0.03] blur-[150px] -z-10 rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[500px] bg-[#00A86B]/[0.04] blur-[150px] -z-10 rounded-full" />
       </section>
 
-      {/* Services Section */}
-      <section className="py-32 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">{ts("title")}</h2>
-              <p className="text-xl text-white/40 font-light leading-relaxed">
-                {ts("subtitle")}
-              </p>
-            </div>
-            <Link href="/services">
-              <Button variant="ghost" className="text-white/60 hover:text-white font-bold group">
-                All Services <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+      {/* Services / Core Capabilities Section */}
+      <section className="py-24 px-6 md:px-16 relative">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B] mb-4 block">
+              WHAT WE BUILD
+            </span>
+            <h2 className="text-[48px] font-bold text-white mb-6 tracking-tight">Core Capabilities</h2>
+            <p className="text-[#A0A0A0] max-w-[560px] mx-auto text-base leading-relaxed">
+              Direct results-oriented technical solutions for businesses that prioritize speed and reliability.
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {mainServices.map((service, index) => (
               <ServiceCard key={index} {...service} />
             ))}
@@ -123,13 +113,45 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio segment preserved... */}
-      <section className="py-32 bg-white/[0.01] border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Portfolio Segment */}
+      <section className="py-24 px-6 md:px-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B] mb-4 block">
+              OUR WORK
+            </span>
+            <h2 className="text-[48px] font-bold text-white mb-6 tracking-tight">Case Studies</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {projects.slice(0, 3).map((project, index) => (
-              <ProjectCard key={index} {...project} href={`/portfolio/${project.slug}`} />
+              <ProjectCard key={index} {...project} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section — Replacing Testimonials */}
+      <section className="py-24 px-6 md:px-16">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-[36px] md:text-[48px] font-bold text-white mb-6 tracking-tight">
+            Currently Onboarding First Clients
+          </h2>
+          <p className="text-[#A0A0A0] max-w-[560px] mx-auto text-base leading-relaxed mb-12">
+            Be among the first businesses to experience AI-powered digital growth with GrowX Labs.
+          </p>
+          
+          <div className="max-w-lg mx-auto p-8 rounded-2xl border border-[#00A86B]/30 bg-[rgba(255,255,255,0.03)]">
+            <p className="text-white text-lg font-medium mb-2">
+              Want to be our first featured client?
+            </p>
+            <p className="text-[#A0A0A0] text-sm mb-8">
+              Your project becomes our showcase.
+            </p>
+            <Link href="/contact">
+              <Button className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90 rounded-full px-8 py-3 h-12 font-semibold shadow-none">
+                Start Your Project Today →
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

@@ -1,13 +1,9 @@
 "use client";
-import { Shield, Lock } from "lucide-react";
+import { Shield, Lock, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "@/navigation";
 import Image from "next/image";
-import { useTranslations, useLocale } from "next-intl";
 
 export function Footer() {
-  const t = useTranslations("Footer");
-  const locale = useLocale();
-
   const links = {
     services: [
       { name: "Web Engineering", href: "/services" },
@@ -16,8 +12,8 @@ export function Footer() {
       { name: "AI Integration", href: "/services" },
     ],
     legal: [
-      { name: "Terms & Conditions", href: "/terms" },
       { name: "Privacy Policy", href: "/privacy" },
+      { name: "Terms of Service", href: "/terms" },
       { name: "Refund Policy", href: "/refund-policy" },
       { name: "Client Agreement", href: "/client-agreement" },
     ],
@@ -25,13 +21,13 @@ export function Footer() {
       { name: "Project Handover", href: "/handover" },
       { name: "AI Products", href: "/products" },
       { name: "Client Portal", href: "/client/dashboard" },
-      { name: "Success Stories", href: "/portfolio" },
+      { name: "Portfolio", href: "/portfolio" },
     ]
   };
 
   return (
     <footer className="border-t border-white/5 bg-black pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-6 md:px-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20 text-center md:text-left">
           {/* Brand Column */}
           <div className="space-y-6">
@@ -45,16 +41,33 @@ export function Footer() {
                 />
               </div>
             </Link>
-            <p className="text-white/40 text-[13px] leading-relaxed font-light">
-              {t("description")}
+            <p className="text-[#A0A0A0] text-[13px] leading-relaxed">
+              We build AI-powered websites and automation systems that help businesses grow faster.
             </p>
+            
+            {/* MSME & Contact Details */}
+            <div className="space-y-2 pt-2">
+              <p className="text-[12px] text-[#A0A0A0]/60">MSME Registered</p>
+              <p className="text-[12px] text-[#A0A0A0]/60">UDYAM-AP-22-0063260</p>
+              <p className="text-[12px] text-[#A0A0A0]/60">Guntur, Andhra Pradesh, India</p>
+            </div>
+
+            <div className="space-y-2 pt-2">
+              <a href="mailto:hello@growxlabs.tech" className="flex items-center gap-2 text-[13px] text-[#A0A0A0] hover:text-white transition-colors justify-center md:justify-start">
+                <Mail size={12} /> hello@growxlabs.tech
+              </a>
+              <a href="tel:+919121600000" className="flex items-center gap-2 text-[13px] text-[#A0A0A0] hover:text-white transition-colors justify-center md:justify-start">
+                <Phone size={12} /> +91 91216 00000
+              </a>
+            </div>
+
             <div className="pt-4 flex flex-col space-y-3">
-              <div className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-white/20 justify-center md:justify-start">
-                <Shield size={12} className="text-white/40" />
+              <div className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-white/20 justify-center md:justify-start">
+                <Shield size={12} className="text-white/30" />
                 <span>HTTPS / TLS Encrypted</span>
               </div>
-              <div className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-white/20 justify-center md:justify-start">
-                <Lock size={12} className="text-white/40" />
+              <div className="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-white/20 justify-center md:justify-start">
+                <Lock size={12} className="text-white/30" />
                 <span>Secure Data Handling</span>
               </div>
             </div>
@@ -62,43 +75,40 @@ export function Footer() {
 
           {/* Nav groups */}
           <div>
-            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-8">Capabilities</h4>
+            <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.2em] mb-8">Capabilities</h4>
             <ul className="space-y-4">
               {links.services.map(l => (
-                <li key={l.name}><Link href={l.href} className="text-white/40 hover:text-white text-sm font-light transition-all">{l.name}</Link></li>
+                <li key={l.name}><Link href={l.href} className="text-[#A0A0A0] hover:text-white text-sm transition-colors">{l.name}</Link></li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-8">Legal & Policy</h4>
+            <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.2em] mb-8">Legal & Policy</h4>
             <ul className="space-y-4">
               {links.legal.map(l => (
-                <li key={l.name}><Link href={l.href} className="text-white/40 hover:text-white text-sm font-light transition-all">{l.name}</Link></li>
+                <li key={l.name}><Link href={l.href} className="text-[#A0A0A0] hover:text-white text-sm transition-colors">{l.name}</Link></li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-8">Operational</h4>
+            <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.2em] mb-8">Operational</h4>
             <ul className="space-y-4">
               {links.operational.map(l => (
-                <li key={l.name}><Link href={l.href} className="text-white/40 hover:text-white text-sm font-light transition-all">{l.name}</Link></li>
+                <li key={l.name}><Link href={l.href} className="text-[#A0A0A0] hover:text-white text-sm transition-colors">{l.name}</Link></li>
               ))}
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center space-x-6">
-            <p className="text-white/20 text-[11px] font-bold uppercase tracking-widest">
-              © {new Date().getFullYear()} GrowX Labs {t("jurisdiction")}
-            </p>
-          </div>
-          <div className="flex items-center space-x-6 text-[11px] font-bold uppercase tracking-widest">
-            <span className="text-white/20">Jurisdiction</span>
-            <span className="text-white/60">{t("location")}</span>
-          </div>
+        <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-white/20 text-[11px] font-semibold uppercase tracking-widest">
+            © 2026 GrowX Labs. All rights reserved.
+          </p>
+          <p className="text-white/20 text-[11px] font-semibold uppercase tracking-widest">
+            Guntur, Andhra Pradesh, India
+          </p>
         </div>
       </div>
     </footer>

@@ -54,7 +54,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-black text-white flex overflow-hidden relative">
+    <div className="min-h-screen bg-black text-white flex overflow-hidden relative print:bg-white print:text-black print:block print:overflow-visible">
       {/* 
           Z-INDEX STRATEGY:
           AdminNav: z-[200]
@@ -63,19 +63,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       */}
 
       {/* PERSISTENT SIDEBAR */}
-      <AdminNav isCollapsed={isCollapsed} onToggle={() => setIsCollapsed(!isCollapsed)} />
+      <div className="print:hidden">
+        <AdminNav isCollapsed={isCollapsed} onToggle={() => setIsCollapsed(!isCollapsed)} />
+      </div>
       
       {/* SCROLLABLE MAIN CONTENT AREA */}
       <main className={cn(
-        "flex-1 min-h-screen overflow-y-auto relative custom-scrollbar transition-all duration-500 ease-in-out bg-black z-10",
+        "flex-1 min-h-screen overflow-y-auto relative custom-scrollbar transition-all duration-500 ease-in-out bg-black z-10 print:ml-0 print:bg-transparent print:overflow-visible print:min-h-0",
         isCollapsed ? "ml-20" : "ml-64"
       )}>
          {/* Internal Spacing: Removed excessive pt-24, using simple p-10/14 */}
-         <div className="p-10 lg:p-14 max-w-[1600px] mx-auto space-y-12">
+         <div className="p-10 lg:p-14 max-w-[1600px] mx-auto space-y-12 print:p-0 print:m-0 print:space-y-0 print:max-w-none">
            {children}
          </div>
 
-         <footer className="mt-20 border-t border-white/5 p-10 text-center opacity-30">
+         <footer className="mt-20 border-t border-white/5 p-10 text-center opacity-30 print:hidden">
             <p className="text-[10px] font-black uppercase tracking-[0.5em] italic">GrowX Labs · Administrative Suite · 2026</p>
          </footer>
       </main>

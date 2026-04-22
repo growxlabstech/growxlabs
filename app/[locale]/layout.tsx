@@ -5,6 +5,7 @@ import { GlobalBackground } from "@/components/layout/GlobalBackground";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
+import { LocaleRedirect } from "@/components/layout/LocaleRedirect";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import "../globals.css";
 import { locales } from "@/navigation";
@@ -27,18 +28,19 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     metadataBase: new URL('https://growxlabs.tech'),
     title: {
-      default: "GrowX Labs | Web Development & Automation Agency",
+      default: "GrowX Labs — AI-Native Digital Agency",
       template: "%s | GrowX Labs"
     },
-    description: "We build websites and automation systems that grow your business. High-performance, scalable solutions for modern enterprises.",
+    description: "We build AI-powered websites, automation systems, and full-stack products that help businesses grow faster. Based in India, serving globally.",
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `https://growxlabs.tech/${locale}`,
       languages
     },
     openGraph: {
       url: `https://growxlabs.tech/${locale}/`,
       siteName: 'GrowX Labs',
       type: 'website',
+      images: [{ url: 'https://growxlabs.tech/og-image.png', width: 1200, height: 630 }],
     },
     icons: {
       icon: "/logo-symbol.svg",
@@ -65,6 +67,7 @@ export default async function LocaleLayout({
             <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
               <GlobalBackground />
               
+              <LocaleRedirect />
               <ConditionalLayout>
                 {children}
               </ConditionalLayout>

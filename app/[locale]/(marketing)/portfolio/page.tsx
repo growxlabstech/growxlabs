@@ -3,59 +3,57 @@
 import { motion } from "framer-motion";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { projects } from "@/lib/data/projects";
+import { Link } from "@/navigation";
+import { Button } from "@/components/ui/Button";
 
 export default function PortfolioPage() {
   return (
     <div className="pt-32 pb-24 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 md:px-16 relative z-10">
         <div className="text-center mb-20">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center px-4 py-1.5 rounded-full glass mb-6 border border-white/10"
+            className="mb-4"
           >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-              Success Stories
+            <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B]">
+              Our Work
             </span>
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter"
+            className="text-[48px] md:text-[72px] font-bold text-white mb-8 tracking-tight"
           >
             Engineering <br />
             <span className="text-gradient">Real Results.</span>
           </motion.h1>
-          <p className="text-xl text-white/40 max-w-2xl mx-auto leading-relaxed font-light">
-            Explore how we transform complex business challenges into 
-            high-performance digital solutions through engineering and automation.
+          <p className="text-[18px] text-[#A0A0A0] max-w-[560px] mx-auto leading-[1.7]">
+            Every project listed here is live, serving real users, and built by our team.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <ProjectCard 
               key={index} 
-              {...project} 
-              href={`/portfolio/${project.slug}`}
+              {...project}
             />
           ))}
         </div>
 
-        {/* Dynamic CTA */}
-        <div className="mt-40 text-center glass p-16 md:p-24 rounded-[3rem] border-white/5 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[100px] -z-10" />
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tighter">Ready to be our next success story?</h2>
-          <p className="text-white/40 mb-12 max-w-2xl mx-auto text-lg leading-relaxed">
-            We partner with ambitious companies to build the future of digital commerce and automation.
+        {/* CTA */}
+        <div className="mt-24 text-center p-12 md:p-16 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#00A86B]/10 rounded-full blur-[100px] -z-10" />
+          <h2 className="text-[36px] md:text-[48px] font-bold text-white mb-6 tracking-tight">Ready to be our next success story?</h2>
+          <p className="text-[#A0A0A0] mb-10 max-w-[520px] mx-auto text-base leading-relaxed">
+            We partner with ambitious businesses to build AI-powered digital systems that drive real growth.
           </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-12 py-5 bg-white text-black rounded-full font-black text-lg shadow-2xl hover:bg-primary hover:text-white transition-colors"
-          >
-            Let&apos;s Build Together
-          </motion.button>
+          <Link href="/contact">
+            <Button className="px-10 py-3 bg-[#00A86B] text-white rounded-full font-semibold text-base hover:bg-[#00A86B]/90 hover:scale-105 transition-all shadow-none h-12">
+              Start Your Project →
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
