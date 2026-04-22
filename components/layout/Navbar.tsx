@@ -63,7 +63,7 @@ export function Navbar() {
             : "bg-transparent border-b border-transparent"
         )}
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-6 md:px-10 xl:px-16 2xl:px-24">
           <div className="flex justify-between items-center">
             <Link href="/" className="flex items-center group">
               <div className="relative h-12 w-48 transition-transform group-hover:scale-[1.02] duration-300">

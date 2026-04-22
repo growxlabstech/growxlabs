@@ -26,9 +26,9 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t border-white/5 bg-black pt-24 pb-12">
-      <div className="max-w-6xl mx-auto px-6 md:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20 text-center md:text-left">
+    <footer className="w-full border-t border-white/5 bg-black pt-24 pb-12 px-6 md:px-12 xl:px-20 2xl:px-32">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-20 text-center md:text-left">
           {/* Brand Column */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center justify-center md:justify-start group">
@@ -102,7 +102,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-white/20 text-[11px] font-semibold uppercase tracking-widest">
             © 2026 GrowX Labs. All rights reserved.
           </p>

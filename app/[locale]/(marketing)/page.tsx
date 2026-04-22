@@ -40,8 +40,8 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6 md:px-16 text-center relative z-10">
+      <section className="w-full relative min-h-[90vh] flex items-center justify-center overflow-hidden px-6 md:px-10 xl:px-16 2xl:px-24">
+        <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto text-center relative z-10 w-full">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -55,8 +55,8 @@ export default function Home() {
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-white font-bold mb-10 leading-[1.1] max-w-[800px] mx-auto"
-            style={{ fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 700 }}
+            className="text-white font-bold mb-10 leading-[1.1] max-w-[1100px] mx-auto"
+            style={{ fontSize: "clamp(48px, 6vw, 96px)", fontWeight: 700 }}
           >
             Digital Systems That Drive Growth.
           </motion.h1>
@@ -93,19 +93,19 @@ export default function Home() {
       </section>
 
       {/* Services / Core Capabilities Section */}
-      <section className="py-24 px-6 md:px-16 relative">
-        <div className="max-w-6xl mx-auto">
+      <section className="w-full py-24 px-6 md:px-10 xl:px-16 2xl:px-24 relative">
+        <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
           <div className="text-center mb-16">
             <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B] mb-4 block">
               WHAT WE BUILD
             </span>
-            <h2 className="text-[48px] font-bold text-white mb-6 tracking-tight">Core Capabilities</h2>
-            <p className="text-[#A0A0A0] max-w-[560px] mx-auto text-base leading-relaxed">
+            <h2 className="text-[clamp(32px,5vw,48px)] font-bold text-white mb-6 tracking-tight">Core Capabilities</h2>
+            <p className="text-[#A0A0A0] max-w-[640px] mx-auto text-lg leading-relaxed">
               Direct results-oriented technical solutions for businesses that prioritize speed and reliability.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
             {mainServices.map((service, index) => (
               <ServiceCard key={index} {...service} />
             ))}
@@ -114,15 +114,15 @@ export default function Home() {
       </section>
 
       {/* Portfolio Segment */}
-      <section className="py-24 px-6 md:px-16">
-        <div className="max-w-6xl mx-auto">
+      <section className="w-full py-24 px-6 md:px-10 xl:px-16 2xl:px-24">
+        <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
           <div className="text-center mb-16">
             <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B] mb-4 block">
               OUR WORK
             </span>
-            <h2 className="text-[48px] font-bold text-white mb-6 tracking-tight">Case Studies</h2>
+            <h2 className="text-[clamp(32px,5vw,48px)] font-bold text-white mb-6 tracking-tight">Case Studies</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {projects.slice(0, 3).map((project, index) => (
               <ProjectCard key={index} {...project} />
             ))}
@@ -131,24 +131,24 @@ export default function Home() {
       </section>
 
       {/* CTA Section — Replacing Testimonials */}
-      <section className="py-24 px-6 md:px-16">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-[36px] md:text-[48px] font-bold text-white mb-6 tracking-tight">
+      <section className="w-full py-24 px-6 md:px-10 xl:px-16 2xl:px-24">
+        <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto text-center">
+          <h2 className="text-[clamp(28px,5vw,48px)] font-bold text-white mb-6 tracking-tight">
             Currently Onboarding First Clients
           </h2>
-          <p className="text-[#A0A0A0] max-w-[560px] mx-auto text-base leading-relaxed mb-12">
+          <p className="text-[#A0A0A0] max-w-[640px] mx-auto text-lg leading-relaxed mb-12">
             Be among the first businesses to experience AI-powered digital growth with GrowX Labs.
           </p>
           
-          <div className="max-w-lg mx-auto p-8 rounded-2xl border border-[#00A86B]/30 bg-[rgba(255,255,255,0.03)]">
-            <p className="text-white text-lg font-medium mb-2">
+          <div className="max-w-xl mx-auto p-10 rounded-2xl border border-[#00A86B]/30 bg-[rgba(255,255,255,0.03)] shadow-2xl backdrop-blur-sm">
+            <p className="text-white text-xl font-medium mb-3">
               Want to be our first featured client?
             </p>
-            <p className="text-[#A0A0A0] text-sm mb-8">
+            <p className="text-[#A0A0A0] text-base mb-10">
               Your project becomes our showcase.
             </p>
             <Link href="/contact">
-              <Button className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90 rounded-full px-8 py-3 h-12 font-semibold shadow-none">
+              <Button className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90 rounded-full px-10 py-4 h-14 text-lg font-semibold shadow-none transition-all hover:scale-105">
                 Start Your Project Today →
               </Button>
             </Link>

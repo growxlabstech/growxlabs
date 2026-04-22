@@ -35,39 +35,39 @@ export default function TermsPage() {
   ];
 
   return (
-    <div className="pt-32 pb-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="pt-32 pb-24 px-6 md:px-10 xl:px-16 2xl:px-24 w-full">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16"
+          className="mb-16 text-center lg:text-left"
         >
-          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8">
+          <h1 className="text-[clamp(40px,7vw,72px)] font-black text-white tracking-tighter mb-8 leading-[1.1]">
             Terms of <span className="text-gradient">Service.</span>
           </h1>
-          <p className="text-xl text-white/40 font-light leading-relaxed">
+          <p className="text-xl text-white/40 font-light leading-relaxed max-w-2xl">
             Legal framework governing the engineering and operational standards of GrowX Labs.
           </p>
         </motion.div>
 
-        <div className="space-y-12">
+        <div className="space-y-10 max-w-4xl mx-auto lg:mx-0">
           {sections.map((section, index) => (
             <motion.section
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="glass p-8 md:p-12 rounded-[2rem] border-white/5"
+              className="glass p-8 md:p-12 rounded-[2rem] border-white/5 shadow-2xl backdrop-blur-sm transition-all hover:border-white/10"
             >
-              <h2 className="text-2xl font-bold text-white mb-6 tracking-tight">{section.title}</h2>
-              <p className="text-white/50 leading-relaxed font-light text-lg">
+              <h2 className="text-3xl font-bold text-white mb-6 tracking-tight">{section.title}</h2>
+              <p className="text-white/50 leading-relaxed font-medium text-lg">
                 {section.content}
               </p>
             </motion.section>
           ))}
         </div>
 
-        <div className="mt-20 text-center text-white/20 text-[10px] font-black uppercase tracking-[0.4em]">
+        <div className="mt-20 text-center lg:text-left text-white/20 text-[11px] font-black uppercase tracking-[0.4em]">
           Last Updated: April 2026 • GrowX Labs
         </div>
       </div>

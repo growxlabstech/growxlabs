@@ -5,22 +5,22 @@ import { AlertCircle, CheckCircle, Clock } from "lucide-react";
 
 export default function RefundPage() {
   return (
-    <div className="pt-32 pb-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="pt-32 pb-24 px-6 md:px-10 xl:px-16 2xl:px-24 w-full">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16"
+          className="mb-16 text-center lg:text-left"
         >
-          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8 lowercase">
+          <h1 className="text-[clamp(40px,7vw,72px)] font-black text-white tracking-tighter mb-8 leading-[1.1] lowercase">
             Refund <span className="text-gradient">Policy.</span>
           </h1>
-          <p className="text-xl text-white/40 font-light leading-relaxed">
+          <p className="text-xl text-white/40 font-light leading-relaxed max-w-2xl">
             Transparent financial protocols for cancellations and project terminations.
           </p>
         </motion.div>
 
-        <div className="space-y-8 mb-20">
+        <div className="space-y-8 mb-20 max-w-4xl mx-auto lg:mx-0">
           <PolicyCard 
             icon={<CheckCircle className="text-white" />} 
             title="Full Refund" 
@@ -38,9 +38,9 @@ export default function RefundPage() {
           />
         </div>
 
-        <section className="glass p-12 rounded-[3rem] border-white/5">
-          <h2 className="text-3xl font-black text-white mb-8 tracking-tighter underline decoration-white/10 underline-offset-8">The Process</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white/50 font-light text-lg">
+        <section className="glass p-12 rounded-[3rem] border-white/5 mb-20 max-w-4xl mx-auto lg:mx-0 shadow-2xl backdrop-blur-sm">
+          <h2 className="text-[clamp(28px,5vw,36px)] font-black text-white mb-8 tracking-tighter underline decoration-white/10 underline-offset-8">The Process</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white/50 font-medium text-lg">
             <p>
               To initiate a refund, please email <span className="text-white font-bold">hello@growxlabs.tech</span> with your project ID and reason for cancellation.
             </p>

@@ -96,8 +96,8 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="pt-32 pb-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="pt-32 pb-24 px-6 md:px-10 xl:px-16 2xl:px-24 w-full">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
         
         {/* Header */}
         <div className="text-center mb-20">
@@ -111,7 +111,7 @@ export default function PricingPage() {
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-black text-white mt-4 mb-6 tracking-tighter"
+            className="text-[clamp(40px,7vw,72px)] font-black text-white mt-4 mb-6 tracking-tighter leading-[1.1]"
           >
             Simple, Honest Pricing
           </motion.h1>
@@ -119,24 +119,25 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-white/40 max-w-2xl mx-auto font-medium"
+            className="text-xl text-white/40 max-w-[720px] mx-auto font-medium"
           >
             Current Currency: <span className="text-primary">{currencyInfo.code} ({currencyInfo.symbol})</span>
           </motion.p>
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-12 mb-32">
           {PRICING_PLANS.map((plan, i) => (
             <motion.div
               key={plan.name}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
+              className="h-full"
             >
               <Card className={cn(
-                "p-10 h-full flex flex-col relative overflow-hidden transition-all duration-500 hover:scale-[1.02] border-white/10",
-                plan.popular ? "bg-white/[0.04] border-primary/50 shadow-2xl shadow-primary/5" : "bg-white/[0.02]"
+                "p-10 h-full flex flex-col relative overflow-hidden transition-all duration-500 hover:scale-[1.02] border-white/10 shadow-2xl",
+                plan.popular ? "bg-white/[0.04] border-primary/50 shadow-primary/5" : "bg-white/[0.02]"
               )}>
                  {plan.popular && (
                     <div className="absolute top-0 right-0 py-2 px-6 bg-primary text-white font-black uppercase text-[8px] tracking-[0.3em] rounded-bl-2xl">
@@ -146,12 +147,12 @@ export default function PricingPage() {
                  <div className={cn("absolute -top-24 -right-24 w-64 h-64 rounded-full blur-[100px] -z-10 bg-gradient-to-br", plan.color)} />
                  
                  <div className="mb-10">
-                    <h3 className="text-2xl font-black text-white italic tracking-tighter mb-2">{plan.name}</h3>
-                    <p className="text-sm text-white/40 font-medium leading-relaxed mb-8">{plan.description}</p>
-                    <div className="text-4xl font-black text-white tracking-tighter mb-1">
+                    <h3 className="text-3xl font-black text-white italic tracking-tighter mb-2">{plan.name}</h3>
+                    <p className="text-base text-white/40 font-medium leading-relaxed mb-8">{plan.description}</p>
+                    <div className="text-5xl font-black text-white tracking-tighter mb-1">
                        {getPlanPrice(plan.prices)}
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/60">
+                    <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-primary/60">
                        <Clock size={12} />
                        Delivery: {plan.timeline}
                     </div>
@@ -159,19 +160,19 @@ export default function PricingPage() {
 
                  <ul className="space-y-4 mb-12 flex-grow">
                     {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-3">
+                      <li key={idx} className="flex items-start gap-4">
                          <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
                             <Check className="text-primary" size={12} />
                          </div>
-                         <span className="text-sm font-medium text-white/60">{feature}</span>
+                         <span className="text-base font-medium text-white/50">{feature}</span>
                       </li>
                     ))}
                  </ul>
 
-                 <Link href="/contact">
+                 <Link href="/contact" className="mt-auto">
                    <Button 
                      className={cn(
-                       "w-full h-14 rounded-2xl font-black uppercase text-[10px] tracking-widest",
+                       "w-full h-14 rounded-2xl font-black uppercase text-[11px] tracking-widest",
                        plan.popular ? "bg-primary text-white hover:bg-primary/90" : "bg-white text-black hover:bg-white/90"
                      )}
                    >
@@ -182,8 +183,6 @@ export default function PricingPage() {
             </motion.div>
           ))}
         </div>
-
-        {/* ... Rest of components preserved ... */}
       </div>
     </div>
   );
