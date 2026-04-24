@@ -1,11 +1,9 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Check, Calendar, FileText, Rocket, ArrowRight, MessageSquare } from "lucide-react";
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/marketing/Reveal";
 
 const VALUE_TRACKS = [
   {
@@ -70,6 +68,16 @@ const PRICING_PROCESS = [
   }
 ];
 
+export async function generateMetadata() {
+  return {
+    title: "Pricing | GrowX Labs",
+    description: "Transparent, value-based pricing for our AI-powered digital engineering services. No hidden costs, just results.",
+    alternates: {
+      canonical: "https://growxlabs.tech/pricing",
+    }
+  };
+}
+
 export default function PricingPage() {
   return (
     <div className="pt-32 pb-24 px-6 md:px-10 xl:px-16 2xl:px-24 w-full">
@@ -77,38 +85,29 @@ export default function PricingPage() {
 
         {/* Header */}
         <div className="text-center mb-20">
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-primary font-black uppercase tracking-[0.4em] text-xs"
-          >
-            HOW WE WORK
-          </motion.span>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-[clamp(40px,7vw,72px)] font-black text-white mt-4 mb-6 tracking-tighter leading-[1.1]"
-          >
-            We Build Systems That <br className="hidden md:block" /> Grow Your Business.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-xl text-white/40 max-w-[720px] mx-auto font-medium"
-          >
-            Every project starts with understanding your exact problem. We do not sell packages. We solve problems. Pricing depends on scope, timeline, and what you actually need.
-          </motion.p>
+          <Reveal>
+            <span className="text-primary font-black uppercase tracking-[0.4em] text-xs">
+              HOW WE WORK
+            </span>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h1 className="text-[clamp(40px,7vw,72px)] font-black text-white mt-4 mb-6 tracking-tighter leading-[1.1]">
+              We Build Systems That <br className="hidden md:block" /> Grow Your Business.
+            </h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="text-xl text-white/40 max-w-[720px] mx-auto font-medium">
+              Every project starts with understanding your exact problem. We do not sell packages. We solve problems. Pricing depends on scope, timeline, and what you actually need.
+            </p>
+          </Reveal>
         </div>
 
         {/* Value Tracks Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-12 mb-32">
           {VALUE_TRACKS.map((track, i) => (
-            <motion.div
+            <Reveal
               key={track.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
+              delay={i * 0.1}
               className="h-full"
             >
               <Card className={cn(
@@ -150,7 +149,7 @@ export default function PricingPage() {
                   </Button>
                 </Link>
               </Card>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
 
@@ -162,34 +161,28 @@ export default function PricingPage() {
 
            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {PRICING_PROCESS.map((point, i) => (
-                <motion.div
+                <Reveal
                   key={i}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  className="bg-[#0A0A0A] border border-white/5 p-10 rounded-[40px] space-y-6 hover:border-primary/20 transition-all duration-500"
+                  delay={i * 0.1}
+                  scale={0.95}
+                  className="bg-[#0A0A0A] border border-white/5 p-10 rounded-[40px] space-y-6 hover:border-primary/20 transition-all duration-500 h-full"
                 >
                    <div className="p-4 bg-primary/10 rounded-2xl w-fit">
                       <point.icon className="text-primary" size={24} />
                    </div>
                    <h4 className="text-xl font-bold text-white tracking-tight italic">{point.title}</h4>
                    <p className="text-white/40 text-sm font-medium leading-relaxed">{point.text}</p>
-                </motion.div>
+                </Reveal>
               ))}
            </div>
         </div>
 
         {/* Final CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative group lg:pt-10"
-        >
+        <Reveal y={40} className="relative group lg:pt-10">
            <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-1000" />
            <div className="relative bg-[#0A0A0A] border-2 border-primary/20 rounded-[56px] p-12 md:p-20 text-center space-y-10 overflow-hidden">
               <div className="absolute top-0 right-0 p-20 opacity-[0.03]">
-                 <MessageSquare size={300} />
+                 <MessageSquare size={300} aria-hidden="true" />
               </div>
               
               <div className="space-y-6 relative z-10">
@@ -211,7 +204,7 @@ export default function PricingPage() {
                  </p>
               </div>
            </div>
-        </motion.div>
+        </Reveal>
 
       </div>
     </div>

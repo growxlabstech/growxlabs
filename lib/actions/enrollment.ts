@@ -1,31 +1,36 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 
 export async function enrollInCourse(courseId: string, firstLessonUrl: string) {
-  const supabase = await createClient();
+  const session = await getServerSession(authOptions);
+  const locale = await getLocale();
 
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/auth/login");
+  if (!session?.user) {
+    // Redirect to login with the correct locale
+    redirect(`/${locale}/login`);
   }
 
+  const userId = (session.user as any).id;
+
   // Check if already enrolled
-  const { data: existing } = await supabase
+  const { data: existing } = await supabaseAdmin
     .from("enrollments")
     .select("id")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .eq("course_id", courseId)
     .single();
 
   if (!existing) {
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from("enrollments")
       .insert({
-        user_id: user.id,
+        user_id: userId,
         course_id: courseId,
         status: "active"
       });
@@ -37,5 +42,6 @@ export async function enrollInCourse(courseId: string, firstLessonUrl: string) {
   }
 
   revalidatePath("/dashboard");
+  // The firstLessonUrl already contains the locale prefix if constructed in the component
   redirect(firstLessonUrl);
 }

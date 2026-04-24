@@ -1,39 +1,31 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { ServiceCard } from "@/components/ui/ServiceCard";
-import {
-  Code,
-  Settings,
-  TrendingUp,
-  Server,
-} from "lucide-react";
 import { Link } from "@/navigation";
 import { projects } from "@/lib/data/projects";
 import { ProjectCard } from "@/components/ui/ProjectCard";
+import { Reveal } from "@/components/marketing/Reveal";
 
 export default function Home() {
   const mainServices = [
     {
       title: "Web Engineering",
       description: "We build high-performance digital platforms that turn visitors into customers at scale.",
-      icon: Code,
+      iconName: "code",
     },
     {
       title: "AI & Automation",
       description: "Custom AI workflows and automation systems that eliminate manual overhead and speed up your growth.",
-      icon: Settings,
+      iconName: "settings",
     },
     {
       title: "Technical SEO",
       description: "Dominant search visibility engineered to capture high-intent organic traffic and drive revenue.",
-      icon: TrendingUp,
+      iconName: "trending",
     },
     {
       title: "Cloud Infrastructure",
       description: "Secure, scalable hosting and maintenance designed for 100% reliability and business continuity.",
-      icon: Server,
+      iconName: "server",
     },
   ];
 
@@ -42,44 +34,28 @@ export default function Home() {
       {/* Hero Section */}
       <section className="w-full relative min-h-[90vh] flex items-center justify-center overflow-hidden px-6 md:px-10 xl:px-16 2xl:px-24">
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto text-center relative z-10 w-full">
-          <motion.div
-            whileInView={{ opacity: 1, scale: 1 }}
-            initial={{ opacity: 0, scale: 0.9 }}
-            viewport={{ once: true }}
-            className="mb-8"
-          >
+          <Reveal scale={0.9} className="mb-8">
             <span className="text-[12px] font-semibold uppercase tracking-[0.15em] text-[#00A86B]">
               AI Native Digital Agency
             </span>
-          </motion.div>
+          </Reveal>
           
-          <motion.h1 
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            viewport={{ once: true }}
-            className="text-white font-bold mb-10 leading-[1.1] max-w-[1100px] mx-auto"
-            style={{ fontSize: "clamp(48px, 6vw, 96px)", fontWeight: 700 }}
-          >
-            Digital Systems That Drive Growth.
-          </motion.h1>
+          <Reveal y={20}>
+            <h1 
+              className="text-white font-bold mb-10 leading-[1.1] max-w-[1100px] mx-auto"
+              style={{ fontSize: "clamp(48px, 6vw, 96px)", fontWeight: 700 }}
+            >
+              Digital Systems That Drive Growth.
+            </h1>
+          </Reveal>
           
-          <motion.p 
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-[18px] text-[#A0A0A0] max-w-[520px] mx-auto mb-14 leading-[1.7]"
-          >
-            We build high performance websites and automation systems that help businesses grow faster.
-          </motion.p>
+          <Reveal y={20} delay={0.1}>
+            <p className="text-[18px] text-[#A0A0A0] max-w-[520px] mx-auto mb-14 leading-[1.7]">
+              We build high performance websites and automation systems that help businesses grow faster.
+            </p>
+          </Reveal>
           
-          <motion.div 
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col sm:flex-row justify-center gap-4"
-          >
+          <Reveal y={20} delay={0.2} className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/contact">
               <Button size="lg" className="h-12 px-8 py-3 text-base rounded-full font-semibold bg-[#00A86B] text-white hover:bg-[#00A86B]/90 transition-all shadow-none">
                 Start Your Project Today
@@ -90,7 +66,7 @@ export default function Home() {
                 View Portfolio
               </Button>
             </Link>
-          </motion.div>
+          </Reveal>
         </div>
         
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[500px] bg-[#00A86B]/[0.04] blur-[150px] -z-10 rounded-full" />

@@ -108,8 +108,9 @@ export function Navbar() {
                     onClick={() => signOut({ callbackUrl: "/" })}
                     className="text-[#A0A0A0] hover:text-red-400 transition-colors p-2 rounded-full hover:bg-white/5"
                     title="Sign Out"
+                    aria-label="Sign Out"
                   >
-                    <LogOut className="h-5 w-5" />
+                    <LogOut className="h-5 w-5" aria-hidden="true" />
                   </button>
                 )}
               </div>
@@ -120,8 +121,10 @@ export function Navbar() {
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="p-2 text-[#A0A0A0] hover:text-white z-[60]"
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMobileMenuOpen}
               >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {isMobileMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
               </button>
             </div>
           </div>

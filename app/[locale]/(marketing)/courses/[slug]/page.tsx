@@ -23,7 +23,8 @@ export default function CourseDetailsPage() {
   const handleEnroll = async () => {
     setIsLoading(true);
     try {
-      const firstLesson = `/learn/${course.slug}/${course.modules[0].slug}/${course.modules[0].lessons[0].slug}`;
+      const locale = params.locale as string;
+      const firstLesson = `/${locale}/learn/${course.slug}/${course.modules[0].slug}/${course.modules[0].lessons[0].slug}`;
       await enrollInCourse(course.id, firstLesson);
     } catch (error) {
       console.error(error);
