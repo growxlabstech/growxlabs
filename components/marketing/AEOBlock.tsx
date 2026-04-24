@@ -41,26 +41,28 @@ export function AEOBlock({
 
           {/* Direct Answer */}
           <div className="pl-14">
-            <p className="text-lg md:text-xl text-white font-medium italic border-l-2 border-[#00A86B] pl-6 py-1">
-              "{answer}"
-            </p>
+            <div className="relative">
+              <p className="text-lg md:text-xl text-white font-bold leading-relaxed border-l-4 border-[#00A86B] pl-6 py-2 bg-white/[0.01] rounded-r-xl">
+                {answer}
+              </p>
+            </div>
           </div>
 
           {/* Explanation & Example */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pl-14 pt-2">
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-[#00A86B] font-bold text-xs uppercase tracking-widest">
-                <Lightbulb className="w-4 h-4" /> Explanation
+              <div className="flex items-center gap-2 text-[#00A86B] font-bold text-[10px] uppercase tracking-[0.2em]">
+                <Lightbulb className="w-3.5 h-3.5" /> Explanation
               </div>
-              <p className="text-[#A0A0A0] leading-relaxed">
+              <p className="text-[#A0A0A0] text-[15px] leading-relaxed">
                 {explanation}
               </p>
             </div>
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-[#00A86B] font-bold text-xs uppercase tracking-widest">
-                <PlayCircle className="w-4 h-4" /> Real-world Example
+              <div className="flex items-center gap-2 text-[#00A86B] font-bold text-[10px] uppercase tracking-[0.2em]">
+                <PlayCircle className="w-3.5 h-3.5" /> Real-world Example
               </div>
-              <p className="text-[#A0A0A0] leading-relaxed italic">
+              <p className="text-[#A0A0A0] text-[15px] leading-relaxed">
                 {example}
               </p>
             </div>
