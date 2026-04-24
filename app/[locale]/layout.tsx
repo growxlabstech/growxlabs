@@ -27,7 +27,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const languages: Record<string, string> = {
     'x-default': 'https://growxlabs.tech/en-IN',
-    'en': 'https://growxlabs.tech/en-IN',
   };
   locales.forEach((l) => {
     languages[l] = `https://growxlabs.tech/${l}`;
@@ -41,11 +40,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     },
     description: "We build AI-powered websites, automation systems, and full-stack products that help businesses grow faster. Based in India, serving globally.",
     alternates: {
-      canonical: `https://growxlabs.tech/${locale}`,
+      canonical: `https://growxlabs.tech/en-IN`,
       languages
     },
     openGraph: {
-      url: `https://growxlabs.tech/${locale}/`,
+      url: `https://growxlabs.tech/en-IN/`,
       siteName: 'GrowX Labs',
       type: 'website',
       images: [{ url: 'https://growxlabs.tech/og-image.png', width: 1200, height: 630 }],

@@ -13,7 +13,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const languages: Record<string, string> = {
     'x-default': 'https://growxlabs.tech/en-IN',
-    'en': 'https://growxlabs.tech/en-IN',
   };
   locales.forEach((l) => {
     languages[l] = `https://growxlabs.tech/${l}`;
@@ -21,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   return {
     alternates: {
-      canonical: `https://growxlabs.tech/${locale}`,
+      canonical: "https://growxlabs.tech/en-IN",
       languages
     }
   };

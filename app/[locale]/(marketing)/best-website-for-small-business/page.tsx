@@ -10,7 +10,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const languages: Record<string, string> = {
     'x-default': `https://growxlabs.tech/en-IN/${path}`,
-    'en': `https://growxlabs.tech/en-IN/${path}`,
   };
   locales.forEach((l) => {
     languages[l] = `https://growxlabs.tech/${l}/${path}`;
@@ -20,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: "The Best Website for Small Business in 2026 | GrowX Labs",
     description: "Discover the essential features of a high-converting small business website. Learn why automation and performance are the keys to outcompeting local rivals.",
     alternates: {
-      canonical: `https://growxlabs.tech/${locale}/${path}`,
+      canonical: `https://growxlabs.tech/en-IN/${path}`,
       languages
     }
   };

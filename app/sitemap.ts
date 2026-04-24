@@ -2,9 +2,6 @@ import { MetadataRoute } from 'next';
 
 const baseUrl = 'https://growxlabs.tech';
 
-// Only these locales will appear as main entries in the sitemap
-const priorityLocales = ['en-IN'];
-
 const marketingRoutes = [
   { path: '', priority: 1.0, changefreq: 'daily' as const },
   { path: '/services', priority: 0.9, changefreq: 'weekly' as const },
@@ -16,33 +13,16 @@ const marketingRoutes = [
   { path: '/terms', priority: 0.5, changefreq: 'monthly' as const },
   { path: '/privacy', priority: 0.5, changefreq: 'monthly' as const },
   { path: '/refund-policy', priority: 0.5, changefreq: 'monthly' as const },
+  { path: '/how-to-get-clients-from-website', priority: 0.9, changefreq: 'weekly' as const },
+  { path: '/website-vs-growth-system', priority: 0.9, changefreq: 'weekly' as const },
+  { path: '/best-website-for-small-business', priority: 0.9, changefreq: 'weekly' as const },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const sitemapEntries: MetadataRoute.Sitemap = [];
-
-  marketingRoutes.forEach((route) => {
-    priorityLocales.forEach((locale) => {
-      const url = `${baseUrl}/${locale}${route.path}`;
-      
-      sitemapEntries.push({
-        url,
-        lastModified: new Date(),
-        changeFrequency: route.changefreq,
-        priority: route.priority,
-        alternates: {
-          languages: {
-            // Mapping specific locales to their localized URLs
-            'en-IN': `${baseUrl}/en-IN${route.path}`,
-            'en-US': `${baseUrl}/en-US${route.path}`,
-            // Add a general 'en' alternate pointing to the primary en-IN
-            'en': `${baseUrl}/en-IN${route.path}`,
-            'x-default': `${baseUrl}/en-IN${route.path}`,
-          },
-        },
-      });
-    });
-  });
-
-  return sitemapEntries;
+  return marketingRoutes.map((route) => ({
+    url: `${baseUrl}/en-IN${route.path}`,
+    lastModified: new Date(),
+    changeFrequency: route.changefreq,
+    priority: route.priority,
+  }));
 }

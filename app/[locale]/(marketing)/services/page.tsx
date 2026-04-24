@@ -83,7 +83,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   
   const languages: Record<string, string> = {
     'x-default': 'https://growxlabs.tech/en-IN/services',
-    'en': 'https://growxlabs.tech/en-IN/services',
   };
   locales.forEach((l) => {
     languages[l] = `https://growxlabs.tech/${l}/services`;
@@ -93,7 +92,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: "Our Services | GrowX Labs",
     description: "Explore our AI-powered web engineering, automation, and technical SEO services designed for high-growth businesses.",
     alternates: {
-      canonical: `https://growxlabs.tech/${locale}/services`,
+      canonical: "https://growxlabs.tech/en-IN/services",
       languages
     }
   };

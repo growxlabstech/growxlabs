@@ -23,48 +23,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. CRITICAL: Handle invalid/legacy or malformed locale segments
-  const segments = pathname.split('/').filter(Boolean);
-  const firstSegment = segments[0];
-
-  // Case-insensitive check for locales
-  const matchedLocale = locales.find(
-    l => l.toLowerCase() === firstSegment?.toLowerCase()
-  );
-
-  // If the path starts with 'en' (legacy) or a casing mismatch (e.g., /en-in/ instead of /en-IN/)
-  if (firstSegment?.toLowerCase() === 'en' || (firstSegment && matchedLocale && firstSegment !== matchedLocale)) {
-    const targetLocale = matchedLocale || 'en-IN';
-    const url = req.nextUrl.clone();
-    segments[0] = targetLocale;
-    url.pathname = '/' + segments.join('/');
-    return NextResponse.redirect(url, 302);
-  }
-
-  // 3. RBAC Check
-  const isAdminPath = pathname.match(/^\/(?:[a-z]{2}(?:-[A-Z]{2})?)\/admin/) || pathname.startsWith('/admin');
-  if (isAdminPath) {
-    const secret = process.env.NEXTAUTH_SECRET;
-    const token = await getToken({ req, secret });
-    if (!token || (token.role !== 'ADMIN' && token.role !== 'CO_ADMIN')) {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
-  }
-
-  // Detect Country for region-based redirects
-  const country = req.headers.get('x-vercel-ip-country') || 'IN';
-  
-  // Helper to determine target locale
-  const getTargetLocale = () => {
-    const cookieLocale = req.cookies.get('NEXT_LOCALE')?.value;
-    if (cookieLocale && locales.includes(cookieLocale as any)) return cookieLocale;
-    
-    // Map country to locale (en-US for US/CA/GB, otherwise fallback to en-IN)
-    if (['US', 'CA', 'GB'].includes(country)) return 'en-US';
-    return 'en-IN';
-  };
-
-  // 4. Identify Subdomain Target
+  // 2. Identify Subdomain Target
   const isProd = !hostname.includes('localhost') && !hostname.includes('.vercel.app');
   let subdomain = '';
   
@@ -76,8 +35,35 @@ export default async function middleware(req: NextRequest) {
     else if (hostname.startsWith('realestate.')) subdomain = 'realestate';
   }
 
+  // 3. Locale Detection & Redirect Logic
+  const segments = pathname.split('/').filter(Boolean);
+  const firstSegment = segments[0];
+
+  // Case-insensitive check for locales
+  const matchedLocale = locales.find(
+    l => l.toLowerCase() === firstSegment?.toLowerCase()
+  );
+
+  // If no valid locale found in path, redirect to default /en-IN
+  if (!matchedLocale && !subdomain) {
+    const url = req.nextUrl.clone();
+    // Handle legacy /en or other malformed starts
+    const cleanPath = pathname.replace(/^\/en(\/|$)/, '/');
+    url.pathname = `/en-IN${cleanPath === '/' ? '' : cleanPath}`;
+    return NextResponse.redirect(url, 302);
+  }
+
+  // If casing mismatch (e.g., /en-in/ instead of /en-IN/), redirect to canonical
+  if (firstSegment && matchedLocale && firstSegment !== matchedLocale && !subdomain) {
+    const url = req.nextUrl.clone();
+    segments[0] = matchedLocale;
+    url.pathname = '/' + segments.join('/');
+    return NextResponse.redirect(url, 302);
+  }
+
+  // 4. Handle Subdomain Mapping
   if (subdomain) {
-    const targetLocale = getTargetLocale();
+    const targetLocale = 'en-IN'; // Subdomains use primary locale
     const mapping: Record<string, string> = {
       admin: '/admin',
       client: '/client',
@@ -91,12 +77,15 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
-  // 5. SEO Protection: Force locale prefix for all main domain routes
-  if (!matchedLocale) {
-    const targetLocale = getTargetLocale();
-    const url = req.nextUrl.clone();
-    url.pathname = `/${targetLocale}${pathname === '/' ? '' : pathname}`;
-    return NextResponse.redirect(url, 302);
+  // 5. RBAC Check
+  const isAdminPath = pathname.includes('/admin');
+  if (isAdminPath) {
+    const secret = process.env.NEXTAUTH_SECRET;
+    const token = await getToken({ req, secret });
+    if (!token || (token.role !== 'ADMIN' && token.role !== 'CO_ADMIN')) {
+      const loginUrl = new URL(`/${matchedLocale || 'en-IN'}/login`, req.url);
+      return NextResponse.redirect(loginUrl);
+    }
   }
 
   return intlMiddleware(req);
