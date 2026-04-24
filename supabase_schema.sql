@@ -26,15 +26,12 @@ EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
--- 1. CLIENTS TABLE (AUTH/PROFILES)
--- Note: Reusing the 'clients' name for our partnership-level data
-CREATE TABLE IF NOT EXISTS clients (
+-- 1. USERS TABLE (AUTH/PROFILES)
+CREATE TABLE IF NOT EXISTS users (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name TEXT NOT NULL,
-    business_name TEXT,
     email TEXT UNIQUE NOT NULL,
-    phone TEXT,
-    password_hash TEXT NOT NULL,
+    password TEXT NOT NULL, -- Hashed with bcryptjs
     role user_role DEFAULT 'CLIENT',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -43,7 +40,7 @@ CREATE TABLE IF NOT EXISTS clients (
 -- 2. AGREEMENTS TABLE
 CREATE TABLE IF NOT EXISTS agreements (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    client_id UUID REFERENCES clients(id) ON DELETE CASCADE,
+    client_id UUID REFERENCES users(id) ON DELETE CASCADE,
     service_type TEXT NOT NULL,
     project_description TEXT,
     total_amount DECIMAL(12, 2) NOT NULL,
@@ -61,7 +58,7 @@ CREATE TABLE IF NOT EXISTS agreements (
 -- 3. INVOICES TABLE
 CREATE TABLE IF NOT EXISTS invoices (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    client_id UUID REFERENCES clients(id) ON DELETE CASCADE,
+    client_id UUID REFERENCES users(id) ON DELETE CASCADE,
     agreement_id UUID REFERENCES agreements(id) ON DELETE SET NULL,
     amount DECIMAL(12, 2) NOT NULL,
     advance_paid BOOLEAN DEFAULT FALSE,
@@ -78,7 +75,7 @@ CREATE TABLE IF NOT EXISTS invoices (
 -- 4. PROJECTS TABLE
 CREATE TABLE IF NOT EXISTS projects (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    client_id UUID REFERENCES clients(id) ON DELETE CASCADE,
+    client_id UUID REFERENCES users(id) ON DELETE CASCADE,
     title TEXT NOT NULL,
     status TEXT DEFAULT 'pending',
     progress INTEGER DEFAULT 0,
@@ -88,20 +85,20 @@ CREATE TABLE IF NOT EXISTS projects (
 
 -- INDEXES
 CREATE INDEX IF NOT EXISTS idx_leads_score ON leads(lead_score DESC);
-CREATE INDEX IF NOT EXISTS idx_clients_email ON clients(email);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_agreements_client ON agreements(client_id);
 CREATE INDEX IF NOT EXISTS idx_invoices_status ON invoices(status);
 
 -- RLS
 ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
-ALTER TABLE clients ENABLE ROW LEVEL SECURITY;
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE agreements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE invoices ENABLE ROW LEVEL SECURITY;
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 
 -- ADMIN POLICIES
 CREATE POLICY admin_leads ON leads FOR ALL USING (auth.jwt() ->> 'role' IN ('ADMIN', 'CO_ADMIN'));
-CREATE POLICY admin_clients ON clients FOR ALL USING (auth.jwt() ->> 'role' IN ('ADMIN', 'CO_ADMIN'));
+CREATE POLICY admin_users ON users FOR ALL USING (auth.jwt() ->> 'role' IN ('ADMIN', 'CO_ADMIN'));
 CREATE POLICY admin_agreements ON agreements FOR ALL USING (auth.jwt() ->> 'role' IN ('ADMIN', 'CO_ADMIN'));
 CREATE POLICY admin_invoices ON invoices FOR ALL USING (auth.jwt() ->> 'role' IN ('ADMIN', 'CO_ADMIN'));
 CREATE POLICY admin_projects ON projects FOR ALL USING (auth.jwt() ->> 'role' IN ('ADMIN', 'CO_ADMIN'));
