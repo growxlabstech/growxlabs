@@ -26,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { courses } from "@/lib/data/courses";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { CertificatePreview } from "@/components/marketing/CertificatePreview";
 import Script from "next/script";
 
 
@@ -242,59 +243,7 @@ export default function CoursesPage() {
                   </h4>
                 </div>
 
-                <div className="relative group perspective-2000 w-full mb-12">
-                  <motion.div
-                    whileHover={{ rotateY: -2, rotateX: 1, scale: 1.02 }}
-                    className="aspect-[1.414/1] bg-[#FFFFFF] text-[#1A1A1A] p-12 rounded-[8px] relative overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-white/10"
-                  >
-                    <div className="absolute inset-4 border-[1px] border-black/[0.1] rounded-sm pointer-events-none" />
-
-                    <div className="h-full flex flex-col justify-between items-center text-center relative z-10 py-4">
-                      <div className="flex items-center gap-1.5 opacity-90 mb-4 scale-110">
-                        <span className="text-xl font-medium tracking-tight text-black">Grow</span>
-                        <div className="relative w-6 h-6 flex items-center justify-center">
-                          <svg viewBox="0 0 100 100" className="w-full h-full fill-none stroke-black stroke-[8]" strokeLinecap="round">
-                            <path d="M20 20 L80 80 M80 20 L20 80" className="opacity-10" />
-                            <path d="M30 15 C 40 40, 45 60, 50 85" className="stroke-black" />
-                            <path d="M15 45 C 40 45, 60 45, 85 45" className="stroke-black" />
-                            <path d="M35 20 Q 50 50 65 80" className="stroke-black stroke-[12]" />
-                            <path d="M65 20 Q 50 50 35 80" className="stroke-black stroke-[12]" />
-                            <path d="M40 10 Q 45 50 55 90" stroke="black" strokeWidth="10" fill="none" />
-                            <path d="M25 40 Q 50 45 80 55" stroke="black" strokeWidth="10" fill="none" />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center translate-y-[-1px]">
-                            <span className="text-[26px] font-light text-black scale-x-125 select-none" style={{ fontFamily: "serif" }}>
-                              ╳
-                            </span>
-                          </div>
-                        </div>
-                        <span className="text-xl font-medium tracking-tight text-black">Labs</span>
-                      </div>
-
-                      <div className="flex flex-col items-center">
-                        <p className="uppercase text-[7px] tracking-[0.4em] font-black text-black/30 mb-8">Certificate of Mastery</p>
-                        <p className="text-[10px] font-serif italic text-black/40 mb-2">This is to certify that</p>
-                        <h5 className="text-3xl font-serif text-[#111111] mb-2 tracking-tight">Hemanth Kumar</h5>
-                        <div className="w-40 h-px bg-primary/20 mb-4" />
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Certified AI Engineer</p>
-                      </div>
-
-                      <div className="w-full flex justify-between items-end px-4">
-                        <div className="text-left">
-                          <p className="text-[6px] font-mono text-black/30 uppercase">ID: GXL-ACAD-2024-AI</p>
-                          <div className="h-6 w-20 border-b border-black/10 mt-1 opacity-20" />
-                        </div>
-
-                        <div className="flex flex-col items-center gap-1.5 transition-opacity">
-                          <div className="bg-white p-1 border border-black/5 rounded shadow-sm">
-                            <QrCode size={40} strokeWidth={1.5} className="text-black" />
-                          </div>
-                          <p className="text-[5px] font-black uppercase tracking-widest text-black/40">Scan to Verify</p>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
+                <CertificatePreview />
 
                 <div className="text-center">
                   <div className="bg-primary/10 border border-primary/20 rounded-full py-1.5 px-6 inline-flex items-center gap-2 mb-6">
