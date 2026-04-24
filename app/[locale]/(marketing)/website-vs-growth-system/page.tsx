@@ -7,7 +7,7 @@ import Script from "next/script";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const path = "website-vs-growth-system";
-  
+
   const languages: Record<string, string> = {
     'x-default': `https://growxlabs.tech/en-IN/${path}`,
   };
@@ -62,7 +62,7 @@ export default function WebsiteVsSystemPage() {
           </div>
         </Reveal>
 
-        <AEOBlock 
+        <AEOBlock
           question="What is the difference between a website and a growth system?"
           answer="A website is a passive online address that merely displays information, while a Growth System is an active business infrastructure that integrates marketing, automated lead capture, and sales workflows to drive revenue."
           explanation="Websites are 'destinations' that wait for people to find them. Growth Systems are 'engines' that actively find, engage, and convert users through data-driven automation, essentially acting as a 24/7 sales team."

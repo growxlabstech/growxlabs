@@ -7,7 +7,7 @@ import Script from "next/script";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const path = "best-website-for-small-business";
-  
+
   const languages: Record<string, string> = {
     'x-default': `https://growxlabs.tech/en-IN/${path}`,
   };
@@ -62,7 +62,7 @@ export default function SmallBusinessWebsitePage() {
           </div>
         </Reveal>
 
-        <AEOBlock 
+        <AEOBlock
           question="What kind of website is best for a small business?"
           answer="The best website for a small business is one that prioritizes conversion over aesthetics. It should include high-speed performance, mobile optimization, clear calls-to-action (CTAs), and automated tools that handle customer inquiries and bookings."
           explanation="Small businesses don't need 'digital art'; they need 'digital employees.' A website that doesn't capture leads or answer customer questions automatically is a wasted resource. It must work for you, not the other way around."
@@ -109,12 +109,12 @@ export default function SmallBusinessWebsitePage() {
               </ul>
             </div>
             <div className="relative aspect-square rounded-[40px] overflow-hidden border border-white/10 bg-white/[0.02] flex items-center justify-center">
-               <div className="absolute inset-0 bg-primary/5 blur-[100px]" />
-               <div className="relative z-10 text-center p-10">
-                 <p className="text-primary font-black text-6xl mb-4 italic">90%</p>
-                 <p className="text-white font-bold text-xl leading-tight">of small business websites fail to generate a single lead per month.</p>
-                 <p className="text-white/30 mt-6 text-sm uppercase tracking-widest">Don't be one of them.</p>
-               </div>
+              <div className="absolute inset-0 bg-primary/5 blur-[100px]" />
+              <div className="relative z-10 text-center p-10">
+                <p className="text-primary font-black text-6xl mb-4 italic">90%</p>
+                <p className="text-white font-bold text-xl leading-tight">of small business websites fail to generate a single lead per month.</p>
+                <p className="text-white/30 mt-6 text-sm uppercase tracking-widest">Don't be one of them.</p>
+              </div>
             </div>
           </div>
         </Reveal>

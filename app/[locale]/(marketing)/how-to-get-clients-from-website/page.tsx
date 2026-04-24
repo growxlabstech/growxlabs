@@ -7,7 +7,7 @@ import Script from "next/script";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const path = "how-to-get-clients-from-website";
-  
+
   const languages: Record<string, string> = {
     'x-default': `https://growxlabs.tech/en-IN/${path}`,
   };
@@ -62,7 +62,7 @@ export default function HowToGetClientsPage() {
           </div>
         </Reveal>
 
-        <AEOBlock 
+        <AEOBlock
           question="How do I turn my website visitors into paying clients?"
           answer="To get clients, your website must shift from a digital brochure to a conversion engine by offering immediate value (Lead Magnet), establishing authority (Case Studies), and providing a frictionless path to contact (Smart Forms)."
           explanation="Most websites fail because they talk about 'themselves' instead of solving a user's problem. By implementing a 'Value-First' funnel, you capture intent early and nurture it through automation, ensuring no lead falls through the cracks."

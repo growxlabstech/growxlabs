@@ -9,6 +9,7 @@ import {
   GraduationCap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/marketing/Reveal";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
@@ -61,18 +62,21 @@ export default async function AdminDashboard() {
   ];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-16">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-black text-white tracking-tighter italic">Intelligence Overview.</h1>
-          <p className="text-white/40 font-medium">Real-time performance metrics for GrowX Labs Academy.</p>
+      <Reveal y={-20}>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-8 border-b border-white/5">
+          <div className="space-y-3">
+            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-primary">Core Systems</span>
+            <h1 className="text-[clamp(32px,5vw,48px)] font-bold text-white tracking-tight">Intelligence Overview</h1>
+            <p className="text-[#A0A0A0] font-medium text-lg">Real-time performance metrics for GrowX Labs Academy.</p>
+          </div>
+          <div className="flex items-center gap-3 bg-primary/10 border border-primary/20 rounded-2xl px-6 py-3 shadow-[0_0_20px_rgba(0,168,107,0.1)]">
+            <div className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_#00A86B]" />
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary">Live Monitoring Active</span>
+          </div>
         </div>
-        <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-5 py-3">
-          <div className="w-2 h-2 rounded-full bg-[#00A86B] animate-pulse" />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-[#00A86B]">Live Monitoring Active</span>
-        </div>
-      </div>
+      </Reveal>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
