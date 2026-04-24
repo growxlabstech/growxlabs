@@ -1,163 +1,118 @@
-"use client";
-
-import { useParams } from "next/navigation";
-import { motion } from "framer-motion";
-import { ShieldCheck, CheckCircle2, User, BookOpen, Calendar, Award, FileCheck } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import { notFound } from "next/navigation";
+import { Card } from "@/components/ui/Card";
+import { CheckCircle2, ShieldCheck, Award, Calendar, GraduationCap } from "lucide-react";
+import { Cinzel, Montserrat } from "next/font/google";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
-// Simulation of a verified certificate lookup
-const MOCK_CERTIFICATES: Record<string, any> = {
-  "GXL-JAVA-2026-00023": {
-    name: "Aarav Sharma",
-    course: "Java Mastery: From Core to Microservices",
-    grade: "A",
-    date: "April 22, 2026",
-    status: "VALID"
-  },
-  "GXL-NEXTJS-2026-00142": {
-    name: "Sarah Miller",
-    course: "Next.js 15: Production-Ready Full Stack",
-    grade: "B+",
-    date: "March 15, 2026",
-    status: "VALID"
-  }
-};
+const cinzel = Cinzel({ subsets: ["latin"], weight: ["600", "700"] });
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600"] });
 
-export default function VerificationPage() {
-  const params = useParams();
-  const certId = params.id as string;
-  const cert = MOCK_CERTIFICATES[certId];
+export default async function VerifyPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: certId } = await params;
+  const supabase = await createClient();
+
+  const { data: cert, error } = await supabase
+    .from("certificates")
+    .select("*")
+    .eq("cert_id", certId)
+    .single();
+
+  if (error || !cert) {
+    notFound();
+  }
+
+  const issueDate = new Date(cert.issue_date).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
-    <div className="min-h-screen bg-[#050505] pt-32 pb-24 px-6 flex items-center justify-center">
-      <div className="max-w-xl w-full">
-        
-        {/* Certificate Verification Card */}
-        <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           className="bg-black border border-white/10 rounded-[48px] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,1)] relative"
-        >
-           {/* Header Area */}
-           <div className={`p-8 lg:p-10 ${cert ? "bg-[#00A86B]" : "bg-red-500"} flex items-center justify-between`}>
-              <div className="flex items-center gap-3">
-                 <ShieldCheck className="text-white" size={24} />
-                 <span className="text-white font-black uppercase text-xs tracking-widest">GrowX Credential Registry</span>
-              </div>
-              <span className="text-white/60 font-mono text-[10px]">{certId}</span>
-           </div>
+    <div className={`min-h-screen bg-[#030303] py-32 px-6 flex flex-col items-center ${montserrat.className}`}>
+      <div className="max-w-2xl w-full text-center mb-12">
+        <h1 className={`${cinzel.className} text-white text-3xl mb-4 tracking-wider uppercase`}>
+          Certificate Verification
+        </h1>
+        <p className="text-white/40 text-sm tracking-[0.2em] uppercase font-bold">
+          GrowX Labs Official Validation Portal
+        </p>
+      </div>
 
-           <div className="p-10 lg:p-14 space-y-12">
-              {cert ? (
-                <>
-                  <div className="text-center space-y-4">
-                     <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#00A86B]/10 text-[#00A86B] rounded-full border border-[#00A86B]/20 text-[10px] font-black uppercase tracking-widest">
-                        <CheckCircle2 size={12} /> Status: {cert.status}
-                     </div>
-                     <h1 className="text-4xl font-black text-white italic tracking-tighter">Verified Graduate.</h1>
-                  </div>
-
-                  <div className="space-y-8">
-                     <div className="flex items-start gap-6 group">
-                        <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0">
-                           <User size={20} className="text-white/40" />
-                        </div>
-                        <div>
-                           <p className="text-[10px] font-black uppercase text-white/20 tracking-widest mb-1">Credential Participant</p>
-                           <p className="text-xl font-bold text-white text-glow">{cert.name}</p>
-                        </div>
-                     </div>
-
-                     <div className="flex items-start gap-6">
-                        <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0">
-                           <BookOpen size={20} className="text-white/40" />
-                        </div>
-                        <div>
-                           <p className="text-[10px] font-black uppercase text-white/20 tracking-widest mb-1">Authenticated Course</p>
-                           <p className="text-xl font-bold text-white leading-tight">{cert.course}</p>
-                        </div>
-                     </div>
-
-                     <div className="grid grid-cols-2 gap-8 pt-4">
-                        <div className="flex items-start gap-6">
-                           <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0">
-                              <Award size={20} className="text-white/40" />
-                           </div>
-                           <div>
-                              <p className="text-[10px] font-black uppercase text-white/20 tracking-widest mb-1">Grade</p>
-                              <p className="text-xl font-bold text-[#00A86B]">{cert.grade}</p>
-                           </div>
-                        </div>
-                        <div className="flex items-start gap-6">
-                           <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0">
-                              <Calendar size={20} className="text-white/40" />
-                           </div>
-                           <div>
-                              <p className="text-[10px] font-black uppercase text-white/20 tracking-widest mb-1">Issue Date</p>
-                              <p className="text-xl font-bold text-white">{cert.date}</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="pt-8 flex flex-col gap-4">
-                     <Button className="w-full h-16 bg-white text-black hover:bg-neutral-200 rounded-3xl font-black uppercase text-xs tracking-widest">
-                        Download Master PDF <FileCheck size={18} className="ml-3" />
-                     </Button>
-                     <p className="text-[10px] text-center text-white/20 font-medium uppercase tracking-[0.3em]">Institutional Verification Completed</p>
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-20 space-y-8">
-                   <div className="w-20 h-20 bg-red-500/10 border border-red-500/20 rounded-full flex items-center justify-center mx-auto">
-                      <XCircle size={40} className="text-red-500" />
-                   </div>
-                   <div className="space-y-4">
-                      <h2 className="text-3xl font-black text-white italic tracking-tighter">Credential Not Found.</h2>
-                      <p className="text-[#A0A0A0] text-sm leading-relaxed max-w-xs mx-auto">
-                        The provided Certificate ID is invalid or has been revoked. If you believe this is an error, please contact GrowX Labs Support.
-                      </p>
-                   </div>
-                   <Link href="/courses">
-                      <Button variant="outline" className="h-12 px-8 border-white/10 text-white rounded-xl">Back to Courses</Button>
-                   </Link>
-                </div>
-              )}
-           </div>
-        </motion.div>
-
-        {/* Footer Trust */}
-        <div className="mt-12 text-center opacity-20">
-           <p className="text-[10px] font-black text-white uppercase tracking-[0.5em] mb-4">GrowX Labs Secure Registry</p>
-           <div className="flex justify-center gap-8 grayscale">
-              <span className="text-xl font-black italic text-white tracking-tighter">GXL</span>
-              <span className="text-xl font-black italic text-white tracking-tighter">VERIFIED</span>
-           </div>
+      <Card className="max-w-2xl w-full p-10 bg-white/[0.02] border-[#00A86B]/30 shadow-2xl shadow-[#00A86B]/5 backdrop-blur-xl rounded-[32px] relative overflow-hidden">
+        {/* Verification Badge */}
+        <div className="absolute top-0 right-0 p-6">
+          <div className="flex items-center gap-2 px-4 py-2 bg-[#00A86B]/10 border border-[#00A86B]/20 rounded-full">
+            <ShieldCheck className="text-[#00A86B] h-4 w-4" />
+            <span className="text-[#00A86B] text-[10px] font-black uppercase tracking-widest">Verified Credential</span>
+          </div>
         </div>
 
-      </div>
-    </div>
-  );
-}
+        <div className="flex flex-col items-center text-center space-y-8">
+          <div className="w-20 h-20 bg-[#00A86B]/10 rounded-full flex items-center justify-center">
+            <CheckCircle2 className="text-[#00A86B] h-10 w-10" />
+          </div>
 
-function XCircle(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="m15 9-6 6" />
-      <path d="m9 9 6 6" />
-    </svg>
+          <div className="space-y-2">
+            <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.3em]">Issued To</p>
+            <h2 className="text-white text-4xl font-light italic">{cert.student_name}</h2>
+          </div>
+
+          <div className="w-full h-[1px] bg-white/5" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full text-left">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <GraduationCap className="text-[#c9a84c] h-5 w-5" />
+                <div>
+                  <p className="text-white/30 text-[9px] font-black uppercase tracking-widest">Program</p>
+                  <p className="text-white text-sm font-semibold">{cert.course_name}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Award className="text-[#c9a84c] h-5 w-5" />
+                <div>
+                  <p className="text-white/30 text-[9px] font-black uppercase tracking-widest">Grade Achieved</p>
+                  <p className="text-white text-sm font-semibold">{cert.grade || 'Pass'}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <Calendar className="text-[#c9a84c] h-5 w-5" />
+                <div>
+                  <p className="text-white/30 text-[9px] font-black uppercase tracking-widest">Issue Date</p>
+                  <p className="text-white text-sm font-semibold">{issueDate}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="text-[#c9a84c] h-5 w-5" />
+                <div>
+                  <p className="text-white/30 text-[9px] font-black uppercase tracking-widest">Certificate ID</p>
+                  <p className="text-white text-sm font-semibold font-mono">{cert.cert_id}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full pt-8 border-t border-white/5 flex flex-col items-center gap-6">
+            <p className="text-white/40 text-[11px] leading-relaxed max-w-sm">
+              This digital credential has been cryptographically signed and verified by the GrowX Labs Academy issuance system.
+            </p>
+            <Link href={`/certificate/${cert.cert_id}`}>
+              <Button className="bg-[#00A86B] hover:bg-[#00A86B]/90 text-white rounded-full px-8">
+                View Official Certificate
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </Card>
+
+      <Link href="/" className="mt-12 text-white/20 hover:text-white transition-colors text-xs uppercase tracking-widest">
+        Back to GrowX Labs
+      </Link>
+    </div>
   );
 }

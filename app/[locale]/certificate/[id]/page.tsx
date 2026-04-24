@@ -22,7 +22,7 @@ export default async function CertificatePage({ params }: PageProps) {
   }
 
   // Generate QR code for verification URL
-  const verifyUrl = `https://growxlabs.tech/api/certificates/verify?id=${certId}`;
+  const verifyUrl = `https://growxlabs.tech/${locale}/verify/${certId}`;
   const qrCodeDataUrl = await QRCode.toDataURL(verifyUrl, {
     margin: 1,
     width: 200,
