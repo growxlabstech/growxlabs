@@ -71,6 +71,59 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={direction} className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
+        {/* AEO: Entity-First Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Corporation",
+              "@id": "https://growxlabs.tech/#organization",
+              "name": "GrowX Labs",
+              "url": "https://growxlabs.tech",
+              "logo": "https://growxlabs.tech/logo.svg",
+              "image": "https://growxlabs.tech/og-image.png",
+              "description": "AI-Native Digital Agency specializing in high-performance automation and enterprise-grade web systems.",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Hyderabad",
+                "addressRegion": "Telangana",
+                "addressCountry": "IN"
+              },
+              "sameAs": [
+                "https://linkedin.com/company/growxlabs",
+                "https://x.com/growxlabs",
+                "https://instagram.com/growxlabs"
+              ],
+              "founder": {
+                "@type": "Person",
+                "name": "GrowX Labs Engineering Team"
+              }
+            })
+          }}
+        />
+        
+        {/* AEO: Professional Service Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              "@id": "https://growxlabs.tech/#service",
+              "name": "GrowX Labs AI Services",
+              "parentOrganization": { "@id": "https://growxlabs.tech/#organization" },
+              "url": "https://growxlabs.tech/services",
+              "priceRange": "$$$",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Hyderabad",
+                "addressCountry": "IN"
+              }
+            })
+          }}
+        />
+
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script
