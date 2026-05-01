@@ -242,40 +242,40 @@ export default function InvoicesPage() {
             className="grid lg:grid-cols-2 gap-10 no-print"
           >
             {/* FORM SIDE */}
-            <Card className="p-8 border-white/5 bg-white/[0.02] space-y-8 h-fit">
+            <Card className="p-8 border-[var(--border-subtle)] bg-[var(--surface-1)] rounded-2xl space-y-8 h-fit">
                <div className="space-y-6">
                  {/* Client Info */}
                  <div className="space-y-4">
-                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/20 border-b border-white/5 pb-2">Client Details</h3>
+                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-muted)] border-b border-[var(--border-subtle)] pb-2">Client Details</h3>
                     <div className="grid grid-cols-2 gap-4">
                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1 flex items-center gap-2"><UserIcon size={12}/> Name</label>
+                          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1 flex items-center gap-2"><UserIcon size={12}/> Name</label>
                           <input 
                             value={form.clientName} onChange={e => setForm({...form, clientName: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-primary outline-none transition-all" 
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-[var(--border-hover)] outline-none transition-all" 
                           />
                        </div>
                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1 flex items-center gap-2"><Mail size={12}/> Email</label>
+                          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1 flex items-center gap-2"><Mail size={12}/> Email</label>
                           <input 
                             value={form.clientEmail} onChange={e => setForm({...form, clientEmail: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-primary outline-none transition-all" 
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-[var(--border-hover)] outline-none transition-all" 
                           />
                        </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1 flex items-center gap-2"><Phone size={12}/> Phone</label>
+                          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1 flex items-center gap-2"><Phone size={12}/> Phone</label>
                           <input 
                             value={form.clientPhone} onChange={e => setForm({...form, clientPhone: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-primary outline-none transition-all" 
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-[var(--border-hover)] outline-none transition-all" 
                           />
                        </div>
                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1 flex items-center gap-2"><Briefcase size={12}/> Business</label>
+                          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1 flex items-center gap-2"><Briefcase size={12}/> Business</label>
                           <input 
                             value={form.businessName} onChange={e => setForm({...form, businessName: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-primary outline-none transition-all" 
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-[var(--border-hover)] outline-none transition-all" 
                           />
                        </div>
                     </div>
@@ -283,35 +283,35 @@ export default function InvoicesPage() {
 
                  {/* Project Info */}
                  <div className="space-y-4">
-                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/20 border-b border-white/5 pb-2">Project Metrics</h3>
+                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-muted)] border-b border-[var(--border-subtle)] pb-2">Project Metrics</h3>
                     <div className="space-y-2">
-                       <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Project Name</label>
+                       <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1">Project Name</label>
                        <input 
                          placeholder="e.g. Next.js SaaS Architecture"
                          value={form.projectName} onChange={e => setForm({...form, projectName: e.target.value})}
-                         className="w-full bg-white/5 border border-white/5 rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-primary outline-none transition-all" 
+                         className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-[var(--border-hover)] outline-none transition-all" 
                        />
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1 flex items-center gap-2"><Hash size={12}/> ID</label>
+                          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1 flex items-center gap-2"><Hash size={12}/> ID</label>
                           <input 
                             value={form.invoiceNumber} onChange={e => setForm({...form, invoiceNumber: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-primary outline-none transition-all" 
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-[var(--border-hover)] outline-none transition-all" 
                           />
                        </div>
                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1 flex items-center gap-2"><Calendar size={12}/> Due</label>
+                          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1 flex items-center gap-2"><Calendar size={12}/> Due</label>
                           <input 
                             type="date" value={form.dueDate} onChange={e => setForm({...form, dueDate: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-primary outline-none transition-all" 
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-[var(--border-hover)] outline-none transition-all" 
                           />
                        </div>
                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1 flex items-center gap-2"><Globe size={12}/> Currency</label>
+                          <label className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] ml-1 flex items-center gap-2"><Globe size={12}/> Currency</label>
                           <select 
                             value={form.currency} onChange={e => setForm({...form, currency: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-primary outline-none appearance-none"
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-12 px-4 text-sm font-bold text-white focus:border-[var(--border-hover)] outline-none appearance-none"
                           >
                              {CURRENCIES.map(c => <option key={c.value} value={c.value} className="bg-neutral-900">{c.label}</option>)}
                           </select>
@@ -333,17 +333,17 @@ export default function InvoicesPage() {
                              <input 
                                placeholder="Description" value={item.description}
                                onChange={e => updateLineItem(item.id, 'description', e.target.value)}
-                               className="flex-[4] bg-white/5 border border-white/5 rounded-xl h-11 px-4 text-xs text-white outline-none focus:border-primary/50"
+                               className="flex-[4] bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-11 px-4 text-xs text-white outline-none focus:border-primary/50"
                              />
                              <input 
                                type="number" placeholder="Qty" value={item.qty}
                                onChange={e => updateLineItem(item.id, 'qty', parseInt(e.target.value) || 0)}
-                               className="flex-1 bg-white/5 border border-white/5 rounded-xl h-11 px-4 text-xs text-center text-white outline-none focus:border-primary/50"
+                               className="flex-1 bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-11 px-4 text-xs text-center text-white outline-none focus:border-primary/50"
                              />
                              <input 
                                type="number" placeholder="Rate" value={item.rate}
                                onChange={e => updateLineItem(item.id, 'rate', parseInt(e.target.value) || 0)}
-                               className="flex-[1.5] bg-white/5 border border-white/5 rounded-xl h-11 px-4 text-xs text-right text-white outline-none focus:border-primary/50"
+                               className="flex-[1.5] bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-11 px-4 text-xs text-right text-white outline-none focus:border-primary/50"
                              />
                              <Button onClick={() => removeLineItem(item.id)} variant="ghost" className="h-11 w-11 p-0 text-white/20 hover:text-red-500 hover:bg-red-500/10 rounded-xl">
                                 <Trash2 size={16} />
@@ -360,7 +360,7 @@ export default function InvoicesPage() {
                           <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Payment Type</label>
                           <select 
                             value={form.paymentType} onChange={e => setForm({...form, paymentType: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-11 px-4 text-sm font-bold text-white outline-none appearance-none"
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-11 px-4 text-sm font-bold text-white outline-none appearance-none"
                           >
                              <option value="Full Payment" className="bg-neutral-900">100% Full Payment</option>
                              <option value="Advance 50%" className="bg-neutral-900">50% Advance</option>
@@ -384,7 +384,7 @@ export default function InvoicesPage() {
                           <label className="text-[10px] font-black uppercase tracking-widest text-white/40">Amount Paid ({currency.symbol})</label>
                           <input 
                             type="number" value={form.amountPaid} onChange={e => setForm({...form, amountPaid: parseFloat(e.target.value) || 0})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-11 px-4 text-right text-sm font-bold text-white outline-none"
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-11 px-4 text-right text-sm font-bold text-white outline-none"
                           />
                        </div>
                        <div className="space-y-1">
@@ -401,7 +401,7 @@ export default function InvoicesPage() {
                        <div className="relative">
                           <input 
                             placeholder="https://rzp.io/l/..." value={form.razorpayLink} onChange={e => setForm({...form, razorpayLink: e.target.value})}
-                            className="w-full bg-white/5 border border-white/5 rounded-xl h-11 px-4 text-sm font-bold text-white outline-none pr-12 focus:border-primary/50" 
+                            className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl h-11 px-4 text-sm font-bold text-white outline-none pr-12 focus:border-primary/50" 
                           />
                           <CopyIcon size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20" />
                        </div>
@@ -410,7 +410,7 @@ export default function InvoicesPage() {
                        <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Internal Notes / Terms</label>
                        <textarea 
                          value={form.notes} onChange={e => setForm({...form, notes: e.target.value})}
-                         className="w-full bg-white/5 border border-white/5 rounded-xl p-4 text-xs font-medium text-white/60 outline-none focus:border-primary/50 min-h-[80px]" 
+                         className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-xl p-4 text-xs font-medium text-white/60 outline-none focus:border-primary/50 min-h-[80px]" 
                        />
                     </div>
                  </div>
@@ -586,7 +586,7 @@ export default function InvoicesPage() {
                   <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                   <input 
                     placeholder="Search client index..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-                    className="w-full bg-white/5 border border-white/5 rounded-full h-10 pl-10 pr-4 text-[10px] font-black uppercase tracking-widest text-white outline-none focus:border-white/10"
+                    className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-full h-10 pl-10 pr-4 text-[10px] font-black uppercase tracking-widest text-white outline-none focus:border-white/10"
                   />
                </div>
                <div className="flex bg-white/5 p-1 rounded-full border border-white/5">
@@ -621,8 +621,8 @@ export default function InvoicesPage() {
                            transition={{ delay: i * 0.03 }}
                         >
                            <Card className={cn(
-                             "p-6 border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all group rounded-[2rem]",
-                             isOverdue && "border-red-500/10 bg-red-500/[0.01]"
+                             "p-6 border-[var(--border-subtle)] bg-[var(--surface-1)] hover:border-[var(--border-hover)] transition-all group rounded-2xl",
+                             isOverdue && "border-red-500/30 bg-red-500/[0.02]"
                            )}>
                               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                                  <div className="flex items-center space-x-6">
@@ -699,11 +699,11 @@ export default function InvoicesPage() {
                   })}
                </AnimatePresence>
             ) : (
-               <div className="h-64 flex flex-col items-center justify-center border border-white/5 border-dashed rounded-[3rem] space-y-4">
-                  <div className="h-16 w-16 rounded-3xl bg-white/5 flex items-center justify-center text-white/10 italic font-black text-2xl">?</div>
+               <div className="h-64 flex flex-col items-center justify-center border border-[var(--border-subtle)] border-dashed rounded-2xl bg-[var(--surface-1)] space-y-4">
+                  <div className="h-16 w-16 rounded-2xl bg-[var(--surface-2)] flex items-center justify-center text-[var(--text-muted)] italic font-black text-2xl border border-[var(--border-subtle)]">?</div>
                   <div className="text-center">
                      <p className="text-white font-black uppercase tracking-widest text-xs mb-1">Financial Index Void</p>
-                     <p className="text-white/20 text-[10px] font-bold uppercase tracking-widest">Deploy your first settlement certificate to start tracking.</p>
+                     <p className="text-[var(--text-secondary)] text-[10px] font-bold uppercase tracking-widest">Deploy your first settlement certificate to start tracking.</p>
                   </div>
                </div>
             )}

@@ -200,25 +200,25 @@ export default function ProposalsPage() {
             className="grid lg:grid-cols-2 gap-10 no-print"
           >
             {/* FORM SIDE */}
-            <Card className="p-8 border-white/5 bg-white/[0.02] space-y-8 h-fit sticky top-10 max-h-[90vh] overflow-y-auto">
+            <Card className="p-8 border-[var(--border-subtle)] bg-[var(--surface-1)] rounded-2xl space-y-8 h-fit sticky top-10 max-h-[90vh] overflow-y-auto scrollbar-hide">
                <div className="space-y-6">
-                  <h2 className="text-xs font-black uppercase tracking-[0.3em] text-white/20 border-b border-white/5 pb-4 italic">Lead Intelligence</h2>
+                  <h2 className="text-xs font-black uppercase tracking-[0.3em] text-white/20 border-b border-[var(--border-subtle)] pb-4 italic">Lead Intelligence</h2>
                   
                   <div className="grid grid-cols-2 gap-4">
                      <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Client Name</label>
-                        <input value={form.clientName} onChange={e => setForm({...form, clientName: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary" placeholder="Jane Doe" />
+                        <input value={form.clientName} onChange={e => setForm({...form, clientName: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary" placeholder="Jane Doe" />
                      </div>
                      <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Business Name</label>
-                        <input value={form.businessName} onChange={e => setForm({...form, businessName: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary" placeholder="Acme Global" />
+                        <input value={form.businessName} onChange={e => setForm({...form, businessName: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary" placeholder="Acme Global" />
                      </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                      <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Country</label>
-                        <select value={form.country} onChange={e => setForm({...form, country: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary">
+                        <select value={form.country} onChange={e => setForm({...form, country: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary">
                            <option value="India" className="bg-neutral-900">India</option>
                            <option value="United States" className="bg-neutral-900">United States</option>
                            <option value="United Kingdom" className="bg-neutral-900">United Kingdom</option>
@@ -228,7 +228,7 @@ export default function ProposalsPage() {
                      </div>
                      <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Currency</label>
-                        <select value={form.currency} onChange={e => setForm({...form, currency: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary">
+                        <select value={form.currency} onChange={e => setForm({...form, currency: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary">
                            {CURRENCIES.map(c => <option key={c.value} value={c.value} className="bg-neutral-900">{c.label}</option>)}
                         </select>
                      </div>
@@ -236,26 +236,26 @@ export default function ProposalsPage() {
 
                   <div className="space-y-2">
                      <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Industry / Niche</label>
-                     <input value={form.industry} onChange={e => setForm({...form, industry: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary" placeholder="SaaS / Real Estate / Fintech" />
+                     <input value={form.industry} onChange={e => setForm({...form, industry: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl h-12 px-4 text-sm font-bold text-white outline-none focus:border-primary" placeholder="SaaS / Real Estate / Fintech" />
                   </div>
 
                   <div className="space-y-2">
                      <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Pain Point Description</label>
-                     <textarea value={form.problem} onChange={e => setForm({...form, problem: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 text-sm font-bold text-white outline-none focus:border-primary min-h-[80px]" placeholder="What specific problem are they facing?" />
+                     <textarea value={form.problem} onChange={e => setForm({...form, problem: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl p-4 text-sm font-bold text-white outline-none focus:border-primary min-h-[80px]" placeholder="What specific problem are they facing?" />
                   </div>
 
                   <div className="space-y-2">
                      <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Business Impact (The Cost)</label>
-                     <textarea value={form.impact} onChange={e => setForm({...form, impact: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 text-sm font-bold text-white outline-none focus:border-primary min-h-[80px]" placeholder="What is this costing their business monthly?" />
+                     <textarea value={form.impact} onChange={e => setForm({...form, impact: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl p-4 text-sm font-bold text-white outline-none focus:border-primary min-h-[80px]" placeholder="What is this costing their business monthly?" />
                   </div>
 
-                  <div className="space-y-4 pt-4 border-t border-white/5">
+                  <div className="space-y-4 pt-4 border-t border-[var(--border-subtle)]">
                      <h3 className="text-[10px] font-black uppercase tracking-widest text-white/40">Solution Architecture</h3>
                      <div className="grid grid-cols-3 gap-3">
                         {Object.keys(PACKAGES).map(pk => (
                            <button 
                              key={pk} onClick={() => setForm({...form, selectedPackage: pk as any})}
-                             className={cn("p-4 rounded-2xl border transition-all flex flex-col items-center", form.selectedPackage === pk ? "bg-primary/20 border-primary text-primary" : "bg-white/5 border-white/5 text-white/20 hover:border-white/10")}
+                             className={cn("p-4 rounded-2xl border transition-all flex flex-col items-center", form.selectedPackage === pk ? "bg-primary/20 border-primary text-primary" : "bg-white/5 border-[var(--border-subtle)] text-white/20 hover:border-white/10")}
                            >
                               <span className="text-[9px] font-black uppercase tracking-widest mb-1">{PACKAGES[pk as keyof typeof PACKAGES].name}</span>
                               <span className="text-[8px] opacity-60 font-bold">{PACKAGES[pk as keyof typeof PACKAGES].price[form.currency as 'INR']}</span>
@@ -265,11 +265,11 @@ export default function ProposalsPage() {
                      <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                            <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Price Override</label>
-                           <input value={form.customPrice} onChange={e => setForm({...form, customPrice: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl h-11 px-4 text-sm font-bold text-white outline-none focus:border-primary" placeholder="e.g. ₹28,000" />
+                           <input value={form.customPrice} onChange={e => setForm({...form, customPrice: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl h-11 px-4 text-sm font-bold text-white outline-none focus:border-primary" placeholder="e.g. ₹28,000" />
                         </div>
                         <div className="space-y-2">
                            <label className="text-[10px] font-black uppercase tracking-widest text-white/40 ml-1">Discovery Call</label>
-                           <input type="datetime-local" value={form.callDate} onChange={e => setForm({...form, callDate: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl h-11 px-4 text-xs font-bold text-white outline-none focus:border-primary" />
+                           <input type="datetime-local" value={form.callDate} onChange={e => setForm({...form, callDate: e.target.value})} className="w-full bg-[var(--surface-2)] border border-[var(--border-subtle)] rounded-2xl h-11 px-4 text-xs font-bold text-white outline-none focus:border-primary" />
                         </div>
                      </div>
                   </div>
@@ -482,7 +482,7 @@ export default function ProposalsPage() {
                           { step: "04", title: "Build Sprint", action: "Project starts instantly. Dashboard access provided." },
                           { step: "05", title: "Global Launch", action: "Ship your high-performance asset to the world." }
                         ].map((s, idx) => (
-                          <div key={idx} className="flex items-center gap-10 bg-white/[0.03] p-8 rounded-[2.5rem] border border-white/5 hover:bg-white/10 transition-all group">
+                          <div key={idx} className="flex items-center gap-10 bg-white/[0.03] p-8 rounded-[2.5rem] border border-[var(--border-subtle)] hover:bg-white/10 transition-all group">
                              <span className="text-[10px] font-black opacity-20 group-hover:opacity-100 transition-opacity tracking-[0.5em]">{s.step}</span>
                              <div className="space-y-1">
                                 <p className="text-lg font-black tracking-tight group-hover:italic transition-all">{s.title}</p>
@@ -517,9 +517,9 @@ export default function ProposalsPage() {
           <div className="space-y-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 no-print">
                <h2 className="text-2xl font-black text-white italic tracking-tighter flex items-center gap-3">
-                  Proposal Repositories <span className="h-6 px-3 bg-white/5 rounded-full text-[10px] font-bold flex items-center non-italic tracking-widest border border-white/5">{proposals.length} TOTAL</span>
+                  Proposal Repositories <span className="h-6 px-3 bg-white/5 rounded-full text-[10px] font-bold flex items-center non-italic tracking-widest border border-[var(--border-subtle)]">{proposals.length} TOTAL</span>
                </h2>
-               <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/5">
+               <div className="flex bg-white/5 p-1.5 rounded-2xl border border-[var(--border-subtle)]">
                   {["all", "sent", "viewed", "accepted", "rejected"].map((st) => (
                     <button 
                       key={st} className={cn("h-9 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all", st === "all" ? "bg-white text-black" : "text-white/40 hover:text-white")}
@@ -532,7 +532,7 @@ export default function ProposalsPage() {
 
             <div className="grid gap-4">
               {loading ? (
-                 <div className="h-64 flex items-center justify-center border border-white/5 border-dashed rounded-[3rem]">
+                 <div className="h-64 flex items-center justify-center border border-[var(--border-subtle)] border-dashed rounded-[3rem]">
                     <Loader2 className="animate-spin text-white/20" />
                  </div>
               ) : proposals.length > 0 ? (
@@ -540,10 +540,10 @@ export default function ProposalsPage() {
                     const statusColors: any = { sent: "text-blue-500", viewed: "text-purple-500", accepted: "text-green-500", rejected: "text-red-500" };
                     return (
                        <motion.div key={p.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
-                          <Card className="p-8 border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all group rounded-[2.5rem]">
+                          <Card className="p-8 border-[var(--border-subtle)] bg-[var(--surface-1)] hover:border-[var(--border-hover)] transition-all group rounded-2xl">
                              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                                 <div className="flex items-center gap-8">
-                                   <div className="h-16 w-16 bg-white/5 rounded-3xl flex items-center justify-center text-white/20 border border-white/5 shadow-2xl group-hover:text-primary transition-colors">
+                                   <div className="h-16 w-16 bg-[var(--surface-2)] rounded-2xl flex items-center justify-center text-[var(--text-muted)] border border-[var(--border-subtle)] shadow-2xl group-hover:border-[var(--border-hover)] group-hover:text-primary transition-colors">
                                       <FileText size={28} />
                                    </div>
                                    <div>
@@ -565,13 +565,13 @@ export default function ProposalsPage() {
                                 </div>
                                 <div className="flex items-center gap-4 w-full md:w-auto overflow-hidden">
                                    <div className="flex items-center -space-x-2 opacity-40 group-hover:opacity-100 transition-opacity">
-                                      <Button onClick={() => updateStatus(p.id, 'accepted')} title="Mark Accepted" variant="outline" className="h-10 w-10 p-0 border-white/5 rounded-xl hover:bg-green-500 hover:text-white"><CheckSquare size={16} /></Button>
-                                      <Button onClick={() => updateStatus(p.id, 'rejected')} title="Mark Rejected" variant="outline" className="h-10 w-10 p-0 border-white/5 rounded-xl hover:bg-red-500 hover:text-white"><XCircle size={16} /></Button>
+                                      <Button onClick={() => updateStatus(p.id, 'accepted')} title="Mark Accepted" variant="outline" className="h-10 w-10 p-0 border-[var(--border-subtle)] rounded-xl hover:bg-green-500 hover:text-white"><CheckSquare size={16} /></Button>
+                                      <Button onClick={() => updateStatus(p.id, 'rejected')} title="Mark Rejected" variant="outline" className="h-10 w-10 p-0 border-[var(--border-subtle)] rounded-xl hover:bg-red-500 hover:text-white"><XCircle size={16} /></Button>
                                       <Button onClick={() => {
                                          navigator.clipboard.writeText(`${window.location.origin}/proposal/${p.id}`);
                                          alert("Share link copied to clipboard!");
-                                      }} title="Copy Client Link" variant="outline" className="h-10 w-10 p-0 border-white/5 rounded-xl hover:bg-white hover:text-black"><Copy size={16} /></Button>
-                                      <Button variant="outline" className="h-10 w-10 p-0 border-white/5 rounded-xl hover:bg-primary hover:text-white" onClick={async () => {
+                                      }} title="Copy Client Link" variant="outline" className="h-10 w-10 p-0 border-[var(--border-subtle)] rounded-xl hover:bg-white hover:text-black"><Copy size={16} /></Button>
+                                      <Button variant="outline" className="h-10 w-10 p-0 border-[var(--border-subtle)] rounded-xl hover:bg-primary hover:text-white" onClick={async () => {
                                           const res = await fetch("/api/proposals/send", {
                                             method: "POST", headers: { "Content-Type": "application/json" },
                                             body: JSON.stringify({ proposalId: p.id })
@@ -591,8 +591,8 @@ export default function ProposalsPage() {
                     )
                  })
               ) : (
-                 <div className="h-64 flex flex-col items-center justify-center border border-white/5 border-dashed rounded-[3rem] space-y-4">
-                    <p className="text-white/20 text-xs font-black uppercase tracking-[0.4em] italic">Proposals Repository Void</p>
+                 <div className="h-64 flex flex-col items-center justify-center border border-[var(--border-subtle)] border-dashed rounded-2xl bg-[var(--surface-1)] space-y-4">
+                    <p className="text-[var(--text-muted)] text-xs font-black uppercase tracking-[0.4em] italic">Proposals Repository Void</p>
                  </div>
               )}
             </div>

@@ -48,20 +48,22 @@ function PreviewContent() {
 
   if (loading || !data) {
     return (
-      <div className="h-screen flex items-center justify-center bg-neutral-900">
-        <Loader2 className="animate-spin text-[#00b894]" size={48} />
+      <div className="h-[80vh] flex items-center justify-center">
+        <Loader2 className="animate-spin text-primary" size={48} />
       </div>
     );
   }
 
   return (
-    <div className="bg-neutral-900 min-h-screen py-12">
-      <div className="max-w-[1000px] mx-auto px-4">
-        <div className="mb-8 flex justify-between items-center text-white/40">
-           <p className="text-xs font-bold uppercase tracking-widest">Document Preview Mode</p>
-           <p className="text-[10px] italic">Viewing as Admin</p>
+    <div className="space-y-8 py-4">
+      <div className="max-w-[1000px] mx-auto">
+        <div className="mb-8 flex justify-between items-center text-[var(--text-muted)]">
+           <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Document Preview Mode</p>
+           <p className="text-[10px] font-bold uppercase tracking-widest">Viewing as Admin</p>
         </div>
-        <AgreementContract data={data} />
+        <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-3xl p-8 shadow-2xl">
+          <AgreementContract data={data} />
+        </div>
       </div>
     </div>
   );
@@ -69,7 +71,7 @@ function PreviewContent() {
 
 export default function AgreementPreviewPage() {
   return (
-    <Suspense fallback={<div className="h-screen bg-neutral-900" />}>
+    <Suspense fallback={<div className="h-[80vh]" />}>
       <PreviewContent />
     </Suspense>
   );
