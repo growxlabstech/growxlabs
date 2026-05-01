@@ -23,13 +23,16 @@ export default function LoginPage() {
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
       const role = (session.user as any).role;
+      const locale = window.location.pathname.split('/')[1] || 'en-IN';
+      
       if (role === "ADMIN" || role === "CO_ADMIN") {
-        router.push("/admin/leads");
+        router.push(`/${locale}/admin/leads`);
       } else {
-        router.push("/client/dashboard");
+        router.push(`/${locale}/client/dashboard`);
       }
     }
   }, [status, session, router]);
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -117,16 +117,32 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
-  // 5. RBAC Check
+  // 5. RBAC Check (Admin & Client Portals)
   const isAdminPath = pathname.includes('/admin');
-  if (isAdminPath) {
+  const isClientPath = pathname.includes('/client');
+
+  if (isAdminPath || isClientPath) {
     const secret = process.env.NEXTAUTH_SECRET;
+    // getToken handles cookie names automatically based on environment
     const token = await getToken({ req, secret });
-    if (!token || (token.role !== 'ADMIN' && token.role !== 'CO_ADMIN')) {
+    
+    if (!token) {
       const loginUrl = new URL(`/${matchedLocale || 'en-IN'}/login`, req.url);
       return NextResponse.redirect(loginUrl);
     }
+
+    // Role verification
+    if (isAdminPath && token.role !== 'ADMIN' && token.role !== 'CO_ADMIN') {
+      const homeUrl = new URL(`/${matchedLocale || 'en-IN'}`, req.url);
+      return NextResponse.redirect(homeUrl);
+    }
+
+    if (isClientPath && token.role !== 'CLIENT' && token.role !== 'ADMIN' && token.role !== 'CO_ADMIN') {
+      const homeUrl = new URL(`/${matchedLocale || 'en-IN'}`, req.url);
+      return NextResponse.redirect(homeUrl);
+    }
   }
+
 
   return intlMiddleware(req);
 }
