@@ -2,16 +2,20 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { usePostHog } from 'posthog-js/react';
+
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
+  trackEvent?: string;
+  trackProperties?: Record<string, any>;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "md", isLoading, children, ...props }, ref) => {
+  ({ className, variant = "primary", size = "md", isLoading, trackEvent, trackProperties, children, ...props }, ref) => {
     const variants = {
       primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(0,168,107,0.3)]",
       secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
@@ -25,11 +29,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       lg: "px-6 py-3 text-base",
     };
 
-    return (
-      <button
-        ref={ref}
-        disabled={isLoading || props.disabled}
-        className={cn(
+  const posthog = usePostHog();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (props.onClick) props.onClick(e);
+    if (trackEvent && posthog) {
+      posthog.capture(trackEvent, trackProperties);
+    }
+  };
+
+  return (
+    <button
+      ref={ref}
+      disabled={isLoading || props.disabled}
+      onClick={handleClick}
+      className={cn(
           "inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 relative active:scale-[0.98] hover:scale-[1.02]",
           variants[variant],
           sizes[size],

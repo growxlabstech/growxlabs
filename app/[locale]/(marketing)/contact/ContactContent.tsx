@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Mail, Phone, MapPin, CheckCircle2, AlertCircle, MessageCircle, ShieldCheck, Clock, Sparkles } from "lucide-react";
 import React from "react";
+import { usePostHog } from 'posthog-js/react';
+
 
 export function ContactContent() {
   const [formData, setFormData] = useState({
@@ -19,6 +21,7 @@ export function ContactContent() {
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const posthog = usePostHog();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +37,22 @@ export function ContactContent() {
 
       if (!response.ok) {
         throw new Error("Our systems are currently experiencing a high volume of inquiries. Please try again or email us directly.");
+      }
+
+      // PostHog Tracking
+      if (posthog) {
+        posthog.identify(formData.email, {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          service: formData.service,
+          budget: formData.budget,
+        });
+        
+        posthog.capture('lead_submitted', {
+          service: formData.service,
+          budget: formData.budget,
+        });
       }
 
       setStatus("success");

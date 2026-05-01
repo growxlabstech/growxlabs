@@ -74,6 +74,8 @@ export function AEOBlock({
               <Button
                 variant="outline"
                 className="w-full sm:w-auto rounded-full border-primary/30 text-primary hover:bg-primary hover:text-white transition-all group/btn h-12 px-10 font-bold uppercase tracking-widest text-[11px] shadow-xl"
+                trackEvent="cta_clicked"
+                trackProperties={{ location: 'aeo_block', text: ctaText, question }}
               >
                 {ctaText} <ArrowRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-2 transition-transform" />
               </Button>

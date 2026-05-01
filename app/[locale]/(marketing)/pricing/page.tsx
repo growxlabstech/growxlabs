@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/marketing/Reveal";
+import PricingTracker from "./PricingTracker";
 
 const VALUE_TRACKS = [
   {
@@ -81,6 +82,7 @@ export async function generateMetadata() {
 export default function PricingPage() {
   return (
     <div className="pt-32 pb-24 px-6 md:px-10 xl:px-16 2xl:px-24 w-full">
+      <PricingTracker />
       <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
 
         {/* Header */}
@@ -144,6 +146,8 @@ export default function PricingPage() {
                       "w-full h-14 rounded-2xl font-bold uppercase text-[11px] tracking-widest transition-all shadow-xl",
                       track.popular ? "bg-[#00A86B] text-white hover:bg-[#00A86B]/90" : "bg-white text-black hover:bg-white/90"
                     )}
+                    trackEvent="cta_clicked"
+                    trackProperties={{ location: 'pricing_table', track: track.name, cta: track.cta }}
                   >
                     {track.cta}
                   </Button>
@@ -196,7 +200,12 @@ export default function PricingPage() {
 
             <div className="space-y-8 relative z-10">
               <Link href="/contact" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto h-16 px-12 rounded-full bg-[#00A86B] text-white font-bold text-lg hover:bg-[#00A86B]/90 transition-all shadow-2xl group/btn border-none">
+                <Button 
+                  size="lg" 
+                  className="w-full sm:w-auto h-16 px-12 rounded-full bg-[#00A86B] text-white font-bold text-lg hover:bg-[#00A86B]/90 transition-all shadow-2xl group/btn border-none"
+                  trackEvent="call_booked_intent"
+                  trackProperties={{ location: 'pricing_footer' }}
+                >
                   Book Your Free 15 Minute Call
                   <ArrowRight className="ml-3 group-hover/btn:translate-x-2 transition-transform" />
                 </Button>

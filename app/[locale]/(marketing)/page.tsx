@@ -119,12 +119,23 @@ export default function Home() {
 
           <Reveal y={20} delay={0.2} className="flex flex-col sm:flex-row justify-center gap-4 px-6">
             <Link href="/contact" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto h-12 px-8 py-3 text-base rounded-full font-semibold bg-[#00A86B] text-white hover:bg-[#00A86B]/90 transition-all shadow-none">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto h-12 px-8 py-3 text-base rounded-full font-semibold bg-[#00A86B] text-white hover:bg-[#00A86B]/90 transition-all shadow-none"
+                trackEvent="cta_clicked"
+                trackProperties={{ location: 'hero', text: 'Start Your Project Today' }}
+              >
                 Start Your Project Today
               </Button>
             </Link>
             <Link href="/portfolio" className="w-full sm:w-auto">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 px-8 py-3 text-base rounded-full font-semibold border-white/20 hover:border-white hover:bg-white/5 transition-all text-white">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="w-full sm:w-auto h-12 px-8 py-3 text-base rounded-full font-semibold border-white/20 hover:border-white hover:bg-white/5 transition-all text-white"
+                trackEvent="cta_clicked"
+                trackProperties={{ location: 'hero', text: 'View Portfolio' }}
+              >
                 View Portfolio
               </Button>
             </Link>
@@ -229,7 +240,11 @@ export default function Home() {
               Your project becomes our showcase.
             </p>
             <Link href="/contact">
-              <Button className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90 rounded-full px-10 py-4 h-14 text-lg font-semibold shadow-none transition-all hover:scale-105">
+              <Button 
+                className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90 rounded-full px-10 py-4 h-14 text-lg font-semibold shadow-none transition-all hover:scale-105"
+                trackEvent="cta_clicked"
+                trackProperties={{ location: 'footer_cta', text: 'Start Your Project Today' }}
+              >
                 Start Your Project Today
               </Button>
             </Link>

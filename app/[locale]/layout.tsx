@@ -10,6 +10,7 @@ import { CookieConsent } from "@/components/layout/CookieConsent";
 import { Toaster } from "sonner";
 import { locales } from "@/navigation";
 import Script from "next/script";
+import { PHProvider } from "@/components/providers/PostHogProvider";
 import "../globals.css";
 
 const inter = Inter({ 
@@ -89,7 +90,8 @@ export default async function LocaleLayout({
         )}
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans relative" suppressHydrationWarning>
-        <NextIntlClientProvider messages={messages} locale={locale}>
+        <PHProvider>
+          <NextIntlClientProvider messages={messages} locale={locale}>
           <AuthProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false} disableTransitionOnChange>
               <GlobalBackground />
@@ -104,7 +106,8 @@ export default async function LocaleLayout({
             
           </AuthProvider>
         </NextIntlClientProvider>
-      </body>
+      </PHProvider>
+    </body>
     </html>
   );
 }

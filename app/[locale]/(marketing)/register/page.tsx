@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/Card";
 import Image from "next/image";
 import { Mail, Lock, User, AlertCircle, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { usePostHog } from 'posthog-js/react';
+
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -16,6 +18,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const posthog = usePostHog();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +36,17 @@ export default function RegisterPage() {
       
       if (!res.ok) throw new Error(data.error || "System registration failed.");
       
+      // PostHog Tracking
+      if (posthog) {
+        posthog.identify(formData.email, {
+          name: formData.name,
+          email: formData.email,
+        });
+        posthog.capture('user_registered', {
+          name: formData.name,
+        });
+      }
+
       setSuccess(true);
       setTimeout(() => router.push("/login"), 2000);
     } catch (err: any) {
