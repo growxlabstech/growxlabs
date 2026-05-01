@@ -39,13 +39,28 @@ export default function ClientDashboard() {
     try {
       const res = await fetch("/api/client/portal-data");
       const json = await res.json();
-      setData(json);
+      
+      // Defensive check: Ensure we have the expected arrays
+      if (json && !json.error && Array.isArray(json.agreements)) {
+        setData(json);
+      } else {
+        console.error("Malformed portal data:", json);
+        setData({ agreements: [], invoices: [], projects: [] });
+      }
     } catch (e) {
       console.error(e);
+      setData({ agreements: [], invoices: [], projects: [] });
     }
   };
 
-  if (!data) return null;
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="space-y-12 pb-12">
