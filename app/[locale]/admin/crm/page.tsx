@@ -56,19 +56,40 @@ export default function AdminCRMPage() {
     setIsSubmitting(true);
     try {
       const text = await selectedFile.text();
-      const lines = text.split("\n").map(l => l.trim()).filter(l => l !== "");
-      if (lines.length < 2) throw new Error("File is empty or invalid");
+      const rawLines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
+      if (rawLines.length < 2) throw new Error("File is empty or invalid");
 
-      const headers = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/["']/g, ""));
-      const data = lines.slice(1).map(line => {
-        const values = line.split(",").map(v => v.trim().replace(/["']/g, ""));
+      // Simple CSV parser that handles quotes
+      const parseCSVLine = (line: string) => {
+        const result = [];
+        let cur = "";
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (char === '"') inQuotes = !inQuotes;
+          else if (char === ',' && !inQuotes) {
+            result.push(cur.trim());
+            cur = "";
+          } else cur += char;
+        }
+        result.push(cur.trim());
+        return result;
+      };
+
+      const headers = parseCSVLine(rawLines[0]).map(h => h.toLowerCase().replace(/["']/g, ""));
+      const data = rawLines.slice(1).map(line => {
+        const values = parseCSVLine(line).map(v => v.replace(/["']/g, ""));
         const obj: any = {};
         headers.forEach((header, i) => {
-          if (header.includes("business") || header.includes("name")) obj.business_name = values[i];
-          if (header.includes("email")) obj.email = values[i];
-          if (header.includes("phone")) obj.phone = values[i];
-          if (header.includes("city")) obj.city = values[i];
-          if (header.includes("status")) obj.status = values[i];
+          const val = values[i];
+          if (!val) return;
+          
+          if (header.includes("business") || header.includes("company") || header.includes("organization")) obj.business_name = val;
+          if (header.includes("contact") || header.includes("name") || header.includes("founder") || header.includes("person")) obj.name = val;
+          if (header.includes("email") || header.includes("mail")) obj.email = val;
+          if (header.includes("phone") || header.includes("mobile") || header.includes("contact number")) obj.phone = val;
+          if (header.includes("city") || header.includes("location") || header.includes("address")) obj.city = val;
+          if (header.includes("status")) obj.status = val;
         });
         return obj;
       });
@@ -79,14 +100,15 @@ export default function AdminCRMPage() {
         body: JSON.stringify({ leads: data })
       });
 
-      if (!res.ok) throw new Error("Import failed");
       const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Import failed");
+      
       alert(`Success: ${result.count} leads imported`);
       setShowImport(false);
       setSelectedFile(null);
       fetchLeads();
     } catch (e: any) {
-      alert(e.message);
+      alert(`Import Failed: ${e.message}`);
     } finally {
       setIsSubmitting(false);
     }

@@ -19,25 +19,41 @@ export async function POST(req: Request) {
     }
 
     // Process leads: assign to agent if needed
-    const processedLeads = leads.map(lead => ({
-      business_name: lead.business_name || lead.name || "Unknown",
-      email: lead.email || null,
-      phone: lead.phone || null,
-      city: lead.city || null,
-      status: lead.status || "new",
-      assigned_to: role === 'crm_agent' ? userId : lead.assigned_to || null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }));
+    const processedLeads = leads
+      .filter(l => l.business_name || l.name) // Skip completely empty rows
+      .map(lead => ({
+        business_name: lead.business_name || lead.name || "Unknown",
+        name: lead.name || lead.contact_name || null,
+        email: lead.email || null,
+        phone: lead.phone || null,
+        city: lead.city || null,
+        status: lead.status || "new",
+        assigned_to: role === 'crm_agent' ? userId : lead.assigned_to || null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }));
+
+    if (processedLeads.length === 0) {
+      return NextResponse.json({ error: "No valid leads found in file" }, { status: 400 });
+    }
+
+    console.log(`[IMPORT] Attempting to insert ${processedLeads.length} leads for user ${userId}`);
 
     const { data, error } = await supabaseAdmin
       .from("leads")
       .insert(processedLeads)
       .select();
 
-    if (error) throw error;
+    if (error) {
+      console.error("[DATABASE ERROR]:", error);
+      return NextResponse.json({ 
+        error: `Database Error: ${error.message}`,
+        details: error.details,
+        hint: error.hint
+      }, { status: 500 });
+    }
 
-    return NextResponse.json({ success: true, count: data.length });
+    return NextResponse.json({ success: true, count: data?.length || 0 });
   } catch (error: any) {
     console.error("Import Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
