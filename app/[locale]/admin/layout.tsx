@@ -23,7 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     const role = (session?.user as any)?.role;
-    if (role === "ADMIN" || role === "CO_ADMIN") {
+    if (role === "ADMIN" || role === "CO_ADMIN" || role === "crm_agent") {
       setAuthorized(true);
     } else {
       setAuthorized(false);

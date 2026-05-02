@@ -2,7 +2,7 @@
 
 import { Link, usePathname } from "@/navigation";
 import { cn } from "@/lib/utils";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import {
   BarChart3, Users, Target, Inbox,
   FileText, Zap, ShieldCheck, Rocket, FileCheck, LogOut, PanelLeftClose, PanelLeft,
@@ -55,6 +55,13 @@ interface AdminNavProps {
 
 export function AdminNav({ isCollapsed, onToggle }: AdminNavProps) {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const role = (session?.user as any)?.role;
+  const isCrmAgent = role === "crm_agent";
+
+  const filteredNavItems = isCrmAgent 
+    ? navItems.filter(i => ["Overview", "CRM", "Team", "Leads", "Outreach"].includes(i.name))
+    : navItems;
 
   const renderLink = (item: any) => {
     const isActive = pathname === item.href;
@@ -118,19 +125,23 @@ export function AdminNav({ isCollapsed, onToggle }: AdminNavProps) {
         <div className="flex-1 mt-4 px-3">
           <div className="flex flex-col space-y-1 mb-8">
             {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mb-4 px-4">Core Systems</p>}
-            {navItems.map(renderLink)}
+            {filteredNavItems.map(renderLink)}
 
-            {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Academy Suite</p>}
-            {academyItems.map(renderLink)}
+            {!isCrmAgent && (
+              <>
+                {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Academy Suite</p>}
+                {academyItems.map(renderLink)}
 
-            {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Revenue</p>}
-            {monetizationItems.map(renderLink)}
+                {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Revenue</p>}
+                {monetizationItems.map(renderLink)}
 
-            {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Financials</p>}
-            {financialItems.map(renderLink)}
-            
-            {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Templates</p>}
-            {templateItems.map(renderLink)}
+                {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Financials</p>}
+                {financialItems.map(renderLink)}
+                
+                {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Templates</p>}
+                {templateItems.map(renderLink)}
+              </>
+            )}
           </div>
         </div>
 
