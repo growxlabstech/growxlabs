@@ -142,7 +142,7 @@ export default async function middleware(req: NextRequest) {
 
     // Role verification
     if (token) {
-      if (isAdminPath && token.role !== 'ADMIN' && token.role !== 'CO_ADMIN') {
+      if (isAdminPath && token.role !== 'ADMIN' && token.role !== 'CO_ADMIN' && token.role !== 'crm_agent') {
         const homeUrl = new URL(`/${matchedLocale || 'en-IN'}`, req.url);
         return NextResponse.redirect(homeUrl);
       }
