@@ -23,7 +23,8 @@ export async function POST(req: Request) {
       .filter(l => l.business_name || l.name) // Skip completely empty rows
       .map(lead => ({
         business_name: lead.business_name || lead.name || "Unknown",
-        name: lead.name || lead.contact_name || null,
+        name: lead.name || lead.contact_name || lead.business_name || null,
+        contact_name: lead.name || lead.contact_name || null,
         email: lead.email || null,
         phone: lead.phone || null,
         city: lead.city || null,
@@ -34,26 +35,46 @@ export async function POST(req: Request) {
       }));
 
     if (processedLeads.length === 0) {
-      return NextResponse.json({ error: "No valid leads found in file" }, { status: 400 });
+      return NextResponse.json({ error: "No valid leads found in file. Ensure columns match Business Name, Email, or Phone." }, { status: 400 });
     }
 
-    console.log(`[IMPORT] Attempting to insert ${processedLeads.length} leads for user ${userId}`);
+    console.log(`[IMPORT] Attempting to insert ${processedLeads.length} leads`);
 
-    const { data, error } = await supabaseAdmin
-      .from("leads")
-      .insert(processedLeads)
-      .select();
+    // Insert into 'leads' table
+    const { data: d1, error: e1 } = await supabaseAdmin.from("leads").insert(processedLeads.map(l => ({
+      business_name: l.business_name,
+      name: l.name,
+      email: l.email,
+      phone: l.phone,
+      city: l.city,
+      status: l.status,
+      assigned_to: l.assigned_to,
+      created_at: l.created_at,
+      updated_at: l.updated_at
+    })));
 
-    if (error) {
-      console.error("[DATABASE ERROR]:", error);
+    // Try to insert into 'crm_leads' table as well for the CRM dashboard
+    const { data: d2, error: e2 } = await supabaseAdmin.from("crm_leads").insert(processedLeads.map(l => ({
+      business_name: l.business_name,
+      contact_name: l.contact_name,
+      email: l.email,
+      phone: l.phone,
+      city: l.city,
+      status: l.status,
+      assigned_to: l.assigned_to,
+      created_at: l.created_at,
+      updated_at: l.updated_at
+    })));
+
+    if (e1 && e2) {
+      console.error("[DATABASE ERROR]:", { e1, e2 });
       return NextResponse.json({ 
-        error: `Database Error: ${error.message}`,
-        details: error.details,
-        hint: error.hint
+        error: `Database Error: ${e1.message}`,
+        details: e1.details
       }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, count: data?.length || 0 });
+    return NextResponse.json({ success: true, count: processedLeads.length });
   } catch (error: any) {
     console.error("Import Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
