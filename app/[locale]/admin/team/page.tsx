@@ -9,6 +9,7 @@ import { toast } from "sonner";
 export default function AdminTeamPage() {
   const [team, setTeam] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedMember, setSelectedMember] = useState<any>(null);
@@ -27,7 +28,7 @@ export default function AdminTeamPage() {
 
   const fetchTeam = async () => {
     try {
-      const res = await fetch("/api/admin/team");
+      const res = await fetch(`/api/admin/team?t=${Date.now()}`);
       const data = await res.json();
       setTeam(data.team || []);
     } catch (err) {
@@ -136,6 +137,8 @@ export default function AdminTeamPage() {
               <input 
                 type="text" 
                 placeholder="SEARCH TEAM..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-transparent border border-[var(--border-subtle)] rounded-lg pl-10 pr-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[var(--border-hover)] w-64 transition-colors"
               />
             </div>
@@ -143,7 +146,15 @@ export default function AdminTeamPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
             {loading ? (
               <div className="col-span-full text-center py-12 text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Loading team...</div>
-            ) : team.map((member) => (
+            ) : team.filter(m => 
+                m.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                m.email.toLowerCase().includes(searchQuery.toLowerCase())
+              ).length === 0 ? (
+              <div className="col-span-full text-center py-12 text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">No agents found matching "{searchQuery}"</div>
+            ) : team.filter(m => 
+                m.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                m.email.toLowerCase().includes(searchQuery.toLowerCase())
+              ).map((member) => (
               <div key={member.id} className="bg-[var(--surface-2)] border border-[var(--border-subtle)] p-6 rounded-2xl relative hover:border-[var(--border-hover)] transition-all group">
                  {!member.is_active && (
                     <div className="absolute top-4 right-4 bg-red-500/10 text-red-400 text-[9px] px-2 py-1 uppercase tracking-widest rounded-md font-bold">Inactive</div>
