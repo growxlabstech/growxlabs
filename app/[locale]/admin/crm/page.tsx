@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import { 
   Users, TrendingUp, Download, Upload, Filter, Plus, FileDown, FileText, ArrowUpRight
@@ -14,6 +14,9 @@ export default function AdminCRMPage() {
   const [loading, setLoading] = useState(true);
   const [showExport, setShowExport] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetchLeads();
@@ -38,6 +41,55 @@ export default function AdminCRMPage() {
       alert(`${format.toUpperCase()} export functionality is building...`);
     }
     setShowExport(false);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleImportCSV = async () => {
+    if (!selectedFile) return;
+
+    setIsSubmitting(true);
+    try {
+      const text = await selectedFile.text();
+      const lines = text.split("\n").map(l => l.trim()).filter(l => l !== "");
+      if (lines.length < 2) throw new Error("File is empty or invalid");
+
+      const headers = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/["']/g, ""));
+      const data = lines.slice(1).map(line => {
+        const values = line.split(",").map(v => v.trim().replace(/["']/g, ""));
+        const obj: any = {};
+        headers.forEach((header, i) => {
+          if (header.includes("business") || header.includes("name")) obj.business_name = values[i];
+          if (header.includes("email")) obj.email = values[i];
+          if (header.includes("phone")) obj.phone = values[i];
+          if (header.includes("city")) obj.city = values[i];
+          if (header.includes("status")) obj.status = values[i];
+        });
+        return obj;
+      });
+
+      const res = await fetch("/api/leads/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leads: data })
+      });
+
+      if (!res.ok) throw new Error("Import failed");
+      const result = await res.json();
+      alert(`Success: ${result.count} leads imported`);
+      setShowImport(false);
+      setSelectedFile(null);
+      fetchLeads();
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const kpis = [
@@ -183,17 +235,42 @@ export default function AdminCRMPage() {
           <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-2xl w-full max-w-md p-8 shadow-2xl animate-in zoom-in-95 duration-200">
             <h2 className="text-xl font-bold text-white tracking-tight mb-2">Import Leads</h2>
             <p className="text-[var(--text-secondary)] text-sm mb-8">Upload a CSV file containing lead data.</p>
-            <div className="border-2 border-dashed border-[var(--border-subtle)] rounded-xl p-8 text-center bg-[var(--surface-2)] mb-4 hover:border-[var(--border-hover)] hover:bg-white/[0.02] transition-colors cursor-pointer">
-               <Upload className="w-8 h-8 mx-auto text-[var(--text-muted)] mb-3" />
-               <div className="text-sm font-semibold text-white">Click to upload CSV</div>
-               <div className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-2">Maximum file size 5MB</div>
+            
+            <input 
+              type="file" 
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept=".csv"
+              className="hidden"
+            />
+
+            <div 
+              onClick={() => fileInputRef.current?.click()}
+              className={cn(
+                "border-2 border-dashed rounded-xl p-8 text-center bg-[var(--surface-2)] mb-4 hover:border-[var(--border-hover)] hover:bg-white/[0.02] transition-colors cursor-pointer",
+                selectedFile ? "border-primary/40 bg-primary/5" : "border-[var(--border-subtle)]"
+              )}
+            >
+               <Upload className={cn("w-8 h-8 mx-auto mb-3", selectedFile ? "text-primary" : "text-[var(--text-muted)]")} />
+               <div className="text-sm font-semibold text-white">
+                 {selectedFile ? selectedFile.name : "Click to upload CSV"}
+               </div>
+               <div className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-2">
+                 {selectedFile ? `${(selectedFile.size / 1024).toFixed(2)} KB` : "Maximum file size 5MB"}
+               </div>
             </div>
             <div className="text-center">
               <button type="button" onClick={() => alert('Template download is being generated...')} className="text-[10px] font-bold uppercase tracking-widest text-primary hover:underline bg-transparent border-none p-0 cursor-pointer">Download Template</button>
             </div>
             <div className="mt-8 flex justify-end gap-3">
-              <Button onClick={() => setShowImport(false)} variant="ghost" className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] hover:text-white">Cancel</Button>
-              <Button className="bg-white text-black hover:bg-gray-200 text-[10px] font-bold uppercase tracking-widest h-10 px-6">Import Data</Button>
+              <Button onClick={() => { setShowImport(false); setSelectedFile(null); }} variant="ghost" className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-secondary)] hover:text-white">Cancel</Button>
+              <Button 
+                onClick={handleImportCSV}
+                disabled={!selectedFile || isSubmitting}
+                className="bg-white text-black hover:bg-gray-200 text-[10px] font-bold uppercase tracking-widest h-10 px-6 min-w-[120px]"
+              >
+                {isSubmitting ? "Importing..." : "Import Data"}
+              </Button>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import {
@@ -63,6 +63,9 @@ export default function LeadsAdminPage() {
     city: "",
     status: "new" as Lead['status']
   });
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const fetchLeads = useCallback(async () => {
     try {
@@ -182,6 +185,58 @@ export default function LeadsAdminPage() {
 
   const handleExportCSV = () => {
     window.location.href = "/api/crm/export?format=csv";
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleImportCSV = async () => {
+    if (!selectedFile) {
+      showToast("Please select a file", "error");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const text = await selectedFile.text();
+      const lines = text.split("\n").map(l => l.trim()).filter(l => l !== "");
+      if (lines.length < 2) throw new Error("File is empty or invalid");
+
+      const headers = lines[0].split(",").map(h => h.trim().toLowerCase().replace(/["']/g, ""));
+      const data = lines.slice(1).map(line => {
+        const values = line.split(",").map(v => v.trim().replace(/["']/g, ""));
+        const obj: any = {};
+        headers.forEach((header, i) => {
+          if (header.includes("business") || header.includes("name")) obj.business_name = values[i];
+          if (header.includes("email")) obj.email = values[i];
+          if (header.includes("phone")) obj.phone = values[i];
+          if (header.includes("city")) obj.city = values[i];
+          if (header.includes("status")) obj.status = values[i];
+        });
+        return obj;
+      });
+
+      const res = await fetch("/api/leads/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leads: data })
+      });
+
+      if (!res.ok) throw new Error("Import failed");
+      const result = await res.json();
+      showToast(`Success: ${result.count} leads imported`);
+      setShowImportLead(false);
+      setSelectedFile(null);
+      fetchLeads();
+    } catch (e: any) {
+      showToast(e.message, "error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleOpenOutreach = (lead: Lead) => {
@@ -684,15 +739,49 @@ export default function LeadsAdminPage() {
             <h2 className="text-xl font-bold text-white tracking-tight mb-2">Import Leads</h2>
             <p className="text-white/40 text-sm mb-8">Upload a CSV file to bulk import leads.</p>
             
-            <div className="border-2 border-dashed border-white/5 rounded-2xl p-12 text-center bg-white/[0.02] hover:bg-white/[0.04] transition-all cursor-pointer">
-              <Upload size={32} className="mx-auto text-white/20 mb-4" />
-              <p className="text-xs font-bold text-white uppercase tracking-widest">Drop CSV File Here</p>
-              <p className="text-[10px] text-white/20 mt-2 uppercase tracking-tight">or click to browse local files</p>
+            <input 
+              type="file" 
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept=".csv"
+              className="hidden"
+            />
+
+            <div 
+              onClick={() => fileInputRef.current?.click()}
+              className={cn(
+                "border-2 border-dashed rounded-2xl p-12 text-center transition-all cursor-pointer",
+                selectedFile ? "border-[#00A86B]/40 bg-[#00A86B]/5" : "border-white/5 bg-white/[0.02] hover:bg-white/[0.04]"
+              )}
+            >
+              <Upload size={32} className={cn("mx-auto mb-4", selectedFile ? "text-[#00A86B]" : "text-white/20")} />
+              <p className="text-xs font-bold text-white uppercase tracking-widest">
+                {selectedFile ? selectedFile.name : "Drop CSV File Here"}
+              </p>
+              <p className="text-[10px] text-white/20 mt-2 uppercase tracking-tight">
+                {selectedFile ? `${(selectedFile.size / 1024).toFixed(2)} KB` : "or click to browse local files"}
+              </p>
             </div>
 
             <div className="mt-8 flex justify-end gap-3">
-               <Button type="button" onClick={() => setShowImportLead(false)} variant="ghost" className="text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white">Cancel</Button>
-               <Button className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90 text-[10px] font-bold uppercase tracking-widest h-10 px-6">Process File</Button>
+               <Button 
+                type="button" 
+                onClick={() => {
+                  setShowImportLead(false);
+                  setSelectedFile(null);
+                }} 
+                variant="ghost" 
+                className="text-[10px] font-bold uppercase tracking-widest text-white/40 hover:text-white"
+              >
+                Cancel
+              </Button>
+               <Button 
+                onClick={handleImportCSV}
+                disabled={!selectedFile || isSubmitting}
+                className="bg-[#00A86B] text-white hover:bg-[#00A86B]/90 text-[10px] font-bold uppercase tracking-widest h-10 px-6 min-w-[120px]"
+              >
+                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Process File"}
+              </Button>
             </div>
           </div>
         </div>
