@@ -2,11 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
-import { Plus, Search, Shield, UserX, Key, Clock, Activity, Loader2 } from "lucide-react";
+import { Plus, Search, Shield, UserX, Key, Clock, Activity, Loader2, ShieldAlert } from "lucide-react";
 import { Reveal } from "@/components/marketing/Reveal";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 export default function AdminTeamPage() {
+  const { data: session } = useSession();
+  const role = (session?.user as any)?.role;
+  const isAdmin = role === "ADMIN" || role === "CO_ADMIN";
+
   const [team, setTeam] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");

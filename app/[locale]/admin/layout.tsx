@@ -25,6 +25,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const role = (session?.user as any)?.role;
     if (role === "ADMIN" || role === "CO_ADMIN" || role === "crm_agent") {
       setAuthorized(true);
+      
+      // Redirect crm_agent from root admin to leads
+      const pathname = window.location.pathname;
+      if (role === "crm_agent" && (pathname.endsWith("/admin") || pathname.endsWith("/admin/"))) {
+        router.push("/admin/leads");
+      }
     } else {
       setAuthorized(false);
     }

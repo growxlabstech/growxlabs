@@ -1,5 +1,7 @@
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const VALID_LEAD_COLUMNS = [
   'business_name', 'name', 'email', 'phone', 'website_url', 
@@ -13,6 +15,12 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { role, id: userId } = session.user as any;
     const { id } = await params;
     
     // 1. Validate ID (Basic presence check, Supabase handles UUID typing)
@@ -20,13 +28,28 @@ export async function PATCH(
       return NextResponse.json({ error: "Lead ID is required" }, { status: 400 });
     }
 
+    // 1.5 Security Check for CRM Agents
+    if (role === 'crm_agent') {
+      const { data: lead } = await supabaseAdmin
+        .from("leads")
+        .select("assigned_to")
+        .eq("id", id)
+        .single();
+      
+      if (!lead || lead.assigned_to !== userId) {
+        return NextResponse.json({ error: "Access Denied: You can only update leads assigned to you." }, { status: 403 });
+      }
+    }
+
     const body = await req.json();
     
-    // 2. Filter data to only include valid columns to prevent Supabase 400 errors
-    // This allows the frontend to send draft/computed fields without crashing the update
+    // 2. Filter data
     const updateData: Record<string, any> = {};
     
     Object.keys(body).forEach(key => {
+      // Prevent CRM Agents from changing the assignment
+      if (role === 'crm_agent' && key === 'assigned_to') return;
+      
       if (VALID_LEAD_COLUMNS.includes(key)) {
         updateData[key] = body[key];
       }
