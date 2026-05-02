@@ -67,8 +67,7 @@ export async function PATCH(
     const { data, error } = await supabaseAdmin
       .from("leads")
       .update({ 
-        ...updateData,
-        updated_at: new Date().toISOString()
+        ...updateData
       })
       .eq("id", id)
       .select()

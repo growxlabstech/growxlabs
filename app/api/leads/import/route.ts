@@ -49,8 +49,7 @@ export async function POST(req: Request) {
       city: l.city,
       status: l.status,
       assigned_to: l.assigned_to,
-      created_at: l.created_at,
-      updated_at: l.updated_at
+      created_at: l.created_at
     })));
 
     // Try to insert into 'crm_leads' table as well for the CRM dashboard
@@ -62,8 +61,7 @@ export async function POST(req: Request) {
       city: l.city,
       status: l.status,
       assigned_to: l.assigned_to,
-      created_at: l.created_at,
-      updated_at: l.updated_at
+      created_at: l.created_at
     })));
 
     if (e1 && e2) {
