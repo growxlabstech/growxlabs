@@ -18,7 +18,6 @@ export async function POST(req: Request) {
     const creatorName = userName || "Admin";
     const source = body.source || "Admin Manual";
 
-    // Strictly define the data to insert into 'leads' to avoid undefined column errors
     const leadData: any = {
       business_name: body.business_name,
       name: body.name || body.business_name, // Fallback to business_name
@@ -26,9 +25,7 @@ export async function POST(req: Request) {
       phone: body.phone || null,
       city: body.city || null,
       status: body.status || 'new',
-      assigned_to: assignedTo,
-      created_at: now,
-      updated_at: now
+      assigned_to: assignedTo
     };
 
     // 1. Try to insert with tracking columns
