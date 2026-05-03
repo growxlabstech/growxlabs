@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/Button";
-import { Reveal } from "./Reveal";
 import { HelpCircle, ArrowRight, Lightbulb, PlayCircle } from "lucide-react";
 
 interface AEOBlockProps {
