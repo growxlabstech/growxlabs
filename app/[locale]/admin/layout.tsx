@@ -13,6 +13,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { data: session, status } = useSession();
   const [authorized, setAuthorized] = useState<boolean | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -35,6 +36,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       setAuthorized(false);
     }
   }, [status, session, router]);
+
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, []);
+
+  // Prevent body scroll when mobile drawer is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileOpen]);
 
   if (authorized === null) {
     return (
@@ -71,20 +89,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-[var(--background)] text-white flex overflow-hidden relative print:bg-white print:text-black print:block print:overflow-visible">
       {/* PERSISTENT SIDEBAR */}
       <div className="print:hidden">
-        <AdminNav isCollapsed={isCollapsed} onToggle={() => setIsCollapsed(!isCollapsed)} />
+        <AdminNav
+          isCollapsed={isCollapsed}
+          onToggle={() => setIsCollapsed(!isCollapsed)}
+          isMobileOpen={isMobileOpen}
+          onMobileToggle={() => setIsMobileOpen(!isMobileOpen)}
+        />
       </div>
       
       {/* SCROLLABLE MAIN CONTENT AREA */}
       <main className={cn(
         "flex-1 min-h-screen overflow-y-auto relative custom-scrollbar transition-all duration-500 ease-in-out bg-[var(--background)] z-10 print:ml-0 print:bg-transparent print:overflow-visible print:min-h-0",
-        isCollapsed ? "ml-20" : "ml-64"
+        // Desktop margin based on sidebar state
+        isCollapsed ? "lg:ml-20" : "lg:ml-64",
+        // Mobile: no margin, add top padding for the mobile top bar
+        "ml-0 pt-14 lg:pt-0"
       )}>
-         {/* Internal Spacing */}
-         <div className="p-8 lg:p-12 max-w-[1600px] mx-auto space-y-10 print:p-0 print:m-0 print:space-y-0 print:max-w-none">
+         {/* Internal Spacing — responsive padding */}
+         <div className="p-4 sm:p-6 lg:p-12 max-w-[1600px] mx-auto space-y-6 sm:space-y-8 lg:space-y-10 print:p-0 print:m-0 print:space-y-0 print:max-w-none">
             {children}
          </div>
 
-         <footer className="mt-20 border-t border-[var(--border-subtle)] p-10 text-center opacity-30 print:hidden">
+         <footer className="mt-20 border-t border-[var(--border-subtle)] p-6 sm:p-10 text-center opacity-30 print:hidden">
             <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-[var(--text-muted)]">GrowXLabsTech · Administrative Suite · 2026</p>
          </footer>
       </main>

@@ -93,7 +93,7 @@ export default function AdminTeamPage() {
   };
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-6 sm:space-y-12">
       <Reveal y={-20}>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-1">
@@ -108,7 +108,7 @@ export default function AdminTeamPage() {
 
       {/* ACTIVITY MONITOR */}
       <Reveal delay={0.1}>
-        <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] p-8 rounded-2xl">
+        <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] p-4 sm:p-8 rounded-2xl">
            <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-3 tracking-tight">
               <div className="p-2 bg-green-500/10 rounded-lg">
                 <Activity className="w-4 h-4 text-green-400" />
@@ -135,20 +135,20 @@ export default function AdminTeamPage() {
       {/* TEAM LIST */}
       <Reveal delay={0.2}>
         <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-2xl overflow-hidden">
-          <div className="p-6 border-b border-[var(--border-subtle)] flex justify-between items-center bg-[var(--surface-2)]">
+          <div className="p-4 sm:p-6 border-b border-[var(--border-subtle)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[var(--surface-2)]">
             <h2 className="text-lg font-bold text-white tracking-tight">CRM Agents ({team.length})</h2>
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] w-4 h-4" />
               <input 
                 type="text" 
                 placeholder="SEARCH TEAM..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border border-[var(--border-subtle)] rounded-lg pl-10 pr-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[var(--border-hover)] w-64 transition-colors"
+                className="bg-transparent border border-[var(--border-subtle)] rounded-lg pl-10 pr-4 py-2 text-[10px] font-bold uppercase tracking-widest text-white focus:outline-none focus:border-[var(--border-hover)] w-full sm:w-64 transition-colors"
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-8">
             {loading ? (
               <div className="col-span-full text-center py-12 text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Loading team...</div>
             ) : team.filter(m => 
@@ -174,7 +174,7 @@ export default function AdminTeamPage() {
                     </div>
                  </div>
                  <div className="space-y-3 text-sm mb-8">
-                    <div className="flex justify-between items-center pb-2 border-b border-[var(--border-subtle)]"><span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Email</span><span className="text-[var(--text-secondary)] font-medium text-xs">{member.email}</span></div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 pb-2 border-b border-[var(--border-subtle)]"><span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Email</span><span className="text-[var(--text-secondary)] font-medium text-xs truncate max-w-full">{member.email}</span></div>
                     <div className="flex justify-between items-center pb-2 border-b border-[var(--border-subtle)]"><span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Terms</span>
                        <span className={member.accepted_terms ? "text-green-400 font-medium text-[10px] uppercase tracking-widest" : "text-amber-400 font-medium text-[10px] uppercase tracking-widest"}>
                           {member.accepted_terms ? "Accepted" : "Pending"}

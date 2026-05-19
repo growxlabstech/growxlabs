@@ -123,7 +123,7 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
         <Reveal className="lg:col-span-2">
-          <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-2xl p-8 h-full">
+          <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-2xl p-4 sm:p-8 h-full">
              <div className="flex items-center justify-between mb-10">
                <div className="flex items-center gap-3">
                  <div className="p-2 bg-primary/10 rounded-lg">
@@ -138,7 +138,7 @@ export default async function AdminDashboard() {
                </select>
              </div>
              
-             <div className="h-64 flex items-end gap-2 md:gap-4 pb-2 border-b border-[var(--border-subtle)]">
+             <div className="h-48 sm:h-64 flex items-end gap-1 sm:gap-2 md:gap-4 pb-2 border-b border-[var(--border-subtle)]">
                 {[45, 62, 58, 75, 90, 82, 95, 88, 100, 115, 105, 120].map((h, i) => (
                   <div key={i} className="flex-1 group relative">
                      <div 
@@ -153,8 +153,8 @@ export default async function AdminDashboard() {
                 ))}
              </div>
              <div className="flex justify-between px-1 mt-4">
-                {["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map(m => (
-                  <span key={m} className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">{m}</span>
+                 {["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"].map((m, i) => (
+                   <span key={i} className="text-[7px] sm:text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">{m}</span>
                 ))}
              </div>
           </div>
@@ -162,7 +162,7 @@ export default async function AdminDashboard() {
 
         {/* Recent Enrollments */}
         <Reveal>
-          <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-2xl p-8 h-full flex flex-col">
+          <div className="bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-2xl p-4 sm:p-8 h-full flex flex-col">
              <div className="flex items-center gap-3 mb-8">
                 <div className="p-2 bg-blue-400/10 rounded-lg">
                    <Activity className="text-blue-400" size={18} />

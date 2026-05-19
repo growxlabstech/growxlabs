@@ -7,7 +7,7 @@ import {
   BarChart3, Users, Target, Inbox,
   FileText, Zap, ShieldCheck, Rocket, FileCheck, LogOut, PanelLeftClose, PanelLeft,
   GraduationCap, BookOpen, Award, CreditCard, ClipboardList, PenTool,
-  TicketPercent, ListOrdered, Database, UserCog, Settings
+  TicketPercent, ListOrdered, Database, UserCog, Settings, Menu, X
 } from "lucide-react";
 
 const navItems = [
@@ -51,9 +51,11 @@ const templateItems = [
 interface AdminNavProps {
   isCollapsed: boolean;
   onToggle: () => void;
+  isMobileOpen: boolean;
+  onMobileToggle: () => void;
 }
 
-export function AdminNav({ isCollapsed, onToggle }: AdminNavProps) {
+export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }: AdminNavProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const role = (session?.user as any)?.role;
@@ -70,12 +72,16 @@ export function AdminNav({ isCollapsed, onToggle }: AdminNavProps) {
         key={item.href}
         href={item.href}
         title={isCollapsed ? item.name : ""}
+        onClick={() => {
+          // Close mobile drawer on navigation
+          if (isMobileOpen) onMobileToggle();
+        }}
         className={cn(
           "flex items-center h-10 px-4 rounded-xl transition-all duration-300 group relative",
           isActive
             ? "bg-primary/10 text-primary"
             : "text-[var(--text-tertiary)] hover:text-white hover:bg-white/[0.04]",
-          isCollapsed && "justify-center px-0"
+          isCollapsed && "lg:justify-center lg:px-0"
         )}
       >
         <item.icon className={cn(
@@ -83,90 +89,168 @@ export function AdminNav({ isCollapsed, onToggle }: AdminNavProps) {
           isActive ? "text-primary" : "text-[var(--text-muted)] group-hover:text-white",
           !isCollapsed && "mr-3"
         )} />
-        {!isCollapsed && <span className="text-[13px] font-semibold tracking-tight">{item.name}</span>}
+        {/* Always show labels on mobile drawer, conditionally on desktop */}
+        <span className={cn(
+          "text-[13px] font-semibold tracking-tight",
+          isCollapsed ? "lg:hidden" : ""
+        )}>{item.name}</span>
         {isActive && (
           <div className={cn(
             "absolute bg-primary rounded-full shadow-[0_0_8px_rgba(0,168,107,0.5)]",
-            isCollapsed ? "right-1 top-1/2 -translate-y-1/2 w-1 h-4" : "left-0 top-1/2 -translate-y-1/2 w-0.5 h-5"
+            isCollapsed ? "lg:right-1 lg:top-1/2 lg:-translate-y-1/2 lg:w-1 lg:h-4 left-0 top-1/2 -translate-y-1/2 w-0.5 h-5" : "left-0 top-1/2 -translate-y-1/2 w-0.5 h-5"
           )} />
         )}
       </Link>
     );
   };
 
-  return (
-    <aside 
-      className={cn(
-        "h-screen border-r border-[var(--border-subtle)] bg-[var(--surface-1)] flex flex-col fixed left-0 top-0 overflow-visible transition-all duration-500 ease-in-out z-[200]",
-        isCollapsed ? "w-20" : "w-64"
-      )}
-    >
-      <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden no-scrollbar">
-        
-        {/* Branding Header */}
-        <div className={cn(
-            "p-8 transition-all duration-500", 
-            isCollapsed ? "px-0 flex justify-center" : "px-8"
-        )}>
-           <div className="flex items-center gap-3">
-              <div className="h-9 w-9 bg-primary rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
-                <ShieldCheck className="text-white h-5 w-5" />
-              </div>
-              {!isCollapsed && (
-                  <div className="flex flex-col overflow-hidden whitespace-nowrap">
-                      <span className="text-lg font-bold tracking-tighter text-white leading-none">GrowXLabsTech</span>
-                      <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-[0.2em] mt-1.5">Admin Central</span>
-                  </div>
-              )}
-           </div>
-        </div>
+  // Shared sidebar content (used in both desktop fixed sidebar and mobile drawer)
+  const sidebarContent = (
+    <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden no-scrollbar">
+      
+      {/* Branding Header */}
+      <div className={cn(
+          "p-8 transition-all duration-500", 
+          isCollapsed ? "lg:px-0 lg:flex lg:justify-center px-8" : "px-8"
+      )}>
+         <div className="flex items-center gap-3">
+            <div className="h-9 w-9 bg-primary rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
+              <ShieldCheck className="text-white h-5 w-5" />
+            </div>
+            <div className={cn(
+              "flex flex-col overflow-hidden whitespace-nowrap",
+              isCollapsed ? "lg:hidden" : ""
+            )}>
+                <span className="text-lg font-bold tracking-tighter text-white leading-none">GrowXLabsTech</span>
+                <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-[0.2em] mt-1.5">Admin Central</span>
+            </div>
+         </div>
+      </div>
 
-        {/* Navigation Content */}
-        <div className="flex-1 mt-4 px-3">
-          <div className="flex flex-col space-y-1 mb-8">
-            {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mb-4 px-4">Core Systems</p>}
-            {filteredNavItems.map(renderLink)}
+      {/* Navigation Content */}
+      <div className="flex-1 mt-4 px-3">
+        <div className="flex flex-col space-y-1 mb-8">
+          <p className={cn(
+            "text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mb-4 px-4",
+            isCollapsed ? "lg:hidden" : ""
+          )}>Core Systems</p>
+          {filteredNavItems.map(renderLink)}
 
-            {!isCrmAgent && (
-              <>
-                {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Academy Suite</p>}
-                {academyItems.map(renderLink)}
+          {!isCrmAgent && (
+            <>
+              <p className={cn(
+                "text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4",
+                isCollapsed ? "lg:hidden" : ""
+              )}>Academy Suite</p>
+              {academyItems.map(renderLink)}
 
-                {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Revenue</p>}
-                {monetizationItems.map(renderLink)}
+              <p className={cn(
+                "text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4",
+                isCollapsed ? "lg:hidden" : ""
+              )}>Revenue</p>
+              {monetizationItems.map(renderLink)}
 
-                {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Financials</p>}
-                {financialItems.map(renderLink)}
-                
-                {!isCollapsed && <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4">Templates</p>}
-                {templateItems.map(renderLink)}
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Footer Area */}
-        <div className={cn("mt-auto py-6 border-t border-[var(--border-subtle)]", isCollapsed ? "px-3" : "px-6")}>
-          <button
-            onClick={() => signOut({ callbackUrl: "/login" })}
-            className={cn(
-              "w-full flex items-center h-10 px-4 rounded-xl text-[var(--text-muted)] hover:text-red-400 hover:bg-red-500/5 transition-all group",
-              isCollapsed && "justify-center px-0"
-            )}
-          >
-            <LogOut className={cn("h-4 w-4 shrink-0 transition-colors group-hover:text-red-400", !isCollapsed && "mr-3")} />
-            {!isCollapsed && <span className="text-[11px] font-bold uppercase tracking-widest">Sign Out</span>}
-          </button>
+              <p className={cn(
+                "text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4",
+                isCollapsed ? "lg:hidden" : ""
+              )}>Financials</p>
+              {financialItems.map(renderLink)}
+              
+              <p className={cn(
+                "text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-muted)] mt-8 mb-4 px-4",
+                isCollapsed ? "lg:hidden" : ""
+              )}>Templates</p>
+              {templateItems.map(renderLink)}
+            </>
+          )}
         </div>
       </div>
 
-      {/* Toggle Control */}
-      <button 
-        onClick={onToggle}
-        className="absolute top-10 -right-4 h-8 w-8 rounded-xl bg-primary text-white flex items-center justify-center border border-primary/40 z-[210] shadow-xl hover:scale-110 active:scale-95 transition-all duration-300"
+      {/* Footer Area */}
+      <div className={cn("mt-auto py-6 border-t border-[var(--border-subtle)]", isCollapsed ? "lg:px-3 px-6" : "px-6")}>
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className={cn(
+            "w-full flex items-center h-10 px-4 rounded-xl text-[var(--text-muted)] hover:text-red-400 hover:bg-red-500/5 transition-all group",
+            isCollapsed && "lg:justify-center lg:px-0"
+          )}
+        >
+          <LogOut className={cn("h-4 w-4 shrink-0 transition-colors group-hover:text-red-400", !isCollapsed && "mr-3")} />
+          <span className={cn(
+            "text-[11px] font-bold uppercase tracking-widest",
+            isCollapsed ? "lg:hidden" : ""
+          )}>Sign Out</span>
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* ═══ MOBILE TOP BAR ═══ */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-[250] h-14 bg-[var(--surface-1)] border-b border-[var(--border-subtle)] flex items-center justify-between px-4">
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
+            <ShieldCheck className="text-white h-4 w-4" />
+          </div>
+          <div className="flex flex-col overflow-hidden whitespace-nowrap">
+            <span className="text-sm font-bold tracking-tighter text-white leading-none">GrowXLabsTech</span>
+            <span className="text-[8px] font-bold text-[var(--text-muted)] uppercase tracking-[0.2em]">Admin</span>
+          </div>
+        </div>
+        <button
+          onClick={onMobileToggle}
+          className="h-10 w-10 rounded-xl bg-[var(--surface-2)] border border-[var(--border-subtle)] flex items-center justify-center text-white hover:bg-white/10 transition-all"
+          aria-label="Toggle navigation"
+        >
+          {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
+        </button>
+      </div>
+
+      {/* ═══ MOBILE DRAWER OVERLAY ═══ */}
+      {isMobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[290]"
+          onClick={onMobileToggle}
+        />
+      )}
+
+      {/* ═══ MOBILE DRAWER SIDEBAR ═══ */}
+      <aside
+        className={cn(
+          "lg:hidden fixed left-0 top-0 h-screen w-72 bg-[var(--surface-1)] border-r border-[var(--border-subtle)] z-[300] transition-transform duration-300 ease-in-out overflow-visible",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full"
+        )}
       >
-        {isCollapsed ? <PanelLeft size={16} /> : <PanelLeftClose size={16} />}
-      </button>
-    </aside>
+        {/* Close button inside drawer */}
+        <div className="absolute top-4 right-4 z-10">
+          <button
+            onClick={onMobileToggle}
+            className="h-8 w-8 rounded-lg bg-white/5 border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-muted)] hover:text-white hover:bg-white/10 transition-all"
+          >
+            <X size={16} />
+          </button>
+        </div>
+        {sidebarContent}
+      </aside>
+
+      {/* ═══ DESKTOP FIXED SIDEBAR (hidden on mobile) ═══ */}
+      <aside 
+        className={cn(
+          "hidden lg:flex h-screen border-r border-[var(--border-subtle)] bg-[var(--surface-1)] flex-col fixed left-0 top-0 overflow-visible transition-all duration-500 ease-in-out z-[200]",
+          isCollapsed ? "w-20" : "w-64"
+        )}
+      >
+        {sidebarContent}
+
+        {/* Toggle Control */}
+        <button 
+          onClick={onToggle}
+          className="absolute top-10 -right-4 h-8 w-8 rounded-xl bg-primary text-white flex items-center justify-center border border-primary/40 z-[210] shadow-xl hover:scale-110 active:scale-95 transition-all duration-300"
+        >
+          {isCollapsed ? <PanelLeft size={16} /> : <PanelLeftClose size={16} />}
+        </button>
+      </aside>
+    </>
   );
 }
