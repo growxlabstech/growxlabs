@@ -4,7 +4,6 @@ import { Reveal } from "@/components/marketing/Reveal";
 import { locales, Link } from "@/navigation";
 import Script from "next/script";
 import { DynamicSchema } from "@/components/marketing/DynamicSchema";
-import { SubscriptionPlansSection } from "@/components/marketing/SubscriptionPlansSection";
 import { AccordionFAQ } from "@/components/marketing/AccordionFAQ";
 import { Button } from "@/components/ui/Button";
 
@@ -28,6 +27,18 @@ const faqData = [
   {
     question: "What is the typical ROI timeline?",
     answer: "Most clients see operational savings immediately, while revenue improvements typically appear after the system has collected and converted traffic for several weeks."
+  },
+  {
+    question: "Can I cancel anytime?",
+    answer: "Yes. Cancel with 15 days notice. No lock-in."
+  },
+  {
+    question: "What if I need a website first?",
+    answer: "We build your website first (one-time), then you move to subscription."
+  },
+  {
+    question: "Do you serve outside India?",
+    answer: "Yes. USD pricing available."
   }
 ];
 
@@ -264,8 +275,6 @@ export default function ServicesPage() {
               ))}
             </div>
           </section>
-
-          <SubscriptionPlansSection />
 
           <section className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
