@@ -77,27 +77,27 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
           if (isMobileOpen) onMobileToggle();
         }}
         className={cn(
-          "flex items-center h-10 px-4 rounded-xl transition-all duration-300 group relative",
+          "flex items-center h-10 px-4 rounded-xl transition-all duration-300 group relative border border-transparent",
           isActive
-            ? "bg-primary/10 text-primary"
-            : "text-[var(--text-tertiary)] hover:text-white hover:bg-white/[0.04]",
+            ? "bg-white/[0.04] text-white border-white/[0.03] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]"
+            : "text-[#9CA3AF] hover:text-white hover:bg-white/[0.02]",
           isCollapsed && "lg:justify-center lg:px-0"
         )}
       >
         <item.icon className={cn(
           "h-4 w-4 shrink-0 transition-colors",
-          isActive ? "text-primary" : "text-[var(--text-muted)] group-hover:text-white",
+          isActive ? "text-[#355CFF]" : "text-[#6B7280] group-hover:text-white",
           !isCollapsed && "mr-3"
         )} />
         {/* Always show labels on mobile drawer, conditionally on desktop */}
         <span className={cn(
-          "text-[13px] font-semibold tracking-tight",
+          "text-[13px] font-medium tracking-tight",
           isCollapsed ? "lg:hidden" : ""
         )}>{item.name}</span>
         {isActive && (
           <div className={cn(
-            "absolute bg-primary rounded-full shadow-[0_0_8px_rgba(0,168,107,0.5)]",
-            isCollapsed ? "lg:right-1 lg:top-1/2 lg:-translate-y-1/2 lg:w-1 lg:h-4 left-0 top-1/2 -translate-y-1/2 w-0.5 h-5" : "left-0 top-1/2 -translate-y-1/2 w-0.5 h-5"
+            "absolute bg-[#355CFF] rounded-r-md shadow-[0_0_12px_rgba(53,92,255,0.8)]",
+            isCollapsed ? "lg:left-0 lg:top-1/2 lg:-translate-y-1/2 lg:w-1 lg:h-5 left-0 top-1/2 -translate-y-1/2 w-0.5 h-5" : "left-0 top-1/2 -translate-y-1/2 w-[3px] h-5"
           )} />
         )}
       </Link>
@@ -114,15 +114,15 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
           isCollapsed ? "lg:px-0 lg:flex lg:justify-center px-8" : "px-8"
       )}>
          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 bg-primary rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
-              <ShieldCheck className="text-white h-5 w-5" />
+            <div className="h-9 w-9 bg-gradient-to-br from-[#355CFF] to-[#1E3BB3] rounded-xl flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(53,92,255,0.35)] border border-[#355CFF]/30">
+              <ShieldCheck className="text-white h-5 w-5 animate-pulse" />
             </div>
             <div className={cn(
               "flex flex-col overflow-hidden whitespace-nowrap",
               isCollapsed ? "lg:hidden" : ""
             )}>
-                <span className="text-lg font-bold tracking-tighter text-white leading-none">GrowXLabsTech</span>
-                <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-[0.2em] mt-1.5">Admin Central</span>
+                <span className="text-lg font-black tracking-[-0.04em] text-white leading-none">GrowX<span className="text-[#355CFF]">Labs</span></span>
+                <span className="text-[8px] font-bold text-[#6B7280] uppercase tracking-[0.25em] mt-1.5">Admin Central</span>
             </div>
          </div>
       </div>
