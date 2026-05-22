@@ -187,24 +187,8 @@ section {
   background-image: linear-gradient(135deg, #FFFFFF 0%, #355CFF 100%);
 }
 
-@keyframes float {
-  0% { opacity: 0.95; }
-  50% { opacity: 1; }
-  100% { opacity: 0.95; }
-}
+/* Removed float and scroll animations to optimize performance and prevent mobile paint glitches */
 
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-scroll {
-  animation: scroll 40s linear infinite;
-}
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -265,38 +249,8 @@ section:not(:first-of-type) {
   /* Removed content-visibility to prevent mobile rendering glitches and duplicated layout paint issues */
 }
 
-@keyframes flicker-in {
-  0% { opacity: 0; }
-  40% { opacity: 0; }
-  50% { opacity: 1; }
-  60% { opacity: 0.3; }
-  70% { opacity: 1; }
-  100% { opacity: 1; }
-}
+/* Removed flicker and pulse-glow animations to ensure hardware acceleration stability on mobile */
 
-.animate-flicker {
-  animation: flicker-in 0.8s forwards;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; }
-}
-
-.glow-dot-green {
-  box-shadow: 0 0 4px rgba(34, 197, 94, 0.4);
-  animation: pulse-glow 2s infinite ease-in-out;
-}
-
-.glow-dot-red {
-  box-shadow: 0 0 4px rgba(239, 68, 68, 0.4);
-  animation: pulse-glow 2s infinite ease-in-out;
-}
-
-.glow-dot-amber {
-  box-shadow: 0 0 4px rgba(245, 158, 11, 0.4);
-  animation: pulse-glow 2s infinite ease-in-out;
-}
 
 /* ═══════════════════════════════════════════════════ */
 /* IMAGE CONTAINERS SAFETY RULES                       */

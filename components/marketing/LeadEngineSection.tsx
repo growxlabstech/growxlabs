@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/Button";
 import {
@@ -22,11 +21,7 @@ const signals = [
 
 function GrowthConsolePreview() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+    <div
       className="relative lg:sticky lg:top-28"
       aria-label="Website, automation, and growth system preview"
     >
@@ -70,12 +65,8 @@ function GrowthConsolePreview() {
               </div>
             </div>
             <div className="h-2 rounded-full bg-white/10 overflow-hidden mt-4">
-              <motion.div
-                initial={{ width: 0 }}
-                whileInView={{ width: "76%" }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
-                className="h-full bg-[#355CFF] rounded-full"
+              <div
+                className="h-full bg-[#355CFF] rounded-full w-[76%]"
               />
             </div>
           </div>
@@ -100,7 +91,7 @@ function GrowthConsolePreview() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -114,11 +105,7 @@ export function LeadEngineSection() {
       <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] gap-10 xl:gap-14 items-start">
           <div className="max-w-xl lg:max-w-none xl:max-w-[34rem]">
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            <div
               className="space-y-6"
             >
               <div className="space-y-3">
@@ -179,7 +166,7 @@ export function LeadEngineSection() {
                   preview shows the shape of what we deploy.
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <GrowthConsolePreview />

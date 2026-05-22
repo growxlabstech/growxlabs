@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Globe, ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, usePathname } from "@/navigation";
 import { useLocale } from "next-intl";
 
@@ -71,45 +70,41 @@ export function LanguageSwitcher() {
         <ChevronDown size={12} className={`text-white/20 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)} />
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              className="absolute right-0 mt-2 w-64 bg-[#0A0F1E] border border-white/10 rounded-2xl shadow-2xl p-4 z-[70] max-h-[80vh] overflow-y-auto no-scrollbar"
-            >
-              <div className="space-y-6">
-                {REGIONS.map((region) => (
-                  <div key={region.name}>
-                    <h4 className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] mb-3 ml-1">
-                      {region.name}
-                    </h4>
-                    <div className="grid grid-cols-1 gap-1">
-                      {region.languages.map((lang) => (
-                        <button
-                          key={lang.code}
-                          onClick={() => handleSwitch(lang.code)}
-                          className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
-                            locale === lang.code 
-                              ? "bg-primary text-black" 
-                              : "text-zinc-400 hover:bg-white/5 hover:text-white"
-                          }`}
-                        >
-                          <span>{lang.name}</span>
-                          <span className="opacity-60">{lang.flag}</span>
-                        </button>
-                      ))}
-                    </div>
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)} />
+          <div
+            className="absolute right-0 mt-2 w-64 bg-[#0A0F1E] border border-white/10 rounded-2xl shadow-2xl p-4 z-[70] max-h-[80vh] overflow-y-auto no-scrollbar"
+          >
+            <div className="space-y-6">
+              {REGIONS.map((region) => (
+                <div key={region.name}>
+                  <h4 className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] mb-3 ml-1">
+                    {region.name}
+                  </h4>
+                  <div className="grid grid-cols-1 gap-1">
+                    {region.languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleSwitch(lang.code)}
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
+                          locale === lang.code 
+                            ? "bg-primary text-black" 
+                            : "text-zinc-400 hover:bg-white/5 hover:text-white"
+                        }`}
+                      >
+                        <span>{lang.name}</span>
+                        <span className="opacity-60">{lang.flag}</span>
+                      </button>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
+

@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 /**
  * Minimal home hero: features standard desktop view and the vertical
  * Swiss-design editorial mobile view inspired by 360labs.dev.
@@ -46,12 +44,7 @@ export function HeroSection() {
         <div className="flex-grow" />
 
         {/* Middle part: Swiss Grid columns aligned to the right */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full flex flex-col items-end mb-36 z-10 select-none"
-        >
+        <div className="w-full flex flex-col items-end mb-36 z-10 select-none">
           {/* Subtle horizontal grid line for Swiss architectural framing */}
           <div className="w-full max-w-4xl pr-8 mb-6">
             <div className="w-full h-[1px] bg-[#E5E2DC]" />
@@ -78,7 +71,7 @@ export function HeroSection() {
               ALL RIGHTS RESERVED
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Bottom part: Massive Brand Title touching the bottom */}
         <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none z-0 translate-y-[3%]">
@@ -122,12 +115,7 @@ export function HeroSection() {
         <div className="relative w-full flex flex-row items-center justify-between">
           
           {/* Left Column: Swiss Editorial Stack */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col justify-between h-[62dvh] text-left pr-4 select-none z-10"
-          >
+          <div className="flex flex-col justify-between h-[62dvh] text-left pr-4 select-none z-10">
             {/* Top Indicator */}
             <div className="font-mono text-[10px] tracking-[0.22em] font-extrabold text-[#1A1A1A] uppercase">
               [ GROWXLABS ]
@@ -158,15 +146,12 @@ export function HeroSection() {
               © 2026 // GL-X<br />
               ALL RIGHTS RESERVED
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column: Rotated Vertical Brand Title pinned perfectly to the right */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[90px] h-[75dvh] flex items-center justify-center pointer-events-none z-0 overflow-hidden">
-            <motion.h1
+            <h1
               id="hero-studio-heading-mobile"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
               className="rotate-[-90deg] whitespace-nowrap text-[#1A1A1A] font-black select-none tracking-[-0.04em] leading-none"
               style={{
                 fontSize: "clamp(1.8rem, 6.8vh, 3.4rem)",
@@ -193,7 +178,7 @@ export function HeroSection() {
                   </span>
                 );
               })}
-            </motion.h1>
+            </h1>
           </div>
 
         </div>
