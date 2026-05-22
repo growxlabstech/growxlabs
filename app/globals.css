@@ -260,10 +260,9 @@ section {
   animation: fadeInUp 0.4s ease-out both;
 }
 
-/* Performance optimization for below-the-fold content */
+/* Below-the-fold content stability reset */
 section:not(:first-of-type) {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 500px;
+  /* Removed content-visibility to prevent mobile rendering glitches and duplicated layout paint issues */
 }
 
 @keyframes flicker-in {
