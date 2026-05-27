@@ -16,6 +16,7 @@ export function Footer() {
       { name: "Portfolio", href: "/portfolio" },
       { name: "AI Products", href: "/products" },
       { name: "Courses", href: "/courses" },
+      { name: "Blog", href: "/blog" },
     ],
     resources: [
       { name: "Client Portal", href: "/client/dashboard" },
