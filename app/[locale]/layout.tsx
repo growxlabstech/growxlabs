@@ -179,28 +179,6 @@ export default async function LocaleLayout({
                   "operatingSystem": "Web",
                   "creator": { "@id": "https://growxlabs.tech/#organization" },
                   "description": "AI driven recruitment and talent acquisition platform."
-                },
-                {
-                  "@type": "FAQPage",
-                  "@id": "https://growxlabs.tech/#faq",
-                  "mainEntity": [
-                    {
-                      "@type": "Question",
-                      "name": "What is GrowXLabsTech?",
-                      "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "GrowXLabsTech is a global AI native digital agency that builds AI powered websites, n8n automation systems, and business growth tools for businesses worldwide. We deliver projects in 7 to 21 days and serve clients across India, USA, UK, Australia, UAE, Canada, and globally."
-                      }
-                    },
-                    {
-                      "@type": "Question",
-                      "name": "Where is GrowXLabsTech based?",
-                      "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "GrowXLabsTech is headquartered in India and operates globally. We serve clients across USA, UK, Australia, UAE, Canada, Singapore, and worldwide. All client work is done remotely with full transparency and daily updates."
-                      }
-                    }
-                  ]
                 }
               ]
             })

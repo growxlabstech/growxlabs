@@ -11,6 +11,7 @@ import { Reveal } from "@/components/marketing/Reveal";
 import { ArrowRight, Calendar, Clock, User, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { FlickerText } from "@/components/marketing/FlickerText";
+import { AccordionFAQ } from "@/components/marketing/AccordionFAQ";
 
 // ═══════════════════════════════════════════════════
 // METADATA GENERATOR (Perfect SEO / AEO Optimization)
@@ -78,7 +79,24 @@ export default async function GoogleIOPage({ params }: { params: Promise<{ local
     { id: "google-search-future", text: "Search Changing Forever" },
     { id: "business-impacts", text: "Why This Matters for Businesses" },
     { id: "bigger-picture", text: "The Bigger Picture" },
-    { id: "final-thoughts", text: "Final Thoughts" }
+    { id: "final-thoughts", text: "Final Thoughts" },
+    { id: "faq", text: "Frequently Asked Questions" }
+  ];
+
+  // Q&A data for both visual UI rendering and search-engine validation schema
+  const faqData = [
+    {
+      question: "What is Gemini 3.5 Flash?",
+      answer: "Gemini 3.5 Flash is Google's latest speed-optimized AI model, engineered specifically for real-time generative interfaces, autonomous coding, and complex agentic workflows."
+    },
+    {
+      question: "What is Gemini Spark?",
+      answer: "Gemini Spark is an autonomous 24/7 personal AI agent introduced by Google. It runs in the cloud even after you close your laptop, automating recurring workflows and background tasks across Workspace and external systems."
+    },
+    {
+      question: "What is Antigravity at Google I/O 2026?",
+      answer: "Antigravity is Google's new agent-first development environment that allows engineers to manage, orchestrate, and deploy collaborative networks of autonomous AI coding agents."
+    }
   ];
 
   // Structured Data (JSON-LD) for SEO / AEO
@@ -115,32 +133,14 @@ export default async function GoogleIOPage({ params }: { params: Promise<{ local
       {
         "@type": "FAQPage",
         "@id": `https://growxlabs.tech/${locale}/blog/google-io-2026/#faq`,
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "What is Gemini 3.5 Flash?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Gemini 3.5 Flash is Google's latest speed-optimized AI model, engineered specifically for real-time generative interfaces, autonomous coding, and complex agentic workflows."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What is Gemini Spark?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Gemini Spark is an autonomous 24/7 personal AI agent introduced by Google. It runs in the cloud even after you close your laptop, automating recurring workflows and background tasks across Workspace and external systems."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "What is Antigravity at Google I/O 2026?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Antigravity is Google's new agent-first development environment that allows engineers to manage, orchestrate, and deploy collaborative networks of autonomous AI coding agents."
-            }
+        "mainEntity": faqData.map(faq => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
           }
-        ]
+        }))
       }
     ]
   };
@@ -593,6 +593,26 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
                 <p className="mt-8 font-sans font-bold text-[#1A1A1A] not-italic text-sm tracking-[0.1em] uppercase">
                   — GrowXLabsTech
                 </p>
+              </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════ */}
+            {/* 2.5 FAQ SECTION (Perfect AEO Validation)           */}
+            {/* ═══════════════════════════════════════════════════ */}
+            <section id="faq" className="scroll-mt-32 mt-16 pt-16 border-t border-[#E5E2DC] space-y-8">
+              <div className="text-center md:text-left space-y-3">
+                <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold">
+                  Common Q&A
+                </span>
+                <h3 className="text-3xl font-black tracking-tight text-[#1A1A1A]">
+                  Frequently Asked Questions
+                </h3>
+                <p className="text-[#6B7280] text-[15px] max-w-xl leading-relaxed">
+                  Key takeaways and technical details regarding Google's I/O 2026 agentic announcements.
+                </p>
+              </div>
+              <div className="mt-8">
+                <AccordionFAQ items={faqData} />
               </div>
             </section>
 
