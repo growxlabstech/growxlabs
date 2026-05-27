@@ -76,7 +76,7 @@ export default async function AdminDashboard() {
             <p className="text-[var(--text-secondary)] text-sm">Real-time performance metrics for GrowX Labs Academy.</p>
           </div>
           <div className="flex items-center gap-3 bg-primary/5 border border-primary/10 rounded-xl px-5 py-2.5">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-primary" />
             <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-primary">System Monitoring Live</span>
           </div>
         </div>

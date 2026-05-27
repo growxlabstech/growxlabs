@@ -1,5 +1,7 @@
 "use client";
 
+import { FlickerText } from "@/components/marketing/FlickerText";
+
 /**
  * Minimal home hero: features standard desktop view and the vertical
  * Swiss-design editorial mobile view inspired by 360labs.dev.
@@ -26,9 +28,7 @@ export function HeroSection() {
     1.10  // H
   ];
 
-  // Stagger counters to assign unique flicker delays to actual letters (skipping spaces)
-  let letterIdxDesktop = 0;
-  let letterIdxMobile = 0;
+
   
   return (
     <>
@@ -79,26 +79,7 @@ export function HeroSection() {
             id="hero-studio-heading-desktop"
             className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap"
           >
-            {brandName.split("").map((char, idx) => {
-              if (char === " ") {
-                return (
-                  <span key={idx} className="inline-block w-[0.25em]" />
-                );
-              }
-              const currentDelay = flickerDelays[letterIdxDesktop % flickerDelays.length];
-              letterIdxDesktop++;
-              return (
-                <span
-                  key={idx}
-                  className="inline-block animate-flicker"
-                  style={{
-                    animationDelay: `${currentDelay}s`,
-                  }}
-                >
-                  {char}
-                </span>
-              );
-            })}
+            <FlickerText text={brandName} delays={flickerDelays} />
           </h1>
         </div>
       </section>
@@ -156,26 +137,7 @@ export function HeroSection() {
                 fontSize: "clamp(1.8rem, 6.8vh, 3.4rem)",
               }}
             >
-              {brandName.split("").map((char, idx) => {
-                if (char === " ") {
-                  return (
-                    <span key={idx} className="inline-block w-[0.25em]" />
-                  );
-                }
-                const currentDelay = flickerDelays[letterIdxMobile % flickerDelays.length];
-                letterIdxMobile++;
-                return (
-                  <span
-                    key={idx}
-                    className="inline-block animate-flicker"
-                    style={{
-                      animationDelay: `${currentDelay}s`,
-                    }}
-                  >
-                    {char}
-                  </span>
-                );
-              })}
+              <FlickerText text={brandName} delays={flickerDelays} />
             </h1>
           </div>
 

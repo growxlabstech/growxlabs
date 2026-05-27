@@ -90,7 +90,7 @@
   html, body {
     overflow-x: hidden;
     max-width: 100%;
-    background: #f5f5f2;
+    background-color: var(--background);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -316,7 +316,7 @@ img {
   }
 
   body {
-    background-color: #f5f5f2 !important;
+    background-color: var(--background) !important;
   }
 
   /* Explicitly hide complex ThreeJS canvas containers on mobile */
@@ -344,15 +344,4 @@ img {
   }
 }
 
-@keyframes flicker-in {
-  0% { opacity: 0; }
-  40% { opacity: 0; }
-  50% { opacity: 1; }
-  60% { opacity: 0.3; }
-  70% { opacity: 1; }
-  100% { opacity: 1; }
-}
 
-.animate-flicker {
-  animation: flicker-in 0.8s both !important;
-}

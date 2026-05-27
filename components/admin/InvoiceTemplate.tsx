@@ -94,7 +94,7 @@ export default function InvoiceTemplate({ data = {} }: InvoiceProps) {
       {/* TOOLBAR */}
       <div className="max-w-[900px] mx-auto mb-8 flex justify-between items-center print:hidden">
         <div className="flex items-center gap-2.5 text-[#666]">
-           <ShieldCheck className="text-[#355CFF] h-5 w-5 animate-pulse" />
+           <ShieldCheck className="text-[#355CFF] h-5 w-5" />
            <span className="text-[10px] font-bold uppercase tracking-[0.2em] leading-none text-neutral-500">Invoice Management Console</span>
         </div>
         <div className="flex gap-3">

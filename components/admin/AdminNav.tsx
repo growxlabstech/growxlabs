@@ -115,7 +115,7 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
       )}>
          <div className="flex items-center gap-3">
             <div className="h-9 w-9 bg-gradient-to-br from-[#355CFF] to-[#1E3BB3] rounded-xl flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(53,92,255,0.35)] border border-[#355CFF]/30">
-              <ShieldCheck className="text-white h-5 w-5 animate-pulse" />
+              <ShieldCheck className="text-white h-5 w-5" />
             </div>
             <div className={cn(
               "flex flex-col overflow-hidden whitespace-nowrap",

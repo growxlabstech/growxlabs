@@ -33,7 +33,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
 
   return (
-    <div className="min-h-screen bg-[var(--background)] pt-28 pb-20">
+    <div className="dark min-h-screen bg-[var(--background)] pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <ClientNav />
         <main className="animate-in fade-in slide-in-from-bottom-2 duration-700">

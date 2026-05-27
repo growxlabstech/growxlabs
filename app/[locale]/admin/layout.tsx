@@ -86,7 +86,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)] text-white flex overflow-hidden relative print:bg-white print:text-black print:block print:overflow-visible">
+    <div className="dark min-h-screen bg-[var(--background)] text-white flex overflow-hidden relative print:bg-white print:text-black print:block print:overflow-visible">
       {/* PERSISTENT SIDEBAR */}
       <div className="print:hidden">
         <AdminNav

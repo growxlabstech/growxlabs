@@ -24,6 +24,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { CertificatePreview } from "@/components/marketing/CertificatePreview";
 import Script from "next/script";
+import { FlickerText } from "@/components/marketing/FlickerText";
 
 const faqData = [
   {
@@ -128,10 +129,6 @@ export default function CoursesPage() {
   const [openAEO, setOpenAEO] = useState<string | null>(null);
 
   const titleName = "COURSES";
-  const flickerDelays = [
-    0.2, 0.45, 0.1, 0.6, 0.3, 0.8, 0.15, 0.5, 0.7, 0.25, 0.9, 0.35, 0.05, 0.55, 0.4, 0.75,
-  ];
-  let letterIdx = 0;
 
   const handleEnroll = (courseId: string) => {
     if (!session) {
@@ -167,21 +164,7 @@ export default function CoursesPage() {
           {/* Massive Swiss Page Title with neon flickering */}
           <div className="w-full overflow-hidden flex justify-center md:justify-start items-end select-none pointer-events-none mb-14">
             <h1 className="font-black select-none tracking-[-0.06em] text-white leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
-              {titleName.split("").map((char, idx) => {
-                const currentDelay = flickerDelays[letterIdx % flickerDelays.length];
-                letterIdx++;
-                return (
-                  <span
-                    key={idx}
-                    className="inline-block animate-flicker"
-                    style={{
-                      animationDelay: `${currentDelay}s`,
-                    }}
-                  >
-                    {char}
-                  </span>
-                );
-              })}
+              <FlickerText text={titleName} />
             </h1>
           </div>
 

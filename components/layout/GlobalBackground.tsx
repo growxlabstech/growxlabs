@@ -14,7 +14,7 @@ export function GlobalBackground() {
   const isDashboard = pathname?.includes("/admin") || pathname?.includes("/client") || pathname?.includes("/demos");
 
   if (isDashboard) {
-    return <div className="fixed inset-0 -z-50 bg-[#0B0F1A] pointer-events-none" />;
+    return <div className="fixed inset-0 -z-50 bg-[#050810] pointer-events-none" />;
   }
 
   return (

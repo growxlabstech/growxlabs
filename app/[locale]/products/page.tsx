@@ -1,10 +1,11 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { Cpu, Users, ChevronRight, Binary, CheckCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
+import { FlickerText } from "@/components/marketing/FlickerText";
 
 const products = [
   {
@@ -30,25 +31,8 @@ const products = [
   },
 ];
 
-const flickerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: (delay: number) => ({
-    opacity: [0, 0, 1, 0.3, 1, 0.7, 1],
-    transition: {
-      duration: 0.8,
-      delay: delay,
-      times: [0, 0.4, 0.5, 0.6, 0.7, 0.8, 1],
-      ease: "easeInOut",
-    },
-  }),
-};
-
 export default function ProductsPage() {
   const titleName = "AI PRODUCTS";
-  const flickerDelays = [
-    0.2, 0.45, 0.1, 0.6, 0.3, 0.8, 0.15, 0.5, 0.7, 0.25, 0.9, 0.35, 0.05, 0.55, 0.4, 0.75,
-  ];
-  let letterIdx = 0;
 
   return (
     <>
@@ -62,27 +46,7 @@ export default function ProductsPage() {
             id="products-hero-heading"
             className="text-[9.2vw] font-black text-[#1A1A1A] tracking-[-0.06em] leading-[0.8] uppercase whitespace-nowrap"
           >
-            {titleName.split("").map((char, idx) => {
-              if (char === " ") {
-                return (
-                  <span key={idx} className="inline-block w-[0.25em]" />
-                );
-              }
-              const currentDelay = flickerDelays[letterIdx % flickerDelays.length];
-              letterIdx++;
-              return (
-                <motion.span
-                  key={idx}
-                  className="inline-block"
-                  variants={flickerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  custom={currentDelay}
-                >
-                  {char}
-                </motion.span>
-              );
-            })}
+            <FlickerText text={titleName} />
           </h1>
         </div>
       </section>
