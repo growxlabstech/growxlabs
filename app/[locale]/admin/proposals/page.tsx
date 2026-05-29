@@ -184,18 +184,32 @@ export default function ProposalsPage() {
     <div className="space-y-10 pb-20">
       <style jsx global>{`
         @media print {
+          /* Hide all UI elements */
           nav, aside, .no-print, header, footer { display: none !important; }
           body, html { background: white !important; color: black !important; }
+          
+          /* Reset two-column grid during print so document takes full page width */
+          .grid { display: block !important; }
+          
           .proposal-preview { 
              position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; 
              height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important;
+             display: block !important; background: transparent !important; border: none !important; box-shadow: none !important;
           }
+          
           .proposal-page-wrapper {
              margin: 0 !important;
              padding: 0 !important;
-             page-break-after: always;
+             page-break-after: always !important;
              background: white !important;
+             display: block !important;
           }
+          
+          /* Hide the interactive page indicators on printed sheets */
+          .proposal-page-wrapper > div:first-child {
+             display: none !important;
+          }
+          
           .proposal-page {
              width: 210mm !important;
              height: 297mm !important;
@@ -205,17 +219,23 @@ export default function ProposalsPage() {
              padding: 2.2cm !important;
              background: white !important;
              color: black !important;
+             display: block !important;
+             page-break-inside: avoid !important;
           }
+          
           .proposal-page * {
              color: black !important;
           }
+          
           .text-primary, .text-\[\#355CFF\] {
              color: #355CFF !important;
           }
+          
           .bg-zinc-50, .bg-neutral-50, .bg-zinc-100\/50 {
              background-color: #f8fafc !important;
              border-color: #e2e8f0 !important;
           }
+          
           .border-zinc-200\/60, .border-zinc-200, .border-zinc-150 {
              border-color: #e2e8f0 !important;
           }
@@ -251,10 +271,10 @@ export default function ProposalsPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 15 }}
-            className="grid lg:grid-cols-2 gap-10 no-print"
+            className="grid lg:grid-cols-2 gap-10"
           >
-            {/* FORM SIDE */}
-            <Card className="p-8 border border-zinc-800 bg-[#0B0F19] rounded-2xl space-y-8 h-fit sticky top-10 max-h-[85vh] overflow-y-auto no-scrollbar shadow-3xl">
+            {/* FORM SIDE (HIDDEN IN PRINT) */}
+            <Card className="p-8 border border-zinc-800 bg-[#0B0F19] rounded-2xl space-y-8 h-fit sticky top-10 max-h-[85vh] overflow-y-auto no-scrollbar shadow-3xl no-print">
                <div className="space-y-6">
                   <div>
                      <h2 className="text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-primary border-b border-zinc-800 pb-3 mb-6 italic">Lead Intelligence</h2>
@@ -729,7 +749,7 @@ export default function ProposalsPage() {
 
             <div className="grid gap-4">
               {loading ? (
-                 <div className="h-64 flex items-center justify-center border border-zinc-800 border-dashed rounded-3xl bg-[#0B0F19]">
+                 <div className="h-64 flex items-center justify-center border border-zinc-800 border-dashed rounded-3xl bg-[#0B0F19] space-y-4">
                     <Loader2 className="animate-spin text-primary/40" />
                  </div>
               ) : filteredProposals.length > 0 ? (
