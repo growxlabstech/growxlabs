@@ -78,7 +78,7 @@ const PACKAGES = {
 
 const COMPANY_DETAILS = {
   name: "GrowXLabsTech",
-  founder: "Varshith Pujala",
+  founder: "Pujala Sai Varshith",
   website: "growxlabs.tech",
   email: "hello@growxlabs.tech",
   tagline: "Engineering Digital Growth. Globally.",
@@ -186,23 +186,39 @@ export default function ProposalsPage() {
         @media print {
           /* Hide all UI elements */
           nav, aside, .no-print, header, footer { display: none !important; }
-          body, html { background: white !important; color: black !important; }
           
-          /* Reset two-column grid during print so document takes full page width */
-          .grid { display: block !important; }
+          /* Reset parent structures to prevent layout shifting/collapsing */
+          body, html { 
+             background: white !important; 
+             color: black !important; 
+             width: 210mm !important;
+             height: auto !important;
+             overflow: visible !important;
+          }
           
+          /* Flow the document previews as normal, centered, static block page sheets */
           .proposal-preview { 
-             position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; 
-             height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important;
-             display: block !important; background: transparent !important; border: none !important; box-shadow: none !important;
+             position: static !important; 
+             width: 210mm !important; 
+             height: auto !important; 
+             margin: 0 auto !important; 
+             padding: 0 !important; 
+             overflow: visible !important;
+             display: block !important; 
+             background: transparent !important; 
+             border: none !important; 
+             box-shadow: none !important;
           }
           
           .proposal-page-wrapper {
              margin: 0 !important;
              padding: 0 !important;
              page-break-after: always !important;
+             break-after: page !important;
              background: white !important;
              display: block !important;
+             width: 210mm !important;
+             height: 297mm !important;
           }
           
           /* Hide the interactive page indicators on printed sheets */
@@ -219,8 +235,11 @@ export default function ProposalsPage() {
              padding: 2.2cm !important;
              background: white !important;
              color: black !important;
-             display: block !important;
+             display: flex !important;
+             flex-direction: column !important;
+             justify-content: space-between !important;
              page-break-inside: avoid !important;
+             box-sizing: border-box !important;
           }
           
           .proposal-page * {
@@ -254,7 +273,7 @@ export default function ProposalsPage() {
              </h1>
           </div>
           <p className="text-[var(--text-secondary)] text-sm max-w-xl font-medium">
-             Deploy luxury digital solutions and outbound architectural agreements globally.
+             Deploy luxury digital solutions and outbound system proposals globally.
           </p>
         </div>
         <Button
@@ -432,9 +451,9 @@ export default function ProposalsPage() {
                            </div>
                         </div>
                         <div className="text-right space-y-1">
-                           <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-wider block">LEAD ENGINEERING ARCHITECT</span>
+                           <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-wider block">PREPARED BY</span>
                            <span className="text-xs font-bold text-zinc-800 block">{COMPANY_DETAILS.founder}</span>
-                           <span className="text-[8px] font-mono font-bold text-[#355CFF] uppercase tracking-widest block">{COMPANY_DETAILS.email}</span>
+                           <span className="text-[8px] font-mono font-bold text-[#355CFF] uppercase tracking-widest block">FOUNDER & SYSTEMS ENGINEER</span>
                         </div>
                      </div>
                      
@@ -470,7 +489,7 @@ export default function ProposalsPage() {
                                  </p>
                               </div>
                               <div className="text-[10px] text-zinc-400 leading-relaxed font-medium">
-                                 Analyzing the current framework reveals a core need for architectural restructuring to achieve fast loading speeds and reliable conversions.
+                                 Analyzing the current framework reveals a core need for systems restructuring to achieve fast loading speeds and reliable conversions.
                               </div>
                            </div>
 
@@ -504,7 +523,7 @@ export default function ProposalsPage() {
                {/* PAGE 3 - INVESTMENT */}
                <div className="proposal-page-wrapper space-y-3">
                   <div className="flex justify-between items-center px-4">
-                     <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-zinc-500 font-semibold">PAGE 03 — ARCHITECTURE & INVESTMENT</span>
+                     <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-zinc-500 font-semibold">PAGE 03 — STRATEGY & INVESTMENT</span>
                      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                   </div>
                   <div className="proposal-page bg-[#FAF9F6] text-slate-900 p-20 flex flex-col justify-between shadow-2xl aspect-[1/1.414]">
@@ -516,7 +535,7 @@ export default function ProposalsPage() {
                      <div className="my-auto space-y-8">
                         <div className="text-center space-y-1.5">
                            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.35em] text-[#355CFF]">02 / STRATEGY FRAMEWORK</span>
-                           <h3 className="text-2xl font-bold tracking-tight text-zinc-950 leading-tight">Investment Architecture</h3>
+                           <h3 className="text-2xl font-bold tracking-tight text-zinc-955 leading-tight">Investment Strategy</h3>
                            <p className="text-[10px] text-zinc-400 max-w-xl mx-auto">Scalable system integrations structured for professional corporate returns.</p>
                         </div>
 
@@ -536,7 +555,7 @@ export default function ProposalsPage() {
                                  >
                                     {isSelected && (
                                        <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#355CFF] text-white px-2.5 py-0.5 rounded-full text-[6px] font-mono font-bold uppercase tracking-wider shadow-sm">
-                                          SELECTED ARCHITECTURE
+                                          SELECTED DIRECTION
                                        </div>
                                     )}
                                     
@@ -578,7 +597,7 @@ export default function ProposalsPage() {
                         </div>
 
                         <p className="text-center text-[7px] text-zinc-400 font-mono max-w-lg mx-auto leading-relaxed border-t border-zinc-200/50 pt-3">
-                           *All architectural fees are inclusive of post-deployment support and core maintenance. Custom price overrides reflect specialized automation logic as defined in discovery.
+                           *All strategy fees are inclusive of post-deployment support and core maintenance. Custom price overrides reflect specialized automation logic as defined in discovery.
                         </p>
                      </div>
 
@@ -675,7 +694,7 @@ export default function ProposalsPage() {
 
                         <div className="grid gap-2 max-w-2xl mx-auto w-full">
                            {[
-                              { step: "01", title: "Select Solution Tier", desc: "Confirm the chosen architecture level via email or securely in our client workspace." },
+                              { step: "01", title: "Select Solution Tier", desc: "Confirm the chosen package level via email or securely in our client workspace." },
                               { step: "02", title: "Scope Execution", desc: "We prepare and execute the formal Agreement detailing deliverables within 4 hours." },
                               { step: "03", title: "Kick-off Transfer", desc: "Process the 50% mobilization fee to secure system engineering capacity." },
                               { step: "04", title: "Production Phase", desc: "Engineering sprints begin immediately. Live client progress dashboard access is issued." },
@@ -697,7 +716,7 @@ export default function ProposalsPage() {
                               <span className="text-[8px] font-mono font-bold text-zinc-400 uppercase tracking-widest block">FOR GROWXLABSTECH</span>
                               <div className="h-[1px] bg-zinc-300 w-full pt-8" />
                               <div className="text-[8px] font-mono">
-                                 <span className="font-bold text-zinc-800 block">Varshith Pujala</span>
+                                 <span className="font-bold text-zinc-800 block">{COMPANY_DETAILS.founder}</span>
                                  <span className="text-zinc-400 block">Founding Engineer & Director</span>
                               </div>
                            </div>
