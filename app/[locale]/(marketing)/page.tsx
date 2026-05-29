@@ -165,20 +165,20 @@ export default function Home() {
             {/* PORTFOLIO CARD */}
             <AnimatedItem>
               <Link href="/portfolio" className="group block h-full">
-                <div className="relative h-full flex flex-col justify-between bg-[#111111] text-white border border-white/5 rounded-2xl p-8 md:p-10 overflow-hidden shadow-2xl transition-[border-color,box-shadow] duration-500 hover:border-[#355CFF]/30 hover:shadow-[#355CFF]/[0.02] min-h-[460px]">
+                <div className="relative h-full flex flex-col justify-between bg-[#111111] text-white border border-white/5 rounded-2xl p-8 md:p-10 overflow-hidden shadow-2xl transition-[border-color,background-image,box-shadow] duration-500 hover:border-[#355CFF]/30 hover:bg-[radial-gradient(circle_at_top_right,rgba(53,92,255,0.08),transparent_60%)] min-h-[460px]">
                   {/* Top line with title and circular arrow */}
                   <div className="flex justify-between items-start z-10">
                     <h3 className="text-[clamp(28px,3vw,38px)] font-black tracking-tight leading-[1.05] max-w-[280px]">
                       Explore Our Portfolio
                     </h3>
-                    <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:border-white shrink-0">
+                    <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:border-white shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                       <ArrowUpRight className="h-5 w-5" />
                     </div>
                   </div>
 
-                  {/* Central geometric SVG animation */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none transition-transform duration-[800ms] group-hover:scale-105 group-hover:rotate-12">
-                    <svg viewBox="0 0 100 100" className="w-72 h-72 text-white/5 group-hover:text-[#355CFF]/15 transition-colors duration-500" fill="none" stroke="currentColor" strokeWidth="0.5">
+                  {/* Central geometric SVG animation - GPU safe opacity transition */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.04] group-hover:opacity-[0.16] transition-opacity duration-700">
+                    <svg viewBox="0 0 100 100" className="w-72 h-72 text-white group-hover:text-[#355CFF] group-hover:scale-[1.03] transition-all duration-700" fill="none" stroke="currentColor" strokeWidth="0.5">
                       <path d="M50 10 L90 50 L50 90 L10 50 Z" />
                       <path d="M50 20 L80 50 L50 80 L20 50 Z" />
                       <path d="M50 30 L70 50 L50 70 L30 50 Z" />
@@ -209,20 +209,20 @@ export default function Home() {
             {/* AI PRODUCTS CARD */}
             <AnimatedItem>
               <Link href="/products" className="group block h-full">
-                <div className="relative h-full flex flex-col justify-between bg-[#111111] text-white border border-white/5 rounded-2xl p-8 md:p-10 overflow-hidden shadow-2xl transition-[border-color,box-shadow] duration-500 hover:border-[#355CFF]/30 hover:shadow-[#355CFF]/[0.02] min-h-[460px]">
+                <div className="relative h-full flex flex-col justify-between bg-[#111111] text-white border border-white/5 rounded-2xl p-8 md:p-10 overflow-hidden shadow-2xl transition-[border-color,background-image,box-shadow] duration-500 hover:border-[#6366F1]/30 hover:bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.08),transparent_60%)] min-h-[460px]">
                   {/* Top line with title and circular arrow */}
                   <div className="flex justify-between items-start z-10">
                     <h3 className="text-[clamp(28px,3vw,38px)] font-black tracking-tight leading-[1.05] max-w-[280px]">
                       Explore AI Products
                     </h3>
-                    <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:border-white shrink-0">
+                    <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:border-white shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                       <ArrowUpRight className="h-5 w-5" />
                     </div>
                   </div>
 
-                  {/* Central geometric SVG animation */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none transition-transform duration-[800ms] group-hover:scale-105 group-hover:rotate-[-12deg]">
-                    <svg viewBox="0 0 100 100" className="w-72 h-72 text-white/5 group-hover:text-[#355CFF]/15 transition-colors duration-500" fill="none" stroke="currentColor" strokeWidth="0.5">
+                  {/* Central geometric SVG animation - GPU safe opacity transition */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.04] group-hover:opacity-[0.16] transition-opacity duration-700">
+                    <svg viewBox="0 0 100 100" className="w-72 h-72 text-white group-hover:text-[#6366F1] group-hover:scale-[1.03] transition-all duration-700" fill="none" stroke="currentColor" strokeWidth="0.5">
                       <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" />
                       <line x1="50" y1="50" x2="50" y2="10" />
                       <line x1="50" y1="50" x2="85" y2="30" />
