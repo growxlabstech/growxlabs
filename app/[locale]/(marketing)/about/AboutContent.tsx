@@ -40,7 +40,8 @@ const leaders = [
     role: "Founder & Principal Systems Engineer",
     text: "Leads full-stack AI engineering, architecture, and performance-focused digital systems for global businesses.",
     href: "https://linkedin.com/in/sai-varshith-pujala"
-  },
+  }
+  /*
   {
     initials: "AK",
     name: "Lakshmi Akhilesh Pasupuleti",
@@ -48,6 +49,7 @@ const leaders = [
     text: "Designs autonomous business workflows that connect lead capture, follow-up, CRM logic, and reporting.",
     href: "https://linkedin.com/in/akhilesh-pasupuleti"
   }
+  */
 ];
 
 export function AboutContent() {
