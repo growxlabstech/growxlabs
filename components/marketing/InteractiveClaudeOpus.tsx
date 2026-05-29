@@ -798,7 +798,7 @@ export function EffortControlDiagram() {
             <motion.div
               key={level.id}
               className={cn(
-                "relative rounded-xl border cursor-pointer transition-all duration-300 overflow-hidden",
+                "relative rounded-xl border cursor-pointer transition-[border-color,background-color] duration-300 overflow-hidden",
                 isExpanded
                   ? "border-white/[0.12] bg-white/[0.04]"
                   : "border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.1]"
@@ -807,7 +807,6 @@ export function EffortControlDiagram() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08, duration: 0.4 }}
-              layout
             >
               {/* Intensity Gradient Bar */}
               <div className="absolute top-0 left-0 bottom-0 w-1 rounded-l-xl overflow-hidden">

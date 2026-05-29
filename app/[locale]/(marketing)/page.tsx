@@ -165,7 +165,7 @@ export default function Home() {
             {/* PORTFOLIO CARD */}
             <AnimatedItem>
               <Link href="/portfolio" className="group block h-full">
-                <div className="relative h-full flex flex-col justify-between bg-[#111111] text-white border border-white/5 rounded-2xl p-8 md:p-10 overflow-hidden shadow-2xl transition-all duration-500 hover:border-[#355CFF]/30 hover:shadow-[#355CFF]/[0.02] min-h-[460px]">
+                <div className="relative h-full flex flex-col justify-between bg-[#111111] text-white border border-white/5 rounded-2xl p-8 md:p-10 overflow-hidden shadow-2xl transition-[border-color,box-shadow] duration-500 hover:border-[#355CFF]/30 hover:shadow-[#355CFF]/[0.02] min-h-[460px]">
                   {/* Top line with title and circular arrow */}
                   <div className="flex justify-between items-start z-10">
                     <h3 className="text-[clamp(28px,3vw,38px)] font-black tracking-tight leading-[1.05] max-w-[280px]">
@@ -209,7 +209,7 @@ export default function Home() {
             {/* AI PRODUCTS CARD */}
             <AnimatedItem>
               <Link href="/products" className="group block h-full">
-                <div className="relative h-full flex flex-col justify-between bg-[#111111] text-white border border-white/5 rounded-2xl p-8 md:p-10 overflow-hidden shadow-2xl transition-all duration-500 hover:border-[#355CFF]/30 hover:shadow-[#355CFF]/[0.02] min-h-[460px]">
+                <div className="relative h-full flex flex-col justify-between bg-[#111111] text-white border border-white/5 rounded-2xl p-8 md:p-10 overflow-hidden shadow-2xl transition-[border-color,box-shadow] duration-500 hover:border-[#355CFF]/30 hover:shadow-[#355CFF]/[0.02] min-h-[460px]">
                   {/* Top line with title and circular arrow */}
                   <div className="flex justify-between items-start z-10">
                     <h3 className="text-[clamp(28px,3vw,38px)] font-black tracking-tight leading-[1.05] max-w-[280px]">
