@@ -201,7 +201,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                   alt={featuredPost.title}
                   fill
                   priority
-                  className="object-cover transition-transform duration-700 hover:scale-[1.01]"
+                  className="object-cover scale-[1.10] transition-transform duration-700 hover:scale-[1.12]"
                   sizes="(max-w-1200px) 100vw, 1200px"
                 />
               </div>

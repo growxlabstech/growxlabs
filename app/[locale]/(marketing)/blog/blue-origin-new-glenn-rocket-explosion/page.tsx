@@ -245,7 +245,7 @@ export default async function NewGlennExplosionPage({ params }: { params: Promis
                   src="/images/blue-origin-new-glenn-rocket-explosion.png"
                   alt="Blue Origin New Glenn Rocket Explosion Test Anomaly"
                   fill
-                  className="object-cover"
+                  className="object-cover scale-[1.10] transition-transform duration-700 hover:scale-[1.12]"
                   priority
                 />
               </div>
