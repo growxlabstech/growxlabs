@@ -38,23 +38,23 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
   // Blog posts database
   const featuredPost = {
-    slug: "chatbots-are-dying-agents-are-taking-over",
-    title: "Chatbots Are Dying. Agents Are Taking Over.",
-    excerpt: "AI is evolving from chatbots to autonomous agents. Discover why AI agents will transform business operations, automation, sales, marketing, and execution.",
-    category: "AI / Automation / Scale",
-    date: "June 1, 2026",
-    readTime: "6 min read",
-    image: "/images/chatbots-are-dying-agents-are-taking-over.png"
+    slug: "nvidia-vision-agentic-to-useful-ai",
+    title: "NVIDIA's Vision for the Future of AI: From Agentic AI to Useful AI",
+    excerpt: "Analyze Jensen Huang's GTC vision: CUDA-X, AI Factories, Physical AI, and the historic shift from reactive chatbots to proactive execution systems.",
+    category: "AI Industry / Infrastructure / Analysis",
+    date: "June 4, 2026",
+    readTime: "14 min read",
+    image: "/images/nvidia-vision-agentic-to-useful-ai.png"
   };
 
   const regularPosts = [
     {
-      slug: "nvidia-vision-agentic-to-useful-ai",
-      title: "NVIDIA's Vision for the Future of AI: From Agentic AI to Useful AI",
-      excerpt: "Analyze Jensen Huang's GTC vision: CUDA-X, AI Factories, Physical AI, and the historic shift from reactive chatbots to proactive execution systems.",
-      category: "AI Industry / Infrastructure / Analysis",
-      date: "June 4, 2026",
-      readTime: "14 min read"
+      slug: "chatbots-are-dying-agents-are-taking-over",
+      title: "Chatbots Are Dying. Agents Are Taking Over.",
+      excerpt: "AI is evolving from chatbots to autonomous agents. Discover why AI agents will transform business operations, automation, sales, marketing, and execution.",
+      category: "AI / Automation / Scale",
+      date: "June 1, 2026",
+      readTime: "6 min read"
     },
     {
       slug: "blue-origin-new-glenn-rocket-explosion",
