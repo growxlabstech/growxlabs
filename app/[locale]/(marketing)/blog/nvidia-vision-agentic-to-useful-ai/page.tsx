@@ -10,7 +10,7 @@ import { Reveal } from "@/components/marketing/Reveal";
 import { Calendar, Clock, User, Cpu, Sparkles, Compass, ShieldAlert, ArrowRight } from "lucide-react";
 import { FlickerText } from "@/components/marketing/FlickerText";
 import { BlogShare, NewsletterCTA, AgentCTA } from "./InteractiveComponents";
-import { AIFactoryVisualizerClient, AIPipelineEvolution, CudaXSkillsExplorer } from "./InteractiveNvidia";
+import { AIFactoryVisualizerClient, AIPipelineEvolution, CudaXSkillsExplorer, ModelVsInfrastructure, PhysicalAISimulator, UsefulAIOrchestrator, BusinessReadinessGauge, DeveloperRoleShift } from "./InteractiveNvidia";
 
 // ═══════════════════════════════════════════════════
 // METADATA GENERATOR (SEO & Directory Optimization)
@@ -357,6 +357,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   This transition makes model commoditization inevitable. It shifts the competitive moat away from &quot;who owns the smartest model&quot; to &quot;who owns the most efficient execution infrastructure.&quot;
                 </p>
+                <ModelVsInfrastructure />
               </div>
             </section>
 
@@ -448,6 +449,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   By connecting digital intelligence to physical actuators, NVIDIA is laying the groundwork for a world where autonomous machinery works alongside humans to handle physical tasks safely and efficiently.
                 </p>
+                <PhysicalAISimulator />
               </div>
             </section>
 
@@ -474,6 +476,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   This transition will redefine how we measure software. We will stop evaluating tools based on their features and start evaluating them based on their execution capability.
                 </p>
+                <UsefulAIOrchestrator />
               </div>
             </section>
 
@@ -517,6 +520,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   The businesses that succeed will be those that transition from treating AI as a writing assistant to treating it as an operational system.
                 </p>
+                <BusinessReadinessGauge />
               </div>
             </section>
 
@@ -573,6 +577,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   The developers who thrive will be those who view AI not as a replacement for engineering, but as a new component in their system architecture.
                 </p>
+                <DeveloperRoleShift />
               </div>
             </section>
 
