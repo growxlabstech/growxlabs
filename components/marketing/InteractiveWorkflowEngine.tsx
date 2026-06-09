@@ -236,10 +236,10 @@ export function InteractiveWorkflowEngine() {
   };
 
   return (
-    <div className="w-full bg-[#FAF9F6] border border-[#E5E2DC] rounded-2xl p-6 md:p-8 shadow-sm flex flex-col gap-6 select-none relative overflow-hidden">
+    <div className="w-full bg-background border border-border rounded-2xl p-6 md:p-8 shadow-sm flex flex-col gap-6 select-none relative overflow-hidden">
       
       {/* ─── Top Control Panel ─── */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-[#E5E2DC] gap-4 z-10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-border gap-4 z-10">
         <div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#355CFF] animate-ping" />
@@ -247,7 +247,7 @@ export function InteractiveWorkflowEngine() {
               Interactive Blueprint Architecture
             </h4>
           </div>
-          <p className="text-[#6B7280] text-[12px] mt-1 font-sans">
+          <p className="text-muted-foreground text-[12px] mt-1 font-sans">
             Hover over nodes to inspect metrics, or trigger the live workflow simulator.
           </p>
         </div>
@@ -277,7 +277,7 @@ export function InteractiveWorkflowEngine() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch relative">
         
         {/* Left Column: Unified Responsive SVG (8 cols) */}
-        <div className="lg:col-span-8 bg-white border border-[#E5E2DC]/80 rounded-xl p-3 md:p-5 relative flex items-center justify-center">
+        <div className="lg:col-span-8 bg-card border border-border/80 rounded-xl p-3 md:p-5 relative flex items-center justify-center">
           <svg
             viewBox="0 0 1000 860"
             className="w-full h-auto select-none"
@@ -455,7 +455,7 @@ export function InteractiveWorkflowEngine() {
                   className="transition-colors duration-300"
                 />
                 {/* SVG ForeignObject to render Lucide Icons inside SVG */}
-                <foreignObject x="63" y={node.y + 13} width="14" height="14" className={isNodeActive(node.id) ? "text-white" : "text-[#4B5563]"}>
+                <foreignObject x="63" y={node.y + 13} width="14" height="14" className={isNodeActive(node.id) ? "text-white" : "text-muted-foreground"}>
                   {node.icon}
                 </foreignObject>
                 <text
@@ -587,7 +587,7 @@ export function InteractiveWorkflowEngine() {
                   fill={isNodeActive(node.id) ? "#355CFF" : "#9CA3AF"}
                   className="transition-colors duration-300"
                 />
-                <foreignObject x="315" y={node.y + 17} width="10" height="10" className={isNodeActive(node.id) ? "text-white" : "text-[#4B5563]"}>
+                <foreignObject x="315" y={node.y + 17} width="10" height="10" className={isNodeActive(node.id) ? "text-white" : "text-muted-foreground"}>
                   {node.id === "persistence_store" ? <Server className="w-2.5 h-2.5" /> : <Cpu className="w-2.5 h-2.5" />}
                 </foreignObject>
                 <text x="340" y={node.y + 19} fill="#1A1A1A" fontFamily="system-ui, sans-serif" fontSize="9.5" fontWeight="bold">
@@ -863,10 +863,10 @@ export function InteractiveWorkflowEngine() {
         <div className="lg:col-span-4 flex flex-col gap-5 justify-between">
           
           {/* Status Inspector Box */}
-          <div className="bg-white border border-[#E5E2DC] rounded-xl p-5 flex-grow flex flex-col justify-between">
+          <div className="bg-card border border-border rounded-xl p-5 flex-grow flex flex-col justify-between">
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-3">
-                <span className="font-mono text-[9px] tracking-wider text-[#6B7280] uppercase flex items-center gap-1.5">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <span className="font-mono text-[9px] tracking-wider text-muted-foreground uppercase flex items-center gap-1.5">
                   <Terminal className="w-3 h-3 text-[#355CFF]" />
                   <span>Node Inspector</span>
                 </span>
@@ -890,17 +890,17 @@ export function InteractiveWorkflowEngine() {
                       <span className="text-[9px] font-mono tracking-wider text-[#355CFF] bg-[#355CFF]/5 px-2 py-0.5 rounded uppercase font-bold">
                         {nodeDetails[hoveredNode].category}
                       </span>
-                      <h4 className="text-xl font-black text-[#1A1A1A] mt-2 tracking-tight">
+                      <h4 className="text-xl font-black text-foreground mt-2 tracking-tight">
                         {nodeDetails[hoveredNode].title}
                       </h4>
                     </div>
 
-                    <p className="text-[#4B5563] text-[13.5px] leading-relaxed font-sans font-normal">
+                    <p className="text-muted-foreground text-[13.5px] leading-relaxed font-sans font-normal">
                       {nodeDetails[hoveredNode].description}
                     </p>
 
-                    <div className="bg-[#FAF9F6] border border-[#E5E2DC] p-3 rounded-lg font-mono text-[10px] text-[#6B7280] space-y-1">
-                      <span className="text-[#1A1A1A] font-bold block mb-1">SYSTEM TELEMETRY:</span>
+                    <div className="bg-background border border-border p-3 rounded-lg font-mono text-[10px] text-muted-foreground space-y-1">
+                      <span className="text-foreground font-bold block mb-1">SYSTEM TELEMETRY:</span>
                       <span className="block">{nodeDetails[hoveredNode].metrics}</span>
                       <span className="block">Status: ACTIVE // Integrity: 100%</span>
                     </div>
@@ -913,7 +913,7 @@ export function InteractiveWorkflowEngine() {
                     className="py-12 text-center space-y-3"
                   >
                     <HelpCircle className="w-10 h-10 text-[#E5E2DC] mx-auto animate-pulse" />
-                    <p className="text-[13px] text-[#6B7280] font-sans max-w-[200px] mx-auto">
+                    <p className="text-[13px] text-muted-foreground font-sans max-w-[200px] mx-auto">
                       Hover over any node in the orchestration diagram to inspect its engine role and system telemetry.
                     </p>
                   </motion.div>
@@ -922,8 +922,8 @@ export function InteractiveWorkflowEngine() {
             </div>
 
             {/* Live Metrics Bar Chart */}
-            <div className="border-t border-[#E5E2DC] pt-4 mt-6">
-              <span className="font-mono text-[9px] tracking-wider text-[#6B7280] uppercase block mb-3">
+            <div className="border-t border-border pt-4 mt-6">
+              <span className="font-mono text-[9px] tracking-wider text-muted-foreground uppercase block mb-3">
                 Live Server Telemetry
               </span>
               <div className="space-y-2.5">
@@ -934,10 +934,10 @@ export function InteractiveWorkflowEngine() {
                 ].map((bar) => (
                   <div key={bar.label} className="space-y-1">
                     <div className="flex justify-between text-[9.5px] font-mono">
-                      <span className="text-[#4B5563]">{bar.label}</span>
-                      <span className="font-bold text-[#1A1A1A]">{bar.val}%</span>
+                      <span className="text-muted-foreground">{bar.label}</span>
+                      <span className="font-bold text-foreground">{bar.val}%</span>
                     </div>
-                    <div className="w-full h-1.5 bg-[#FAF9F6] border border-[#E5E2DC] rounded-full overflow-hidden">
+                    <div className="w-full h-1.5 bg-background border border-border rounded-full overflow-hidden">
                       <motion.div
                         className={`h-full ${bar.color}`}
                         initial={{ width: 0 }}
@@ -952,9 +952,9 @@ export function InteractiveWorkflowEngine() {
           </div>
 
           {/* Simulation Status Card */}
-          <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl p-4 flex items-center justify-between shadow-inner">
+          <div className="bg-background border border-border rounded-xl p-4 flex items-center justify-between shadow-inner">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-white border border-[#E5E2DC] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center">
                 {isSimulating ? (
                   <Activity className="w-4 h-4 text-[#355CFF] animate-spin" />
                 ) : (
@@ -962,8 +962,8 @@ export function InteractiveWorkflowEngine() {
                 )}
               </div>
               <div>
-                <p className="font-mono text-[9px] text-[#6B7280] tracking-wider uppercase">Engine Status</p>
-                <p className="text-[12px] font-bold text-[#1A1A1A] font-sans">
+                <p className="font-mono text-[9px] text-muted-foreground tracking-wider uppercase">Engine Status</p>
+                <p className="text-[12px] font-bold text-foreground font-sans">
                   {isSimulating ? `RUNNING SIMULATION... Step ${activeStep + 1}/10` : "SYSTEM SECURED & READY"}
                 </p>
               </div>

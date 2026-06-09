@@ -102,7 +102,7 @@ export function ClaudeOpusBenchmarks() {
               Claude Opus 4.8 Benchmark Performance
             </h3>
           </div>
-          <p className="text-[#6B7280] text-[12px] leading-relaxed ml-[42px]">
+          <p className="text-muted-foreground text-[12px] leading-relaxed ml-[42px]">
             Head-to-head comparison against Opus 4.7 across key evaluations
           </p>
         </div>
@@ -159,7 +159,7 @@ export function ClaudeOpusBenchmarks() {
                   <span className="text-[10px] font-mono text-[#9CA3AF] w-10 shrink-0 text-right">
                     4.7
                   </span>
-                  <div className="flex-1 h-6 bg-white/[0.04] rounded-md overflow-hidden relative">
+                  <div className="flex-1 h-6 bg-card/[0.04] rounded-md overflow-hidden relative">
                     <div
                       className="h-full bg-gradient-to-r from-[#D97706] to-[#F59E0B] rounded-md relative transition-[width] duration-1000 ease-out"
                       style={{ width: mounted ? `${(bench.opus47 / maxValue) * 100}%` : "0%" }}
@@ -177,7 +177,7 @@ export function ClaudeOpusBenchmarks() {
                 <span className="text-[10px] font-mono text-[#9CA3AF] w-10 shrink-0 text-right">
                   4.8
                 </span>
-                <div className="flex-1 h-6 bg-white/[0.04] rounded-md overflow-hidden relative">
+                <div className="flex-1 h-6 bg-card/[0.04] rounded-md overflow-hidden relative">
                   <div
                     className={cn(
                       "h-full rounded-md relative transition-[width] duration-1000 ease-out",
@@ -213,7 +213,7 @@ export function ClaudeOpusBenchmarks() {
 
       {/* Footer */}
       <div className="mt-8 pt-5 border-t border-white/[0.06] flex items-center justify-between">
-        <div className="flex items-center gap-2 text-[#6B7280]">
+        <div className="flex items-center gap-2 text-muted-foreground">
           <Activity className="w-3.5 h-3.5" />
           <span className="text-[10px] font-mono uppercase tracking-wider">
             Source: Anthropic Official Benchmarks
@@ -342,7 +342,7 @@ export function DynamicWorkflowViz() {
               Dynamic Workflows — Claude Code
             </h3>
           </div>
-          <p className="text-[#6B7280] text-[12px] leading-relaxed ml-[42px]">
+          <p className="text-muted-foreground text-[12px] leading-relaxed ml-[42px]">
             How Claude Code orchestrates massive parallel execution pipelines
           </p>
         </div>
@@ -419,7 +419,7 @@ export function DynamicWorkflowViz() {
                       "absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold font-mono transition-all duration-300",
                       isActive || isPast
                         ? "text-white"
-                        : "bg-white/[0.06] text-[#6B7280]"
+                        : "bg-white/[0.06] text-muted-foreground"
                     )}
                     style={
                       isActive || isPast
@@ -486,7 +486,7 @@ export function DynamicWorkflowViz() {
           {workflowSteps.map((step, i) => (
             <div
               key={step.id}
-              className="flex-1 h-1.5 rounded-full overflow-hidden bg-white/[0.04] cursor-pointer"
+              className="flex-1 h-1.5 rounded-full overflow-hidden bg-card/[0.04] cursor-pointer"
               onClick={() => handleStepClick(i)}
             >
               <div
@@ -500,7 +500,7 @@ export function DynamicWorkflowViz() {
           ))}
         </div>
         <div className="flex items-center justify-between mt-3">
-          <span className="text-[10px] font-mono text-[#6B7280] uppercase tracking-wider">
+          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
             Stage {activeStep + 1} of {workflowSteps.length}
           </span>
           <span
@@ -678,7 +678,7 @@ export function EffortControlDiagram() {
               Effort Control Dashboard
             </h3>
           </div>
-          <p className="text-[#6B7280] text-[12px] leading-relaxed ml-[42px]">
+          <p className="text-muted-foreground text-[12px] leading-relaxed ml-[42px]">
             Click a selector node below to calibrate Claude's computational intensity
           </p>
         </div>
@@ -717,7 +717,7 @@ export function EffortControlDiagram() {
                 >
                   {level.label}
                 </span>
-                <span className="text-[9px] font-mono text-[#6B7280] mt-0.5 uppercase">
+                <span className="text-[9px] font-mono text-muted-foreground mt-0.5 uppercase">
                   {level.claudeCodeId}
                 </span>
               </button>
@@ -726,7 +726,7 @@ export function EffortControlDiagram() {
         </div>
 
         {/* Calibration Detail Panel */}
-        <div className="relative rounded-xl border border-white/[0.06] bg-white/[0.01] p-5 md:p-6 overflow-hidden">
+        <div className="relative rounded-xl border border-white/[0.06] bg-card/[0.01] p-5 md:p-6 overflow-hidden">
           {/* Glow backdrop based on active level */}
           <div
             className="absolute -top-24 -left-24 w-48 h-48 rounded-full filter blur-[80px] opacity-[0.1] pointer-events-none transition-colors duration-500"
@@ -737,7 +737,7 @@ export function EffortControlDiagram() {
             {/* Header info */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.04] pb-4 mb-5">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/[0.03]">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-card/[0.03]">
                   <ActiveIcon
                     className="w-5 h-5"
                     style={{ color: activeLevel.accentColor }}
@@ -746,7 +746,7 @@ export function EffortControlDiagram() {
                 <div>
                   <h4 className="text-white text-[14px] font-bold tracking-tight flex items-center gap-2">
                     {activeLevel.label} Level
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] text-[#9CA3AF]">
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-card/[0.04] text-[#9CA3AF]">
                       --effort={activeLevel.claudeCodeId}
                     </span>
                     {activeLevel.claudeCodeId === "high" && (
@@ -755,7 +755,7 @@ export function EffortControlDiagram() {
                       </span>
                     )}
                   </h4>
-                  <p className="text-[#6B7280] text-[11px] mt-0.5 font-mono">
+                  <p className="text-muted-foreground text-[11px] mt-0.5 font-mono">
                     {activeLevel.subtitle}
                   </p>
                 </div>
@@ -763,7 +763,7 @@ export function EffortControlDiagram() {
 
               {/* Intensity visual display */}
               <div className="flex items-center gap-1">
-                <span className="text-[9px] font-mono text-[#6B7280] uppercase tracking-wider mr-2">
+                <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider mr-2">
                   Compute Dial
                 </span>
                 {[1, 2, 3, 4].map((n) => (
@@ -786,17 +786,17 @@ export function EffortControlDiagram() {
 
             {/* Use Cases */}
             <div className="mb-5">
-              <h5 className="text-white text-[10px] font-mono uppercase tracking-widest text-[#6B7280] mb-3">
+              <h5 className="text-white text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-3">
                 Primary Use Cases
               </h5>
               <div className="flex flex-wrap gap-2">
                 {activeLevel.useCases.map((useCase) => (
                   <span
                     key={useCase}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.04] text-[11px] text-[#9CA3AF] font-mono"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-card/[0.03] border border-white/[0.04] text-[11px] text-[#9CA3AF] font-mono"
                   >
                     <Sparkles
-                      className="w-3 h-3 text-[#6B7280]"
+                      className="w-3 h-3 text-muted-foreground"
                       style={{ color: activeLevel.accentColor }}
                     />
                     {useCase}
@@ -808,12 +808,12 @@ export function EffortControlDiagram() {
             {/* Interactive copyable terminal command */}
             <div className="flex items-center justify-between p-3 rounded-lg bg-[#070709] border border-white/[0.04] font-mono text-[11px]">
               <div className="truncate text-left pr-4">
-                <span className="text-[#6B7280]">$ </span>
+                <span className="text-muted-foreground">$ </span>
                 <span className="text-[#9CA3AF]">claude --effort </span>
                 <span className="font-bold" style={{ color: activeLevel.accentColor }}>
                   {activeLevel.claudeCodeId}
                 </span>
-                <span className="text-[#6B7280]"> "execute refactor"</span>
+                <span className="text-muted-foreground"> "execute refactor"</span>
               </div>
               <button
                 onClick={() => handleCopy(`claude --effort ${activeLevel.claudeCodeId} "execute refactor"`)}
@@ -827,8 +827,8 @@ export function EffortControlDiagram() {
 
         {/* Footer */}
         <div className="mt-6 pt-5 border-t border-white/[0.06] flex items-center gap-2">
-          <Layers className="w-3.5 h-3.5 text-[#6B7280]" />
-          <span className="text-[10px] font-mono text-[#6B7280] uppercase tracking-wider">
+          <Layers className="w-3.5 h-3.5 text-muted-foreground" />
+          <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
             System calibration successful — compute is dynamically allocated safely
           </span>
         </div>
@@ -851,7 +851,7 @@ export function EffortControlDiagram() {
             Effort Control Levels
           </h3>
         </div>
-        <p className="text-[#6B7280] text-[12px] leading-relaxed ml-[42px]">
+        <p className="text-muted-foreground text-[12px] leading-relaxed ml-[42px]">
           Dial Claude&apos;s computational intensity to match your task complexity
         </p>
       </div>
@@ -874,7 +874,7 @@ export function EffortControlDiagram() {
               onClick={() => toggleExpand(level.id)}
             >
               {/* Intensity Gradient Bar */}
-              <div className="absolute top-0 left-0 bottom-0 w-1 rounded-l-xl overflow-hidden bg-white/10">
+              <div className="absolute top-0 left-0 bottom-0 w-1 rounded-l-xl overflow-hidden bg-card/10">
                 <div
                   className="w-full h-full opacity-60"
                   style={{
@@ -909,7 +909,7 @@ export function EffortControlDiagram() {
                     >
                       {level.label}
                     </span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/[0.06] text-[#9CA3AF]">
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-card/[0.06] text-[#9CA3AF]">
                       {level.claudeCodeId}
                     </span>
                     {level.claudeCodeId === "high" && (
@@ -918,7 +918,7 @@ export function EffortControlDiagram() {
                       </span>
                     )}
                   </div>
-                  <p className="text-[12px] text-[#6B7280] mt-0.5 truncate">
+                  <p className="text-[12px] text-muted-foreground mt-0.5 truncate">
                     {level.subtitle}
                   </p>
                 </div>
@@ -951,7 +951,7 @@ export function EffortControlDiagram() {
                   {level.useCases.map((useCase) => (
                     <span
                       key={useCase}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[11px] text-[#9CA3AF] font-mono"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-card/[0.04] border border-white/[0.06] text-[11px] text-[#9CA3AF] font-mono"
                     >
                       <Sparkles
                         className="w-3 h-3"
@@ -965,7 +965,7 @@ export function EffortControlDiagram() {
                 {/* Copyable terminal command inside accordion */}
                 <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#070709] border border-white/[0.04] font-mono text-[10px]">
                   <div className="truncate text-left pr-4">
-                    <span className="text-[#6B7280]">$ </span>
+                    <span className="text-muted-foreground">$ </span>
                     <span className="text-[#9CA3AF]">claude --effort </span>
                     <span className="font-bold" style={{ color: level.accentColor }}>
                       {level.claudeCodeId}
@@ -986,8 +986,8 @@ export function EffortControlDiagram() {
 
       {/* Footer */}
       <div className="mt-6 pt-5 border-t border-white/[0.06] flex items-center gap-2">
-        <Layers className="w-3.5 h-3.5 text-[#6B7280]" />
-        <span className="text-[10px] font-mono text-[#6B7280] uppercase tracking-wider">
+        <Layers className="w-3.5 h-3.5 text-muted-foreground" />
+        <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
           Click any level to explore details — Higher effort = deeper reasoning
         </span>
       </div>

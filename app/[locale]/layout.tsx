@@ -1,7 +1,7 @@
 import React from "react";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display, Lora } from "next/font/google";
 import { GlobalBackground } from "@/components/layout/GlobalBackground";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
@@ -13,12 +13,21 @@ import Script from "next/script";
 import { PHProvider } from "@/components/providers/PostHogProvider";
 import "../globals.css";
 
-// System Font Stack for Build Stability
-const interStack = "'Inter', system-ui, -apple-system, sans-serif";
-
-const inter = Inter({
+const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+const serif = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const lora = Lora({
+  subsets: ["latin"],
+  variable: "--font-lora",
   display: "swap",
 });
 
@@ -72,7 +81,7 @@ export default async function LocaleLayout({
   const direction = locale.startsWith('ar') ? 'rtl' : 'ltr';
 
   return (
-    <html lang={locale} dir={direction} className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang={locale} dir={direction} className={`${sans.variable} ${serif.variable} ${lora.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         {/* 🧠 MASTER AEO KNOWLEDGE GRAPH (Verified Architecture) */}
         <script

@@ -21,7 +21,7 @@ export function AEOBlock({
   ctaHref,
 }: AEOBlockProps) {
   return (
-    <div className="w-full p-6 sm:p-8 md:p-10 rounded-lg border border-[#E5E2DC] bg-white shadow-sm hover:shadow-md transition-all group relative overflow-hidden mb-8 animate-fade-in-up">
+    <div className="w-full p-6 sm:p-8 md:p-10 rounded-lg border border-border bg-card shadow-sm hover:shadow-md transition-all group relative overflow-hidden mb-8 animate-fade-in-up">
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#355CFF]/[0.02] blur-[80px] -z-10" />
 
       <div className="flex flex-col gap-8">
@@ -31,7 +31,7 @@ export function AEOBlock({
             <HelpCircle className="w-6 h-6 text-[#355CFF]" />
           </div>
           <div>
-            <h3 className="text-xl md:text-2xl font-bold text-[#1A1A1A] leading-tight tracking-tight">
+            <h3 className="text-xl md:text-2xl font-bold text-foreground leading-tight tracking-tight">
               {question}
             </h3>
           </div>
@@ -40,7 +40,7 @@ export function AEOBlock({
         {/* Direct Answer */}
         <div className="sm:pl-14">
           <div className="relative">
-            <p className="text-lg md:text-xl text-[#1A1A1A] font-bold leading-relaxed border-l-4 border-[#355CFF] pl-6 py-3 bg-[#F5F3EE] rounded-r-lg tracking-tight">
+            <p className="text-lg md:text-xl text-foreground font-bold leading-relaxed border-l-4 border-[#355CFF] pl-6 py-3 bg-muted rounded-r-lg tracking-tight">
               {answer}
             </p>
           </div>
@@ -52,7 +52,7 @@ export function AEOBlock({
             <div className="flex items-center gap-2 text-[#355CFF] font-bold text-[10px] uppercase tracking-[0.25em]">
               <Lightbulb className="w-4 h-4" /> Explanation
             </div>
-            <p className="text-[#6B7280] text-[15px] leading-relaxed font-medium">
+            <p className="text-muted-foreground text-[15px] leading-relaxed font-medium">
               {explanation}
             </p>
           </div>
@@ -60,7 +60,7 @@ export function AEOBlock({
             <div className="flex items-center gap-2 text-[#355CFF] font-bold text-[10px] uppercase tracking-[0.25em]">
               <PlayCircle className="w-4 h-4" /> Real-world Example
             </div>
-            <p className="text-[#6B7280] text-[15px] leading-relaxed font-medium">
+            <p className="text-muted-foreground text-[15px] leading-relaxed font-medium">
               {example}
             </p>
           </div>

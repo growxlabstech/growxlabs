@@ -33,12 +33,12 @@ export function ServiceCard({ title, description, iconName }: ServiceCardProps) 
 
   return (
     <div className="group h-full relative overflow-hidden transform-none">
-      <div className="h-full flex flex-col bg-white border border-[#E5E2DC] rounded-lg p-6 transition-[opacity,background-color,border-color] duration-200 shadow-sm group-hover:border-[#355CFF]/25">
-        <div className="w-11 h-11 rounded-md bg-[#EDEAE4] flex items-center justify-center mb-5 group-hover:bg-[#355CFF]/10 transition-colors">
+      <div className="h-full flex flex-col bg-card border border-border rounded-lg p-6 transition-[opacity,background-color,border-color] duration-200 shadow-sm group-hover:border-[#355CFF]/25">
+        <div className="w-11 h-11 rounded-md bg-secondary flex items-center justify-center mb-5 group-hover:bg-[#355CFF]/10 transition-colors">
           <Icon className="text-[#355CFF] w-[22px] h-[22px]" aria-hidden="true" />
         </div>
-        <h3 className="text-[17px] font-semibold text-[#1A1A1A] mb-2">{title}</h3>
-        <p className="text-[#6B7280] text-[14px] leading-[1.6] mb-5 flex-1">
+        <h3 className="text-[17px] font-semibold text-foreground mb-2">{title}</h3>
+        <p className="text-muted-foreground text-[14px] leading-[1.6] mb-5 flex-1">
           {description}
         </p>
         <div className="flex items-center gap-1.5 text-[#355CFF] text-[14px] font-semibold group-hover:gap-2.5 transition-all">

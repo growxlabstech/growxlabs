@@ -1,111 +1,148 @@
-import { ServiceCard } from "@/components/ui/ServiceCard";
-import { Shield, Clock, Zap, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/marketing/Reveal";
 import { locales, Link } from "@/navigation";
-import Script from "next/script";
 import { DynamicSchema } from "@/components/marketing/DynamicSchema";
-import { SubscriptionPlansSection } from "@/components/marketing/SubscriptionPlansSection";
-import { AccordionFAQ } from "@/components/marketing/AccordionFAQ";
+import { PageHero } from "@/components/marketing/PageHero";
 import { Button } from "@/components/ui/Button";
-import { FlickerText } from "@/components/marketing/FlickerText";
 
-const faqData = [
-  {
-    question: "How do your digital systems improve revenue?",
-    answer: "Our systems capture high-intent traffic, qualify leads quickly, and automate the conversion path so fewer opportunities are lost."
-  },
-  {
-    question: "Do I need to manage the automation myself?",
-    answer: "No. We build, deploy, document, and maintain the workflows so your team can focus on sales and delivery."
-  },
-  {
-    question: "What is Technical SEO?",
-    answer: "It is engineering your site structure, content model, speed, and schema so search engines and AI assistants can understand and recommend your business."
-  },
-  {
-    question: "Can your systems scale with my business?",
-    answer: "Yes. We use modern cloud infrastructure and modular workflows so your site, CRM, and automations can grow with demand."
-  },
-  {
-    question: "What is the typical ROI timeline?",
-    answer: "Most clients see operational savings immediately, while revenue improvements typically appear after the system has collected and converted traffic for several weeks."
-  },
-  {
-    question: "Can I cancel anytime?",
-    answer: "Yes. Cancel with 15 days notice. No lock-in."
-  },
-  {
-    question: "What if I need a website first?",
-    answer: "We build your website first (one-time), then you move to subscription."
-  },
-  {
-    question: "Do you serve outside India?",
-    answer: "Yes. USD pricing available."
+function PixelGrid({ type }: { type: string }) {
+  // grids of 16 columns by 10 rows
+  let cells: number[][] = [];
+  
+  if (type === "software") {
+    cells = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0],
+      [0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0],
+      [0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+      [0,1,0,0,0,1,1,0,1,1,0,0,0,0,1,0],
+      [0,1,0,0,0,0,1,1,1,0,0,0,0,0,1,0],
+      [0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0],
+      [0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0],
+      [0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    ];
+  } else if (type === "ai") {
+    cells = [
+      [0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],
+      [0,0,0,1,1,1,0,0,1,1,1,0,0,0,0,0],
+      [0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0],
+      [0,1,1,0,1,1,0,0,1,1,0,1,1,0,0,0],
+      [0,1,1,0,1,1,0,0,1,1,0,1,1,0,0,0],
+      [0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0],
+      [0,0,0,1,1,1,0,0,1,1,1,0,0,0,0,0],
+      [0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    ];
+  } else if (type === "cto") {
+    cells = [
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0],
+      [0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0],
+      [0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    ];
+  } else {
+    cells = [
+      [0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0],
+      [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
+      [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+      [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+      [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+      [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
+      [0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    ];
   }
-];
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": faqData.map((faq) => ({
-    "@type": "Question",
-    "name": faq.question,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": faq.answer
-    }
-  }))
-};
+  return (
+    <div className="flex justify-center my-4 h-32">
+      <svg
+        viewBox="0 0 160 100"
+        className="h-full w-full max-w-[200px]"
+        style={{ imageRendering: "pixelated", shapeRendering: "crispEdges" }}
+        aria-hidden="true"
+      >
+        <style>{`
+          @keyframes px-pulse {
+            0%, 100% { fill: #C0F0FB; opacity: 0.95; }
+            50% { fill: #355CFF; opacity: 0.3; }
+          }
+          .px-active {
+            animation: px-pulse 3s infinite ease-in-out;
+          }
+        `}</style>
+        {cells.map((row, rIdx) =>
+          row.map((cell, cIdx) => {
+            if (cell === 0) return null;
+            const delay = ((rIdx + cIdx) * 0.08).toFixed(2) + "s";
+            return (
+              <rect
+                key={`${rIdx}-${cIdx}`}
+                x={cIdx * 10}
+                y={rIdx * 10}
+                width={8}
+                height={8}
+                className="px-active"
+                style={{ animationDelay: delay }}
+              />
+            );
+          })
+        )}
+      </svg>
+    </div>
+  );
+}
 
-const allServices = [
+const services = [
   {
-    title: "Web Engineering",
-    description: "High performance websites and applications built for speed, clarity, and conversion using modern full-stack architecture.",
-    iconName: "code",
+    title: "Custom Software Builds",
+    type: "software",
+    mission: "Problem to prototype",
+    useCases: "Custom apps, tools, automations",
+    weight: "Medium build",
+    dimensions: "24h prototype / scoped delivery",
+    buttonText: "GET IN TOUCH",
+    buttonHref: "/contact",
   },
   {
-    title: "AI & Automations",
-    description: "Lead follow-up, routing, reporting, and task automation that keeps your business responsive around the clock.",
-    iconName: "settings",
+    title: "Labs & Pre-built Tools",
+    type: "ai",
+    mission: "Deploy proven systems",
+    useCases: "Healthcare, logistics, maps, ops",
+    weight: "Fast launch",
+    dimensions: "Configurable / live in 72h",
+    buttonText: "EXPLORE LABS",
+    buttonHref: "/products",
   },
   {
-    title: "Technical SEO",
-    description: "Schema, content architecture, metadata, and performance improvements that help your business get discovered.",
-    iconName: "trending",
+    title: "Fractional CTO",
+    type: "cto",
+    mission: "Own product and architecture",
+    useCases: "Roadmaps, systems, hiring",
+    weight: "Strategic",
+    dimensions: "Base build + revenue share",
+    buttonText: "GET IN TOUCH",
+    buttonHref: "/contact",
   },
   {
-    title: "Cloud Infrastructure",
-    description: "Reliable hosting, monitoring, deployment, backups, and maintenance for sites that need to stay online.",
-    iconName: "server",
+    title: "Technical Co-founders",
+    type: "founder",
+    mission: "Embed from day one",
+    useCases: "MVPs, stack, delivery, scale",
+    weight: "Deep partnership",
+    dimensions: "Equity or revenue aligned",
+    buttonText: "GET IN TOUCH",
+    buttonHref: "/contact",
   },
-  {
-    title: "Product Design",
-    description: "Clean interfaces and user journeys that make complex services feel simple, credible, and easy to buy.",
-    iconName: "globe",
-  },
-  {
-    title: "Strategic Growth",
-    description: "Audits, roadmaps, and experiments that reveal the fastest path from traffic to qualified revenue.",
-    iconName: "zap",
-  },
-];
-
-const proofPoints = [
-  {
-    icon: Shield,
-    title: "Secure by default",
-    text: "Authentication, data handling, and deployment decisions are reviewed before launch."
-  },
-  {
-    icon: Clock,
-    title: "Fast delivery rhythm",
-    text: "Short build cycles, visible progress, and handover documentation keep momentum high."
-  },
-  {
-    icon: Zap,
-    title: "Built for action",
-    text: "Every section, form, and automation is tied to a measurable business outcome."
-  }
 ];
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -129,8 +166,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 export default function ServicesPage() {
-  const titleName = "SERVICES";
-
   return (
     <>
       <DynamicSchema
@@ -153,163 +188,78 @@ export default function ServicesPage() {
           }
         ]}
       />
-      <Script
-        id="faq-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+
+      <PageHero
+        title="Services"
+        viewingText="SERVICES"
+        exploreText="WHAT WE DO"
+        tagline="SYSTEMS & AUTOMATION"
       />
 
-      <div className="pt-32 pb-24 px-6 md:px-10 xl:px-16 2xl:px-24 w-full">
+      <div className="pb-24 px-6 md:px-10 xl:px-16 2xl:px-24 w-full border-t border-border/20 pt-16">
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
-          <div className="text-center mb-20">
-            {/* Massive Swiss Page Title with neon flickering */}
-            <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none mb-14">
-              <h1 className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
-                <FlickerText text={titleName} />
-              </h1>
-            </div>
 
-            <Reveal>
-              <span className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#355CFF] mb-4 block">
-                What we build
-              </span>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h2 className="text-[clamp(32px,5vw,56px)] font-black text-[#1A1A1A] mb-12 tracking-tight leading-[1.1]">
-                Services that turn your website into a growth system.
-              </h2>
-            </Reveal>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-24">
-            {allServices.map((service, index) => (
-              <Reveal key={service.title} delay={index * 0.05}>
-                <ServiceCard {...service} />
-              </Reveal>
-            ))}
-          </div>
-
-          {/* The Unified Growth Stack editorial block */}
-          <Reveal y={24}>
-            <div className="w-full h-[1px] bg-[#E5E2DC] mb-16" />
-            <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-16 mb-24 items-center max-w-7xl mx-auto">
-              <div>
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#355CFF]">The Blueprint</span>
-                <h3 className="text-3xl font-black text-[#1A1A1A] mt-2 tracking-tight">The Growth Engine</h3>
-              </div>
-              <div className="border-l-2 border-[#355CFF] pl-6 py-2">
-                <p className="text-lg md:text-xl text-[#4B5563] leading-relaxed font-semibold">
-                  We connect website engineering, automation, SEO, and cloud operations into one practical system: attract the right visitors, capture intent, follow up quickly, and measure what is working.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
+          {/* Services Cards Grid */}
           <Reveal y={40}>
-            <div className="rounded-lg p-8 md:p-12 border border-[#E5E2DC] bg-white shadow-sm mb-24">
-              <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-10 items-start">
-                <div>
-                  <span className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#355CFF]">Our delivery promise</span>
-                  <h2 className="mt-4 text-[clamp(28px,4vw,44px)] font-black text-[#1A1A1A] tracking-tight leading-tight">
-                    Serious engineering without agency fog.
-                  </h2>
-                  <p className="mt-5 text-[#6B7280] leading-relaxed">
-                    You get clear scope, visible milestones, performance-first builds, and automations designed around your real business workflow.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {proofPoints.map((point) => (
-                    <div key={point.title} className="rounded-lg bg-[#F5F3EE] border border-[#E5E2DC] p-5">
-                      <div className="w-11 h-11 rounded-md bg-white flex items-center justify-center mb-4">
-                        <point.icon className="text-[#355CFF] h-5 w-5" aria-hidden="true" />
-                      </div>
-                      <h3 className="font-bold text-[#1A1A1A] mb-2">{point.title}</h3>
-                      <p className="text-sm text-[#6B7280] leading-relaxed">{point.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          <section id="process" className="scroll-mt-28 mb-24">
-            <Reveal>
-              <div className="text-center mb-12 max-w-2xl mx-auto">
-                <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-[#355CFF] mb-3 block">
-                  Process
-                </span>
-                <h2 className="text-[clamp(1.65rem,4vw,2.5rem)] font-black text-[#1A1A1A] tracking-tight leading-tight mb-3">
-                  Idea to live system—three clear gates.
-                </h2>
-                <p className="text-[#6B7280] text-base leading-relaxed">
-                  No fog: each step has a visible artifact you can forward to your team.
-                </p>
-              </div>
-            </Reveal>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
-              {[
-                {
-                  title: "Discover",
-                  rows: [
-                    { k: "Missions", v: "Map revenue path + constraints" },
-                    { k: "Inputs", v: "Traffic, offers, ops load" },
-                    { k: "Output", v: "Scope, stack, timeline" },
-                  ],
-                },
-                {
-                  title: "Build",
-                  rows: [
-                    { k: "Missions", v: "Ship production-grade systems" },
-                    { k: "Inputs", v: "Milestones + weekly reviews" },
-                    { k: "Output", v: "Live site, automations, docs" },
-                  ],
-                },
-                {
-                  title: "Operate",
-                  rows: [
-                    { k: "Missions", v: "Measure, harden, iterate" },
-                    { k: "Inputs", v: "Analytics + team feedback" },
-                    { k: "Output", v: "Cadence you can run" },
-                  ],
-                },
-              ].map((card) => (
-                <Reveal key={card.title} delay={0.06}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+              {services.map((service, index) => (
+                <div
+                  key={service.title}
+                  className="relative p-[1px] transition-all duration-300 hover:scale-[1.01] bg-border hover:bg-[#C0F0FB]/50"
+                  style={{
+                    clipPath: "polygon(0 0, calc(100% - 42px) 0, 100% 42px, 100% 100%, 0 100%)",
+                  }}
+                >
                   <div
-                    className="h-full bg-white border border-[#E5E2DC] rounded-2xl p-6 md:p-7 shadow-sm relative overflow-hidden"
+                    className="bg-[#1A1A1A] py-6 px-7 sm:px-8 sm:py-9 flex flex-col h-full justify-between min-h-[500px]"
                     style={{
-                      clipPath: "polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)",
+                      clipPath: "polygon(0 0, calc(100% - 41px) 0, 100% 41px, 100% 100%, 0 100%)",
                     }}
                   >
-                    <h3 className="text-lg font-black text-[#1A1A1A] tracking-tight mb-5 pr-2">{card.title}</h3>
-                    <div className="divide-y divide-[#E5E2DC]">
-                      {card.rows.map((row) => (
-                        <div key={row.k} className="grid grid-cols-[minmax(0,88px)_1fr] gap-x-3 py-3 first:pt-0">
-                          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#6B7280] leading-snug">
-                            {row.k}
-                          </span>
-                          <span className="text-sm font-semibold text-[#1A1A1A] leading-snug">{row.v}</span>
-                        </div>
-                      ))}
+                    <div>
+                      <h3 className="text-xl font-bold text-foreground leading-tight tracking-tight mt-4 min-h-[56px] flex items-center">
+                        {service.title}
+                      </h3>
+                      
+                      {/* Pixel Art Graphic */}
+                      <PixelGrid type={service.type} />
+                    </div>
+
+                    <div>
+                      {/* Metadata fields list */}
+                      <div className="flex flex-col gap-4 mt-4 pt-6 border-t border-border/40">
+                        {[
+                          { k: "MISSIONS", v: service.mission },
+                          { k: "USE CASES", v: service.useCases },
+                          { k: "WEIGHT", v: service.weight },
+                          { k: "DIMENSIONS", v: service.dimensions },
+                        ].map((row) => (
+                          <div key={row.k} className="flex flex-col gap-1">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">
+                              {row.k}
+                            </span>
+                            <span className="text-sm font-semibold text-foreground leading-normal">
+                              {row.v}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Action Button */}
+                      <Link href={service.buttonHref} className="w-full block mt-6">
+                        <Button
+                          variant="outline"
+                          className="w-full uppercase font-bold text-[12px] tracking-wider py-5 border-border hover:border-[#C0F0FB]/40 hover:bg-[#C0F0FB] hover:text-black transition-all duration-300"
+                        >
+                          {service.buttonText}
+                        </Button>
+                      </Link>
                     </div>
                   </div>
-                </Reveal>
+                </div>
               ))}
             </div>
-          </section>
-
-          <SubscriptionPlansSection />
-
-          <section className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-[clamp(28px,4vw,40px)] font-black text-[#1A1A1A] mb-4 tracking-tight">Service FAQ</h2>
-              <p className="text-[#6B7280]">Clear answers to help you understand the process.</p>
-            </div>
-
-            <Reveal delay={0.1}>
-              <AccordionFAQ items={faqData} />
-            </Reveal>
-          </section>
+          </Reveal>
 
           <div className="mt-24 text-center rounded-lg bg-[#1A1A1A] p-8 md:p-12">
             <h2 className="text-[clamp(28px,5vw,46px)] font-black text-white tracking-tight mb-4">

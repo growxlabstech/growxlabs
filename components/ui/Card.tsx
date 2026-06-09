@@ -5,7 +5,7 @@ export function Card({ className, children, onClick }: { className?: string; chi
     <div
       onClick={onClick}
       className={cn(
-        "rounded-lg p-6 bg-white border border-[#E5E2DC] shadow-sm transition-all duration-300 hover:border-[#355CFF]/25 hover:shadow-md",
+        "rounded-lg p-6 bg-card border border-border shadow-sm transition-all duration-300 hover:border-[#355CFF]/25 hover:shadow-md",
         className
       )}
     >

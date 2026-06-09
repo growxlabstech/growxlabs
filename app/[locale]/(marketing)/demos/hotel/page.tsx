@@ -113,7 +113,7 @@ export default function HotelDemo() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-20 sm:py-32">
           <div className="max-w-2xl space-y-8">
-            <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.08] backdrop-blur-sm rounded-full border border-white/[0.08]">
+            <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-4 py-2 bg-card/[0.08] backdrop-blur-sm rounded-full border border-white/[0.08]">
               <Star size={14} className="fill-amber-500 text-amber-500" />
               <span className="text-xs font-medium text-zinc-300">5-Star Luxury · Bengaluru</span>
             </motion.div>
@@ -134,7 +134,7 @@ export default function HotelDemo() {
               >
                 Book Your Stay
               </Button>
-              <Button variant="outline" className="h-13 px-8 rounded-xl text-zinc-300 border-white/10 hover:bg-white/[0.04] text-sm font-semibold">
+              <Button variant="outline" className="h-13 px-8 rounded-xl text-zinc-300 border-white/10 hover:bg-card/[0.04] text-sm font-semibold">
                 <Phone size={16} className="mr-2" /> Call Us
               </Button>
             </motion.div>
@@ -162,7 +162,7 @@ export default function HotelDemo() {
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-6">
             {AMENITIES.map((a) => (
               <motion.div key={a.label} {...fadeUp} className="flex flex-col items-center gap-2 text-center">
-                <div className="h-10 w-10 rounded-xl bg-white/[0.04] flex items-center justify-center">
+                <div className="h-10 w-10 rounded-xl bg-card/[0.04] flex items-center justify-center">
                   <a.icon size={18} className="text-zinc-400" />
                 </div>
                 <span className="text-[11px] font-medium text-zinc-500">{a.label}</span>
@@ -263,10 +263,10 @@ export default function HotelDemo() {
                   </div>
 
                   <div className="flex flex-wrap gap-3 text-xs text-zinc-500">
-                    <span className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-lg">
+                    <span className="flex items-center gap-1.5 bg-card/[0.04] px-3 py-1.5 rounded-lg">
                       <Bed size={12} /> {r.beds}
                     </span>
-                    <span className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-lg">
+                    <span className="flex items-center gap-1.5 bg-card/[0.04] px-3 py-1.5 rounded-lg">
                       <Users size={12} /> {r.guests}
                     </span>
                   </div>

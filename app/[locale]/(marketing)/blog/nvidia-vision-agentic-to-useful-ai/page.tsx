@@ -6,6 +6,12 @@ import {
   ReadingProgressBar, 
   TableOfContents 
 } from "@/components/marketing/BlogInteractive";
+import { 
+  AuthorProfileSidebar, 
+  BlogActionBar, 
+  NewsletterForwardBanner, 
+  RelatedEssaysList 
+} from "@/components/marketing/BlogEditorial";
 import { Reveal } from "@/components/marketing/Reveal";
 import { Calendar, Clock, User, Cpu, Sparkles, Compass, ShieldAlert, ArrowRight } from "lucide-react";
 import { FlickerText } from "@/components/marketing/FlickerText";
@@ -151,30 +157,39 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
     ]
   };
 
-  // Related articles
-  const relatedArticles = [
+  // Related essays
+  const relatedEssays = [
     {
       title: "Chatbots Are Dying. Agents Are Taking Over.",
+      accentWord: "Dying",
+      excerpt: "Analyze the architectural shift from passive text-generation chatbots to autonomous execution agents that plan, reason, and operate tools.",
       href: "/blog/chatbots-are-dying-agents-are-taking-over",
       date: "June 1, 2026",
-      readTime: "6 min read"
+      author: "GrowXLabs Team",
+      imageSrc: "/images/agents_blog_woodcut_1780853593579.png"
     },
     {
       title: "Claude Opus 4.8: Anthropic's Most Advanced AI Model — Benchmarks & Review",
+      accentWord: "Benchmarks",
+      excerpt: "Deep dive into Claude 4.8 benchmarks, including SWE-Bench Pro, Terminal-Bench 2.1, and the new Dynamic Workflows engine.",
       href: "/blog/claude-opus-4-8-anthropic-ai-model",
       date: "May 29, 2026",
-      readTime: "12 min read"
+      author: "GrowXLabs Team",
+      imageSrc: "/images/claude_blog_woodcut_1780853620986.png"
     },
     {
       title: "Google Search Is No Longer Just Search: The Rise of the Execution Engine",
+      accentWord: "Search",
+      excerpt: "Google I/O details Google's quiet pivot from link curation index to an active, tool-using personal agent network.",
       href: "/blog/google-search-is-no-longer-just-search",
       date: "May 27, 2026",
-      readTime: "5 min read"
+      author: "GrowXLabs Team",
+      imageSrc: "/images/search_blog_woodcut_1780853646113.png"
     }
   ];
 
   return (
-    <div className="w-full bg-[#F5F3EE] min-h-screen text-[#1A1A1A] selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
+    <div className="w-full bg-background min-h-screen text-foreground selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
       {/* JSON-LD Structured Data */}
       <Script
         id="nvidia-gtc-editorial-schema"
@@ -188,11 +203,11 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
       {/* ═══════════════════════════════════════════════════ */}
       {/* HERO SECTION                                       */}
       {/* ═══════════════════════════════════════════════════ */}
-      <header className="w-full border-b border-[#E5E2DC] pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
+      <header className="w-full border-b border-border pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
         <div className="max-w-5xl mx-auto">
           {/* Swiss Page Header */}
           <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none mb-10">
-            <h1 className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
+            <h1 className="font-black select-none tracking-[-0.06em] text-foreground leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
               <FlickerText text={titleName} />
             </h1>
           </div>
@@ -218,14 +233,14 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             </div>
 
             {/* Headline */}
-            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-[#1A1A1A] mb-8 max-w-4xl mx-auto">
-              NVIDIA&apos;s Vision for the Future of AI:
+            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-foreground mb-8 max-w-4xl mx-auto font-serif">
+              NVIDIA&apos;s Vision for the <span className="italic font-serif font-normal">Future</span> of AI:
               <br />
-              <span className="text-[#355CFF]">From Agentic AI to Useful AI</span>
+              <span className="text-[#355CFF] font-sans font-black tracking-tighter block mt-2">From Agentic AI to Useful AI</span>
             </h2>
 
             {/* Meta Bar */}
-            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-[#E5E2DC] py-5">
+            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-border py-5">
               <div className="flex items-center gap-2">
                 <User className="w-3.5 h-3.5 text-[#355CFF]" />
                 <span>By GrowXLabs Team</span>
@@ -244,7 +259,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
           {/* Hero Visual — Widescreen Cover Image */}
           <Reveal y={30} delay={0.2}>
             <div className="mt-14 w-full max-w-5xl mx-auto">
-              <div className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-[#E5E2DC] bg-[#0F0F12] shadow-md">
+              <div className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-[#0F0F12]">
                 <Image
                   src="/images/nvidia-vision-agentic-to-useful-ai.png"
                   alt="NVIDIA GTC 2026 AI Infrastructure and Agentic System Roadmaps"
@@ -264,23 +279,38 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
       <main className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 py-16">
         <div className="max-w-5xl mx-auto lg:grid lg:grid-cols-12 lg:gap-12 xl:gap-16 relative">
           
-          {/* Desktop TOC Sidebar */}
+          {/* Desktop Author Sidebar */}
           <aside className="hidden lg:block lg:col-span-3 sticky top-32 h-fit">
-            <TableOfContents headings={headings} />
+            <AuthorProfileSidebar
+              authorName="GrowXLabs Team"
+              authorRole="AI Strategy & Research"
+              authorAvatar="/images/avatars/growxlabs.png"
+              category="AI Industry"
+              bio="We analyze emerging AI research, developer tools, and infrastructure architecture to help companies transition from intelligence to execution."
+            />
           </aside>
 
           {/* Article Content */}
           <article className="col-span-12 lg:col-span-9 max-w-[70ch] mx-auto lg:mx-0">
-            {/* Mobile TOC */}
-            <div className="lg:hidden mb-12 bg-white/60 border border-[#E5E2DC] rounded-xl p-6">
-              <TableOfContents headings={headings} />
+            <NewsletterForwardBanner />
+            <BlogActionBar title="NVIDIA's Vision for the Future of AI: From Agentic AI to Useful AI" slug="nvidia-vision-agentic-to-useful-ai" />
+
+            {/* Mobile Author Sidebar */}
+            <div className="lg:hidden mb-8">
+              <AuthorProfileSidebar
+                authorName="GrowXLabs Team"
+                authorRole="AI Strategy & Research"
+                authorAvatar="/images/avatars/growxlabs.png"
+                category="AI Industry"
+                bio="We analyze emerging AI research, developer tools, and infrastructure architecture to help companies transition from intelligence to execution."
+              />
             </div>
 
             {/* ─────────────────────────────────────── */}
             {/* SECTION 01 — INTRODUCTION              */}
             {/* ─────────────────────────────────────── */}
             <section id="introduction" className="scroll-mt-32 space-y-6">
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p className="first-letter:text-5xl first-letter:font-black first-letter:text-[#355CFF] first-letter:mr-3 first-letter:float-left">
                   Artificial intelligence is undergoing its most significant transition since the launch of ChatGPT.
                 </p>
@@ -293,7 +323,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   At NVIDIA GTC, Jensen Huang laid out a vision that signals the end of this introductory phase. The next chapter of artificial intelligence is not about generating text or images. It is about systems that reason, plan, coordinate tools, and execute workflows in the background. It is the evolution from chatbots to autonomous agentic architectures, and ultimately, toward what NVIDIA defines as <strong>Useful AI</strong>.
                 </p>
-                <p className="text-xl font-bold text-[#1A1A1A] border-l-2 border-[#355CFF] pl-4">
+                <p className="text-xl font-bold text-foreground border-l-2 border-[#355CFF] pl-4">
                   For NVIDIA, the metric of success is no longer a model&apos;s raw intelligence on paper. It is the model&apos;s capacity for practical execution.
                 </p>
               </div>
@@ -305,8 +335,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 02 — SHIFT TO EXECUTION        */}
             {/* ─────────────────────────────────────── */}
             <section id="shift-execution" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">The Shift From Intelligence to Execution</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">The Shift From Intelligence to Execution</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   To understand the gravity of NVIDIA&apos;s roadmap, one must appreciate the structural limits of traditional Generative AI. A generative system is a statistical machine trained to predict the next token. If you ask it to build a web application, it outputs a raw block of HTML, CSS, and JavaScript. But it cannot open an IDE, compile the application, spin up a test container, evaluate the console logs, diagnose rendering bottlenecks, refactor its own errors, and deploy the working artifact to a cloud server. 
                 </p>
@@ -316,7 +346,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   <strong>Agentic AI</strong> eliminates this friction by moving the execution logic inside the system. Instead of returning a block of text, an agent is given a objective (e.g., &quot;Deploy a secure hotel booking portal under $50 budget&quot;). The agent then initiates an internal cycle:
                 </p>
-                <ul className="list-disc pl-6 space-y-3 text-[#374151]">
+                <ul className="list-disc pl-6 space-y-3 text-foreground/90">
                   <li><strong>Planning:</strong> Breaking down the goal into separate milestones (database design, API endpoints, payment integration).</li>
                   <li><strong>Tool Usage:</strong> Interacting with external software, APIs, compilers, and databases to write and test code.</li>
                   <li><strong>Self-Correction:</strong> Running a feedback loop where outputs are verified, errors are parsed, and plans are dynamically updated.</li>
@@ -335,8 +365,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 03 — WHY THIS MATTERS MORE     */}
             {/* ─────────────────────────────────────── */}
             <section id="more-than-model" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">Why This Matters More Than a New AI Model</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">Why This Matters More Than a New AI Model</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   Every few months, the tech industry undergoes a wave of excitement over a minor decimal increment in a foundational model. Whether it is GPT-4.5, Claude 3.8, or Gemini 2.5, the narrative remains identical: a slightly higher score on the MMLU index, a slightly longer context window, and a slightly lower cost per million tokens. 
                 </p>
@@ -346,8 +376,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   NVIDIA&apos;s GTC announcements matter because they focus on the layers <em>around</em> the model. By optimizing the hardware, the software libraries (CUDA-X), the pipeline orchestration, and the physical runtime environment, NVIDIA is creating a system where even a smaller, highly efficient open model (like a Llama 3B or Gemma 9B) can execute tasks that previously required massive, expensive closed models.
                 </p>
-                <div className="bg-[#EDEAE4] border border-[#E5E2DC] rounded-xl p-6 my-8 space-y-4">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-[#1A1A1A] flex items-center gap-2">
+                <div className="bg-[#EDEAE4] border border-border rounded-xl p-6 my-8 space-y-4">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
                     <Cpu size={16} className="text-[#355CFF]" /> Infrastructure as the Real Competitive Moat
                   </h4>
                   <p className="text-sm text-[#4B5563] leading-relaxed">
@@ -367,8 +397,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 04 — CUDA-X ANALYSIS           */}
             {/* ─────────────────────────────────────── */}
             <section id="cuda-x" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">CUDA-X: Re-engineering 20 Years of Software for Agents</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">CUDA-X: Re-engineering 20 Years of Software for Agents</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   One of the most profound aspects of Jensen Huang&apos;s GTC presentation was the focus on <strong>CUDA-X</strong>. 
                 </p>
@@ -378,7 +408,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   Historically, these libraries were highly technical assets. They required advanced degrees in computer science, mathematics, or physics to operate. A developer had to read dense documentation, understand parallel thread allocation, write C++ or Fortran wrappers, and manually debug memory allocation on GPU clusters.
                 </p>
-                <p className="text-xl font-bold text-[#1A1A1A] border-l-2 border-[#355CFF] pl-4">
+                <p className="text-xl font-bold text-foreground border-l-2 border-[#355CFF] pl-4">
                   NVIDIA&apos;s new architectural paradigm transforms this software catalog from a developer toolset into an ecosystem of skills for AI agents.
                 </p>
                 <p>
@@ -397,8 +427,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 05 — AI FACTORIES              */}
             {/* ─────────────────────────────────────── */}
             <section id="ai-factories" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">AI Factories and the Infrastructure of Execution</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">AI Factories and the Infrastructure of Execution</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   Historically, data centers were designed as digital warehouses. They housed databases, ran enterprise applications, and served web pages. They were passive environments built to store, retrieve, and transmit packets of data on demand.
                 </p>
@@ -427,8 +457,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 06 — PHYSICAL AI               */}
             {/* ─────────────────────────────────────── */}
             <section id="physical-ai" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">Physical AI and the Rise of Robotics</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">Physical AI and the Rise of Robotics</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   While digital agents are transforming knowledge workflows, NVIDIA is also focused on bringing AI to the physical world. This is the domain of <strong>Physical AI</strong>—where intelligent systems move beyond screens and begin manipulating real-world matter.
                 </p>
@@ -441,7 +471,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   The implications for industries like logistics, manufacturing, and healthcare are massive:
                 </p>
-                <ul className="list-disc pl-6 space-y-3 text-[#374151]">
+                <ul className="list-disc pl-6 space-y-3 text-foreground/90">
                   <li><strong>Smart Warehouses:</strong> Autonomous mobile robots (AMRs) that dynamically reroute based on foot traffic and inventory priority.</li>
                   <li><strong>Precision Agriculture:</strong> Robotic harvesters that identify ripe produce, evaluate health metrics, and pick items without damaging them.</li>
                   <li><strong>Medical Assistance:</strong> Robotic systems that manage surgical prep, organize sterile environments, and assist with physical physical therapy tasks.</li>
@@ -459,8 +489,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 07 — THE FUTURE OF USEFUL AI   */}
             {/* ─────────────────────────────────────── */}
             <section id="useful-ai" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">The Future of Useful AI</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">The Future of Useful AI</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   As we move deeper into the decade, the metric of AI value will shift from novelty to utility. 
                 </p>
@@ -486,8 +516,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 08 — WHAT THIS MEANS FOR BIZ   */}
             {/* ─────────────────────────────────────── */}
             <section id="business-impact" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">What This Means for Businesses</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">What This Means for Businesses</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   For established enterprises and mid-market companies, NVIDIA&apos;s shift from model-centric AI to execution-centric infrastructure requires a change in digital strategy.
                 </p>
@@ -498,20 +528,20 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                   To capture the real opportunity of this shift, businesses must focus on three areas:
                 </p>
                 <div className="space-y-4">
-                  <div className="p-5 border border-[#E5E2DC] bg-white rounded-lg">
-                    <h5 className="font-bold text-[#1A1A1A] mb-1.5">1. Workflow Mapping</h5>
+                  <div className="p-5 border border-border bg-white rounded-lg">
+                    <h5 className="font-bold text-foreground mb-1.5">1. Workflow Mapping</h5>
                     <p className="text-sm text-[#6B7280]">
                       Before deploying AI agents, you must document your existing workflows in detail. An agent cannot automate a process that is undefined or relies on undocumented human intuition.
                     </p>
                   </div>
-                  <div className="p-5 border border-[#E5E2DC] bg-white rounded-lg">
-                    <h5 className="font-bold text-[#1A1A1A] mb-1.5">2. Unified Data Infrastructure</h5>
+                  <div className="p-5 border border-border bg-white rounded-lg">
+                    <h5 className="font-bold text-foreground mb-1.5">2. Unified Data Infrastructure</h5>
                     <p className="text-sm text-[#6B7280]">
                       AI agents require secure, real-time access to corporate databases, CRMs, and project management tools. Siloed, fragmented data is the single greatest bottleneck to agentic execution.
                     </p>
                   </div>
-                  <div className="p-5 border border-[#E5E2DC] bg-white rounded-lg">
-                    <h5 className="font-bold text-[#1A1A1A] mb-1.5">3. Guardrails and Oversight</h5>
+                  <div className="p-5 border border-border bg-white rounded-lg">
+                    <h5 className="font-bold text-foreground mb-1.5">3. Guardrails and Oversight</h5>
                     <p className="text-sm text-[#6B7280]">
                       Because agents take actions (sending emails, committing code, running transactions), companies must implement clear boundaries, verification steps, and human-in-the-loop approvals.
                     </p>
@@ -530,8 +560,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 09 — WHAT THIS MEANS FOR START  */}
             {/* ─────────────────────────────────────── */}
             <section id="startup-impact" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">What This Means for Startups</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">What This Means for Startups</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   For startup founders, the transition to agentic execution represents a massive opportunity to outmaneuver legacy incumbents. 
                 </p>
@@ -541,7 +571,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   This changes how we evaluate operational leverage:
                 </p>
-                <ul className="list-disc pl-6 space-y-3 text-[#374151]">
+                <ul className="list-disc pl-6 space-y-3 text-foreground/90">
                   <li><strong>Capital Efficiency:</strong> Startups can scale their operations, handle thousands of customers, and manage logistics with a fraction of the headcount previously required.</li>
                   <li><strong>Agility:</strong> An agentic startup can refactor its business logic, pivot its pipelines, and integrate new tools in hours rather than weeks of human training.</li>
                   <li><strong>Bespoke Solutions:</strong> Startups can offer highly customized, real-time services to clients by deploying individual agent instances tailored to each account.</li>
@@ -558,8 +588,8 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
             {/* SECTION 10 — WHAT THIS MEANS FOR DEV   */}
             {/* ─────────────────────────────────────── */}
             <section id="developer-impact" className="scroll-mt-32 space-y-6">
-              <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">What This Means for Developers</h3>
-              <div className="text-[16px] leading-[1.8] text-[#374151] space-y-6">
+              <h3 className="text-2xl font-black text-foreground tracking-tight">What This Means for Developers</h3>
+              <div className="text-[16px] leading-[1.8] text-foreground/90 space-y-6">
                 <p>
                   For software engineers, the transition to agentic architectures shifts the nature of coding.
                 </p>
@@ -569,7 +599,7 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
                 <p>
                   Instead of spending hours writing boilerplate code, developers will focus on:
                 </p>
-                <ul className="list-disc pl-6 space-y-3 text-[#374151]">
+                <ul className="list-disc pl-6 space-y-3 text-foreground/90">
                   <li><strong>Agent Coordination:</strong> Designing systems where multiple specialized agents collaborate, share state, and pass tasks to one another.</li>
                   <li><strong>Interface Engineering:</strong> Building clear APIs, database schemas, and tool descriptions so that AI systems can read, understand, and call them reliably.</li>
                   <li><strong>System Verification:</strong> Creating automated testing frameworks, CI/CD pipelines, and monitoring tools to ensure agents execute actions correctly and safely.</li>
@@ -591,36 +621,13 @@ export default async function NvidiaGtcPage({ params }: { params: Promise<{ loca
         </div>
       </main>
 
-      {/* Related Posts */}
-      <footer className="w-full bg-[#EDEAE4] border-t border-[#E5E2DC] py-20 px-6 md:px-10 xl:px-16 2xl:px-24">
-        <div className="max-w-5xl mx-auto space-y-12">
-          <h4 className="font-mono text-[11px] tracking-[0.2em] text-[#6B7280] uppercase font-bold text-center">
-            Related Insights
+      {/* Related Essays */}
+      <footer className="w-full bg-[#FDFAF7] border-t border-border py-20 px-6 md:px-10 xl:px-16 2xl:px-24">
+        <div className="max-w-3xl mx-auto space-y-12">
+          <h4 className="font-mono text-[11px] tracking-[0.2em] text-[#6B7280] uppercase font-bold text-left">
+            Related Essays
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedArticles.map((article, idx) => (
-              <div key={idx} className="bg-white border border-[#E5E2DC] rounded-xl p-6 flex flex-col justify-between hover:border-[#355CFF] transition-colors group">
-                <div className="space-y-4">
-                  <div className="flex gap-2 font-mono text-[9px] text-[#6B7280] uppercase">
-                    <span>{article.date}</span>
-                    <span>·</span>
-                    <span>{article.readTime}</span>
-                  </div>
-                  <Link href={article.href} className="block">
-                    <h5 className="font-bold text-lg text-[#1A1A1A] group-hover:text-[#355CFF] transition-colors line-clamp-2">
-                      {article.title}
-                    </h5>
-                  </Link>
-                </div>
-                <div className="pt-6">
-                  <Link href={article.href} className="inline-flex items-center gap-1 text-xs font-bold text-[#355CFF] hover:underline">
-                    <span>Read article</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+          <RelatedEssaysList essays={relatedEssays} />
         </div>
       </footer>
     </div>

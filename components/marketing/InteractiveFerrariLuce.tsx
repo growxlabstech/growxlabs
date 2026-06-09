@@ -55,11 +55,11 @@ export function LuceHeroVisual() {
   };
 
   return (
-    <div className="relative w-full aspect-[1000/860] bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl overflow-hidden shadow-sm flex flex-col justify-between p-6 select-none font-mono">
+    <div className="relative w-full aspect-[1000/860] bg-background border border-border rounded-xl overflow-hidden shadow-sm flex flex-col justify-between p-6 select-none font-mono">
       {/* Precision Blueprint Grid Overlay */}
       <div className="absolute inset-0 pointer-events-none grid grid-cols-12 grid-rows-12">
         {Array.from({ length: 144 }).map((_, i) => (
-          <div key={i} className="border-[0.5px] border-[#E5E2DC]/50 border-dashed" />
+          <div key={i} className="border-[0.5px] border-border/50 border-dashed" />
         ))}
       </div>
 
@@ -76,18 +76,18 @@ export function LuceHeroVisual() {
       </div>
 
       {/* Top Banner Details */}
-      <div className="relative z-10 flex justify-between items-start border-b border-[#E5E2DC] pb-4">
+      <div className="relative z-10 flex justify-between items-start border-b border-border pb-4">
         <div>
           <span className="text-[10px] uppercase font-bold text-[#E60000] tracking-widest bg-[#E60000]/5 px-2.5 py-1 rounded">
             Disegno Tecnico / Luce V.01
           </span>
-          <h4 className="text-sm font-bold text-[#1A1A1A] mt-2 tracking-tight">
+          <h4 className="text-sm font-bold text-foreground mt-2 tracking-tight">
             ESTETICA STRUTTURALE DELL'ERA ELETTRICA
           </h4>
         </div>
         <div className="text-right">
           <span className="text-[10px] text-[#9CA3AF]">REV. 2026.05</span>
-          <p className="text-[11px] font-bold text-[#1A1A1A]">MARANELLO, ITALIA</p>
+          <p className="text-[11px] font-bold text-foreground">MARANELLO, ITALIA</p>
         </div>
       </div>
 
@@ -211,7 +211,7 @@ export function LuceHeroVisual() {
       </div>
 
       {/* Telemetry Inspector Overlay (Activates on hovering hotspots) */}
-      <div className="relative z-10 min-h-[70px] bg-[#FAFAF8] border border-[#E5E2DC] rounded-lg p-3 text-xs flex flex-col justify-center">
+      <div className="relative z-10 min-h-[70px] bg-background border border-border rounded-lg p-3 text-xs flex flex-col justify-center">
         <AnimatePresence mode="wait">
           {hoveredPart ? (
             <motion.div 
@@ -227,11 +227,11 @@ export function LuceHeroVisual() {
               </div>
               <div>
                 <span className="text-[9px] uppercase tracking-wider text-[#9CA3AF]">Calculated Telemetry</span>
-                <p className="font-bold text-[#1A1A1A]">{parts[hoveredPart as keyof typeof parts].spec}</p>
+                <p className="font-bold text-foreground">{parts[hoveredPart as keyof typeof parts].spec}</p>
               </div>
               <div className="text-right">
                 <span className="text-[9px] uppercase tracking-wider text-[#9CA3AF] block">{parts[hoveredPart as keyof typeof parts].coord}</span>
-                <p className="text-[10px] italic text-[#4B5563] mt-0.5">{parts[hoveredPart as keyof typeof parts].notes}</p>
+                <p className="text-[10px] italic text-muted-foreground mt-0.5">{parts[hoveredPart as keyof typeof parts].notes}</p>
               </div>
             </motion.div>
           ) : (
@@ -259,27 +259,27 @@ export function CombustionToElectricVisual() {
   const [blendValue, setBlendValue] = useState<number>(0);
 
   return (
-    <div className="w-full bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl overflow-hidden p-6 font-mono">
+    <div className="w-full bg-background border border-border rounded-xl overflow-hidden p-6 font-mono">
       {/* Visual Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#E5E2DC] pb-4 mb-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-border pb-4 mb-6">
         <div>
           <span className="text-[10px] font-bold text-[#E60000] uppercase tracking-widest bg-[#E60000]/5 px-2.5 py-1 rounded">
             Section 1 Visual // Progetto Evoluzione
           </span>
-          <h4 className="text-base font-black text-[#1A1A1A] mt-2 tracking-tight">
+          <h4 className="text-base font-black text-foreground mt-2 tracking-tight">
             THE END OF THE COMBUSTION ERA
           </h4>
         </div>
         <div className="text-right mt-2 md:mt-0">
           <span className="text-xs text-[#9CA3AF]">ARCHITECTURAL BLEND SCALE</span>
-          <p className="text-sm font-bold text-[#1A1A1A]">
+          <p className="text-sm font-bold text-foreground">
             {blendValue === 0 ? "V12 MECHANICAL" : blendValue === 100 ? "AXIAL ELECTRIC" : `MORPH IN PROGRESS: ${blendValue}%`}
           </p>
         </div>
       </div>
 
       {/* SVG Canvas Area */}
-      <div className="relative w-full aspect-[1000/600] border border-[#E5E2DC] bg-[#FAF9F6] rounded-lg flex items-center justify-center overflow-hidden mb-6">
+      <div className="relative w-full aspect-[1000/600] border border-border bg-background rounded-lg flex items-center justify-center overflow-hidden mb-6">
         <svg viewBox="0 0 1000 600" className="w-full h-full">
           {/* Grid Background */}
           <defs>
@@ -373,9 +373,9 @@ export function CombustionToElectricVisual() {
       </div>
 
       {/* Interactive Controls */}
-      <div className="bg-[#FAFAF8] border border-[#E5E2DC] rounded-lg p-5 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="bg-background border border-border rounded-lg p-5 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="w-full md:w-2/3 flex flex-col gap-2">
-          <span className="text-xs font-bold text-[#1A1A1A]">SLIDE TO EVOLVE MECHANICS</span>
+          <span className="text-xs font-bold text-foreground">SLIDE TO EVOLVE MECHANICS</span>
           <input 
             type="range" 
             min="0" 
@@ -393,7 +393,7 @@ export function CombustionToElectricVisual() {
         <div className="shrink-0 flex gap-2">
           <button 
             onClick={() => setBlendValue(0)}
-            className="px-3 py-1.5 border border-[#E5E2DC] bg-white rounded text-[10px] hover:bg-[#FAF9F6] text-[#1A1A1A]"
+            className="px-3 py-1.5 border border-border bg-card rounded text-[10px] hover:bg-background text-foreground"
           >
             V12 mechanical
           </button>
@@ -464,19 +464,19 @@ export function TransformationTimelineVisual() {
   ];
 
   return (
-    <div className="w-full bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl overflow-hidden p-6 font-mono">
+    <div className="w-full bg-background border border-border rounded-xl overflow-hidden p-6 font-mono">
       {/* Visual Header */}
-      <div className="border-b border-[#E5E2DC] pb-4 mb-8">
+      <div className="border-b border-border pb-4 mb-8">
         <span className="text-[10px] font-bold text-[#E60000] uppercase tracking-widest bg-[#E60000]/5 px-2.5 py-1 rounded">
           Section 2 Visual // Mappa Strategica
         </span>
-        <h4 className="text-base font-black text-[#1A1A1A] mt-2 tracking-tight">
+        <h4 className="text-base font-black text-foreground mt-2 tracking-tight">
           THE STRATEGIC ROADMAP TO ELECTRIFICATION
         </h4>
       </div>
 
       {/* Horizontal Interactive Graph */}
-      <div className="relative w-full py-8 mb-8 border border-[#E5E2DC] bg-[#FAFAF8] rounded-lg px-4 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4 overflow-hidden">
+      <div className="relative w-full py-8 mb-8 border border-border bg-background rounded-lg px-4 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4 overflow-hidden">
         {/* Connection Line */}
         <div className="absolute top-[35px] left-12 right-12 h-0.5 bg-[#E5E2DC] hidden md:block z-0" />
         <div 
@@ -495,14 +495,14 @@ export function TransformationTimelineVisual() {
               className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
                 activeStep === idx 
                   ? "bg-[#E60000] border-[#E60000] text-white" 
-                  : "bg-white border-[#E5E2DC] text-[#9CA3AF] group-hover:border-[#1A1A1A]"
+                  : "bg-card border-border text-[#9CA3AF] group-hover:border-[#1A1A1A]"
               }`}
               whileHover={{ scale: 1.1 }}
             >
               <span className="text-xs font-bold">{idx + 1}</span>
             </motion.div>
 
-            <span className="text-xs font-bold text-[#1A1A1A] mt-3">{step.year}</span>
+            <span className="text-xs font-bold text-foreground mt-3">{step.year}</span>
             <span className="text-[9px] text-[#9CA3AF] uppercase mt-1 tracking-wider">{step.title}</span>
 
             {/* Hover details tooltip */}
@@ -514,33 +514,33 @@ export function TransformationTimelineVisual() {
       </div>
 
       {/* Dynamic Strategic Analysis Sheet */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 bg-white border border-[#E5E2DC] rounded-lg p-6">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 bg-card border border-border rounded-lg p-6">
         <div className="md:col-span-8 space-y-4">
           <div className="flex gap-2.5 items-center">
             <span className="text-[10px] font-bold text-[#E60000] uppercase tracking-wider bg-[#E60000]/5 px-2 py-0.5 rounded">
               {timelineSteps[activeStep].tag}
             </span>
             <span className="text-xs text-[#9CA3AF] font-bold">·</span>
-            <span className="text-xs font-bold text-[#1A1A1A]">{timelineSteps[activeStep].metric}</span>
+            <span className="text-xs font-bold text-foreground">{timelineSteps[activeStep].metric}</span>
           </div>
 
-          <h5 className="text-lg font-black text-[#1A1A1A] tracking-tight leading-snug">
+          <h5 className="text-lg font-black text-foreground tracking-tight leading-snug">
             {timelineSteps[activeStep].title} — Phase {activeStep + 1}
           </h5>
 
-          <p className="text-[14px] leading-[1.7] text-[#4B5563]">
+          <p className="text-[14px] leading-[1.7] text-muted-foreground">
             {timelineSteps[activeStep].description}
           </p>
         </div>
 
         {/* Column sidebar for statistics metrics */}
-        <div className="md:col-span-4 bg-[#FAF9F6] border border-[#E5E2DC] rounded-md p-4 flex flex-col justify-center gap-4">
+        <div className="md:col-span-4 bg-background border border-border rounded-md p-4 flex flex-col justify-center gap-4">
           <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">KEY METRIC TELEMETRY</span>
           <div className="space-y-4">
             {timelineSteps[activeStep].stats.map((st, i) => (
-              <div key={i} className="border-b border-[#E5E2DC] pb-2 last:border-0 last:pb-0">
+              <div key={i} className="border-b border-border pb-2 last:border-0 last:pb-0">
                 <span className="text-[9px] uppercase tracking-wider text-[#9CA3AF] block">{st.label}</span>
-                <span className="text-lg font-black text-[#1A1A1A] leading-none">{st.value}</span>
+                <span className="text-lg font-black text-foreground leading-none">{st.value}</span>
               </div>
             ))}
           </div>
@@ -615,20 +615,20 @@ export function OpinionNetworkVisual() {
   };
 
   return (
-    <div className="w-full bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl overflow-hidden p-6 font-mono">
+    <div className="w-full bg-background border border-border rounded-xl overflow-hidden p-6 font-mono">
       {/* Visual Header */}
-      <div className="border-b border-[#E5E2DC] pb-4 mb-6">
+      <div className="border-b border-border pb-4 mb-6">
         <span className="text-[10px] font-bold text-[#E60000] uppercase tracking-widest bg-[#E60000]/5 px-2.5 py-1 rounded">
           Section 3 Visual // Grafico Delle Opinioni
         </span>
-        <h4 className="text-base font-black text-[#1A1A1A] mt-2 tracking-tight">
+        <h4 className="text-base font-black text-foreground mt-2 tracking-tight">
           THE DILEMMA: HERITAGE RESISTANCE VS. FUTURE ACCLAIM
         </h4>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Node Graph Column */}
-        <div className="lg:col-span-8 relative aspect-[1000/600] border border-[#E5E2DC] bg-white rounded-lg overflow-hidden">
+        <div className="lg:col-span-8 relative aspect-[1000/600] border border-border bg-card rounded-lg overflow-hidden">
           <svg viewBox="0 0 1000 600" className="w-full h-full">
             {/* Background grids */}
             <circle cx="500" cy="300" r="220" fill="none" stroke="#E5E2DC" strokeWidth="1" strokeDasharray="3 3" />
@@ -724,7 +724,7 @@ export function OpinionNetworkVisual() {
         </div>
 
         {/* Dynamic Sentiment Details Sidebar */}
-        <div className="lg:col-span-4 flex flex-col justify-between bg-[#FAFAF8] border border-[#E5E2DC] rounded-lg p-5">
+        <div className="lg:col-span-4 flex flex-col justify-between bg-background border border-border rounded-lg p-5">
           <div className="space-y-4">
             <span className="text-[10px] uppercase font-bold text-[#9CA3AF] tracking-widest block">
               OPINION NETWORK TELEMETRY
@@ -741,23 +741,23 @@ export function OpinionNetworkVisual() {
                 >
                   <div>
                     <span className="text-[9px] uppercase tracking-wider text-[#9CA3AF]">Perspective Group</span>
-                    <p className={`text-xs font-bold uppercase mt-0.5 ${opinionNodes[hoveredNode as keyof typeof opinionNodes].side === "traditionalist" ? "text-[#1A1A1A]" : "text-[#E60000]"}`}>
+                    <p className={`text-xs font-bold uppercase mt-0.5 ${opinionNodes[hoveredNode as keyof typeof opinionNodes].side === "traditionalist" ? "text-foreground" : "text-[#E60000]"}`}>
                       {opinionNodes[hoveredNode as keyof typeof opinionNodes].side}
                     </p>
                   </div>
 
                   <div>
                     <span className="text-[9px] uppercase tracking-wider text-[#9CA3AF]">Focus Component</span>
-                    <p className="text-sm font-bold text-[#1A1A1A]">{opinionNodes[hoveredNode as keyof typeof opinionNodes].title}</p>
+                    <p className="text-sm font-bold text-foreground">{opinionNodes[hoveredNode as keyof typeof opinionNodes].title}</p>
                   </div>
 
-                  <div className="bg-white border border-[#E5E2DC] rounded p-3 italic text-xs text-[#4B5563] leading-relaxed relative">
+                  <div className="bg-card border border-border rounded p-3 italic text-xs text-muted-foreground leading-relaxed relative">
                     &ldquo;{opinionNodes[hoveredNode as keyof typeof opinionNodes].quote}&rdquo;
                   </div>
 
                   <div>
                     <span className="text-[9px] uppercase tracking-wider text-[#9CA3AF]">Market Sentiment Index</span>
-                    <p className="text-xs font-bold text-[#1A1A1A] mt-0.5">{opinionNodes[hoveredNode as keyof typeof opinionNodes].sentiment}</p>
+                    <p className="text-xs font-bold text-foreground mt-0.5">{opinionNodes[hoveredNode as keyof typeof opinionNodes].sentiment}</p>
                   </div>
                 </motion.div>
               ) : (
@@ -777,7 +777,7 @@ export function OpinionNetworkVisual() {
             </AnimatePresence>
           </div>
 
-          <div className="border-t border-[#E5E2DC] pt-4 mt-6 flex justify-between items-center text-[10px] text-[#9CA3AF]">
+          <div className="border-t border-border pt-4 mt-6 flex justify-between items-center text-[10px] text-[#9CA3AF]">
             <span>NODES: 6 INTEGRATED</span>
             <span>CLASH COEFFICIENT: 0.85</span>
           </div>
@@ -830,20 +830,20 @@ export function LuxuryEcosystemVisual() {
   };
 
   return (
-    <div className="w-full bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl overflow-hidden p-6 font-mono">
+    <div className="w-full bg-background border border-border rounded-xl overflow-hidden p-6 font-mono">
       {/* Visual Header */}
-      <div className="border-b border-[#E5E2DC] pb-4 mb-6">
+      <div className="border-b border-border pb-4 mb-6">
         <span className="text-[10px] font-bold text-[#E60000] uppercase tracking-widest bg-[#E60000]/5 px-2.5 py-1 rounded">
           Section 4 Visual // Nuovo Ecosistema
         </span>
-        <h4 className="text-base font-black text-[#1A1A1A] mt-2 tracking-tight">
+        <h4 className="text-base font-black text-foreground mt-2 tracking-tight">
           THE MODERN LUXURY ECOSYSTEM REDEFINED
         </h4>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
         {/* Dynamic Detailed Display Card */}
-        <div className="md:col-span-6 flex flex-col justify-between bg-white border border-[#E5E2DC] rounded-lg p-6">
+        <div className="md:col-span-6 flex flex-col justify-between bg-card border border-border rounded-lg p-6">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">
@@ -862,7 +862,7 @@ export function LuxuryEcosystemVisual() {
                 {React.createElement(segments[activeSegment as keyof typeof segments].icon, { className: "w-5 h-5" })}
               </div>
               <div>
-                <h5 className="text-base font-black text-[#1A1A1A] leading-tight">
+                <h5 className="text-base font-black text-foreground leading-tight">
                   {segments[activeSegment as keyof typeof segments].title}
                 </h5>
                 <p className="text-xs text-[#E60000] font-bold mt-0.5">
@@ -871,12 +871,12 @@ export function LuxuryEcosystemVisual() {
               </div>
             </div>
 
-            <p className="text-[14px] leading-[1.75] text-[#4B5563] pt-2">
+            <p className="text-[14px] leading-[1.75] text-muted-foreground pt-2">
               {segments[activeSegment as keyof typeof segments].description}
             </p>
           </div>
 
-          <div className="border-t border-[#E5E2DC] pt-4 mt-6 flex justify-between items-center text-[10px] text-[#9CA3AF]">
+          <div className="border-t border-border pt-4 mt-6 flex justify-between items-center text-[10px] text-[#9CA3AF]">
             <span>CORE PILLAR REGISTER</span>
             <span>ECOSYSTEM INTEGRATED // AA+</span>
           </div>
@@ -892,14 +892,14 @@ export function LuxuryEcosystemVisual() {
                 onClick={() => setActiveSegment(key)}
                 className={`cursor-pointer p-5 border rounded-lg flex flex-col justify-between transition-all duration-300 select-none ${
                   isSelected 
-                    ? "bg-white border-[#E60000] shadow-sm scale-[1.01]" 
-                    : "bg-[#FAFAF8] border-[#E5E2DC] hover:border-[#1A1A1A]"
+                    ? "bg-card border-[#E60000] shadow-sm scale-[1.01]" 
+                    : "bg-background border-border hover:border-[#1A1A1A]"
                 }`}
               >
                 <div className="flex justify-between items-start">
                   <div 
                     className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                      isSelected ? "bg-[#E60000]/10 text-[#E60000]" : "bg-white border border-[#E5E2DC] text-[#9CA3AF]"
+                      isSelected ? "bg-[#E60000]/10 text-[#E60000]" : "bg-card border border-border text-[#9CA3AF]"
                     }`}
                   >
                     {React.createElement(item.icon, { className: "w-4 h-4" })}
@@ -912,7 +912,7 @@ export function LuxuryEcosystemVisual() {
                 </div>
 
                 <div className="mt-8">
-                  <h6 className="text-[11px] font-black tracking-tight text-[#1A1A1A]">
+                  <h6 className="text-[11px] font-black tracking-tight text-foreground">
                     {item.title}
                   </h6>
                   <span className="text-[9px] text-[#9CA3AF] uppercase block mt-1 tracking-wider">
@@ -969,29 +969,29 @@ export function AdaptationOSVisual() {
   };
 
   return (
-    <div className="w-full bg-[#FAF9F6] border border-[#E5E2DC] rounded-xl overflow-hidden p-6 font-mono">
+    <div className="w-full bg-background border border-border rounded-xl overflow-hidden p-6 font-mono">
       {/* Visual Header */}
-      <div className="border-b border-[#E5E2DC] pb-4 mb-6">
+      <div className="border-b border-border pb-4 mb-6">
         <span className="text-[10px] font-bold text-[#E60000] uppercase tracking-widest bg-[#E60000]/5 px-2.5 py-1 rounded">
           Section 5 Visual // Simula Strategia
         </span>
-        <h4 className="text-base font-black text-[#1A1A1A] mt-2 tracking-tight">
+        <h4 className="text-base font-black text-foreground mt-2 tracking-tight">
           THE STRATEGIC TRANSFORMATION SYSTEM OS
         </h4>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Toggle Switch Controls Column */}
-        <div className="lg:col-span-7 bg-white border border-[#E5E2DC] rounded-lg p-5 flex flex-col justify-between gap-5">
+        <div className="lg:col-span-7 bg-card border border-border rounded-lg p-5 flex flex-col justify-between gap-5">
           <div className="space-y-4">
             <span className="text-[10px] uppercase font-bold text-[#9CA3AF] tracking-widest block">
               ADAPTATION CONTROLS LEVERS
             </span>
 
             {/* Lever 1 */}
-            <div className="flex justify-between items-center border-b border-[#E5E2DC] pb-3 last:border-0 last:pb-0">
+            <div className="flex justify-between items-center border-b border-border pb-3 last:border-0 last:pb-0">
               <div className="space-y-0.5">
-                <span className="text-xs font-bold text-[#1A1A1A]">Preserve Heritage Core DNA</span>
+                <span className="text-xs font-bold text-foreground">Preserve Heritage Core DNA</span>
                 <p className="text-[9px] text-[#9CA3AF] uppercase">Protect brand prestige and craftsmanship values</p>
               </div>
               <button 
@@ -1007,9 +1007,9 @@ export function AdaptationOSVisual() {
             </div>
 
             {/* Lever 2 */}
-            <div className="flex justify-between items-center border-b border-[#E5E2DC] pb-3 last:border-0 last:pb-0">
+            <div className="flex justify-between items-center border-b border-border pb-3 last:border-0 last:pb-0">
               <div className="space-y-0.5">
-                <span className="text-xs font-bold text-[#1A1A1A]">Accelerate Software R&D</span>
+                <span className="text-xs font-bold text-foreground">Accelerate Software R&D</span>
                 <p className="text-[9px] text-[#9CA3AF] uppercase">Develop proprietary OS, algorithms, dynamics</p>
               </div>
               <button 
@@ -1025,9 +1025,9 @@ export function AdaptationOSVisual() {
             </div>
 
             {/* Lever 3 */}
-            <div className="flex justify-between items-center border-b border-[#E5E2DC] pb-3 last:border-0 last:pb-0">
+            <div className="flex justify-between items-center border-b border-border pb-3 last:border-0 last:pb-0">
               <div className="space-y-0.5">
-                <span className="text-xs font-bold text-[#1A1A1A]">Retrofit E-Building Assembly</span>
+                <span className="text-xs font-bold text-foreground">Retrofit E-Building Assembly</span>
                 <p className="text-[9px] text-[#9CA3AF] uppercase">Configure factories for modular hardware integration</p>
               </div>
               <button 
@@ -1043,9 +1043,9 @@ export function AdaptationOSVisual() {
             </div>
 
             {/* Lever 4 */}
-            <div className="flex justify-between items-center border-b border-[#E5E2DC] pb-3 last:border-0 last:pb-0">
+            <div className="flex justify-between items-center border-b border-border pb-3 last:border-0 last:pb-0">
               <div className="space-y-0.5">
-                <span className="text-xs font-bold text-[#1A1A1A]">Re-train Artisanal Talent</span>
+                <span className="text-xs font-bold text-foreground">Re-train Artisanal Talent</span>
                 <p className="text-[9px] text-[#9CA3AF] uppercase">Educate engineers on code, circuitry, and cells</p>
               </div>
               <button 
@@ -1068,7 +1068,7 @@ export function AdaptationOSVisual() {
               setRetrofitManufacturing(true);
               setEducateTalent(true);
             }}
-            className="w-full h-10 border border-[#E5E2DC] hover:border-[#1A1A1A] bg-white rounded flex items-center justify-center gap-2 text-xs font-bold text-[#1A1A1A] transition-all hover:gap-3"
+            className="w-full h-10 border border-border hover:border-[#1A1A1A] bg-card rounded flex items-center justify-center gap-2 text-xs font-bold text-foreground transition-all hover:gap-3"
           >
             <span>Activate Total Integration Framework</span>
             <ChevronRight className="w-4 h-4" />
@@ -1076,14 +1076,14 @@ export function AdaptationOSVisual() {
         </div>
 
         {/* Calculated Simulation Display Column */}
-        <div className="lg:col-span-5 bg-[#FAFAF8] border border-[#E5E2DC] rounded-lg p-5 flex flex-col justify-between items-stretch">
+        <div className="lg:col-span-5 bg-background border border-border rounded-lg p-5 flex flex-col justify-between items-stretch">
           <div className="space-y-6">
             <span className="text-[10px] uppercase font-bold text-[#9CA3AF] tracking-widest block">
               TRANSFORMATION OUTCOME OS
             </span>
 
             {/* Massive Circular Score Dashboard */}
-            <div className="relative w-36 h-36 mx-auto flex flex-col items-center justify-center bg-white border border-[#E5E2DC] rounded-full shadow-sm">
+            <div className="relative w-36 h-36 mx-auto flex flex-col items-center justify-center bg-card border border-border rounded-full shadow-sm">
               <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full transform -rotate-90">
                 <circle cx="50" cy="50" r="44" fill="none" stroke="#E5E2DC" strokeWidth="2" />
                 <motion.circle 
@@ -1108,18 +1108,18 @@ export function AdaptationOSVisual() {
             {/* Status and Summary Assessment */}
             <div className="text-center space-y-1">
               <span className="text-[9px] uppercase tracking-wider text-[#9CA3AF]">Strategic Diagnostic</span>
-              <p className="text-xs font-black text-[#1A1A1A] leading-tight uppercase tracking-tight">{getStatusText()}</p>
+              <p className="text-xs font-black text-foreground leading-tight uppercase tracking-tight">{getStatusText()}</p>
             </div>
           </div>
 
-          <div className="border-t border-[#E5E2DC] pt-4 mt-6 text-[10px] text-[#9CA3AF] space-y-2 leading-relaxed">
+          <div className="border-t border-border pt-4 mt-6 text-[10px] text-[#9CA3AF] space-y-2 leading-relaxed">
             {score < 40 && (
               <p className="text-red-500 font-bold">
                 ⚠️ Legacy preservation alone risks competitive displacement by software-first hypercar platforms.
               </p>
             )}
             {score >= 40 && score < 75 && (
-              <p className="text-[#1A1A1A]">
+              <p className="text-foreground">
                 ✓ Forward action initialized. However, fragmented technology layers limit final dynamic efficiency bounds.
               </p>
             )}

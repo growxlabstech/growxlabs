@@ -269,7 +269,7 @@ console.log(data.content);`;
   ];
 
   return (
-    <div className="w-full bg-[#F5F3EE] min-h-screen text-[#1A1A1A] selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
+    <div className="w-full bg-background min-h-screen text-foreground selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
       {/* JSON-LD Structured Data */}
       <Script
         id="claude-opus-schemas"
@@ -283,11 +283,11 @@ console.log(data.content);`;
       {/* ═══════════════════════════════════════════════════ */}
       {/* HERO SECTION                                       */}
       {/* ═══════════════════════════════════════════════════ */}
-      <header className="w-full border-b border-[#E5E2DC] pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
+      <header className="w-full border-b border-border pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
         <div className="max-w-5xl mx-auto">
           {/* Swiss Title */}
           <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none mb-10">
-            <h1 className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
+            <h1 className="font-black select-none tracking-[-0.06em] text-foreground leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
               <FlickerText text={titleName} />
             </h1>
           </div>
@@ -313,7 +313,7 @@ console.log(data.content);`;
             </div>
 
             {/* Headline */}
-            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-[#1A1A1A] mb-8 max-w-4xl mx-auto">
+            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-foreground mb-8 max-w-4xl mx-auto">
               Claude Opus 4.8:
               <br />
               <span className="text-[#355CFF]">Anthropic&apos;s Most Advanced AI Model</span>
@@ -325,7 +325,7 @@ console.log(data.content);`;
             </p>
 
             {/* Meta Bar */}
-            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-[#E5E2DC] py-5">
+            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-border py-5">
               <div className="flex items-center gap-2">
                 <User className="w-3.5 h-3.5 text-[#355CFF]" />
                 <span>By GrowXLabsTech</span>
@@ -391,7 +391,7 @@ console.log(data.content);`;
           {/* Article Content */}
           <article className="col-span-12 lg:col-span-9 max-w-[70ch] mx-auto lg:mx-0">
             {/* Mobile TOC */}
-            <div className="lg:hidden mb-12 bg-white/60 border border-[#E5E2DC] rounded-xl p-6">
+            <div className="lg:hidden mb-12 bg-card/60 border border-border rounded-xl p-6">
               <TableOfContents headings={headings} />
             </div>
 
@@ -399,10 +399,10 @@ console.log(data.content);`;
             {/* SECTION 01 — WHAT IS CLAUDE OPUS 4.8?  */}
             {/* ─────────────────────────────────────── */}
             <section id="what-is-opus-48" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 What Is Claude Opus 4.8?
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p className="first-letter:text-5xl first-letter:font-black first-letter:text-[#355CFF] first-letter:mr-3 first-letter:float-left">
                   Anthropic released Claude Opus 4.8 on May 28, 2026. It is the latest and most advanced version of Anthropic&apos;s flagship AI model. Released less than 2 months after Opus 4.7 — showing a faster upgrade cadence.
                 </p>
@@ -410,14 +410,14 @@ console.log(data.content);`;
 
               {/* Official Quote */}
               <blockquote className="border-l-4 border-[#355CFF] bg-[#355CFF]/[0.03] pl-6 pr-6 py-6 my-8 rounded-r-xl">
-                <p className="text-[17px] italic leading-relaxed text-[#374151] font-medium">
+                <p className="text-[17px] italic leading-relaxed text-foreground/90 font-medium">
                   &ldquo;Stronger across coding, agentic tasks, and professional work, Opus 4.8 has the consistency and autonomy to keep working on long-running tasks.&rdquo;
                 </p>
                 <cite className="text-[13px] text-[#6B7280] font-mono mt-3 block not-italic">— Anthropic</cite>
               </blockquote>
 
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-4 font-sans">
-                <p className="font-semibold text-[#1A1A1A]">Areas of Improvement:</p>
+              <div className="text-[18px] leading-[1.85] text-foreground/90 font-normal space-y-4 font-sans">
+                <p className="font-semibold text-foreground">Areas of Improvement:</p>
                 <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                   {["Agentic Coding", "Multidisciplinary Reasoning", "Agentic Computer Use", "Knowledge Work", "Agentic Financial Analysis"].map((item, i) => (
                     <li key={i} className="flex items-center gap-3">
@@ -437,9 +437,9 @@ console.log(data.content);`;
                   { label: "Predecessor", value: "Opus 4.7 (Apr 16, 2026)" },
                   { label: "Price Change", value: "NONE" },
                 ].map((fact, i) => (
-                  <div key={i} className="bg-white border border-[#E5E2DC] rounded-xl p-4 space-y-1">
+                  <div key={i} className="bg-card border border-border rounded-xl p-4 space-y-1">
                     <p className="text-[10px] font-mono tracking-[0.15em] text-[#6B7280] uppercase">{fact.label}</p>
-                    <p className="text-[15px] font-bold text-[#1A1A1A]">{fact.value}</p>
+                    <p className="text-[15px] font-bold text-foreground">{fact.value}</p>
                   </div>
                 ))}
               </div>
@@ -451,20 +451,20 @@ console.log(data.content);`;
             {/* SECTION 02 — KEY IMPROVEMENTS          */}
             {/* ─────────────────────────────────────── */}
             <section id="key-improvements" className="scroll-mt-32 space-y-10">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Key Improvements Over Opus 4.7
               </h2>
 
               {/* Improvement 1: Honesty */}
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-[#1A1A1A] flex items-center gap-3">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
                   <span className="text-[12px] font-mono font-bold text-[#355CFF] bg-[#355CFF]/5 px-2 py-0.5 rounded">01</span>
                   Honesty &amp; Reliability
                 </h3>
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
-                  <p>The most emphasized improvement in Opus 4.8 is <strong className="text-[#1A1A1A]">honesty</strong>. AI models often jump to conclusions and claim progress without evidence. Opus 4.8 is trained to actively fight this problem.</p>
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
+                  <p>The most emphasized improvement in Opus 4.8 is <strong className="text-foreground">honesty</strong>. AI models often jump to conclusions and claim progress without evidence. Opus 4.8 is trained to actively fight this problem.</p>
                 </div>
-                <div className="bg-white border border-[#E5E2DC] rounded-xl p-6 space-y-3">
+                <div className="bg-card border border-border rounded-xl p-6 space-y-3">
                   <p className="text-[11px] font-mono tracking-[0.15em] text-[#6B7280] uppercase font-bold">Results</p>
                   <ul className="list-none space-y-2">
                     {[
@@ -473,7 +473,7 @@ console.log(data.content);`;
                       "Less likely to make unsupported or unverified claims",
                       "More transparent when it lacks sufficient information"
                     ].map((r, i) => (
-                      <li key={i} className="flex items-start gap-3 text-[15px] text-[#374151]">
+                      <li key={i} className="flex items-start gap-3 text-[15px] text-foreground/90">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mt-2.5 shrink-0" />
                         <span>{r}</span>
                       </li>
@@ -481,7 +481,7 @@ console.log(data.content);`;
                   </ul>
                 </div>
                 <blockquote className="border-l-4 border-[#355CFF] bg-[#355CFF]/[0.03] pl-6 pr-6 py-5 rounded-r-xl">
-                  <p className="text-[16px] italic leading-relaxed text-[#374151]">
+                  <p className="text-[16px] italic leading-relaxed text-foreground/90">
                     &ldquo;Early testers report that Opus 4.8 is more likely to flag uncertainties about its work and less likely to make unsupported claims.&rdquo;
                   </p>
                   <cite className="text-[13px] text-[#6B7280] font-mono mt-2 block not-italic">— Anthropic</cite>
@@ -490,19 +490,19 @@ console.log(data.content);`;
 
               {/* Improvement 2: Fast Mode */}
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-[#1A1A1A] flex items-center gap-3">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
                   <span className="text-[12px] font-mono font-bold text-[#355CFF] bg-[#355CFF]/5 px-2 py-0.5 rounded">02</span>
                   Fast Mode — Speed &amp; Cost
                 </h3>
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                     <li className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF]" />
-                      <span>Fast Mode now runs at <strong className="text-[#1A1A1A]">2.5x the speed</strong> of standard mode</span>
+                      <span>Fast Mode now runs at <strong className="text-foreground">2.5x the speed</strong> of standard mode</span>
                     </li>
                     <li className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF]" />
-                      <span>Fast Mode is now <strong className="text-[#1A1A1A]">3x CHEAPER</strong> than it was for previous Opus models</span>
+                      <span>Fast Mode is now <strong className="text-foreground">3x CHEAPER</strong> than it was for previous Opus models</span>
                     </li>
                     <li className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF]" />
@@ -514,11 +514,11 @@ console.log(data.content);`;
 
               {/* Improvement 3: Agentic Judgment */}
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-[#1A1A1A] flex items-center gap-3">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
                   <span className="text-[12px] font-mono font-bold text-[#355CFF] bg-[#355CFF]/5 px-2 py-0.5 rounded">03</span>
                   Agentic Judgment
                 </h3>
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                     {[
                       "Sharper judgment when performing long-running agentic tasks",
@@ -538,11 +538,11 @@ console.log(data.content);`;
 
               {/* Improvement 4: Alignment */}
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-[#1A1A1A] flex items-center gap-3">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-3">
                   <span className="text-[12px] font-mono font-bold text-[#355CFF] bg-[#355CFF]/5 px-2 py-0.5 rounded">04</span>
                   Alignment &amp; Safety
                 </h3>
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                     <li className="flex items-start gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF] mt-2.5 shrink-0" />
@@ -550,11 +550,11 @@ console.log(data.content);`;
                     </li>
                     <li className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF]" />
-                      <span>Deception and misuse rates substantially <strong className="text-[#1A1A1A]">LOWER</strong> than Opus 4.7</span>
+                      <span>Deception and misuse rates substantially <strong className="text-foreground">LOWER</strong> than Opus 4.7</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF] mt-2.5 shrink-0" />
-                      <span>Alignment scores now <strong className="text-[#1A1A1A]">COMPARABLE</strong> to Claude Mythos Preview (Anthropic&apos;s most advanced aligned model)</span>
+                      <span>Alignment scores now <strong className="text-foreground">COMPARABLE</strong> to Claude Mythos Preview (Anthropic&apos;s most advanced aligned model)</span>
                     </li>
                   </ul>
                 </div>
@@ -567,7 +567,7 @@ console.log(data.content);`;
             {/* SECTION 03 — BENCHMARK RESULTS         */}
             {/* ─────────────────────────────────────── */}
             <section id="benchmark-results" className="scroll-mt-32 space-y-8">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Benchmark Results
               </h2>
 
@@ -577,20 +577,20 @@ console.log(data.content);`;
               </Reveal>
 
               {/* Competitor Comparison */}
-              <div className="bg-white border border-[#E5E2DC] rounded-xl p-6 space-y-4">
+              <div className="bg-card border border-border rounded-xl p-6 space-y-4">
                 <p className="text-[11px] font-mono tracking-[0.15em] text-[#6B7280] uppercase font-bold">vs Competitors</p>
                 <ul className="list-none space-y-2">
-                  <li className="flex items-start gap-3 text-[15px] text-[#374151]">
+                  <li className="flex items-start gap-3 text-[15px] text-foreground/90">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mt-2.5 shrink-0" />
-                    <span><strong className="text-[#1A1A1A]">Outperforms GPT-5.5</strong> on: SWE-Bench Pro, Reasoning, Browser Agent</span>
+                    <span><strong className="text-foreground">Outperforms GPT-5.5</strong> on: SWE-Bench Pro, Reasoning, Browser Agent</span>
                   </li>
-                  <li className="flex items-start gap-3 text-[15px] text-[#374151]">
+                  <li className="flex items-start gap-3 text-[15px] text-foreground/90">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] mt-2.5 shrink-0" />
-                    <span><strong className="text-[#1A1A1A]">Outperforms Gemini 3.1</strong> on: Most benchmarks</span>
+                    <span><strong className="text-foreground">Outperforms Gemini 3.1</strong> on: Most benchmarks</span>
                   </li>
-                  <li className="flex items-start gap-3 text-[15px] text-[#374151]">
+                  <li className="flex items-start gap-3 text-[15px] text-foreground/90">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#D97706] mt-2.5 shrink-0" />
-                    <span><strong className="text-[#1A1A1A]">GPT-5.5 leads only</strong> on: Terminal-Bench (using Codex CLI harness 83.4%)</span>
+                    <span><strong className="text-foreground">GPT-5.5 leads only</strong> on: Terminal-Bench (using Codex CLI harness 83.4%)</span>
                   </li>
                 </ul>
               </div>
@@ -612,14 +612,14 @@ console.log(data.content);`;
             {/* SECTION 04 — NEW FEATURES              */}
             {/* ─────────────────────────────────────── */}
             <section id="new-features" className="scroll-mt-32 space-y-12">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 New Features Launched with Opus 4.8
               </h2>
 
               {/* Feature 1: Dynamic Workflows */}
               <div className="space-y-6">
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h3 className="text-xl font-bold text-[#1A1A1A]">Dynamic Workflows — Claude Code</h3>
+                  <h3 className="text-xl font-bold text-foreground">Dynamic Workflows — Claude Code</h3>
                   <span className="text-[10px] font-mono tracking-wider text-[#D97706] bg-[#D97706]/10 px-2 py-0.5 rounded font-bold uppercase">Research Preview</span>
                 </div>
                 <div className="flex gap-4 flex-wrap text-[13px] font-mono text-[#6B7280]">
@@ -627,8 +627,8 @@ console.log(data.content);`;
                   <span>·</span>
                   <span>Tool: Claude Code</span>
                 </div>
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
-                  <p className="font-semibold text-[#1A1A1A]">What it does:</p>
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
+                  <p className="font-semibold text-foreground">What it does:</p>
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                     {[
                       "Claude plans the full work upfront",
@@ -662,7 +662,7 @@ console.log(data.content);`;
               {/* Feature 2: Effort Control */}
               <div className="space-y-6">
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h3 className="text-xl font-bold text-[#1A1A1A]">Effort Control — claude.ai &amp; Cowork</h3>
+                  <h3 className="text-xl font-bold text-foreground">Effort Control — claude.ai &amp; Cowork</h3>
                   <span className="text-[10px] font-mono tracking-wider text-[#22C55E] bg-[#22C55E]/10 px-2 py-0.5 rounded font-bold uppercase">Live</span>
                 </div>
                 <div className="flex gap-4 flex-wrap text-[13px] font-mono text-[#6B7280]">
@@ -676,8 +676,8 @@ console.log(data.content);`;
                   <EffortControlDiagram />
                 </Reveal>
 
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
-                  <p className="font-semibold text-[#1A1A1A]">Notes:</p>
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
+                  <p className="font-semibold text-foreground">Notes:</p>
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                     <li className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF]" />
@@ -700,11 +700,11 @@ console.log(data.content);`;
               {/* Feature 3: Mid-Task System Prompts */}
               <div className="space-y-6">
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h3 className="text-xl font-bold text-[#1A1A1A]">Mid-Task System Prompts — Messages API</h3>
+                  <h3 className="text-xl font-bold text-foreground">Mid-Task System Prompts — Messages API</h3>
                   <span className="text-[10px] font-mono tracking-wider text-[#22C55E] bg-[#22C55E]/10 px-2 py-0.5 rounded font-bold uppercase">Live</span>
                 </div>
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
-                  <p className="font-semibold text-[#1A1A1A]">What it does:</p>
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
+                  <p className="font-semibold text-foreground">What it does:</p>
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                     <li className="flex items-start gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF] mt-2.5 shrink-0" />
@@ -715,7 +715,7 @@ console.log(data.content);`;
                       <span>Update Claude&apos;s instructions mid-task without breaking the prompt cache or routing through a user turn</span>
                     </li>
                   </ul>
-                  <p className="font-semibold text-[#1A1A1A]">Use cases:</p>
+                  <p className="font-semibold text-foreground">Use cases:</p>
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#D97706]/30">
                     {[
                       "Update permissions mid-agent run",
@@ -736,10 +736,10 @@ console.log(data.content);`;
               {/* Feature 4: Rate Limits */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h3 className="text-xl font-bold text-[#1A1A1A]">Increased Rate Limits — Claude Code</h3>
+                  <h3 className="text-xl font-bold text-foreground">Increased Rate Limits — Claude Code</h3>
                   <span className="text-[10px] font-mono tracking-wider text-[#22C55E] bg-[#22C55E]/10 px-2 py-0.5 rounded font-bold uppercase">Live</span>
                 </div>
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                     <li className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF]" />
@@ -760,7 +760,7 @@ console.log(data.content);`;
             {/* SECTION 05 — EARLY TESTER FEEDBACK     */}
             {/* ─────────────────────────────────────── */}
             <section id="early-tester-feedback" className="scroll-mt-32 space-y-8">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Early Tester Feedback
               </h2>
 
@@ -817,13 +817,13 @@ console.log(data.content);`;
                     title: "Staff Writer"
                   }
                 ].map((t, i) => (
-                  <blockquote key={i} className="bg-white border border-[#E5E2DC] rounded-xl p-6 space-y-3">
-                    <p className="text-[16px] italic leading-relaxed text-[#374151]">
+                  <blockquote key={i} className="bg-card border border-border rounded-xl p-6 space-y-3">
+                    <p className="text-[16px] italic leading-relaxed text-foreground/90">
                       &ldquo;{t.quote}&rdquo;
                     </p>
                     <div className="flex items-center gap-2">
                       <div className="w-1 h-4 bg-[#355CFF] rounded-full" />
-                      <cite className="text-[13px] text-[#1A1A1A] font-semibold not-italic">{t.author}</cite>
+                      <cite className="text-[13px] text-foreground font-semibold not-italic">{t.author}</cite>
                       <span className="text-[12px] text-[#6B7280]">— {t.title}</span>
                     </div>
                   </blockquote>
@@ -837,16 +837,16 @@ console.log(data.content);`;
             {/* SECTION 06 — PRICING                   */}
             {/* ─────────────────────────────────────── */}
             <section id="pricing" className="scroll-mt-32 space-y-8">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Pricing
               </h2>
-              <p className="text-[18px] leading-[1.85] text-[#374151]">
-                <strong className="text-[#1A1A1A]">Unchanged from Opus 4.7:</strong>
+              <p className="text-[18px] leading-[1.85] text-foreground/90">
+                <strong className="text-foreground">Unchanged from Opus 4.7:</strong>
               </p>
 
               {/* Pricing Table */}
               <div className="overflow-x-auto">
-                <table className="w-full text-left border border-[#E5E2DC] rounded-xl overflow-hidden">
+                <table className="w-full text-left border border-border rounded-xl overflow-hidden">
                   <thead>
                     <tr className="bg-[#0F0F12] text-white">
                       <th className="px-6 py-4 text-[12px] font-mono tracking-[0.1em] uppercase font-bold">Mode &amp; Direction</th>
@@ -860,16 +860,16 @@ console.log(data.content);`;
                       { mode: "Fast Mode — Input", price: "$10.00" },
                       { mode: "Fast Mode — Output", price: "$50.00" },
                     ].map((row, i) => (
-                      <tr key={i} className="hover:bg-[#F5F3EE] transition-colors">
-                        <td className="px-6 py-4 text-[15px] font-medium text-[#374151]">{row.mode}</td>
-                        <td className="px-6 py-4 text-[15px] font-bold text-[#1A1A1A] text-right font-mono">{row.price}</td>
+                      <tr key={i} className="hover:bg-background transition-colors">
+                        <td className="px-6 py-4 text-[15px] font-medium text-foreground/90">{row.mode}</td>
+                        <td className="px-6 py-4 text-[15px] font-bold text-foreground text-right font-mono">{row.price}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
 
-              <div className="bg-white border border-[#E5E2DC] rounded-xl p-6 space-y-3">
+              <div className="bg-card border border-border rounded-xl p-6 space-y-3">
                 <p className="text-[11px] font-mono tracking-[0.15em] text-[#6B7280] uppercase font-bold">Key Points</p>
                 <ul className="list-none space-y-2">
                   {[
@@ -878,7 +878,7 @@ console.log(data.content);`;
                     "Fast mode runs 2.5x FASTER than standard mode",
                     "Available: claude.ai, API, Vertex AI, AWS Bedrock, MS Foundry"
                   ].map((p, i) => (
-                    <li key={i} className="flex items-center gap-3 text-[15px] text-[#374151]">
+                    <li key={i} className="flex items-center gap-3 text-[15px] text-foreground/90">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF]" />
                       <span>{p}</span>
                     </li>
@@ -893,10 +893,10 @@ console.log(data.content);`;
             {/* SECTION 07 — API ACCESS & CODE         */}
             {/* ─────────────────────────────────────── */}
             <section id="api-access" className="scroll-mt-32 space-y-8">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 API Access &amp; Code
               </h2>
-              <p className="text-[18px] leading-[1.85] text-[#374151]">
+              <p className="text-[18px] leading-[1.85] text-foreground/90">
                 Model ID: <code className="bg-[#0F0F12] text-[#355CFF] px-2 py-0.5 rounded text-[15px] font-mono">claude-opus-4-8</code>
               </p>
 
@@ -934,7 +934,7 @@ console.log(data.content);`;
               </div>
 
               {/* Availability */}
-              <div className="bg-white border border-[#E5E2DC] rounded-xl p-6 space-y-3">
+              <div className="bg-card border border-border rounded-xl p-6 space-y-3">
                 <p className="text-[11px] font-mono tracking-[0.15em] text-[#6B7280] uppercase font-bold">Available Via</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {[
@@ -943,8 +943,8 @@ console.log(data.content);`;
                     { name: "Amazon", url: "AWS Bedrock" },
                     { name: "Microsoft", url: "Azure AI Foundry" },
                   ].map((p, i) => (
-                    <div key={i} className="bg-[#F5F3EE] rounded-lg p-3 space-y-1 text-center">
-                      <p className="text-[13px] font-bold text-[#1A1A1A]">{p.name}</p>
+                    <div key={i} className="bg-background rounded-lg p-3 space-y-1 text-center">
+                      <p className="text-[13px] font-bold text-foreground">{p.name}</p>
                       <p className="text-[11px] text-[#6B7280] font-mono">{p.url}</p>
                     </div>
                   ))}
@@ -958,7 +958,7 @@ console.log(data.content);`;
             {/* SECTION 08 — OPUS TIMELINE             */}
             {/* ─────────────────────────────────────── */}
             <section id="opus-timeline" className="scroll-mt-32 space-y-8">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Opus Model Timeline
               </h2>
 
@@ -990,13 +990,13 @@ console.log(data.content);`;
                   }
                 ].map((entry, i) => (
                   <div key={i} className="relative pb-8 last:pb-0">
-                    <div className={`absolute -left-[calc(2rem+5px)] w-3 h-3 rounded-full border-2 ${entry.current ? 'bg-[#355CFF] border-[#355CFF]' : 'bg-white border-[#D1D5DB]'}`} />
-                    <div className={`${entry.current ? 'bg-[#355CFF]/[0.03] border border-[#355CFF]/10' : 'bg-white border border-[#E5E2DC]'} rounded-xl p-5 space-y-2`}>
+                    <div className={`absolute -left-[calc(2rem+5px)] w-3 h-3 rounded-full border-2 ${entry.current ? 'bg-[#355CFF] border-[#355CFF]' : 'bg-card border-[#D1D5DB]'}`} />
+                    <div className={`${entry.current ? 'bg-[#355CFF]/[0.03] border border-[#355CFF]/10' : 'bg-card border border-border'} rounded-xl p-5 space-y-2`}>
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-[12px] font-mono text-[#6B7280]">{entry.date}</span>
                         {entry.current && <span className="text-[9px] font-mono tracking-wider text-[#355CFF] bg-[#355CFF]/10 px-2 py-0.5 rounded font-bold uppercase">Current</span>}
                       </div>
-                      <p className="text-[17px] font-bold text-[#1A1A1A]">{entry.model}</p>
+                      <p className="text-[17px] font-bold text-foreground">{entry.model}</p>
                       <p className="text-[14px] text-[#6B7280]">{entry.highlight}</p>
                     </div>
                   </div>
@@ -1010,17 +1010,17 @@ console.log(data.content);`;
             {/* SECTION 09 — WHAT'S COMING NEXT        */}
             {/* ─────────────────────────────────────── */}
             <section id="whats-next" className="scroll-mt-32 space-y-8">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 What&apos;s Coming Next
               </h2>
 
               <div className="space-y-6">
-                <h3 className="text-xl font-bold text-[#1A1A1A]">Claude Mythos — Next Generation Model Class</h3>
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
+                <h3 className="text-xl font-bold text-foreground">Claude Mythos — Next Generation Model Class</h3>
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
                   <ul className="list-none space-y-2 pl-4 border-l-2 border-[#355CFF]/30">
                     <li className="flex items-start gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF] mt-2.5 shrink-0" />
-                      <span>Intelligence level: <strong className="text-[#1A1A1A]">HIGHER</strong> than Opus</span>
+                      <span>Intelligence level: <strong className="text-foreground">HIGHER</strong> than Opus</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF] mt-2.5 shrink-0" />
@@ -1041,14 +1041,14 @@ console.log(data.content);`;
                   </ul>
                 </div>
                 <blockquote className="border-l-4 border-[#355CFF] bg-[#355CFF]/[0.03] pl-6 pr-6 py-5 rounded-r-xl">
-                  <p className="text-[16px] italic leading-relaxed text-[#374151]">
+                  <p className="text-[16px] italic leading-relaxed text-foreground/90">
                     &ldquo;We plan to release a new class of model with even higher intelligence than Opus. We expect to bring Mythos-class models to all customers in the coming weeks.&rdquo;
                   </p>
                   <cite className="text-[13px] text-[#6B7280] font-mono mt-2 block not-italic">— Anthropic</cite>
                 </blockquote>
 
-                <div className="text-[18px] leading-[1.85] text-[#374151] space-y-4">
-                  <p>Also Coming: Models with same Opus capabilities at a <strong className="text-[#1A1A1A]">LOWER COST</strong> (Smarter Sonnet or new affordable tier — not confirmed yet).</p>
+                <div className="text-[18px] leading-[1.85] text-foreground/90 space-y-4">
+                  <p>Also Coming: Models with same Opus capabilities at a <strong className="text-foreground">LOWER COST</strong> (Smarter Sonnet or new affordable tier — not confirmed yet).</p>
                 </div>
               </div>
 
@@ -1078,12 +1078,12 @@ console.log(data.content);`;
             {/* SECTION 10 — QUICK REFERENCE TABLE     */}
             {/* ─────────────────────────────────────── */}
             <section id="quick-reference" className="scroll-mt-32 space-y-8">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Complete Quick Reference
               </h2>
 
               <div className="overflow-x-auto">
-                <table className="w-full text-left border border-[#E5E2DC] rounded-xl overflow-hidden text-[14px]">
+                <table className="w-full text-left border border-border rounded-xl overflow-hidden text-[14px]">
                   <thead>
                     <tr className="bg-[#0F0F12] text-white">
                       <th className="px-5 py-3 text-[11px] font-mono tracking-[0.1em] uppercase font-bold w-[40%]">Property</th>
@@ -1124,9 +1124,9 @@ console.log(data.content);`;
                       ["Funding Raised", "$65 Billion (Series H)"],
                       ["Anthropic Valuation", "$965 Billion"],
                     ].map(([prop, val], i) => (
-                      <tr key={i} className="hover:bg-[#F5F3EE] transition-colors">
+                      <tr key={i} className="hover:bg-background transition-colors">
                         <td className="px-5 py-3 font-medium text-[#6B7280]">{prop}</td>
-                        <td className="px-5 py-3 font-semibold text-[#1A1A1A]">{val}</td>
+                        <td className="px-5 py-3 font-semibold text-foreground">{val}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -1140,8 +1140,8 @@ console.log(data.content);`;
             {/* SOURCES                                 */}
             {/* ─────────────────────────────────────── */}
             <section className="space-y-4">
-              <h3 className="text-lg font-bold text-[#1A1A1A]">Sources</h3>
-              <div className="bg-white border border-[#E5E2DC] rounded-xl p-6 space-y-2">
+              <h3 className="text-lg font-bold text-foreground">Sources</h3>
+              <div className="bg-card border border-border rounded-xl p-6 space-y-2">
                 {[
                   { label: "Official Blog", url: "https://www.anthropic.com/news/claude-opus-4-8" },
                   { label: "Model Page", url: "https://www.anthropic.com/claude/opus" },
@@ -1149,7 +1149,7 @@ console.log(data.content);`;
                   { label: "API Docs", url: "https://platform.claude.com/docs/en/about-claude/models" },
                   { label: "Series H Funding", url: "https://www.anthropic.com/news/series-h" },
                 ].map((s, i) => (
-                  <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[14px] text-[#355CFF] hover:text-[#1A1A1A] transition-colors group">
+                  <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[14px] text-[#355CFF] hover:text-foreground transition-colors group">
                     <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     <span className="font-medium">{s.label}</span>
                     <span className="text-[12px] text-[#6B7280] font-mono truncate hidden sm:inline">{s.url}</span>
@@ -1165,7 +1165,7 @@ console.log(data.content);`;
             {/* FAQ SECTION                             */}
             {/* ─────────────────────────────────────── */}
             <section id="faq" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Frequently Asked Questions
               </h2>
               <AccordionFAQ items={faqData} />
@@ -1176,13 +1176,13 @@ console.log(data.content);`;
             {/* ─────────────────────────────────────── */}
             {/* AUTHOR BLOCK                            */}
             {/* ─────────────────────────────────────── */}
-            <div className="bg-white border border-[#E5E2DC] rounded-xl p-8 flex flex-col sm:flex-row items-start gap-6">
+            <div className="bg-card border border-border rounded-xl p-8 flex flex-col sm:flex-row items-start gap-6">
               <div className="w-14 h-14 bg-[#355CFF]/10 rounded-full flex items-center justify-center shrink-0">
                 <span className="text-xl font-black text-[#355CFF]">G</span>
               </div>
               <div className="space-y-2">
                 <p className="text-[11px] font-mono tracking-[0.15em] text-[#6B7280] uppercase">Published by</p>
-                <p className="text-lg font-bold text-[#1A1A1A]">GrowXLabsTech</p>
+                <p className="text-lg font-bold text-foreground">GrowXLabsTech</p>
                 <p className="text-[15px] text-[#6B7280] leading-relaxed">
                   Engineering digital growth through premium web systems, intelligent automation, and AI-native infrastructure. Based in India, serving businesses globally.
                 </p>
@@ -1198,13 +1198,13 @@ console.log(data.content);`;
             {/* RELATED ARTICLES                        */}
             {/* ─────────────────────────────────────── */}
             <section className="space-y-8">
-              <h2 className="text-2xl font-black tracking-tight text-[#1A1A1A]">Continue Reading</h2>
+              <h2 className="text-2xl font-black tracking-tight text-foreground">Continue Reading</h2>
               <div className="grid gap-4">
                 {relatedArticles.map((article, i) => (
-                  <Link key={i} href={article.href} className="group block bg-white border border-[#E5E2DC] rounded-xl p-6 hover:border-[#355CFF]/30 transition-all">
+                  <Link key={i} href={article.href} className="group block bg-card border border-border rounded-xl p-6 hover:border-[#355CFF]/30 transition-all">
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-2">
-                        <h3 className="text-[17px] font-bold text-[#1A1A1A] group-hover:text-[#355CFF] transition-colors leading-snug">{article.title}</h3>
+                        <h3 className="text-[17px] font-bold text-foreground group-hover:text-[#355CFF] transition-colors leading-snug">{article.title}</h3>
                         <div className="flex items-center gap-4 font-mono text-[11px] text-[#6B7280] tracking-wider uppercase">
                           <span>{article.date}</span>
                           <span>·</span>

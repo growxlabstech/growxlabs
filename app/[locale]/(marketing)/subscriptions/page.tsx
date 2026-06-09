@@ -13,7 +13,7 @@ export default function SubscriptionsRedirectPage() {
 
   return (
     <div className="min-h-[min(70dvh,520px)] flex items-center justify-center px-6 pt-28 pb-24">
-      <p className="text-[15px] text-[#6B7280] text-center max-w-sm">
+      <p className="text-[15px] text-muted-foreground text-center max-w-sm">
         Subscription plans moved to Services. Taking you there…
       </p>
     </div>

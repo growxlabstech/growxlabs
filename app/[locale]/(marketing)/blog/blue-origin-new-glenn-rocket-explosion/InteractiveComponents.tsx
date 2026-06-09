@@ -52,7 +52,7 @@ export function BlogShare({ title, slug }: { title: string; slug: string }) {
   ];
 
   return (
-    <div className="flex flex-col gap-4 py-6 border-t border-b border-[#E5E2DC] my-10 animate-fade-in">
+    <div className="flex flex-col gap-4 py-6 border-t border-b border-border my-10 animate-fade-in">
       <p className="font-mono text-[10px] tracking-[0.2em] text-[#6B7280] uppercase">Share this article</p>
       <div className="flex flex-wrap items-center gap-3">
         {shareLinks.map((link) => (
@@ -62,7 +62,7 @@ export function BlogShare({ title, slug }: { title: string; slug: string }) {
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              "flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#E5E2DC] bg-white text-[#374151] text-[13px] font-medium transition-all duration-300 hover:border-current active:scale-[0.98]",
+              "flex items-center gap-2 px-4 py-2.5 rounded-lg border border-border bg-white text-foreground/90 text-[13px] font-medium transition-all duration-300 hover:border-current active:scale-[0.98]",
               link.color
             )}
           >
@@ -76,7 +76,7 @@ export function BlogShare({ title, slug }: { title: string; slug: string }) {
             "flex items-center gap-2 px-4 py-2.5 rounded-lg border text-[13px] font-medium transition-all duration-300 bg-white active:scale-[0.98] mr-auto",
             copied
               ? "border-[#22C55E] text-[#22C55E] bg-[#22C55E]/5"
-              : "border-[#E5E2DC] text-[#374151] hover:border-[#355CFF] hover:text-[#355CFF] hover:bg-[#355CFF]/5"
+              : "border-border text-foreground/90 hover:border-[#355CFF] hover:text-[#355CFF] hover:bg-[#355CFF]/5"
           )}
         >
           {copied ? (

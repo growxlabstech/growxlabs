@@ -129,15 +129,15 @@ function GrowthConsolePreview() {
       className="relative lg:sticky lg:top-28"
       aria-label="Website, automation, and growth system preview"
     >
-      <div className="rounded-xl border border-[#E5E2DC] bg-white p-5 shadow-[0_8px_40px_rgba(0,0,0,0.06)] overflow-hidden">
+      <div className="rounded-xl border border-border bg-card p-5 shadow-sm overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#E5E2DC] pb-4 mb-4">
+        <div className="flex items-center justify-between border-b border-border pb-4 mb-4">
           <div>
-            <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-[#6B7280]">
+            <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
               Growth Console
             </p>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-black text-[#1A1A1A] tracking-tight">
+              <h2 className="text-xl font-black text-foreground tracking-tight">
                 Lead engine live
               </h2>
               {/* Live pulse indicator */}
@@ -148,7 +148,7 @@ function GrowthConsolePreview() {
             </div>
           </div>
           <motion.div
-            className="h-10 w-10 rounded-md bg-[#355CFF] text-white flex items-center justify-center"
+            className="h-10 w-10 rounded-md bg-primary text-primary-foreground flex items-center justify-center"
             animate={isVisible ? { scale: [1, 1.1, 1] } : {}}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
@@ -167,7 +167,7 @@ function GrowthConsolePreview() {
             {
               label: "Response time",
               value: `${responseValue} sec`,
-              color: "#355CFF",
+              color: "var(--primary)",
             },
             {
               label: "Manual tasks",
@@ -177,15 +177,15 @@ function GrowthConsolePreview() {
           ].map((metric, idx) => (
             <motion.div
               key={metric.label}
-              className="rounded-lg bg-[#F5F3EE] border border-[#E5E2DC] p-4 relative overflow-hidden"
+              className="rounded-lg bg-background border border-border p-4 relative overflow-hidden"
               initial={{ opacity: 0, y: 12 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.2 + idx * 0.12 }}
             >
-              <p className="text-[12px] text-[#6B7280] font-semibold">
+              <p className="text-[12px] text-muted-foreground font-semibold">
                 {metric.label}
               </p>
-              <p className="text-2xl font-black text-[#1A1A1A] mt-2 tabular-nums">
+              <p className="text-2xl font-black text-foreground mt-2 tabular-nums">
                 {metric.value}
               </p>
               {/* Subtle bottom accent bar */}
@@ -203,7 +203,7 @@ function GrowthConsolePreview() {
         {/* Funnel + Automation */}
         <div className="grid grid-cols-1 md:grid-cols-[0.95fr_1.05fr] gap-4">
           {/* Website Funnel */}
-          <div className="rounded-lg bg-[#1A1A1A] p-5 text-white min-h-[220px] sm:min-h-[240px] flex flex-col justify-between">
+          <div className="rounded-lg bg-black border border-border p-5 text-white min-h-[220px] sm:min-h-[240px] flex flex-col justify-between">
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 mb-4">
                 Website funnel
@@ -228,8 +228,11 @@ function GrowthConsolePreview() {
                         className="h-8 w-8 rounded-md flex items-center justify-center text-[12px] font-bold transition-colors duration-300"
                         style={{
                           backgroundColor: isActive
-                            ? "rgba(53, 92, 255, 0.9)"
+                            ? "var(--primary)"
                             : "rgba(255,255,255,0.1)",
+                          color: isActive
+                            ? "var(--primary-foreground)"
+                            : "inherit"
                         }}
                         animate={
                           isCurrent
@@ -257,7 +260,7 @@ function GrowthConsolePreview() {
                       </span>
                       {isCurrent && (
                         <motion.span
-                          className="ml-auto text-[9px] font-bold uppercase tracking-widest text-[#355CFF] bg-[#355CFF]/15 px-2 py-0.5 rounded"
+                          className="ml-auto text-[9px] font-bold uppercase tracking-widest text-primary bg-primary/15 px-2 py-0.5 rounded"
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ duration: 0.3 }}
@@ -271,9 +274,9 @@ function GrowthConsolePreview() {
               </div>
             </div>
             {/* Animated progress bar */}
-            <div className="h-2 rounded-full bg-white/10 overflow-hidden mt-4">
+            <div className="h-2 rounded-full bg-card/10 overflow-hidden mt-4">
               <motion.div
-                className="h-full bg-[#355CFF] rounded-full"
+                className="h-full bg-primary rounded-full"
                 initial={{ width: "0%" }}
                 animate={{ width: `${progressWidth}%` }}
                 transition={{ duration: 1.2, ease: "easeOut", delay: 0.5 }}
@@ -282,15 +285,15 @@ function GrowthConsolePreview() {
           </div>
 
           {/* Automation Stack */}
-          <div className="rounded-lg border border-[#E5E2DC] p-5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#6B7280] mb-4">
+          <div className="rounded-lg border border-border p-5 bg-card/20">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground mb-4">
               Automation stack
             </p>
             <div className="space-y-3">
               {automationItems.map((item, idx) => (
                 <motion.div
                   key={item.title}
-                  className="flex gap-3 rounded-md bg-[#F5F3EE] border border-[#E5E2DC] p-3 group hover:border-[#355CFF]/30 transition-colors"
+                  className="flex gap-3 rounded-md bg-background border border-border p-3 group hover:border-primary/30 transition-colors"
                   initial={{ opacity: 0, x: 12 }}
                   animate={isVisible ? { opacity: 1, x: 0 } : {}}
                   transition={{
@@ -310,15 +313,15 @@ function GrowthConsolePreview() {
                     }}
                   >
                     <item.icon
-                      className="h-5 w-5 text-[#355CFF] shrink-0 mt-0.5"
+                      className="h-5 w-5 text-primary shrink-0 mt-0.5"
                       aria-hidden="true"
                     />
                   </motion.div>
                   <div>
-                    <p className="text-sm font-bold text-[#1A1A1A]">
+                    <p className="text-sm font-bold text-foreground">
                       {item.title}
                     </p>
-                    <p className="text-[13px] text-[#6B7280] leading-snug">
+                    <p className="text-[13px] text-muted-foreground leading-snug">
                       {item.text}
                     </p>
                   </div>
@@ -336,77 +339,81 @@ function GrowthConsolePreview() {
 export function LeadEngineSection() {
   return (
     <section
-      className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pt-8 pb-16 md:pb-24 border-t border-[#E5E2DC]/90"
+      className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pt-8 pb-16 md:pb-24 border-t border-border"
       aria-labelledby="lead-engine-heading"
     >
-      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.12fr)] gap-10 xl:gap-14 items-start">
-          <div className="max-w-xl lg:max-w-none xl:max-w-[34rem]">
-            <div
-              className="space-y-6"
+      <div className="max-w-3xl mx-auto w-full text-center">
+        <div className="space-y-6 flex flex-col items-center">
+          {/* Commented out as requested:
+          <div className="space-y-3">
+            <h2
+              id="lead-engine-heading"
+              className="text-[clamp(1.65rem,3.8vw,2.35rem)] font-black tracking-tight text-foreground leading-[1.12]"
             >
-              <div className="space-y-3">
-                <h2
-                  id="lead-engine-heading"
-                  className="text-[clamp(1.65rem,3.8vw,2.35rem)] font-black tracking-tight text-[#1A1A1A] leading-[1.12]"
-                >
-                  A website connected to your lead engine.
-                </h2>
-                <p className="text-[#6B7280] text-base sm:text-[17px] leading-relaxed">
-                  Design becomes operations: capture, instant follow-up, CRM routing, and reporting in one system you
-                  can run—not a pile of disconnected tools.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-2 pt-1">
-                {signals.map(({ text, icon: Icon }) => (
-                  <span
-                    key={text}
-                    className="inline-flex items-center gap-2 rounded-lg border border-[#E5E2DC] bg-white/90 px-3 py-2 text-[13px] font-semibold text-[#4B5563] shadow-sm"
-                  >
-                    <Icon className="h-4 w-4 text-[#355CFF] shrink-0" aria-hidden="true" />
-                    {text}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1">
-                <Link href="/contact" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    className="w-full sm:w-auto h-[50px] px-7 text-[14px] rounded-md font-semibold inline-flex items-center justify-center gap-2 hover:gap-3"
-                    trackEvent="cta_clicked"
-                    trackProperties={{ location: "lead_engine_section", text: "Book a Growth Call" }}
-                  >
-                    Book a Growth Call <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                  </Button>
-                </Link>
-                <Link href="/portfolio" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full sm:w-auto h-[50px] px-7 text-[14px] rounded-md font-semibold"
-                    trackEvent="cta_clicked"
-                    trackProperties={{ location: "lead_engine_section", text: "View Work" }}
-                  >
-                    View Work
-                  </Button>
-                </Link>
-              </div>
-
-              <div className="rounded-xl border border-[#E5E2DC]/80 bg-[#FAF9F6] px-4 py-3.5 sm:px-5 sm:py-4">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#355CFF] mb-1.5">
-                  What moves into production
-                </p>
-                <p className="text-sm sm:text-[15px] text-[#6B7280] leading-relaxed">
-                  The live layer ships with your funnel, automations, and dashboards wired together—the Growth Console
-                  preview shows the shape of what we deploy.
-                </p>
-              </div>
-            </div>
+              A website connected to your lead engine.
+            </h2>
+            <p className="text-muted-foreground text-base sm:text-[17px] leading-relaxed max-w-2xl mx-auto">
+              Design becomes operations: capture, instant follow-up, CRM routing, and reporting in one system you
+              can run—not a pile of disconnected tools.
+            </p>
           </div>
+          */}
 
+          {/* Commented out as requested:
+          <div className="flex flex-wrap justify-center gap-2 pt-1">
+            {signals.map(({ text, icon: Icon }) => (
+              <span
+                key={text}
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/60 px-3 py-2 text-[13px] font-semibold text-foreground shadow-sm"
+              >
+                <Icon className="h-4 w-4 text-primary shrink-0" aria-hidden="true" />
+                {text}
+              </span>
+            ))}
+          </div>
+          */}
+
+          {/* Commented out as requested:
+          <div className="flex flex-col sm:flex-row justify-center gap-3 pt-1 w-full sm:w-auto">
+            <Link href="/contact" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="w-full sm:w-auto h-[50px] px-7 text-[14px] rounded-md font-semibold inline-flex items-center justify-center gap-2 hover:gap-3"
+                trackEvent="cta_clicked"
+                trackProperties={{ location: "lead_engine_section", text: "Book a Growth Call" }}
+              >
+                Book a Growth Call <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Button>
+            </Link>
+            <Link href="/portfolio" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto h-[50px] px-7 text-[14px] rounded-md font-semibold"
+                trackEvent="cta_clicked"
+                trackProperties={{ location: "lead_engine_section", text: "View Work" }}
+              >
+                View Work
+              </Button>
+            </Link>
+          </div>
+          */}
+
+          {/* Commented out as requested:
+          <div className="rounded-xl border border-border bg-card/40 px-4 py-3.5 sm:px-5 sm:py-4 max-w-xl mx-auto text-left">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary mb-1.5 text-center">
+              What moves into production
+            </p>
+            <p className="text-sm sm:text-[15px] text-muted-foreground leading-relaxed">
+              The live layer ships with your funnel, automations, and dashboards wired together—the Growth Console
+              preview shows the shape of what we deploy.
+            </p>
+          </div>
+          */}
+
+          {/* Commented out as requested:
           <GrowthConsolePreview />
+          */}
         </div>
       </div>
     </section>

@@ -529,7 +529,7 @@ export default function Plan({ tasks: externalTasks, onTaskStatusChange, onSubta
                                 {task.dependencies.map((dep, idx) => (
                                   <motion.span
                                     key={idx}
-                                    className="bg-white/5 text-white/70 border border-white/5 rounded px-1.5 py-0.5 text-[10px] font-medium shadow-sm"
+                                    className="bg-card/5 text-white/70 border border-white/5 rounded px-1.5 py-0.5 text-[10px] font-medium shadow-sm"
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{
@@ -674,7 +674,7 @@ export default function Plan({ tasks: externalTasks, onTaskStatusChange, onSubta
                                               {subtask.tools.map((tool, idx) => (
                                                 <motion.span
                                                   key={idx}
-                                                  className="bg-white/5 text-white/70 border border-white/5 rounded px-1.5 py-0.5 text-[10px] font-medium shadow-sm"
+                                                  className="bg-card/5 text-white/70 border border-white/5 rounded px-1.5 py-0.5 text-[10px] font-medium shadow-sm"
                                                   initial={{ opacity: 0, y: -5 }}
                                                   animate={{ 
                                                     opacity: 1, 

@@ -171,7 +171,7 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
   ];
 
   return (
-    <div className="w-full bg-[#F5F3EE] min-h-screen text-[#1A1A1A] selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
+    <div className="w-full bg-background min-h-screen text-foreground selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
       {/* Dynamic JSON-LD Structured Data */}
       <Script
         id="indian-restaurant-usa-schemas"
@@ -185,11 +185,11 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
       {/* ═══════════════════════════════════════════════════ */}
       {/* 1. HERO SECTION                                    */}
       {/* ═══════════════════════════════════════════════════ */}
-      <header className="w-full border-b border-[#E5E2DC] pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
+      <header className="w-full border-b border-border pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
         <div className="max-w-5xl mx-auto">
           {/* Massive Swiss Page Title with neon flickering */}
           <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none mb-10">
-            <h1 className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
+            <h1 className="font-black select-none tracking-[-0.06em] text-foreground leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
               <FlickerText text={titleName} />
             </h1>
           </div>
@@ -215,7 +215,7 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
             </div>
 
             {/* Editorial Title */}
-            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-[#1A1A1A] mb-8 max-w-4xl mx-auto">
+            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-foreground mb-8 max-w-4xl mx-auto">
               Indian Restaurant Website USA:
               <br />
               <span className="text-[#355CFF]">Stop Paying 30% Platform Commissions</span>
@@ -227,7 +227,7 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
             </p>
 
             {/* Meta Details Grid */}
-            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-[#E5E2DC] py-5">
+            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-border py-5">
               <div className="flex items-center gap-2">
                 <User className="w-3.5 h-3.5 text-[#355CFF]" />
                 <span>By GrowXLabsTech</span>
@@ -266,12 +266,12 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
           {/* Core Article Body (Strict 70ch) */}
           <article className="col-span-12 lg:col-span-9 max-w-[720px] mx-auto lg:mx-0 blog-article">
             {/* Inline Table of Contents for Mobile */}
-            <div className="lg:hidden mb-12 bg-white/60 border border-[#E5E2DC] rounded-xl p-6">
+            <div className="lg:hidden mb-12 bg-card/60 border border-border rounded-xl p-6">
               <TableOfContents headings={headings} />
             </div>
 
             {/* Intro Content */}
-            <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-8 font-sans blog-prose">
+            <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-8 font-sans blog-prose">
               <p className="first-letter:text-5xl first-letter:font-black first-letter:text-[#355CFF] first-letter:mr-3 first-letter:float-left">
                 The restaurant margin squeeze in the United States is at an all-time high.
               </p>
@@ -291,10 +291,10 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
 
             {/* Section 1 */}
             <section id="commission-model" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Escaping the Third-Party Platform Commission Trap
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   Third-party food portals make big promises about audience reach, but they restrict direct customer contact completely.
                 </p>
@@ -306,10 +306,10 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
 
             {/* Section 2 */}
             <section id="direct-ordering" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The Power of a Direct Online Ordering System
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   A dedicated online ordering system built natively into your restaurant's website bypasses aggregators entirely.
                 </p>
@@ -326,10 +326,10 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
 
             {/* Section 3 */}
             <section id="cultural-relevance" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Custom Technology Built for Indian Hospitality
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   Indian dining represents a unique blend of heritage, group dining dynamics, complex spicing structures, and high delivery demand.
                 </p>
@@ -341,10 +341,10 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
 
             {/* Section 4 */}
             <section id="lead-engine" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Qualitative Customer Data Capture and Marketing
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   When a customer orders via a portal app, they are the platform's user.
                 </p>
@@ -361,10 +361,10 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
 
             {/* Section 5 */}
             <section id="database-sync" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Syncing Direct Ordering with Automated WhatsApp Alerts
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   Automation ensures operational harmony.
                 </p>
@@ -376,10 +376,10 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
 
             {/* Section 6 */}
             <section id="operation-scalability" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Scale Your Restaurant Operations Efficiently
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   As you open multiple branches in different states, managing centralized operations becomes critical.
                 </p>
@@ -391,7 +391,7 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
 
             {/* Section 7 */}
             <section id="final-thoughts" className="scroll-mt-32 mt-16 space-y-6 font-serif italic text-[#4B5563]">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight not-italic font-sans">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight not-italic font-sans">
                 Final Thoughts
               </h2>
               <p>
@@ -400,7 +400,7 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
               <p>
                 By building direct web ordering platforms and automating guest follow-ups, your brand breaks free of platform commissions, keeps its margins, and develops long-term asset value. Build direct paths and own your growth.
               </p>
-              <p className="mt-8 font-sans font-bold text-[#1A1A1A] not-italic text-sm tracking-[0.1em] uppercase">
+              <p className="mt-8 font-sans font-bold text-foreground not-italic text-sm tracking-[0.1em] uppercase">
                 — GrowXLabsTech
               </p>
             </section>
@@ -408,12 +408,12 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
             {/* ═══════════════════════════════════════════════════ */}
             {/* 2.5 FAQ SECTION (Perfect AEO Validation)           */}
             {/* ═══════════════════════════════════════════════════ */}
-            <section id="faq" className="scroll-mt-32 mt-16 pt-16 border-t border-[#E5E2DC] space-y-8">
+            <section id="faq" className="scroll-mt-32 mt-16 pt-16 border-t border-border space-y-8">
               <div className="text-center md:text-left space-y-3">
                 <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold">
                   Common Q&A
                 </span>
-                <h3 className="text-3xl font-black tracking-tight text-[#1A1A1A]">
+                <h3 className="text-3xl font-black tracking-tight text-foreground">
                   Frequently Asked Questions
                 </h3>
                 <p className="text-[#6B7280] text-[15px] max-w-xl leading-relaxed">
@@ -432,11 +432,11 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
             {/* 3. FINAL CTA SECTION                               */}
             {/* ═══════════════════════════════════════════════════ */}
             <Reveal y={20}>
-              <div className="my-16 bg-[#EDEAE4] rounded-2xl p-8 md:p-12 border border-[#E5E2DC] text-center space-y-6">
+              <div className="my-16 bg-[#EDEAE4] rounded-2xl p-8 md:p-12 border border-border text-center space-y-6">
                 <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold">
                   Next-Gen digital engineering
                 </span>
-                <h3 className="text-[28px] md:text-[38px] font-black tracking-tight leading-tight text-[#1A1A1A]">
+                <h3 className="text-[28px] md:text-[38px] font-black tracking-tight leading-tight text-foreground">
                   Building AI-native products
                   <br />
                   and modern digital systems.
@@ -458,7 +458,7 @@ export default async function IndianRestaurantUSAPage({ params }: { params: Prom
             {/* 4. RELATED ARTICLES SECTION                        */}
             {/* ═══════════════════════════════════════════════════ */}
             <section className="mt-16 space-y-8">
-              <div className="flex items-center justify-between pb-4 border-b border-[#E5E2DC]">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
                 <h4 className="font-mono text-[11px] tracking-[0.15em] text-[#6B7280] uppercase font-bold">
                   Related Insights
                 </h4>

@@ -108,7 +108,7 @@ export default function SmallBusinessWebsitePage() {
                 </li>
               </ul>
             </div>
-            <div className="relative aspect-square rounded-[40px] overflow-hidden border border-white/10 bg-white/[0.02] flex items-center justify-center">
+            <div className="relative aspect-square rounded-[40px] overflow-hidden border border-white/10 bg-card/[0.02] flex items-center justify-center">
               <div className="absolute inset-0 bg-primary/5 blur-[100px]" />
               <div className="relative z-10 text-center p-10">
                 <p className="text-primary font-black text-6xl mb-4 italic">90%</p>

@@ -65,7 +65,7 @@ export default function DemoHub() {
                transition={{ delay: i * 0.1 }}
              >
                 <Link href={demo.path}>
-                   <div className="group bg-[#111827] p-8 md:p-12 rounded-[3.5rem] border border-white/[0.08] h-full flex flex-col justify-between hover:bg-white/[0.02] hover:border-white/20 transition-all duration-700 relative overflow-hidden">
+                   <div className="group bg-[#111827] p-8 md:p-12 rounded-[3.5rem] border border-white/[0.08] h-full flex flex-col justify-between hover:bg-card/[0.02] hover:border-white/20 transition-all duration-700 relative overflow-hidden">
                       <div className="h-20 w-20 bg-[#6C63FF]/10 rounded-[2rem] flex items-center justify-center text-[#6C63FF] mb-12 group-hover:bg-[#6C63FF] group-hover:text-white transition-all shadow-xl shadow-[#6C63FF]/5">
                          <demo.icon size={36} />
                       </div>
@@ -74,7 +74,7 @@ export default function DemoHub() {
                          <p className="text-lg text-[#9CA3AF] font-medium leading-relaxed">{demo.desc}</p>
                          <div className="flex flex-wrap gap-3">
                             {demo.tags.map(tag => (
-                               <span key={tag} className="text-[9px] font-black uppercase tracking-[0.3em] px-5 py-2 bg-white/5 rounded-full text-[#9CA3AF]/40">{tag}</span>
+                               <span key={tag} className="text-[9px] font-black uppercase tracking-[0.3em] px-5 py-2 bg-card/5 rounded-full text-[#9CA3AF]/40">{tag}</span>
                             ))}
                          </div>
                       </div>

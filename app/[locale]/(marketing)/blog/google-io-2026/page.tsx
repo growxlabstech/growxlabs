@@ -198,7 +198,7 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
   ];
 
   return (
-    <div className="w-full bg-[#F5F3EE] min-h-screen text-[#1A1A1A] selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
+    <div className="w-full bg-background min-h-screen text-foreground selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
       {/* Dynamic JSON-LD Structured Data */}
       <Script
         id="google-io-schemas"
@@ -212,11 +212,11 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
       {/* ═══════════════════════════════════════════════════ */}
       {/* 1. HERO SECTION                                    */}
       {/* ═══════════════════════════════════════════════════ */}
-      <header className="w-full border-b border-[#E5E2DC] pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
+      <header className="w-full border-b border-border pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
         <div className="max-w-5xl mx-auto">
           {/* Massive Swiss Page Title with neon flickering */}
           <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none mb-10">
-            <h1 className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
+            <h1 className="font-black select-none tracking-[-0.06em] text-foreground leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
               <FlickerText text={titleName} />
             </h1>
           </div>
@@ -242,7 +242,7 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
             </div>
 
             {/* Editorial Title */}
-            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-[#1A1A1A] mb-8 max-w-4xl mx-auto">
+            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-foreground mb-8 max-w-4xl mx-auto">
               Google I/O 2026:
               <br />
               <span className="text-[#355CFF]">The Beginning of the AI-Native Internet</span>
@@ -254,7 +254,7 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
             </p>
 
             {/* Meta Details Grid */}
-            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-[#E5E2DC] py-5">
+            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-border py-5">
               <div className="flex items-center gap-2">
                 <User className="w-3.5 h-3.5 text-[#355CFF]" />
                 <span>By GrowXLabsTech</span>
@@ -293,12 +293,12 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
           {/* Core Article Body (Strict 70ch) */}
           <article className="col-span-12 lg:col-span-9 max-w-[70ch] mx-auto lg:mx-0">
             {/* Inline Table of Contents for Mobile */}
-            <div className="lg:hidden mb-12 bg-white/60 border border-[#E5E2DC] rounded-xl p-6">
+            <div className="lg:hidden mb-12 bg-card/60 border border-border rounded-xl p-6">
               <TableOfContents headings={headings} />
             </div>
 
             {/* Intro Content */}
-            <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-8 font-sans">
+            <div className="text-[18px] leading-[1.85] text-foreground/90 font-normal space-y-8 font-sans">
               <p className="first-letter:text-5xl first-letter:font-black first-letter:text-[#355CFF] first-letter:mr-3 first-letter:float-left">
                 Google I/O 2026 was not just another developer conference.
               </p>
@@ -344,14 +344,14 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 1: The Biggest Shift */}
             <section id="biggest-shift" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The Biggest Shift: From “Search Engine” → “Execution Engine”
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   For nearly two decades, Google Search worked like this:
                 </p>
-                <div className="bg-white/40 border border-[#E5E2DC] rounded-lg p-5 font-mono text-[12px] text-[#4B5563] space-y-2 max-w-md">
+                <div className="bg-white/40 border border-border rounded-lg p-5 font-mono text-[12px] text-[#4B5563] space-y-2 max-w-md">
                   <div className="flex items-center gap-2">
                     <span className="text-[#355CFF] font-bold">1.</span> Type query in browser
                   </div>
@@ -369,17 +369,17 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
                   At Google I/O 2026, Google revealed a very different future. Now, AI can research, generate interfaces, automate workflows, create visualizations, execute tasks, track updates, build mini applications, and assist coding directly inside the Google ecosystem itself.
                 </p>
                 <p>
-                  This is a massive change. The internet is slowly moving from <strong className="text-[#1A1A1A] font-semibold">“finding information”</strong> to <strong className="text-[#1A1A1A] font-semibold">“AI completing workflows.”</strong>
+                  This is a massive change. The internet is slowly moving from <strong className="text-foreground font-semibold">“finding information”</strong> to <strong className="text-foreground font-semibold">“AI completing workflows.”</strong>
                 </p>
               </div>
             </section>
 
             {/* Section 2: Gemini 3.5 Flash */}
             <section id="gemini-35-flash" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Gemini 3.5 Flash: Google’s Fastest AI Push Yet
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   One of the biggest announcements was Gemini 3.5 Flash. Unlike previous models focused mainly on reasoning, Gemini 3.5 Flash is heavily optimized for speed, coding, automated AI workflows, agentic execution, and real-time generation.
                 </p>
@@ -397,10 +397,10 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 3: Gemini Spark */}
             <section id="gemini-spark" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Gemini Spark: The Most Important Announcement?
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   While most headlines focused on models, the real breakthrough may actually be Gemini Spark. Google introduced Spark as a 24/7 personal AI agent.
                 </p>
@@ -428,10 +428,10 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 4: AI Agents Theme */}
             <section id="ai-agents-theme" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 AI Agents Became the Core Theme of Google I/O
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   Throughout the event, Google repeatedly focused on agentic AI systems. This refers to AI systems capable of handling multi-step workflows autonomously.
                 </p>
@@ -453,10 +453,10 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 5: Antigravity Tooling */}
             <section id="antigravity-tooling" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Antigravity: Google’s New Developer Direction
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   Google also pushed heavily into AI-native development tooling through Antigravity. Antigravity is designed as an agent-first development environment.
                 </p>
@@ -489,10 +489,10 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 6: Gemini Omni Media */}
             <section id="gemini-omni-media" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Gemini Omni: Google’s Push Into Multimodal Media
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   Google also introduced Gemini Omni and Omni Flash, focused on multimodal generation. This includes video generation, advanced image editing, conversational video workflows, and multimodal interaction systems.
                 </p>
@@ -507,10 +507,10 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 7: Google Search Future */}
             <section id="google-search-future" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Google Search Is Changing Forever
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   One of the biggest long-term impacts from Google I/O 2026 is the evolution of Search itself. Google is no longer treating Search as a directory of websites. Instead, Search is becoming an AI workspace.
                 </p>
@@ -535,10 +535,10 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 8: Business Impacts */}
             <section id="business-impacts" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Why This Matters for Businesses
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   Most businesses still think AI means “chatbots.” That is no longer true. Google’s announcements show the next phase clearly: AI is becoming infrastructure.
                 </p>
@@ -553,10 +553,10 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 9: The Bigger Picture */}
             <section id="bigger-picture" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The Bigger Picture
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   Google I/O 2026 revealed something much bigger than model updates. It revealed the beginning of AI-native computing.
                 </p>
@@ -571,10 +571,10 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
 
             {/* Section 10: Final Thoughts */}
             <section id="final-thoughts" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Final Thoughts
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans font-serif italic text-[#4B5563]">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora font-serif italic text-[#4B5563]">
                 <p>
                   Google I/O 2026 was not just a product launch event. It was a preview of how software, search, workflows, and digital products may function in the AI-native era.
                 </p>
@@ -584,7 +584,7 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
                 <p>
                   And that changes everything.
                 </p>
-                <p className="mt-8 font-sans font-bold text-[#1A1A1A] not-italic text-sm tracking-[0.1em] uppercase">
+                <p className="mt-8 font-sans font-bold text-foreground not-italic text-sm tracking-[0.1em] uppercase">
                   — GrowXLabsTech
                 </p>
               </div>
@@ -593,12 +593,12 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
             {/* ═══════════════════════════════════════════════════ */}
             {/* 2.5 FAQ SECTION (Perfect AEO Validation)           */}
             {/* ═══════════════════════════════════════════════════ */}
-            <section id="faq" className="scroll-mt-32 mt-16 pt-16 border-t border-[#E5E2DC] space-y-8">
+            <section id="faq" className="scroll-mt-32 mt-16 pt-16 border-t border-border space-y-8">
               <div className="text-center md:text-left space-y-3">
                 <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold">
                   Common Q&A
                 </span>
-                <h3 className="text-3xl font-black tracking-tight text-[#1A1A1A]">
+                <h3 className="text-3xl font-black tracking-tight text-foreground">
                   Frequently Asked Questions
                 </h3>
                 <p className="text-[#6B7280] text-[15px] max-w-xl leading-relaxed">
@@ -617,11 +617,11 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
             {/* 3. FINAL CTA SECTION                               */}
             {/* ═══════════════════════════════════════════════════ */}
             <Reveal y={20}>
-              <div className="my-16 bg-[#EDEAE4] rounded-2xl p-8 md:p-12 border border-[#E5E2DC] text-center space-y-6">
+              <div className="my-16 bg-[#EDEAE4] rounded-2xl p-8 md:p-12 border border-border text-center space-y-6">
                 <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold">
                   Next-Gen digital engineering
                 </span>
-                <h3 className="text-[28px] md:text-[38px] font-black tracking-tight leading-tight text-[#1A1A1A]">
+                <h3 className="text-[28px] md:text-[38px] font-black tracking-tight leading-tight text-foreground">
                   Building AI-native products
                   <br />
                   and modern digital systems.
@@ -643,7 +643,7 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
             {/* 4. RELATED ARTICLES SECTION                        */}
             {/* ═══════════════════════════════════════════════════ */}
             <section className="mt-16 space-y-8">
-              <div className="flex items-center justify-between pb-4 border-b border-[#E5E2DC]">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
                 <h4 className="font-mono text-[11px] tracking-[0.15em] text-[#6B7280] uppercase font-bold">
                   Related Insights
                 </h4>
@@ -657,14 +657,14 @@ npx antigravity run --orchestrate=asynchronous-workflow`;
                   <Link 
                     key={index} 
                     href={article.href}
-                    className="group flex flex-col justify-between p-6 bg-white border border-[#E5E2DC] rounded-xl hover:border-[#355CFF]/30 hover:shadow-sm transition-all duration-300 min-h-[160px]"
+                    className="group flex flex-col justify-between p-6 bg-card border border-border rounded-xl hover:border-[#355CFF]/30 hover:shadow-sm transition-all duration-300 min-h-[160px]"
                   >
                     <div className="space-y-3">
                       <div className="flex justify-between items-center font-mono text-[9px] tracking-wider text-[#6B7280] uppercase">
                         <span>{article.date}</span>
                         <span>{article.readTime}</span>
                       </div>
-                      <h5 className="font-bold text-[#1A1A1A] text-[14px] leading-snug group-hover:text-[#355CFF] transition-colors line-clamp-3">
+                      <h5 className="font-bold text-foreground text-[14px] leading-snug group-hover:text-[#355CFF] transition-colors line-clamp-3">
                         {article.title}
                       </h5>
                     </div>

@@ -24,7 +24,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { CertificatePreview } from "@/components/marketing/CertificatePreview";
 import Script from "next/script";
-import { FlickerText } from "@/components/marketing/FlickerText";
+import { PageHero } from "@/components/marketing/PageHero";
 
 const faqData = [
   {
@@ -128,8 +128,6 @@ export default function CoursesPage() {
   const [loading, setLoading] = useState<string | null>(null);
   const [openAEO, setOpenAEO] = useState<string | null>(null);
 
-  const titleName = "COURSES";
-
   const handleEnroll = (courseId: string) => {
     if (!session) {
       router.push(`/login?callbackUrl=/courses`);
@@ -150,7 +148,7 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="pt-40 pb-32 px-6 md:px-10 xl:px-16 2xl:px-24 w-full bg-[#030303] min-h-screen font-sans overflow-x-hidden">
+    <>
       <Script
         id="faq-schema"
         type="application/ld+json"
@@ -158,29 +156,15 @@ export default function CoursesPage() {
       />
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       
-      <div className="max-w-[1600px] mx-auto">
-        {/* Header Section */}
-        <section className="mb-24">
-          {/* Massive Swiss Page Title with neon flickering */}
-          <div className="w-full overflow-hidden flex justify-center md:justify-start items-end select-none pointer-events-none mb-14">
-            <h1 className="font-black select-none tracking-[-0.06em] text-white leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
-              <FlickerText text={titleName} />
-            </h1>
-          </div>
+      <PageHero
+        title="Courses"
+        viewingText="COURSES"
+        exploreText="CURRICULUM"
+        tagline="AI ACADEMY"
+      />
 
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 justify-center md:justify-start">
-              <div className="h-px w-8 bg-primary/30" />
-              <span className="text-primary font-bold uppercase tracking-widest text-xs">GrowX Labs Academy</span>
-            </div>
-            <h2 className="text-white font-bold text-4xl md:text-6xl tracking-tight max-w-4xl leading-[1.1]">
-              Learn AI Engineering
-            </h2>
-            <p className="text-[#A0A0A0] text-lg md:text-xl max-w-2xl leading-relaxed font-medium">
-              Hands-on courses built by engineers who ship real AI products. Every course ends with a GrowX Labs certification.
-            </p>
-          </div>
-        </section>
+      <div className="pb-32 px-6 md:px-10 xl:px-16 2xl:px-24 w-full bg-[#030303] font-sans overflow-x-hidden border-t border-zinc-800/40 pt-16">
+        <div className="max-w-[1600px] mx-auto">
 
         {/* Featured Course Track — AI Engineering */}
         <section className="mb-40">
@@ -279,7 +263,7 @@ export default function CoursesPage() {
                       <Button
                         onClick={() => handleEnroll("ai-engineering")}
                         disabled={loading === "ai-engineering"}
-                        className="w-full h-14 rounded-xl bg-white text-black hover:bg-zinc-200 font-bold uppercase text-sm tracking-widest transition-colors duration-200"
+                        className="w-full h-14 rounded-xl bg-card text-black hover:bg-zinc-200 font-bold uppercase text-sm tracking-widest transition-colors duration-200"
                       >
                         {loading === "ai-engineering" ? "Processing..." : "Enroll Now"}
                       </Button>
@@ -345,7 +329,7 @@ export default function CoursesPage() {
               </div>
 
               <div
-                className="bg-white rounded-3xl p-10 text-black border border-zinc-250 shadow-xl"
+                className="bg-card rounded-3xl p-10 text-black border border-zinc-250 shadow-xl"
               >
                 <div className="relative z-10">
                   <h4 className="text-3xl font-bold tracking-tight mb-4">Claim Early Access</h4>
@@ -457,7 +441,7 @@ export default function CoursesPage() {
                     <Button
                       onClick={() => handleEnroll(course.id)}
                       disabled={loading === course.id}
-                      className="w-full bg-white text-black hover:bg-zinc-200 rounded-lg h-12 font-bold text-sm tracking-widest transition-colors duration-200"
+                      className="w-full bg-card text-black hover:bg-zinc-200 rounded-lg h-12 font-bold text-sm tracking-widest transition-colors duration-200"
                     >
                       {loading === course.id ? "Processing..." : "Enroll Now"}
                     </Button>
@@ -515,7 +499,7 @@ export default function CoursesPage() {
                     <Button
                       onClick={() => handleEnroll("java-python-bundle")}
                       disabled={loading === "java-python-bundle"}
-                      className="w-full md:w-56 h-12 rounded-lg bg-white text-black hover:bg-zinc-200 font-bold uppercase text-sm tracking-widest transition-colors duration-200"
+                      className="w-full md:w-56 h-12 rounded-lg bg-card text-black hover:bg-zinc-200 font-bold uppercase text-sm tracking-widest transition-colors duration-200"
                     >
                       {loading === "java-python-bundle" ? "Processing..." : "Get Bundle"}
                     </Button>
@@ -552,9 +536,9 @@ export default function CoursesPage() {
         <section className="pb-20 mt-32">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="h-px w-6 bg-white/10" />
+              <div className="h-px w-6 bg-card/10" />
               <span className="text-white/40 text-xs font-semibold uppercase tracking-widest">Academic Pipeline</span>
-              <div className="h-px w-6 bg-white/10" />
+              <div className="h-px w-6 bg-card/10" />
             </div>
             <h3 className="text-white font-bold text-4xl md:text-5xl tracking-tight">Growth Roadmap</h3>
           </div>
@@ -583,6 +567,7 @@ export default function CoursesPage() {
         </section>
       </div>
     </div>
-  );
+  </>
+);
 }
 

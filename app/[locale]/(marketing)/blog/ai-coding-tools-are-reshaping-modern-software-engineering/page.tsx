@@ -172,7 +172,7 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
   ];
 
   return (
-    <div className="w-full bg-[#F5F3EE] min-h-screen text-[#1A1A1A] selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
+    <div className="w-full bg-background min-h-screen text-foreground selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
       {/* Dynamic JSON-LD Structured Data */}
       <Script
         id="ai-coding-tools-schemas"
@@ -186,11 +186,11 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
       {/* ═══════════════════════════════════════════════════ */}
       {/* 1. HERO SECTION                                    */}
       {/* ═══════════════════════════════════════════════════ */}
-      <header className="w-full border-b border-[#E5E2DC] pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
+      <header className="w-full border-b border-border pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
         <div className="max-w-5xl mx-auto">
           {/* Massive Swiss Page Title with neon flickering */}
           <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none mb-10">
-            <h1 className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
+            <h1 className="font-black select-none tracking-[-0.06em] text-foreground leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
               <FlickerText text={titleName} />
             </h1>
           </div>
@@ -216,7 +216,7 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
             </div>
 
             {/* Editorial Title */}
-            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-[#1A1A1A] mb-8 max-w-4xl mx-auto">
+            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-foreground mb-8 max-w-4xl mx-auto">
               AI Coding Tools Are Reshaping
               <br />
               <span className="text-[#355CFF]">Modern Software Engineering</span>
@@ -228,7 +228,7 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
             </p>
 
             {/* Meta Details Grid */}
-            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-[#E5E2DC] py-5">
+            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-border py-5">
               <div className="flex items-center gap-2">
                 <User className="w-3.5 h-3.5 text-[#355CFF]" />
                 <span>By GrowXLabsTech</span>
@@ -267,12 +267,12 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
           {/* Core Article Body (Strict 70ch) */}
           <article className="col-span-12 lg:col-span-9 max-w-[720px] mx-auto lg:mx-0 blog-article">
             {/* Inline Table of Contents for Mobile */}
-            <div className="lg:hidden mb-12 bg-white/60 border border-[#E5E2DC] rounded-xl p-6">
+            <div className="lg:hidden mb-12 bg-card/60 border border-border rounded-xl p-6">
               <TableOfContents headings={headings} />
             </div>
 
             {/* Intro Content */}
-            <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-8 font-sans blog-prose">
+            <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-8 font-sans blog-prose">
               <p className="first-letter:text-5xl first-letter:font-black first-letter:text-[#355CFF] first-letter:mr-3 first-letter:float-left">
                 The software industry is changing more rapidly than ever.
               </p>
@@ -289,10 +289,10 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
 
             {/* Section 1 */}
             <section id="assisted-development" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The Rise of AI-Assisted Development
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   Modern software engineers leverage AI systems as daily pair programming partners across every stage of the lifecycle:
                 </p>
@@ -316,10 +316,10 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
 
             {/* Section 2 */}
             <section id="compressing-time" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 AI Is Compressing Development Time
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   Workflows that used to take days or weeks of manual layout writing, database tuning, and API testing are increasingly completed in a matter of hours.
                 </p>
@@ -334,10 +334,10 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
 
             {/* Section 3 */}
             <section id="strategic-coding" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Coding Is Becoming More Strategic
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   AI tools aren't eliminating the necessity of human software engineering. In fact, they make high-level engineering skills more critical.
                 </p>
@@ -354,10 +354,10 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
 
             {/* Section 4 */}
             <section id="native-teams" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 AI-Native Engineering Teams
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   We are witnessing the emergence of a new engineering model: the **AI-Native Engineering Team**.
                 </p>
@@ -369,10 +369,10 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
 
             {/* Section 5 */}
             <section id="workflow-advantage" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The Real Advantage Is Workflow
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   Many people still view AI coding as a simple "search and autocomplete" tool. That mental model is years out of date.
                 </p>
@@ -384,10 +384,10 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
 
             {/* Section 6 */}
             <section id="engineering-challenges" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Challenges Still Exist
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   This paradigm acceleration brings unique challenges:
                 </p>
@@ -405,10 +405,10 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
 
             {/* Section 7 */}
             <section id="future-engineering" className="scroll-mt-32 mt-16 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The Future of Software Engineering
               </h2>
-              <div className="text-[17px] leading-[1.9] text-[#374151] font-normal space-y-6 font-sans blog-prose">
+              <div className="text-[17px] leading-[1.9] text-foreground/90 font-normal space-y-6 font-sans blog-prose">
                 <p>
                   Software engineering is entering an AI-native phase. In the coming years, human engineers will increasingly serve as directors of automated multi-agent networks, managing complex pipelines from a unified, higher architectural level.
                 </p>
@@ -420,7 +420,7 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
 
             {/* Section 8 */}
             <section id="final-thoughts" className="scroll-mt-32 mt-16 space-y-6 font-serif italic text-[#4B5563]">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight not-italic font-sans">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight not-italic font-sans">
                 Final Thoughts
               </h2>
               <p>
@@ -429,7 +429,7 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
               <p>
                 AI coding systems have transformed from simple utilities into core infrastructural partners. The developers, startups, and agencies that master workflow orchestration today are the ones who will engineer the high-performance digital products of tomorrow.
               </p>
-              <p className="mt-8 font-sans font-bold text-[#1A1A1A] not-italic text-sm tracking-[0.1em] uppercase">
+              <p className="mt-8 font-sans font-bold text-foreground not-italic text-sm tracking-[0.1em] uppercase">
                 — GrowXLabsTech
               </p>
             </section>
@@ -437,12 +437,12 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
             {/* ═══════════════════════════════════════════════════ */}
             {/* 2.5 FAQ SECTION (Perfect AEO Validation)           */}
             {/* ═══════════════════════════════════════════════════ */}
-            <section id="faq" className="scroll-mt-32 mt-16 pt-16 border-t border-[#E5E2DC] space-y-8">
+            <section id="faq" className="scroll-mt-32 mt-16 pt-16 border-t border-border space-y-8">
               <div className="text-center md:text-left space-y-3">
                 <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold">
                   Common Q&A
                 </span>
-                <h3 className="text-3xl font-black tracking-tight text-[#1A1A1A]">
+                <h3 className="text-3xl font-black tracking-tight text-foreground">
                   Frequently Asked Questions
                 </h3>
                 <p className="text-[#6B7280] text-[15px] max-w-xl leading-relaxed">
@@ -461,11 +461,11 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
             {/* 3. FINAL CTA SECTION                               */}
             {/* ═══════════════════════════════════════════════════ */}
             <Reveal y={20}>
-              <div className="my-16 bg-[#EDEAE4] rounded-2xl p-8 md:p-12 border border-[#E5E2DC] text-center space-y-6">
+              <div className="my-16 bg-[#EDEAE4] rounded-2xl p-8 md:p-12 border border-border text-center space-y-6">
                 <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold">
                   Next-Gen digital engineering
                 </span>
-                <h3 className="text-[28px] md:text-[38px] font-black tracking-tight leading-tight text-[#1A1A1A]">
+                <h3 className="text-[28px] md:text-[38px] font-black tracking-tight leading-tight text-foreground">
                   Building AI-native products
                   <br />
                   and modern digital systems.
@@ -487,7 +487,7 @@ export default async function AICodingToolsPage({ params }: { params: Promise<{ 
             {/* 4. RELATED ARTICLES SECTION                        */}
             {/* ═══════════════════════════════════════════════════ */}
             <section className="mt-16 space-y-8">
-              <div className="flex items-center justify-between pb-4 border-b border-[#E5E2DC]">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
                 <h4 className="font-mono text-[11px] tracking-[0.15em] text-[#6B7280] uppercase font-bold">
                   Related Insights
                 </h4>

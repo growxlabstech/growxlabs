@@ -53,7 +53,7 @@ export function BlogShare({ title, slug }: { title: string; slug: string }) {
   ];
 
   return (
-    <div className="flex flex-col gap-4 py-6 border-t border-b border-[#E5E2DC] my-10 animate-fade-in">
+    <div className="flex flex-col gap-4 py-6 border-t border-b border-border my-10 animate-fade-in">
       <p className="font-mono text-[10px] tracking-[0.2em] text-[#6B7280] uppercase">Share this article</p>
       <div className="flex flex-wrap items-center gap-3">
         {shareLinks.map((link) => (
@@ -63,7 +63,7 @@ export function BlogShare({ title, slug }: { title: string; slug: string }) {
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              "flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#E5E2DC] bg-white text-[#374151] text-[13px] font-medium transition-all duration-300 hover:border-current active:scale-[0.98]",
+              "flex items-center gap-2 px-4 py-2.5 rounded-lg border border-border bg-white text-foreground/90 text-[13px] font-medium transition-all duration-300 hover:border-current active:scale-[0.98]",
               link.color
             )}
           >
@@ -77,7 +77,7 @@ export function BlogShare({ title, slug }: { title: string; slug: string }) {
             "flex items-center gap-2 px-4 py-2.5 rounded-lg border text-[13px] font-medium transition-all duration-300 bg-white active:scale-[0.98] mr-auto",
             copied
               ? "border-[#22C55E] text-[#22C55E] bg-[#22C55E]/5"
-              : "border-[#E5E2DC] text-[#374151] hover:border-[#355CFF] hover:text-[#355CFF] hover:bg-[#355CFF]/5"
+              : "border-border text-foreground/90 hover:border-[#355CFF] hover:text-[#355CFF] hover:bg-[#355CFF]/5"
           )}
         >
           {copied ? (
@@ -161,13 +161,13 @@ export function NewsletterCTA() {
 
 export function AgentCTA() {
   return (
-    <div className="bg-white border border-[#E5E2DC] rounded-2xl p-8 md:p-12 relative overflow-hidden shadow-sm my-16 text-center max-w-3xl mx-auto border-t-4 border-t-[#355CFF]">
+    <div className="bg-card border border-border rounded-2xl p-8 md:p-12 relative overflow-hidden shadow-sm my-16 text-center max-w-3xl mx-auto border-t-4 border-t-[#355CFF]">
       <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-[#355CFF]/3 rounded-full blur-[80px] -mr-20 -mt-20" />
       <div className="relative z-10 space-y-6">
         <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold bg-[#355CFF]/5 px-3 py-1.5 rounded-full">
           Partner With Us
         </span>
-        <h3 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-[#1A1A1A]">
+        <h3 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-foreground">
           Ready to Build AI Agents For Your Business?
         </h3>
         <p className="text-[#6B7280] text-[16px] md:text-[18px] leading-relaxed max-w-2xl mx-auto">
@@ -182,7 +182,7 @@ export function AgentCTA() {
           </Link>
           <Link
             href="/portfolio"
-            className="w-full sm:w-auto bg-white border border-[#E5E2DC] hover:border-[#1A1A1A] hover:bg-[#F5F3EE] text-[#1A1A1A] font-bold text-[15px] px-8 py-4 rounded-xl transition-all duration-300 active:scale-[0.98] text-center"
+            className="w-full sm:w-auto bg-card border border-border hover:border-[#1A1A1A] hover:bg-background text-foreground font-bold text-[15px] px-8 py-4 rounded-xl transition-all duration-300 active:scale-[0.98] text-center"
           >
             View Our Work
           </Link>

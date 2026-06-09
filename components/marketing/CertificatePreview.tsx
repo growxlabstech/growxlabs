@@ -84,7 +84,7 @@ export function CertificatePreview() {
             </div>
 
             <div className="flex flex-col items-center gap-1">
-              <div className="bg-white p-1 border border-[#e0d8c8] rounded shadow-sm">
+              <div className="bg-card p-1 border border-[#e0d8c8] rounded shadow-sm">
                 <QrCode size={24} strokeWidth={1.5} className="text-black" />
               </div>
               <p className="text-[5px] font-bold uppercase tracking-widest text-black/40">Verify</p>

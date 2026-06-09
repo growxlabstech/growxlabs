@@ -10,9 +10,6 @@ const Footer = dynamic(() => import("@/components/layout/Footer").then(mod => mo
   ssr: true,
 });
 
-const GrowXChatWidget = dynamic(() => import("@/components/ui/GrowXChatWidget").then(mod => mod.GrowXChatWidget), {
-  ssr: false,
-});
 
 export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -30,9 +27,28 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
       setTheme("light");
     }
   }, [isDashboard, isDemo, setTheme]);
+
+  const isBlog = pathname?.includes("/blog");
+
+  // Toggle Every.to warm cream reading layout class for blog pages
+  useEffect(() => {
+    if (isBlog) {
+      document.documentElement.classList.add("posts-page");
+    } else {
+      document.documentElement.classList.remove("posts-page");
+    }
+    return () => {
+      document.documentElement.classList.remove("posts-page");
+    };
+  }, [isBlog]);
   
-  // Hide marketing UI for dashboard components to prevent visual conflicts
-  if (isDashboard || isDemo) {
+  const normalizedPath = pathname?.toLowerCase() || "";
+  const isAuthPage = normalizedPath.includes("/login") || 
+                     normalizedPath.includes("/register") || 
+                     normalizedPath.includes("/signup");
+  
+  // Hide marketing UI for dashboard and auth components to prevent visual conflicts
+  if (isDashboard || isDemo || isAuthPage) {
     return <>{children}</>;
   }
 
@@ -43,7 +59,6 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <Footer />
-      <GrowXChatWidget />
     </>
   );
 }

@@ -167,10 +167,10 @@ export function InteractiveRestaurantRetention() {
   };
 
   return (
-    <div className="w-full bg-[#FAF9F6] border border-[#9CA3AF] rounded-2xl p-6 md:p-8 shadow-sm flex flex-col gap-6 select-none relative overflow-hidden text-[#1A1A1A]">
+    <div className="w-full bg-background border border-[#9CA3AF] rounded-2xl p-6 md:p-8 shadow-sm flex flex-col gap-6 select-none relative overflow-hidden text-foreground">
       
       {/* ─── Top Control Panel ─── */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-[#E5E2DC] gap-4 z-10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-border gap-4 z-10">
         <div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#355CFF] animate-ping" />
@@ -178,7 +178,7 @@ export function InteractiveRestaurantRetention() {
               Retention Loop Simulator
             </h4>
           </div>
-          <p className="text-[#6B7280] text-[12px] mt-1 font-sans">
+          <p className="text-muted-foreground text-[12px] mt-1 font-sans">
             Interactive trace engine showing automated loyal customer journeys versus critical incident recovery sequences.
           </p>
         </div>
@@ -217,7 +217,7 @@ export function InteractiveRestaurantRetention() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch relative">
         
         {/* Left Column: Responsive SVG Viewport (8 cols) */}
-        <div className="lg:col-span-8 bg-white border border-[#9CA3AF]/40 rounded-xl p-3 md:p-5 relative flex items-center justify-center">
+        <div className="lg:col-span-8 bg-card border border-[#9CA3AF]/40 rounded-xl p-3 md:p-5 relative flex items-center justify-center">
           <svg
             viewBox="0 0 1000 860"
             className="w-full h-auto select-none"
@@ -476,16 +476,16 @@ export function InteractiveRestaurantRetention() {
         </div>
 
         {/* Right Column: Telemetry Inspector Console (4 cols) */}
-        <div className="lg:col-span-4 flex flex-col justify-between bg-white border border-[#9CA3AF]/40 rounded-xl p-5 shadow-sm text-left">
+        <div className="lg:col-span-4 flex flex-col justify-between bg-card border border-[#9CA3AF]/40 rounded-xl p-5 shadow-sm text-left">
           <div className="space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E5E2DC]">
+            <div className="flex items-center justify-between pb-3 border-b border-border">
               <div className="flex items-center gap-2">
                 <Activity className="w-4 h-4 text-[#355CFF]" />
-                <h5 className="font-mono text-[11px] tracking-[0.1em] text-[#1A1A1A] uppercase font-bold">
+                <h5 className="font-mono text-[11px] tracking-[0.1em] text-foreground uppercase font-bold">
                   TELEMETRY PANEL
                 </h5>
               </div>
-              <span className="font-mono text-[9px] text-[#6B7280] uppercase bg-[#E5E2DC]/50 px-2 py-0.5 rounded">
+              <span className="font-mono text-[9px] text-muted-foreground uppercase bg-[#E5E2DC]/50 px-2 py-0.5 rounded">
                 {isSimulating ? "LIVE RUN" : "INSPECT MODE"}
               </span>
             </div>
@@ -497,26 +497,26 @@ export function InteractiveRestaurantRetention() {
                   <span className="text-[10px] font-mono text-[#355CFF] uppercase tracking-wider block mb-1">
                     {nodeDetails[hoveredNode].category}
                   </span>
-                  <h6 className="text-[16px] font-black tracking-tight text-[#1A1A1A] leading-tight">
+                  <h6 className="text-[16px] font-black tracking-tight text-foreground leading-tight">
                     {nodeDetails[hoveredNode].title}
                   </h6>
                 </div>
 
-                <p className="text-[13px] text-[#4B5563] leading-relaxed">
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
                   {nodeDetails[hoveredNode].description}
                 </p>
 
-                <div className="bg-[#FAF9F6] border border-[#E5E2DC] rounded-md p-3.5 font-mono text-[11px] text-[#374151] space-y-1 relative">
+                <div className="bg-background border border-border rounded-md p-3.5 font-mono text-[11px] text-foreground/90 space-y-1 relative">
                   <div className="absolute top-2 right-2 text-[#355CFF]/30"><Terminal className="w-3.5 h-3.5" /></div>
-                  <span className="text-[#6B7280] block uppercase text-[9px] tracking-wider mb-1.5">SYSTEM DIAGNOSTICS:</span>
+                  <span className="text-muted-foreground block uppercase text-[9px] tracking-wider mb-1.5">SYSTEM DIAGNOSTICS:</span>
                   <div className="truncate">{nodeDetails[hoveredNode].metrics}</div>
                   <div>Trace State: <span className="text-[#355CFF] font-bold">ACTIVE</span></div>
                 </div>
               </div>
             ) : (
-              <div className="h-48 flex flex-col items-center justify-center text-center border border-dashed border-[#E5E2DC] rounded-xl p-6">
+              <div className="h-48 flex flex-col items-center justify-center text-center border border-dashed border-border rounded-xl p-6">
                 <Utensils className="w-8 h-8 text-[#9CA3AF] mb-2.5 animate-pulse" />
-                <p className="font-mono text-[10px] tracking-wide text-[#6B7280] uppercase">
+                <p className="font-mono text-[10px] tracking-wide text-muted-foreground uppercase">
                   AWAITING NODE PROBE
                 </p>
                 <p className="text-[11px] text-[#9CA3AF] mt-1">
@@ -526,14 +526,14 @@ export function InteractiveRestaurantRetention() {
             )}
           </div>
 
-          <div className="pt-6 border-t border-[#E5E2DC] mt-6 font-mono text-[9.5px] text-[#6B7280] space-y-1">
+          <div className="pt-6 border-t border-border mt-6 font-mono text-[9.5px] text-muted-foreground space-y-1">
             <div className="flex justify-between">
               <span>POS INTEGRATION:</span>
               <span className="text-[#10B981] font-semibold">TOAST POS ONLINE</span>
             </div>
             <div className="flex justify-between">
               <span>CHRONOMETER DRIPS:</span>
-              <span className="text-[#1A1A1A]">4,210 TRACKED</span>
+              <span className="text-foreground">4,210 TRACKED</span>
             </div>
             <div className="flex justify-between">
               <span>RETENTION AVERAGE:</span>

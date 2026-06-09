@@ -5,7 +5,6 @@ import { Link, locales } from "@/navigation";
 import { Reveal } from "@/components/marketing/Reveal";
 import { ArrowRight, Calendar, Clock, User, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { FlickerText } from "@/components/marketing/FlickerText";
 
 // ═══════════════════════════════════════════════════
 // METADATA GENERATOR (Perfect SEO / Directory SEO)
@@ -33,7 +32,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function BlogIndexPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-
   const titleName = "INSIGHTS";
 
   // Blog posts database
@@ -48,6 +46,14 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
   };
 
   const regularPosts = [
+    {
+      slug: "nvidia-vision-agentic-to-useful-ai",
+      title: "NVIDIA's Vision for the Future of AI: From Agentic AI to Useful AI",
+      excerpt: "Analyze Jensen Huang's GTC vision: CUDA-X, AI Factories, Physical AI, and the historic shift from reactive chatbots to proactive execution systems.",
+      category: "AI Industry / Infrastructure / Analysis",
+      date: "June 4, 2026",
+      readTime: "14 min read"
+    },
     {
       slug: "chatbots-are-dying-agents-are-taking-over",
       title: "Chatbots Are Dying. Agents Are Taking Over.",
@@ -176,7 +182,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
   };
 
   return (
-    <div className="w-full bg-[#F5F3EE] min-h-screen text-[#1A1A1A] selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
+    <div className="w-full bg-background min-h-screen text-foreground selection:bg-primary/10 selection:text-primary pt-32 pb-24">
       {/* Schema injection */}
       <Script
         id="blog-index-schema"
@@ -186,32 +192,25 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
       <div className="max-w-5xl mx-auto px-6 md:px-10 xl:px-16 2xl:px-24">
         {/* Page Header */}
-        <header className="border-b border-[#E5E2DC] pb-14 mb-16 text-center">
-          {/* Massive Swiss Page Title with neon flickering */}
-          <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none mb-10">
-            <h1 className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
-              <FlickerText text={titleName} />
-            </h1>
-          </div>
-
+        <header className="border-b border-border pb-14 mb-16 text-center">
           <Reveal y={20}>
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#355CFF] mb-5 block font-mono">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary mb-5 block font-mono">
               Editorial Insights
             </span>
-            <h2 className="text-[clamp(30px,4.5vw,52px)] font-black text-[#1A1A1A] mb-6 tracking-tight leading-[1.1]">
-              Research, technical analyses,<br className="hidden sm:block" /> and high-performance guides.
-            </h2>
-            <p className="text-[16px] text-[#6B7280] leading-[1.8] max-w-xl mx-auto">
+            <h1 className="font-serif font-black text-5xl md:text-6xl lg:text-7xl text-foreground tracking-tight leading-tight mb-6">
+              Insights
+            </h1>
+            <p className="text-[16px] text-muted-foreground leading-[1.8] max-w-xl mx-auto">
               Curated case studies, engineering papers, and deep-dives from the GrowXLabsTech studio.
             </p>
           </Reveal>
         </header>
 
-        {/* Featured Post (Google I/O 2026) */}
+        {/* Featured Post (NVIDIA Vision) */}
         <section className="mb-20">
           <Reveal y={30}>
-            <div className="flex flex-col gap-8 pb-16 border-b border-[#E5E2DC]">
-              <div className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-[#E5E2DC] bg-[#0F0F12] shadow-md">
+            <div className="flex flex-col gap-8 pb-16 border-b border-border">
+              <div className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-black">
                 <Image
                   src={featuredPost.image}
                   alt={featuredPost.title}
@@ -223,28 +222,28 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
               </div>
 
               <div className="space-y-4 max-w-4xl">
-                <div className="flex gap-3 items-center font-mono text-[10px] tracking-wider text-[#6B7280] uppercase">
-                  <span className="text-[#355CFF] font-bold bg-[#355CFF]/5 px-2 py-0.5 rounded">{featuredPost.category}</span>
-                  <span className="text-[#D1D5DB]">·</span>
+                <div className="flex gap-3 items-center font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                  <span className="text-primary font-bold bg-primary/5 px-2 py-0.5 rounded">{featuredPost.category}</span>
+                  <span className="text-[#babcbe]">·</span>
                   <span>{featuredPost.date}</span>
-                  <span className="text-[#D1D5DB]">·</span>
+                  <span className="text-[#babcbe]">·</span>
                   <span>{featuredPost.readTime}</span>
                 </div>
 
                 <Link href={`/blog/${featuredPost.slug}`} className="group inline-block">
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-[#1A1A1A] group-hover:text-[#355CFF] transition-colors">
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-foreground group-hover:text-primary transition-colors">
                     {featuredPost.title}
                   </h2>
                 </Link>
 
-                <p className="text-[#4B5563] text-[17px] leading-relaxed font-normal">
+                <p className="text-muted-foreground text-[17px] leading-relaxed font-normal">
                   {featuredPost.excerpt}
                 </p>
 
                 <div className="pt-2">
                   <Link 
                     href={`/blog/${featuredPost.slug}`} 
-                    className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#355CFF] hover:underline"
+                    className="inline-flex items-center gap-1.5 text-[13px] font-bold text-primary hover:underline"
                   >
                     <span>Read featured article</span>
                     <ArrowRight className="w-4 h-4" />
@@ -258,7 +257,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
         {/* Regular Posts Grid List */}
         <section className="space-y-16">
           <Reveal y={20} delay={0.15}>
-            <h3 className="font-mono text-[11px] tracking-[0.18em] text-[#6B7280] uppercase font-bold pb-4 border-b border-[#E5E2DC] mb-10">
+            <h3 className="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase font-bold pb-4 border-b border-border mb-10">
               More Insights & Case Studies
             </h3>
           </Reveal>
@@ -266,23 +265,23 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
           <div className="space-y-0">
             {regularPosts.map((post, index) => (
               <Reveal key={index} y={20} delay={0.05 * index}>
-                <div className="group flex flex-col md:flex-row md:items-start justify-between gap-5 py-10 border-b border-[#E5E2DC] first:pt-0 last:border-0 last:pb-0">
+                <div className="group flex flex-col md:flex-row md:items-start justify-between gap-5 py-10 border-b border-border first:pt-0 last:border-0 last:pb-0">
                   <div className="space-y-3 max-w-3xl">
-                    <div className="flex gap-3 items-center font-mono text-[10px] tracking-wider text-[#6B7280] uppercase">
-                      <span className="text-[#355CFF] font-bold bg-[#355CFF]/5 px-2 py-0.5 rounded">{post.category}</span>
-                      <span className="text-[#D1D5DB]">·</span>
+                    <div className="flex gap-3 items-center font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                      <span className="text-primary font-bold bg-primary/5 px-2 py-0.5 rounded">{post.category}</span>
+                      <span className="text-[#babcbe]">·</span>
                       <span>{post.date}</span>
-                      <span className="text-[#D1D5DB]">·</span>
+                      <span className="text-[#babcbe]">·</span>
                       <span>{post.readTime}</span>
                     </div>
 
                     <Link href={`/blog/${post.slug}`} className="block">
-                      <h4 className="text-xl md:text-2xl font-black leading-snug tracking-tight text-[#1A1A1A] group-hover:text-[#355CFF] transition-colors">
+                      <h4 className="text-xl md:text-2xl font-black leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors">
                         {post.title}
                       </h4>
                     </Link>
 
-                    <p className="text-[#6B7280] text-[15px] leading-[1.7] max-w-2xl">
+                    <p className="text-muted-foreground text-[15px] leading-[1.7] max-w-2xl">
                       {post.excerpt}
                     </p>
                   </div>
@@ -290,7 +289,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                   <div className="shrink-0 pt-2 md:pt-6">
                     <Link 
                       href={`/blog/${post.slug}`}
-                      className="w-9 h-9 rounded-full border border-[#E5E2DC] flex items-center justify-center bg-white group-hover:bg-[#355CFF] group-hover:text-white group-hover:border-[#355CFF] transition-all duration-300 shrink-0"
+                      className="w-9 h-9 rounded-full border border-border flex items-center justify-center bg-card group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300 shrink-0"
                       aria-label={`Read ${post.title}`}
                     >
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -303,23 +302,23 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
         </section>
 
         {/* Bottom CTA Block */}
-        <section className="mt-24 border-t border-[#E5E2DC] pt-16">
+        <section className="mt-24 border-t border-border pt-16">
           <Reveal y={20}>
-            <div className="bg-[#EDEAE4] rounded-2xl p-8 md:p-12 border border-[#E5E2DC] text-center space-y-6">
-              <span className="text-[11px] font-mono tracking-[0.2em] text-[#355CFF] uppercase font-bold">
+            <div className="bg-card rounded-2xl p-8 md:p-12 border border-border text-center space-y-6">
+              <span className="text-[11px] font-mono tracking-[0.2em] text-primary uppercase font-bold">
                 Let's construct your system
               </span>
-              <h3 className="text-[28px] md:text-[36px] font-black tracking-tight leading-tight text-[#1A1A1A]">
+              <h3 className="text-[28px] md:text-[36px] font-black tracking-tight leading-tight text-foreground">
                 Building AI-native products
                 <br />
                 and modern digital systems.
               </h3>
-              <p className="text-[#6B7280] text-[15px] max-w-md mx-auto leading-relaxed">
+              <p className="text-muted-foreground text-[15px] max-w-md mx-auto leading-relaxed">
                 Work directly with the GrowXLabsTech studio to engineer bespoke background automation pipelines, custom Web systems, and high-performance growth stacks.
               </p>
               <div className="pt-4">
                 <Link href="/contact">
-                  <Button className="bg-[#355CFF] text-white hover:bg-[#2A4AD4] rounded-md px-8 h-12 text-[15px] font-semibold transition-all inline-flex items-center gap-2 hover:gap-3">
+                  <Button className="bg-primary text-primary-foreground hover:opacity-90 rounded-md px-8 h-12 text-[15px] font-semibold transition-all inline-flex items-center gap-2 hover:gap-3">
                     Work With GrowXLabsTech <ArrowRight className="w-4.5 h-4.5" />
                   </Button>
                 </Link>

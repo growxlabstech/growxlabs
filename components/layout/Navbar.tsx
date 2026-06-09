@@ -1,40 +1,58 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Menu, X, LogOut, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
-import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "@/navigation";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
-
-const servicesSubLinks = (t: (key: string) => string) =>
-  [
-    { name: t("services_overview"), href: "/services" },
-    { name: t("process"), href: "/services#process" },
-    { name: t("subscriptions"), href: "/services#subscriptions" },
-  ] as const;
+import { useSession, signOut } from "next-auth/react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const servicesRef = useRef<HTMLDivElement>(null);
+
   const { data: session, status } = useSession();
+  const isLoggedIn = status === "authenticated";
+  const userRole = (session?.user as any)?.role;
+  const dashboardPath = (userRole === "ADMIN" || userRole === "CO_ADMIN" || userRole === "crm_agent")
+    ? "/admin/team"
+    : "/client/dashboard";
+
   const pathname = usePathname();
   const t = useTranslations("Nav");
   const isDemoRoute = Boolean(pathname?.includes("/demos"));
+  const isBlog = Boolean(pathname?.includes("/blog"));
+  const isContact = Boolean(pathname?.includes("/contact"));
+  const isLightThemePage = isBlog;
+  const isLandingPage = pathname === "/";
 
-  const sub = servicesSubLinks(t);
+
+  // Dynamic Theme Colors
+  const navBg = isScrolled
+    ? (isLightThemePage
+        ? "bg-white/90 border-b border-[#E5E2DC] shadow-sm"
+        : "bg-[#111111]/90 border-b border-white/10 shadow-sm")
+    : (isLightThemePage
+        ? "bg-[#F5F3EE]/80 border-b border-transparent"
+        : "bg-[#111111]/80 border-b border-transparent");
+
+  const logoColor1 = isLightThemePage ? "text-[#1A1A1A]" : "text-white";
+  const logoColor2 = "text-primary";
+
+  const buttonOverrideClass = isLightThemePage
+    ? "border-[#E5E2DC] text-[#1A1A1A] hover:bg-neutral-100"
+    : "border-white/10 text-white hover:bg-white/5 bg-transparent";
 
   const topLinks = [
+    { name: "Home", href: "/" },
+    { name: t("services"), href: "/services" },
     { name: t("portfolio"), href: "/portfolio" },
     { name: t("products"), href: "/products" },
     { name: t("courses"), href: "/courses" },
     { name: t("blog"), href: "/blog" },
-    { name: t("about"), href: "/about" },
+    { name: t("faq"), href: "/faq" },
     { name: t("contact"), href: "/contact" },
   ];
 
@@ -67,210 +85,145 @@ export function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
-  useEffect(() => {
-    const onDoc = (e: MouseEvent) => {
-      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) {
-        setServicesOpen(false);
-      }
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setServicesOpen(false);
-    };
-    document.addEventListener("mousedown", onDoc);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDoc);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, []);
-
-  const isLoggedIn = status === "authenticated";
-  const userRole = (session?.user as { role?: string })?.role;
-  const dashboardPath =
-    userRole === "ADMIN" || userRole === "CO_ADMIN" || userRole === "crm_agent" ? "/admin/team" : "/client/dashboard";
-
   if (isDemoRoute) return null;
 
   return (
     <>
       <nav
         className={cn(
-          "fixed top-0 w-full z-50 transition-all duration-500 py-4",
-          isScrolled
-            ? "bg-white/90 backdrop-blur-xl border-b border-[#E5E2DC] shadow-sm"
-            : "bg-[#F5F3EE]/80 backdrop-blur-sm border-b border-transparent"
+          "fixed top-0 w-full z-50 transition-all duration-500 py-5",
+          navBg
         )}
       >
-        <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-6 md:px-10 xl:px-16 2xl:px-24">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center group" aria-label="GrowXLabsTech home">
-              <div className="flex items-center text-xl md:text-2xl font-black tracking-tight transition-transform group-hover:scale-[1.02] duration-300">
-                <span className="text-[#1A1A1A]">GrowX</span>
-                <span className="text-[#1A1A1A]">Labs</span>
-                <span className="text-[#355CFF]">.tech</span>
-              </div>
-            </Link>
-
-            {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-6">
-              <div className="relative" ref={servicesRef}>
-                <button
-                  type="button"
-                  className={cn(
-                    "text-[13px] font-semibold transition-colors duration-200 inline-flex items-center gap-1 whitespace-nowrap",
-                    servicesOpen ? "text-[#1A1A1A]" : "text-[#6B7280] hover:text-[#1A1A1A]"
-                  )}
-                  aria-expanded={servicesOpen}
-                  aria-haspopup="true"
-                  onClick={() => setServicesOpen((o) => !o)}
-                >
-                  {t("services")}
-                  <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", servicesOpen && "rotate-180")} aria-hidden="true" />
-                </button>
-                {servicesOpen && (
-                  <div
-                    className="absolute left-0 top-full mt-2 min-w-[220px] rounded-xl border border-[#E5E2DC] bg-white py-2 shadow-lg z-[60]"
-                    role="menu"
-                  >
-                    {sub.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        role="menuitem"
-                        className="block px-4 py-2.5 text-[13px] font-semibold text-[#4B5563] hover:bg-[#F5F3EE] hover:text-[#1A1A1A]"
-                        onClick={() => setServicesOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {topLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-[13px] font-semibold text-[#6B7280] hover:text-[#1A1A1A] transition-colors duration-200 whitespace-nowrap"
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <div className="flex items-center gap-3">
-                <Link href={isLoggedIn ? dashboardPath : "/register"}>
-                  <Button size="sm" variant="primary" className="font-semibold px-5 rounded-md">
-                    {isLoggedIn ? t("dashboard") : t("get_started")}
-                  </Button>
-                </Link>
-                {isLoggedIn && (
-                  <button
-                    type="button"
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                    className="text-[#6B7280] hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50"
-                    title="Sign Out"
-                    aria-label="Sign Out"
-                  >
-                    <LogOut className="h-5 w-5" aria-hidden="true" />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center">
+        <div className="w-full px-6 md:px-10">
+          <div className="flex justify-between items-center relative h-10">
+            {/* Left Hamburger Button (Standard on Desktop & Mobile) */}
+            <div className="flex items-center lg:w-1/4">
               <button
                 type="button"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-[#1A1A1A] hover:text-[#355CFF] z-[60] transition-transform active:scale-90 rounded-md border border-[#E5E2DC] bg-white"
-                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={isMobileMenuOpen}
+                onClick={() => setIsMobileMenuOpen(true)}
+                className={cn(
+                  "transition-colors p-1 cursor-pointer bg-transparent border-0",
+                  isLightThemePage ? "text-[#1A1A1A] hover:text-[#111111]" : "text-zinc-400 hover:text-white"
+                )}
+                aria-label="Open menu"
               >
-                {isMobileMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
+                <Menu className="h-6 w-6" />
               </button>
+            </div>
+
+            {/* Desktop Center: Centered Serif Logo */}
+            <div className="absolute left-1/2 -translate-x-1/2">
+              <Link href="/" className="flex items-center group notranslate" translate="no" aria-label="GrowXLabsTech home">
+                <div className="flex items-center text-xl md:text-2xl font-serif font-bold tracking-tight transition-transform group-hover:scale-[1.02] duration-300">
+                  <span className={logoColor1}>GrowXLabs</span>
+                  <span className={logoColor2}>.tech</span>
+                </div>
+              </Link>
+            </div>
+
+            {/* Right: Bordered Contact Button */}
+            <div className="flex items-center justify-end lg:w-1/4">
+              <Link href="/contact">
+                <Button size="sm" variant="outline" className={cn("font-semibold px-5 rounded-md border", buttonOverrideClass)}>
+                  {t("contact")}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu — Full Screen Overlay */}
+      {/* Menu Drawer Overlay (slides in from left) */}
       <div
         className={cn(
-          "fixed inset-0 z-[55] lg:hidden transition-all duration-500 ease-in-out",
+          "fixed inset-0 z-[55] transition-all duration-500 ease-in-out",
           isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
-        <div className="absolute inset-0 bg-[#F5F3EE]/98 backdrop-blur-xl" />
+        {/* Backdrop (dimmed background) */}
+        <div 
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-500" 
+        />
 
+        {/* Drawer Container */}
         <div
           className={cn(
-            "absolute inset-0 flex flex-col items-center justify-center transition-all duration-500 ease-out px-6 text-center overflow-y-auto py-24",
-            isMobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+            "absolute top-0 bottom-0 left-0 w-80 max-w-[85vw] bg-[#020202] border-r border-neutral-900 text-white flex flex-col justify-between py-6 transition-transform duration-500 ease-out z-10",
+            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
-          <div className="flex flex-col items-center space-y-4 w-full max-w-sm">
-            <button
-              type="button"
-              className="text-2xl font-bold text-[#1A1A1A] flex items-center gap-2"
-              onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-              aria-expanded={mobileServicesOpen}
-            >
-              {t("services")}
-              <ChevronDown className={cn("h-6 w-6 transition-transform", mobileServicesOpen && "rotate-180")} aria-hidden="true" />
-            </button>
-            {mobileServicesOpen && (
-              <div className="flex flex-col gap-3 w-full border border-[#E5E2DC] rounded-xl bg-white/90 p-4">
-                {sub.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-lg font-semibold text-[#4B5563] hover:text-[#355CFF]"
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      setMobileServicesOpen(false);
-                    }}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-
-            {topLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
+          {/* Top Section */}
+          <div className="flex flex-col">
+            {/* Close Button */}
+            <div className="flex justify-between items-center mb-6 px-6">
+              <button
+                type="button"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-2xl font-bold text-[#1A1A1A] hover:text-[#355CFF] transition-all active:scale-95"
+                className="text-neutral-400 hover:text-white transition-colors cursor-pointer bg-transparent border-0"
+                aria-label="Close menu"
               >
-                {link.name}
-              </Link>
-            ))}
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Navigation Links */}
+            <div className="flex flex-col">
+              {topLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-semibold text-neutral-300 hover:text-white transition-colors text-left block w-full px-6 py-3.5 border-b border-neutral-800 hover:bg-white/[0.02]"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              {isLoggedIn && (
+                <>
+                  <Link
+                    href={dashboardPath}
+                    className="text-sm font-semibold text-neutral-300 hover:text-white transition-colors text-left block w-full px-6 py-3.5 border-b border-neutral-800 hover:bg-white/[0.02]"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {t("dashboard")}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      signOut({ callbackUrl: "/" });
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="text-sm font-semibold text-neutral-300 hover:text-red-400 transition-colors text-left block w-full px-6 py-3.5 border-b border-neutral-800 hover:bg-white/[0.02] bg-transparent border-0 cursor-pointer"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              )}
+            </div>
           </div>
 
-          <div className="pt-10 flex flex-col items-center space-y-4 w-full max-w-[280px]">
-            <Link href={isLoggedIn ? dashboardPath : "/register"} className="block w-full">
-              <Button
-                className="w-full bg-[#355CFF] hover:bg-[#2A4AD4] shadow-none text-white font-semibold h-14 rounded-md text-lg"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {isLoggedIn ? t("dashboard") : t("get_started")}
-              </Button>
+          {/* Bottom Section */}
+          <div className="border-t border-neutral-900 flex flex-col mt-auto pt-4">
+            <Link
+              href="/contact"
+              className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors text-left block w-full px-6 py-2.5 border-b border-neutral-800 hover:bg-white/[0.02]"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Careers
             </Link>
-            {isLoggedIn && (
-              <Button
-                variant="outline"
-                className="w-full border-[#E5E2DC] text-[#6B7280] h-14 rounded-md"
-                onClick={() => {
-                  signOut();
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                Sign Out
-              </Button>
-            )}
+            <Link
+              href="/contact"
+              className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors text-left block w-full px-6 py-2.5 border-b border-neutral-800 hover:bg-white/[0.02]"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Advertise with us
+            </Link>
           </div>
         </div>
       </div>
     </>
   );
 }
+

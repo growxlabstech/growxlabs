@@ -1,9 +1,12 @@
 "use client";
 
 import { Mail, Phone } from "lucide-react";
-import { Link } from "@/navigation";
+import { Link, usePathname } from "@/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
+  const isBlog = pathname?.includes("/blog");
+
   const links = {
     services: [
       { name: "Web Engineering", href: "/services" },
@@ -12,9 +15,8 @@ export function Footer() {
       { name: "Cloud Infrastructure", href: "/services" },
     ],
     company: [
-      { name: "About Us", href: "/about" },
       { name: "Portfolio", href: "/portfolio" },
-      { name: "AI Products", href: "/products" },
+      { name: "Labs", href: "/products" },
       { name: "Courses", href: "/courses" },
       { name: "Blog", href: "/blog" },
     ],
@@ -32,27 +34,45 @@ export function Footer() {
     ],
   };
 
+  // Design tokens based on page context (Marketing / Blog)
+  const footerBg = isBlog 
+    ? "bg-[#FDFAF7] border-[#E5E2DC]" 
+    : "bg-background border-border";
+
+  const logoColor1 = isBlog ? "text-[#111111]" : "text-white";
+  const logoColor2 = isBlog ? "text-[#355CFF]" : "text-[#C0F0FB]";
+
+  const textColor = isBlog ? "text-muted-foreground" : "text-[#8C8D91]";
+  const headingColor = isBlog ? "text-[#111111]" : "text-white";
+  const accentColor = isBlog ? "text-[#355CFF]" : "text-[#C0F0FB]";
+  const linkHoverColor = isBlog ? "hover:text-[#111111]" : "hover:text-white";
+
+  const socialLinkClass = isBlog 
+    ? "text-muted-foreground hover:text-[#355CFF]" 
+    : "text-[#8C8D91] hover:text-[#C0F0FB]";
+
   return (
-    <footer className="w-full border-t border-[#E5E2DC] bg-white pt-20 pb-10 px-6 md:px-12 xl:px-20 2xl:px-32">
+    <footer className={`w-full border-t pt-20 pb-10 px-6 md:px-12 xl:px-20 2xl:px-32 transition-colors duration-500 ${footerBg}`}>
       <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-10 lg:gap-12 mb-16">
           <div className="col-span-2 sm:col-span-3 lg:col-span-1 space-y-5">
             <Link href="/" className="flex items-center group" aria-label="GrowXLabsTech home">
-              <div className="flex items-center text-xl font-black tracking-tight transition-transform group-hover:scale-[1.02] duration-300">
-                <span className="text-[#1A1A1A]">GrowXLabs</span>
-                <span className="text-[#355CFF]">.tech</span>
+              <div className="flex items-center text-xl font-serif tracking-normal transition-transform group-hover:scale-[1.02] duration-300">
+                <span className={logoColor1}>GrowX</span>
+                <span className={logoColor1}>Labs</span>
+                <span className={logoColor2}>.tech</span>
               </div>
             </Link>
-            <p className="text-[#6B7280] text-[13px] leading-relaxed max-w-[250px]">
-              AI-native agency building websites, automations, and growth systems for ambitious businesses worldwide.
+            <p className={`text-[13px] leading-relaxed max-w-[285px] ${textColor}`}>
+              AI-native software company, product studio and AI engineering lab.
             </p>
 
             <div className="space-y-2 pt-1">
-              <a href="mailto:hello@growxlabs.tech" className="flex items-center gap-2 text-[13px] text-[#6B7280] hover:text-[#1A1A1A] transition-colors">
-                <Mail size={13} className="text-[#355CFF]" aria-hidden="true" /> hello@growxlabs.tech
+              <a href="mailto:hello@growxlabs.tech" className={`flex items-center gap-2 text-[13px] hover:text-foreground transition-colors ${textColor}`}>
+                <Mail size={13} className={accentColor} aria-hidden="true" /> hello@growxlabs.tech
               </a>
-              <a href="tel:+918790907144" className="flex items-center gap-2 text-[13px] text-[#6B7280] hover:text-[#1A1A1A] transition-colors">
-                <Phone size={13} className="text-[#355CFF]" aria-hidden="true" /> +91 87909 07144
+              <a href="tel:+918790907144" className={`flex items-center gap-2 text-[13px] hover:text-foreground transition-colors ${textColor}`}>
+                <Phone size={13} className={accentColor} aria-hidden="true" /> +91 87909 07144
               </a>
 
               {/* Horizontal Social Icons */}
@@ -61,7 +81,7 @@ export function Footer() {
                   href="https://www.linkedin.com/company/growxlabs-tech/" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-[#6B7280] hover:text-[#355CFF] hover:scale-110 transition-all duration-300"
+                  className={`hover:scale-110 transition-all duration-300 ${socialLinkClass}`}
                   aria-label="LinkedIn"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -74,7 +94,7 @@ export function Footer() {
                   href="https://www.instagram.com/growxlabs.tech?igsh=MTJ2cmUwaHpibGVreg==" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-[#6B7280] hover:text-[#355CFF] hover:scale-110 transition-all duration-300"
+                  className={`hover:scale-110 transition-all duration-300 ${socialLinkClass}`}
                   aria-label="Instagram"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -87,7 +107,7 @@ export function Footer() {
                   href="https://www.facebook.com/share/1AymTBmSj2/" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-[#6B7280] hover:text-[#355CFF] hover:scale-110 transition-all duration-300"
+                  className={`hover:scale-110 transition-all duration-300 ${socialLinkClass}`}
                   aria-label="Facebook"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -98,7 +118,7 @@ export function Footer() {
                   href="https://github.com/saivarshithnaidu" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="text-[#6B7280] hover:text-[#355CFF] hover:scale-110 transition-all duration-300"
+                  className={`hover:scale-110 transition-all duration-300 ${socialLinkClass}`}
                   aria-label="GitHub"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -110,11 +130,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold text-[#1A1A1A] uppercase tracking-[0.1em] mb-5">Services</h4>
+            <h4 className={`text-[12px] font-sans font-bold uppercase tracking-[0.15em] mb-5 ${headingColor}`}>Services</h4>
             <ul className="space-y-3">
               {links.services.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-[#6B7280] hover:text-[#1A1A1A] text-[14px] transition-colors">
+                  <Link href={link.href} className={`text-[14px] transition-colors ${textColor} ${linkHoverColor}`}>
                     {link.name}
                   </Link>
                 </li>
@@ -123,11 +143,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold text-[#1A1A1A] uppercase tracking-[0.1em] mb-5">Company</h4>
+            <h4 className={`text-[12px] font-sans font-bold uppercase tracking-[0.15em] mb-5 ${headingColor}`}>Company</h4>
             <ul className="space-y-3">
               {links.company.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-[#6B7280] hover:text-[#1A1A1A] text-[14px] transition-colors">
+                  <Link href={link.href} className={`text-[14px] transition-colors ${textColor} ${linkHoverColor}`}>
                     {link.name}
                   </Link>
                 </li>
@@ -136,11 +156,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold text-[#1A1A1A] uppercase tracking-[0.1em] mb-5">Resources</h4>
+            <h4 className={`text-[12px] font-sans font-bold uppercase tracking-[0.15em] mb-5 ${headingColor}`}>Resources</h4>
             <ul className="space-y-3">
               {links.resources.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-[#6B7280] hover:text-[#1A1A1A] text-[14px] transition-colors">
+                  <Link href={link.href} className={`text-[14px] transition-colors ${textColor} ${linkHoverColor}`}>
                     {link.name}
                   </Link>
                 </li>
@@ -149,11 +169,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-[12px] font-semibold text-[#1A1A1A] uppercase tracking-[0.1em] mb-5">Legal</h4>
+            <h4 className={`text-[12px] font-sans font-bold uppercase tracking-[0.15em] mb-5 ${headingColor}`}>Legal</h4>
             <ul className="space-y-3">
               {links.legal.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-[#6B7280] hover:text-[#1A1A1A] text-[14px] transition-colors">
+                  <Link href={link.href} className={`text-[14px] transition-colors ${textColor} ${linkHoverColor}`}>
                     {link.name}
                   </Link>
                 </li>
@@ -162,11 +182,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#E5E2DC] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-[#9CA3AF] text-[13px]">
+        <div className={`border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 ${isBlog ? "border-[#E5E2DC]" : "border-[#2B2D31]"}`}>
+          <p className={`text-[13px] ${textColor}`}>
             Copyright 2026 GrowXLabsTech. All rights reserved.
           </p>
-          <p className="text-[#9CA3AF] text-[13px]">
+          <p className={`text-[13px] ${textColor}`}>
             India, USA, UK, Australia, UAE, Canada, Singapore
           </p>
         </div>
@@ -174,3 +194,4 @@ export function Footer() {
     </footer>
   );
 }
+

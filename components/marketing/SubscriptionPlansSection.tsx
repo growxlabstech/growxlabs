@@ -33,7 +33,7 @@ const planSummaries = [
 /** Monthly retainers — lives on Services under `#subscriptions`. */
 export function SubscriptionPlansSection() {
   return (
-    <section id="subscriptions" className="scroll-mt-28 mb-24 border-t border-[#E5E2DC]/90 pt-16 md:pt-20">
+    <section id="subscriptions" className="scroll-mt-28 mb-24 border-t border-border/90 pt-16 md:pt-20">
       <div className="text-center max-w-3xl mx-auto mb-12 md:mb-14">
         <Reveal>
           <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-[#355CFF] mb-4 block">
@@ -41,12 +41,12 @@ export function SubscriptionPlansSection() {
           </span>
         </Reveal>
         <Reveal delay={0.06}>
-          <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-black text-[#1A1A1A] tracking-tight leading-[1.12] mb-4">
+          <h2 className="text-[clamp(1.75rem,4vw,2.75rem)] font-black text-foreground tracking-tight leading-[1.12] mb-4">
             Predictable growth. Every month.
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="text-[#6B7280] text-base sm:text-lg leading-relaxed">
+          <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
             No project gaps. No revenue uncertainty. Pick a plan and grow consistently.
           </p>
         </Reveal>
@@ -56,19 +56,19 @@ export function SubscriptionPlansSection() {
         {planSummaries.map((card, i) => (
           <Reveal key={card.title} delay={0.05 + i * 0.05}>
             <div
-              className="h-full bg-[#FAF9F6] border border-[#E5E2DC] rounded-2xl p-6 md:p-7 shadow-sm relative overflow-hidden"
+              className="h-full bg-background border border-border rounded-2xl p-6 md:p-7 shadow-sm relative overflow-hidden"
               style={{
                 clipPath: "polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)",
               }}
             >
-              <h3 className="text-base font-black text-[#1A1A1A] tracking-tight mb-5">{card.title}</h3>
+              <h3 className="text-base font-black text-foreground tracking-tight mb-5">{card.title}</h3>
               <div className="divide-y divide-[#E5E2DC]">
                 {card.rows.map((row) => (
                   <div key={`${card.title}-${row.k}`} className="grid grid-cols-[minmax(0,72px)_1fr] gap-x-3 py-3 first:pt-0">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#6B7280] leading-snug">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground leading-snug">
                       {row.k}
                     </span>
-                    <span className="text-sm font-semibold text-[#1A1A1A] leading-snug">{row.v}</span>
+                    <span className="text-sm font-semibold text-foreground leading-snug">{row.v}</span>
                   </div>
                 ))}
               </div>
@@ -78,9 +78,9 @@ export function SubscriptionPlansSection() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto">
-        <div className="bg-white border border-[#E5E2DC] rounded-2xl p-6 md:p-8 flex flex-col justify-between hover:border-[#355CFF]/30 transition-colors duration-300 h-full relative shadow-sm">
+        <div className="bg-card border border-border rounded-2xl p-6 md:p-8 flex flex-col justify-between hover:border-[#355CFF]/30 transition-colors duration-300 h-full relative shadow-sm">
           <div>
-            <h3 className="text-xl font-bold text-[#1A1A1A] mb-8">Online Presence</h3>
+            <h3 className="text-xl font-bold text-foreground mb-8">Online Presence</h3>
             <div className="space-y-4 mb-8">
               {[
                 "Website hosting and monitoring",
@@ -94,7 +94,7 @@ export function SubscriptionPlansSection() {
                   <div className="h-5 w-5 rounded-full bg-[#355CFF]/10 flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="text-[#355CFF]" size={12} />
                   </div>
-                  <span className="text-[15px] font-medium text-[#4B5563] leading-snug">{feature}</span>
+                  <span className="text-[15px] font-medium text-muted-foreground leading-snug">{feature}</span>
                 </div>
               ))}
             </div>
@@ -106,12 +106,12 @@ export function SubscriptionPlansSection() {
           </Link>
         </div>
 
-        <div className="bg-white border-2 border-[#355CFF] rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-colors duration-300 h-full relative shadow-[0_8px_40px_rgba(53,92,255,0.12)]">
+        <div className="bg-card border-2 border-[#355CFF] rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-colors duration-300 h-full relative shadow-[0_8px_40px_rgba(53,92,255,0.12)]">
           <div className="absolute top-4 right-4 bg-[#355CFF] text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-full">
             Most popular
           </div>
           <div>
-            <h3 className="text-xl font-bold text-[#1A1A1A] mb-8">Growth System</h3>
+            <h3 className="text-xl font-bold text-foreground mb-8">Growth System</h3>
             <div className="space-y-4 mb-8">
               {[
                 "Everything in Basic",
@@ -127,7 +127,7 @@ export function SubscriptionPlansSection() {
                   <div className="h-5 w-5 rounded-full bg-[#355CFF]/10 flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="text-[#355CFF]" size={12} />
                   </div>
-                  <span className="text-[15px] font-medium text-[#4B5563] leading-snug">{feature}</span>
+                  <span className="text-[15px] font-medium text-muted-foreground leading-snug">{feature}</span>
                 </div>
               ))}
             </div>
@@ -137,9 +137,9 @@ export function SubscriptionPlansSection() {
           </Link>
         </div>
 
-        <div className="bg-white border border-[#E5E2DC] rounded-2xl p-6 md:p-8 flex flex-col justify-between hover:border-[#355CFF]/30 transition-colors duration-300 h-full relative shadow-sm">
+        <div className="bg-card border border-border rounded-2xl p-6 md:p-8 flex flex-col justify-between hover:border-[#355CFF]/30 transition-colors duration-300 h-full relative shadow-sm">
           <div>
-            <h3 className="text-xl font-bold text-[#1A1A1A] mb-8">Full Digital Growth</h3>
+            <h3 className="text-xl font-bold text-foreground mb-8">Full Digital Growth</h3>
             <div className="space-y-4 mb-8">
               {[
                 "Everything in Standard",
@@ -155,7 +155,7 @@ export function SubscriptionPlansSection() {
                   <div className="h-5 w-5 rounded-full bg-[#355CFF]/10 flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="text-[#355CFF]" size={12} />
                   </div>
-                  <span className="text-[15px] font-medium text-[#4B5563] leading-snug">{feature}</span>
+                  <span className="text-[15px] font-medium text-muted-foreground leading-snug">{feature}</span>
                 </div>
               ))}
             </div>

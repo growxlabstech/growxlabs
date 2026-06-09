@@ -2,7 +2,9 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --font-sans: "Inter", sans-serif;
+  --font-sans: var(--font-sans), sans-serif;
+  --font-serif: var(--font-serif), serif;
+  --font-lora: var(--font-lora), serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
   --color-background: var(--background);
@@ -24,32 +26,61 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  --color-everyblue: #C0F0FB;
+  --color-postgray: #FDFAF7;
+  --color-pureblack: #020202;
 }
 
 /* ═══════════════════════════════════════════════════ */
-/* LIGHT THEME — Marketing / Public pages             */
+/* DARK THEME (DEFAULT) — Marketing / Public pages    */
 /* ═══════════════════════════════════════════════════ */
 :root {
-  --background: #F5F3EE;
-  --foreground: #1A1A1A;
+  --background: #111111;
+  --foreground: #FFFFFF;
+  --card: #1A1A1A;
+  --card-foreground: #FFFFFF;
+  --popover: #1A1A1A;
+  --popover-foreground: #FFFFFF;
+  --primary: #C0F0FB;
+  --primary-foreground: #111111;
+  --secondary: #2A2A2A;
+  --secondary-foreground: #FFFFFF;
+  --muted: #2A2A2A;
+  --muted-foreground: #9A9A9A;
+  --accent: #C0F0FB;
+  --accent-foreground: #111111;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #2A2A2A;
+  --input: #1A1A1A;
+  --ring: #C0F0FB;
+  --radius: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════ */
+/* LIGHT THEME — Blog / Reading / Essay pages          */
+/* ═══════════════════════════════════════════════════ */
+.posts-page {
+  --background: #FDFAF7;
+  --foreground: #111111;
   --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
+  --card-foreground: #111111;
   --popover: #FFFFFF;
-  --popover-foreground: #1A1A1A;
+  --popover-foreground: #111111;
   --primary: #355CFF;
   --primary-foreground: #FFFFFF;
   --secondary: #EDEAE4;
-  --secondary-foreground: #1A1A1A;
+  --secondary-foreground: #111111;
   --muted: #EDEAE4;
   --muted-foreground: #6B7280;
   --accent: #355CFF;
-  --accent-foreground: #1A1A1A;
+  --accent-foreground: #FFFFFF;
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
   --border: #E5E2DC;
   --input: #FFFFFF;
   --ring: #355CFF;
-  --radius: 0.5rem;
 }
 
 /* ═══════════════════════════════════════════════════ */
@@ -111,6 +142,42 @@
     color: var(--foreground);
     font-family: var(--font-sans);
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif), serif;
+  }
+
+  .font-serif {
+    font-family: var(--font-serif), serif;
+  }
+
+  .font-lora {
+    font-family: var(--font-lora), serif;
+  }
+
+  .hand {
+    font-family: var(--font-serif), serif;
+    font-style: italic;
+    text-transform: uppercase;
+  }
+
+  .hand-A { letter-spacing: -0.04em; }
+  .hand-F { letter-spacing: -0.08em; }
+  .hand-H { letter-spacing: -0.06em; }
+  .hand-P { letter-spacing: -0.02em; }
+  .hand-S { letter-spacing: -0.04em; }
+  .hand-E { letter-spacing: -0.05em; }
+  .hand-M { letter-spacing: -0.05em; }
+
+  .dropcap {
+    font-size: 3.5rem;
+    font-family: var(--font-serif), serif;
+    font-style: italic;
+    line-height: 1;
+    float: left;
+    margin-right: 0.5rem;
+    margin-top: -0.2rem;
+  }
 }
 
 /* ═══════════════════════════════════════════════════ */
@@ -162,15 +229,15 @@ section {
 
 .glass-card {
   @apply rounded-lg p-8;
-  background-color: #FFFFFF;
-  border: 1px solid #E5E2DC;
+  background-color: var(--card);
+  border: 1px solid var(--border);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
 /* GrowX Card System */
 .growx-card {
-  background: #FFFFFF;
-  border: 1px solid #E5E2DC;
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
@@ -179,8 +246,8 @@ section {
 /* Dark mode card overrides */
 .dark .glass-card,
 .dark .growx-card {
-  background-color: #111827;
-  border-color: rgba(255, 255, 255, 0.08);
+  background-color: var(--card);
+  border-color: var(--border);
 }
 
 .dark .text-gradient {
@@ -209,17 +276,32 @@ section {
   background: transparent;
 }
 
+/* Default (Marketing): Light thumb for dark matte black background (#020202) */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Light Essay/Blog Pages: Dark thumb for warm white background (#FDFAF7) */
+.posts-page ::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.15);
 }
 
+.posts-page ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Admin/Dashboard Dark Mode: Low opacity light thumb */
 .dark ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.08);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -332,15 +414,15 @@ img {
   .growx-card, 
   [class*="card"] {
     box-shadow: none !important;
-    border: 1px solid #E5E2DC !important;
-    background-color: #FFFFFF !important;
+    border: 1px solid var(--border) !important;
+    background-color: var(--card) !important;
   }
 
   .dark .glass-card, 
   .dark .growx-card, 
   .dark [class*="card"] {
-    background-color: #111827 !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
+    background-color: var(--card) !important;
+    border-color: var(--border) !important;
   }
 }
 

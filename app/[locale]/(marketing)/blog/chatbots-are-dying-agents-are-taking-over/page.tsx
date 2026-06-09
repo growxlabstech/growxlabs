@@ -6,6 +6,12 @@ import {
   ReadingProgressBar, 
   TableOfContents 
 } from "@/components/marketing/BlogInteractive";
+import { 
+  AuthorProfileSidebar, 
+  BlogActionBar, 
+  NewsletterForwardBanner, 
+  RelatedEssaysList 
+} from "@/components/marketing/BlogEditorial";
 import { Reveal } from "@/components/marketing/Reveal";
 import { Calendar, Clock, User, Cpu, Sparkles, Activity, ArrowRight } from "lucide-react";
 import { FlickerText } from "@/components/marketing/FlickerText";
@@ -147,29 +153,39 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
   };
 
   // Related articles
-  const relatedArticles = [
+  // Related essays
+  const relatedEssays = [
     {
       title: "Blue Origin’s New Glenn Rocket Explodes During Test: What Happened?",
+      accentWord: "Explodes",
+      excerpt: "Blue Origin's heavy launch vehicle suffered a catastrophic failure during static fire. We unpack the engineering details.",
       href: "/blog/blue-origin-new-glenn-rocket-explosion",
       date: "May 30, 2026",
-      readTime: "5 min read"
+      author: "GrowXLabs Team",
+      imageSrc: "/images/blue_origin_explosion_1780853995249.png"
     },
     {
       title: "Claude Opus 4.8: Anthropic's Most Advanced AI Model — Benchmarks & Review",
+      accentWord: "Benchmarks",
+      excerpt: "Deep dive into Claude 4.8 benchmarks, including SWE-Bench Pro, Terminal-Bench 2.1, and the new Dynamic Workflows engine.",
       href: "/blog/claude-opus-4-8-anthropic-ai-model",
       date: "May 29, 2026",
-      readTime: "12 min read"
+      author: "GrowXLabs Team",
+      imageSrc: "/images/claude_blog_woodcut_1780853620986.png"
     },
     {
       title: "Why Anthropic Is Becoming a Serious Threat to OpenAI",
+      accentWord: "Threat",
+      excerpt: "Analyze Anthropic's accelerating developer mindshare and Claude Code's edge over ChatGPT and GPT-5.",
       href: "/blog/why-anthropic-is-becoming-a-serious-threat-to-openai",
       date: "May 27, 2026",
-      readTime: "5 min read"
+      author: "GrowXLabs Team",
+      imageSrc: "/images/anthropic_openai_woodcut_1780853674501.png"
     }
   ];
 
   return (
-    <div className="w-full bg-[#F5F3EE] min-h-screen text-[#1A1A1A] selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
+    <div className="w-full bg-background min-h-screen text-foreground selection:bg-[#355CFF]/10 selection:text-[#355CFF] pt-32 pb-24">
       {/* JSON-LD Structured Data */}
       <Script
         id="ai-agents-explosion-schema"
@@ -183,11 +199,11 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
       {/* ═══════════════════════════════════════════════════ */}
       {/* HERO SECTION                                       */}
       {/* ═══════════════════════════════════════════════════ */}
-      <header className="w-full border-b border-[#E5E2DC] pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
+      <header className="w-full border-b border-border pb-16 px-6 md:px-10 xl:px-16 2xl:px-24 text-center">
         <div className="max-w-5xl mx-auto">
           {/* Swiss Page Header */}
           <div className="w-full overflow-hidden flex justify-center items-end select-none pointer-events-none mb-10">
-            <h1 className="font-black select-none tracking-[-0.06em] text-[#1A1A1A] leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
+            <h1 className="font-black select-none tracking-[-0.06em] text-foreground leading-[0.8] text-[9.2vw] uppercase whitespace-nowrap">
               <FlickerText text={titleName} />
             </h1>
           </div>
@@ -213,14 +229,14 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
             </div>
 
             {/* Headline */}
-            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-[#1A1A1A] mb-8 max-w-4xl mx-auto">
-              Chatbots Are Dying.
+            <h2 className="text-[clamp(32px,4.5vw,56px)] font-black leading-[1.1] tracking-tighter text-foreground mb-8 max-w-4xl mx-auto font-serif">
+              Chatbots Are <span className="italic font-serif font-normal">Dying</span>.
               <br />
-              <span className="text-[#355CFF]">Agents Are Taking Over.</span>
+              <span className="text-[#355CFF] font-sans font-black tracking-tighter block mt-2">Agents Are Taking Over.</span>
             </h2>
 
             {/* Meta Bar */}
-            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-[#E5E2DC] py-5">
+            <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-6 sm:gap-10 font-mono text-[11px] tracking-[0.1em] text-[#6B7280] uppercase border-t border-b border-border py-5">
               <div className="flex items-center gap-2">
                 <User className="w-3.5 h-3.5 text-[#355CFF]" />
                 <span>By GrowXLabs Team</span>
@@ -239,7 +255,7 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
           {/* Hero Visual — Widescreen Cover Image */}
           <Reveal y={30} delay={0.2}>
             <div className="mt-14 w-full max-w-5xl mx-auto">
-              <div className="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-[#E5E2DC] bg-[#0F0F12] shadow-md">
+              <div className="relative w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-[#0F0F12]">
                 <Image
                   src="/images/chatbots-are-dying-agents-are-taking-over.png"
                   alt="Sleek autonomous AI Agent network workflow"
@@ -259,23 +275,38 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
       <main className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 py-16">
         <div className="max-w-5xl mx-auto lg:grid lg:grid-cols-12 lg:gap-12 xl:gap-16 relative">
           
-          {/* Desktop TOC Sidebar */}
+          {/* Desktop Author Sidebar */}
           <aside className="hidden lg:block lg:col-span-3 sticky top-32 h-fit">
-            <TableOfContents headings={headings} />
+            <AuthorProfileSidebar
+              authorName="GrowXLabs Team"
+              authorRole="AI Engineering Group"
+              authorAvatar="/images/avatars/growxlabs.png"
+              category="Automation"
+              bio="Building autonomous agent networks and custom AI pipelines to eliminate manual enterprise workflows."
+            />
           </aside>
 
           {/* Article Content */}
           <article className="col-span-12 lg:col-span-9 max-w-[70ch] mx-auto lg:mx-0">
-            {/* Mobile TOC */}
-            <div className="lg:hidden mb-12 bg-white/60 border border-[#E5E2DC] rounded-xl p-6">
-              <TableOfContents headings={headings} />
+            <NewsletterForwardBanner />
+            <BlogActionBar title="Chatbots Are Dying. Agents Are Taking Over." slug="chatbots-are-dying-agents-are-taking-over" />
+
+            {/* Mobile Author Sidebar */}
+            <div className="lg:hidden mb-8">
+              <AuthorProfileSidebar
+                authorName="GrowXLabs Team"
+                authorRole="AI Engineering Group"
+                authorAvatar="/images/avatars/growxlabs.png"
+                category="Automation"
+                bio="Building autonomous agent networks and custom AI pipelines to eliminate manual enterprise workflows."
+              />
             </div>
 
             {/* ─────────────────────────────────────── */}
             {/* SECTION 01 — INTRODUCTION              */}
             {/* ─────────────────────────────────────── */}
             <section id="introduction" className="scroll-mt-32 space-y-6">
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p className="first-letter:text-5xl first-letter:font-black first-letter:text-[#355CFF] first-letter:mr-3 first-letter:float-left">
                   The AI industry is entering its next major shift.
                 </p>
@@ -285,7 +316,7 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                 <p>
                   But the future of AI isn&apos;t conversation.
                 </p>
-                <p className="text-xl font-bold text-[#1A1A1A] border-l-2 border-[#355CFF] pl-4">
+                <p className="text-xl font-bold text-foreground border-l-2 border-[#355CFF] pl-4">
                   It&apos;s execution.
                 </p>
                 <p>
@@ -300,10 +331,10 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
             {/* SECTION 02 — WHAT'S THE DIFFERENCE?    */}
             {/* ─────────────────────────────────────── */}
             <section id="difference" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 What&apos;s The Difference?
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   A chatbot responds.
                 </p>
@@ -319,9 +350,9 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                 
                 {/* Comparison Card Block */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-                  <div className="bg-white border border-[#E5E2DC] rounded-xl p-6 space-y-3">
+                  <div className="bg-card border border-border rounded-xl p-6 space-y-3">
                     <span className="text-[10px] font-mono tracking-widest text-[#6B7280] uppercase font-bold">Old AI: Chatbot</span>
-                    <p className="text-[#1A1A1A] font-bold text-lg">&ldquo;Write me an email.&rdquo;</p>
+                    <p className="text-foreground font-bold text-lg">&ldquo;Write me an email.&rdquo;</p>
                     <p className="text-[15px] text-[#6B7280]">Produces raw text copy. The user must manually copy, paste, select the client, send it, and manually update the platform database.</p>
                   </div>
                   
@@ -330,7 +361,7 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                     <span className="text-[10px] font-mono tracking-widest text-[#355CFF] uppercase font-bold flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5" /> Agentic AI
                     </span>
-                    <ul className="space-y-1.5 font-mono text-[13px] text-[#374151]">
+                    <ul className="space-y-1.5 font-mono text-[13px] text-foreground/90">
                       <li className="flex items-center gap-2">
                         <span className="text-[#355CFF]">→</span> Finds the lead.
                       </li>
@@ -356,7 +387,7 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                 <p>
                   Same goal.
                 </p>
-                <p className="font-bold text-[#1A1A1A]">
+                <p className="font-bold text-foreground">
                   Completely different level of capability.
                 </p>
               </div>
@@ -368,10 +399,10 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
             {/* SECTION 03 — BETTING ON AGENTS         */}
             {/* ─────────────────────────────────────── */}
             <section id="betting-on-agents" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 Why Every Major AI Company Is Betting On Agents
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <div className="flex flex-wrap items-center gap-3 font-mono text-[13px] text-[#6B7280]">
                   <span>OpenAI</span><span>·</span>
                   <span>Anthropic</span><span>·</span>
@@ -388,11 +419,11 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                 <p>
                   Because businesses don&apos;t need more answers.
                 </p>
-                <p className="text-2xl font-black tracking-tight text-[#1A1A1A]">
+                <p className="text-2xl font-black tracking-tight text-foreground">
                   They need more outcomes.
                 </p>
                 <blockquote className="border-l-4 border-[#355CFF] bg-[#355CFF]/[0.03] pl-6 pr-6 py-6 rounded-r-xl">
-                  <p className="text-[17px] italic leading-relaxed text-[#374151] font-medium">
+                  <p className="text-[17px] italic leading-relaxed text-foreground/90 font-medium">
                     &ldquo;The real value of AI isn&apos;t generating text. It&apos;s generating results.&rdquo;
                   </p>
                 </blockquote>
@@ -408,8 +439,8 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                     { name: "Operations Agents", desc: "Coordinate supply chains and CRM data entries" },
                     { name: "Marketing Agents", desc: "Autonomously draft and optimize cross-platform flows" },
                   ].map((agent, i) => (
-                    <div key={i} className="bg-white border border-[#E5E2DC] rounded-xl p-5 space-y-1">
-                      <p className="text-[15px] font-bold text-[#1A1A1A] flex items-center gap-2">
+                    <div key={i} className="bg-card border border-border rounded-xl p-5 space-y-1">
+                      <p className="text-[15px] font-bold text-foreground flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#355CFF]" />
                         <span>{agent.name}</span>
                       </p>
@@ -417,7 +448,7 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                     </div>
                   ))}
                 </div>
-                <p className="pt-4 font-semibold text-[#1A1A1A]">
+                <p className="pt-4 font-semibold text-foreground">
                   The goal is simple:
                 </p>
                 <ul className="list-none space-y-1.5 pl-4 border-l-2 border-[#355CFF]/30">
@@ -443,14 +474,14 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
             {/* SECTION 04 — END OF MANUAL DIGITAL OPS */}
             {/* ─────────────────────────────────────── */}
             <section id="end-of-manual-ops" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The End Of Manual Digital Operations
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   Today&apos;s businesses spend countless hours on repetitive tasks.
                 </p>
-                <div className="bg-white border border-[#E5E2DC] rounded-xl p-6">
+                <div className="bg-card border border-border rounded-xl p-6">
                   <ul className="grid grid-cols-2 gap-4">
                     {[
                       "Following up with leads.",
@@ -473,10 +504,10 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                 <p>
                   AI agents are changing that.
                 </p>
-                <p className="text-xl font-bold text-[#1A1A1A]">
+                <p className="text-xl font-bold text-foreground">
                   Instead of assisting humans with work, they perform the work themselves.
                 </p>
-                <p className="font-semibold text-[#1A1A1A]">
+                <p className="font-semibold text-foreground">
                   The result?
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -501,10 +532,10 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
             {/* SECTION 05 — ADOPT EARLY               */}
             {/* ─────────────────────────────────────── */}
             <section id="adopt-early" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The Businesses That Win Will Adopt Early
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   Every technology shift creates two groups.
                 </p>
@@ -516,18 +547,18 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                 </p>
                 
                 {/* Visual grid overlay */}
-                <div className="bg-white border border-[#E5E2DC] rounded-xl p-6 my-6">
+                <div className="bg-card border border-border rounded-xl p-6 my-6">
                   <div className="grid grid-cols-3 gap-4 text-center font-mono text-[11px] text-[#6B7280]">
                     <div>
-                      <p className="text-lg font-black text-[#1A1A1A] mb-1">1995</p>
+                      <p className="text-lg font-black text-foreground mb-1">1995</p>
                       <p>The Internet</p>
                     </div>
                     <div>
-                      <p className="text-lg font-black text-[#1A1A1A] mb-1">2008</p>
+                      <p className="text-lg font-black text-foreground mb-1">2008</p>
                       <p>Mobile Apps</p>
                     </div>
                     <div>
-                      <p className="text-lg font-black text-[#1A1A1A] mb-1">2026</p>
+                      <p className="text-lg font-black text-foreground mb-1">2026</p>
                       <p className="text-[#355CFF] font-bold">AI Agents</p>
                     </div>
                   </div>
@@ -548,7 +579,7 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
                 <p>
                   Businesses that integrate agents into their operations today will gain a significant advantage over competitors still relying on manual processes tomorrow.
                 </p>
-                <p className="font-bold text-[#1A1A1A]">
+                <p className="font-bold text-foreground">
                   The gap won&apos;t be small.
                 </p>
                 <p className="text-[#355CFF] font-extrabold">
@@ -563,10 +594,10 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
             {/* SECTION 06 — WHAT THIS MEANS           */}
             {/* ─────────────────────────────────────── */}
             <section id="what-this-means" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 What This Means For Businesses
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   The question is no longer:
                 </p>
@@ -612,10 +643,10 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
             {/* SECTION 07 — CONCLUSION                */}
             {/* ─────────────────────────────────────── */}
             <section id="future-is-execution" className="scroll-mt-32 space-y-6">
-              <h2 className="text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight">
+              <h2 className="text-3xl font-black tracking-tight text-foreground leading-tight">
                 The Future Is Not AI Chat.
               </h2>
-              <div className="text-[18px] leading-[1.85] text-[#374151] font-normal space-y-6 font-sans">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   The future is AI execution.
                 </p>
@@ -659,27 +690,11 @@ export default async function ChatbotsDyingPage({ params }: { params: Promise<{ 
             {/* Newsletter CTA Block */}
             <NewsletterCTA />
 
-            {/* Continue Reading / Related Grid */}
-            <section className="space-y-8 mt-16">
-              <h2 className="text-2xl font-black tracking-tight text-[#1A1A1A]">Continue Reading</h2>
-              <div className="grid gap-4">
-                {relatedArticles.map((article, i) => (
-                  <Link key={i} href={article.href} className="group block bg-white border border-[#E5E2DC] rounded-xl p-6 hover:border-[#355CFF]/30 transition-all">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="space-y-2">
-                        <h3 className="text-[17px] font-bold text-[#1A1A1A] group-hover:text-[#355CFF] transition-colors leading-snug">{article.title}</h3>
-                        <div className="flex items-center gap-4 font-mono text-[11px] text-[#6B7280] tracking-wider uppercase">
-                          <span>{article.date}</span>
-                          <span>·</span>
-                          <span>{article.readTime}</span>
-                        </div>
-                      </div>
-                      <ArrowRight className="w-5 h-5 text-[#D1D5DB] group-hover:text-[#355CFF] group-hover:translate-x-1 transition-all shrink-0 mt-1" />
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
+            {/* Related Essays Section */}
+            <div className="mt-16 pt-16 border-t border-[#E5E2DC]">
+              <h3 className="text-[11px] font-mono tracking-[0.2em] text-[#6B7280] uppercase font-bold mb-8">Related Essays</h3>
+              <RelatedEssaysList essays={relatedEssays} />
+            </div>
 
           </article>
         </div>

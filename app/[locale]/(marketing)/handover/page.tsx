@@ -55,7 +55,7 @@ export default function HandoverPage() {
           </section>
         </div>
 
-        <section className="bg-white p-16 md:p-24 rounded-[4rem] text-black">
+        <section className="bg-card p-16 md:p-24 rounded-[4rem] text-black">
            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-12">Handover Checklist.</h2>
            <div className="space-y-6">
              {checklist.map((item, i) => (

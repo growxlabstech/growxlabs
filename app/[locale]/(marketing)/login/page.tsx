@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { Mail, Lock, AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
@@ -44,109 +42,193 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-[#F5F3EE]">
-      <div className="absolute top-8 left-8 z-20">
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-[#020202] text-white">
+      {/* Back Button */}
+      <div className="absolute top-6 left-6 z-20">
         <Link href="/">
-          <Button variant="ghost" className="text-[#6B7280] hover:text-[#1A1A1A] group transition-colors">
-            <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" /> Back Home
-          </Button>
+          <button className="text-neutral-400 hover:text-white flex items-center gap-2 text-sm font-semibold transition-colors bg-transparent border-0 cursor-pointer">
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back Home</span>
+          </button>
         </Link>
       </div>
 
-      <div className="w-full max-w-[440px] relative z-10">
-        <div className="p-10 border border-[#E5E2DC] rounded-[24px] shadow-sm bg-white">
-          <div className="text-center mb-10">
-            <div className="flex items-center justify-center mb-6">
-              <div className="flex items-center text-3xl font-black tracking-tight select-none">
-                <span className="text-[#1A1A1A]">GrowX</span>
-                <span className="text-[#1A1A1A]">Labs</span>
-                <span className="text-[#355CFF] font-black">.tech</span>
-              </div>
-            </div>
-            <p className="text-[#6B7280] text-[10px] font-black uppercase tracking-[0.2em] -mt-2">
-              Authentication Portal
+      {/* LEFT SIDE: Login Form (Dark Theme) */}
+      <div className="flex flex-col justify-center items-center p-8 lg:p-16 relative z-10 w-full max-w-xl mx-auto">
+        <div className="w-full space-y-8">
+          {/* Logo */}
+          <div className="flex justify-center lg:justify-start notranslate" translate="no">
+            <Link href="/" className="flex items-center text-3xl font-serif text-white tracking-normal">
+              GrowX<span className="text-[#355CFF] font-sans font-black">Labs</span>.tech
+            </Link>
+          </div>
+
+          <div className="space-y-2 text-center lg:text-left">
+            <h1 className="text-2xl font-black tracking-tight text-white">
+              Access your account
+            </h1>
+            <p className="text-neutral-400 text-xs font-mono tracking-widest uppercase">
+              Secure Authentication Portal
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-[#6B7280]/60 ml-4">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-300 ml-1">
                 Email Address
               </label>
-              <div className="relative group">
-                <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B7280]/40 group-focus-within:text-[#355CFF] transition-colors" />
-                <Input 
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500" />
+                <input 
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required 
                   placeholder="name@company.com" 
-                  className="h-14 rounded-2xl bg-[#EDEAE4]/20 border-[#E5E2DC] pl-14 pr-6 focus:border-[#355CFF]/30 focus:bg-white transition-all text-[#1A1A1A] placeholder:text-[#6B7280]/30"
+                  className="w-full h-13 rounded-lg bg-black border border-neutral-800 pl-11 pr-4 text-white text-sm focus:border-[#C0F0FB] focus:ring-1 focus:ring-[#C0F0FB]/20 focus:outline-none transition-all placeholder:text-neutral-600"
                   disabled={loading}
                 />
               </div>
             </div>
             
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-[#6B7280]/60 ml-4">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-300 ml-1">
                 Password
               </label>
-              <div className="relative group">
-                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B7280]/40 group-focus-within:text-[#355CFF] transition-colors" />
-                <Input 
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500" />
+                <input 
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required 
                   placeholder="••••••••" 
-                  className="h-14 rounded-2xl bg-[#EDEAE4]/20 border-[#E5E2DC] pl-14 pr-6 focus:border-[#355CFF]/30 focus:bg-white transition-all text-[#1A1A1A] placeholder:text-[#6B7280]/30"
+                  className="w-full h-13 rounded-lg bg-black border border-neutral-800 pl-11 pr-4 text-white text-sm focus:border-[#C0F0FB] focus:ring-1 focus:ring-[#C0F0FB]/20 focus:outline-none transition-all placeholder:text-neutral-600"
                   disabled={loading}
                 />
               </div>
             </div>
 
             {error && (
-              <div className="bg-red-500/5 border border-red-500/10 rounded-xl p-4 flex items-start text-[11px] text-red-600 font-medium leading-tight">
-                <AlertCircle className="h-4 w-4 mr-2 shrink-0 mt-0.5" /> {error}
+              <div className="bg-red-500/5 border border-red-500/10 rounded-lg p-4 flex items-start text-[12px] text-red-400 font-medium leading-tight">
+                <AlertCircle className="h-4.5 w-4.5 mr-2 shrink-0 mt-0.5" /> 
+                <span>{error}</span>
               </div>
             )}
 
-            <Button 
+            <button 
               type="submit" 
-              className="w-full h-14 rounded-2xl font-black text-sm uppercase tracking-widest bg-[#355CFF] text-white hover:bg-[#254CE0] transition-all shadow-md shadow-[#355CFF]/10 disabled:opacity-50"
+              className="w-full h-13 rounded-lg font-black text-xs uppercase tracking-widest bg-[#C0F0FB] text-black hover:bg-[#a3e4f2] transition-all duration-300 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center cursor-pointer border-0"
               disabled={loading}
             >
               {loading ? (
-                <span className="flex items-center justify-center">
-                  <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                  Authenticating...
+                <span className="flex items-center">
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  AUTHENTICATING...
                 </span>
               ) : (
-                "Access System"
+                "SIGN IN"
               )}
-            </Button>
+            </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-[#6B7280] text-xs font-bold uppercase tracking-widest">
-              Don't have an account?{" "}
-              <Link href="/register" className="text-[#355CFF] hover:text-[#254CE0] transition-colors hover:underline">
-                Create one here
-              </Link>
+          <div className="text-center lg:text-left text-xs font-semibold tracking-wide text-neutral-400">
+            Don&apos;t have an account?{" "}
+            <Link href="/register" className="text-[#C0F0FB] hover:text-[#C0F0FB]/90 transition-colors underline">
+              Create one here
+            </Link>
+          </div>
+
+          {/* Social Proof Avatars */}
+          <div className="pt-6 border-t border-neutral-900 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+            <div className="flex -space-x-2.5 overflow-hidden">
+              {["Sai", "John", "Maria", "Alex", "Kate"].map((name, idx) => (
+                <div 
+                  key={idx} 
+                  className="inline-block h-8.5 w-8.5 rounded-full ring-2 ring-[#020202] bg-gradient-to-tr from-neutral-800 to-neutral-700 flex items-center justify-center text-[10px] font-black text-neutral-300 uppercase tracking-tighter"
+                >
+                  {name[0]}
+                </div>
+              ))}
+            </div>
+            <p className="text-[12px] text-neutral-400 leading-relaxed max-w-[280px]">
+              Join <span className="text-white font-bold">10,000+ developers</span> & founders partnering with us to build agentic pipelines.
             </p>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-[#E5E2DC] text-center">
-            <p className="text-[#6B7280]/40 text-[10px] font-black uppercase tracking-[0.2em]">
-              Secure Access Portal
+
+        </div>
+      </div>
+
+      {/* RIGHT SIDE: Testimonial & Branding (Futuristic Dark Theme) */}
+      <div className="hidden lg:flex flex-col justify-center items-center bg-[#050814] text-white p-12 lg:p-24 relative overflow-hidden select-none border-l border-neutral-900">
+        {/* Futuristic Grid / Glow Background */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#355CFF]/10 rounded-full blur-[120px] pointer-events-none" />
+
+        {/* Futuristic Sketch 1: Orbit Grid (Top Right) */}
+        <svg className="absolute -top-10 -right-10 w-72 h-72 text-[#355CFF]/15 stroke-current fill-none pointer-events-none" viewBox="0 0 100 100" strokeWidth="0.5">
+          <circle cx="50" cy="50" r="40" strokeDasharray="2 2" />
+          <circle cx="50" cy="50" r="30" />
+          <circle cx="50" cy="50" r="20" strokeDasharray="4 4" />
+          <line x1="10" y1="50" x2="90" y2="50" />
+          <line x1="50" y1="10" x2="50" y2="90" />
+          <line x1="20" y1="20" x2="80" y2="80" />
+        </svg>
+
+        {/* Futuristic Sketch 2: Digital Network Grid (Bottom Left) */}
+        <svg className="absolute -bottom-10 -left-10 w-80 h-80 text-[#C0F0FB]/10 stroke-current fill-none pointer-events-none" viewBox="0 0 100 100" strokeWidth="0.5">
+          <path d="M10,10 L30,40 L70,30 L90,80 L50,90 Z" />
+          <line x1="30" y1="40" x2="50" y2="90" />
+          <line x1="70" y1="30" x2="50" y2="90" />
+          <circle cx="10" cy="10" r="2" fill="currentColor" />
+          <circle cx="30" cy="40" r="2" fill="currentColor" />
+          <circle cx="70" cy="30" r="2" fill="currentColor" />
+          <circle cx="90" cy="80" r="2" fill="currentColor" />
+          <circle cx="50" cy="90" r="2" fill="currentColor" />
+        </svg>
+
+        <div className="relative z-10 w-full max-w-md space-y-8 flex flex-col items-center">
+          <h2 className="text-[38px] font-black text-white leading-tight text-center max-w-sm font-serif tracking-tight">
+            Go Agent-native With <span className="italic font-serif font-normal text-[#355CFF]">GrowXLabs</span>
+          </h2>
+
+          {/* Testimonial Card */}
+          <div className="w-full bg-[#0F0F12] text-white rounded-2xl p-7 shadow-2xl border border-white/5 relative">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#355CFF] to-[#C0F0FB] flex items-center justify-center font-bold text-xs text-black">
+                  ER
+                </div>
+                <div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-[13px] font-bold text-white">Elena Rostova</span>
+                    {/* Verified check */}
+                    <svg className="w-4 h-4 text-[#C0F0FB] fill-current" viewBox="0 0 24 24">
+                      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                  </div>
+                  <div className="text-[11px] text-neutral-400 font-mono">@elenarostova</div>
+                </div>
+              </div>
+              
+              {/* Top right icon */}
+              <svg viewBox="0 0 24 24" className="w-4.5 h-4.5 text-neutral-600 fill-current">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </div>
+
+            <p className="text-[15px] leading-relaxed text-neutral-200 mb-6 font-normal">
+              Migrating our entire multi-agent support pipeline to <span className="text-[#C0F0FB]">@growxlabs</span> reduced response latency by 72% and completely automated our onboarding triage. The speed of agentic execution is insane.
             </p>
+
+            <div className="text-[10px] text-neutral-500 font-mono flex items-center gap-2 border-t border-neutral-900 pt-4">
+              <span>10:48 AM · Jun 8, 2026</span>
+              <span>·</span>
+              <span className="text-[#C0F0FB]">12.4K Views</span>
+            </div>
           </div>
         </div>
-
-        <p className="mt-8 text-center text-[10px] text-[#6B7280]/50 font-bold uppercase tracking-widest leading-relaxed">
-          Secure Login for GrowX Labs Clients & Team <br />
-          <span className="text-[#6B7280]/30">GrowX Labs Cloud Systems &copy; {new Date().getFullYear()}</span>
-        </p>
       </div>
     </div>
   );

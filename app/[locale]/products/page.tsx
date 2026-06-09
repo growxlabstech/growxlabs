@@ -5,7 +5,7 @@ import { Cpu, Users, ChevronRight, Binary, CheckCircle2 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
-import { FlickerText } from "@/components/marketing/FlickerText";
+import { PageHero } from "@/components/marketing/PageHero";
 
 const products = [
   {
@@ -32,26 +32,17 @@ const products = [
 ];
 
 export default function ProductsPage() {
-  const titleName = "AI PRODUCTS";
 
   return (
     <>
-      {/* Hero — largest emphasis on AI PRODUCTS */}
-      <section
-        className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pt-32 pb-14 md:pb-18 min-h-[min(52dvh,560px)] flex flex-col items-center justify-center text-center"
-        aria-labelledby="products-hero-heading"
-      >
-        <div className="max-w-6xl mx-auto w-full">
-          <h1
-            id="products-hero-heading"
-            className="text-[9.2vw] font-black text-[#1A1A1A] tracking-[-0.06em] leading-[0.8] uppercase whitespace-nowrap"
-          >
-            <FlickerText text={titleName} />
-          </h1>
-        </div>
-      </section>
+      <PageHero
+        title="Products"
+        viewingText="PRODUCTS"
+        exploreText="CATALOG"
+        tagline="OWN PRODUCTS"
+      />
 
-      <div className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pb-24 border-t border-[#E5E2DC]/90">
+      <div className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pb-24 border-t border-border/20 pt-16">
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -62,7 +53,7 @@ export default function ProductsPage() {
             <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-[#355CFF] mb-4 block">
               Product catalog
             </span>
-            <h2 className="text-[clamp(1.65rem,4vw,2.75rem)] font-black text-[#1A1A1A] tracking-tight mb-5 leading-[1.12] max-w-4xl mx-auto">
+            <h2 className="text-[clamp(1.65rem,4vw,2.75rem)] font-black text-foreground tracking-tight mb-5 leading-[1.12] max-w-4xl mx-auto">
               Products that prove our engineering speed.
             </h2>
 
@@ -79,19 +70,19 @@ export default function ProductsPage() {
               >
                 <Card className="p-7 h-full flex flex-col justify-between">
                   <div className="space-y-6">
-                    <div className="h-12 w-12 rounded-md bg-[#EDEAE4] flex items-center justify-center">
+                    <div className="h-12 w-12 rounded-md bg-secondary flex items-center justify-center">
                       <product.icon size={24} className="text-[#355CFF]" aria-hidden="true" />
                     </div>
-                    <h3 className="text-2xl font-black text-[#1A1A1A] tracking-tight">{product.title}</h3>
-                    <p className="text-[#6B7280] leading-relaxed text-sm">{product.description}</p>
+                    <h3 className="text-2xl font-black text-foreground tracking-tight">{product.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed text-sm">{product.description}</p>
 
                     <div className="space-y-3">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#6B7280]">Key features</p>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Key features</p>
                       <div className="flex flex-wrap gap-2">
                         {product.features.map((feature) => (
                           <span
                             key={feature}
-                            className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#1A1A1A] bg-[#F5F3EE] border border-[#E5E2DC] px-2.5 py-1 rounded-md"
+                            className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-foreground bg-muted border border-border px-2.5 py-1 rounded-md"
                           >
                             <CheckCircle2 className="h-3 w-3 text-[#355CFF]" aria-hidden="true" />
                             {feature}
@@ -101,12 +92,12 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  <div className="mt-10 pt-6 border-t border-[#E5E2DC] flex flex-col space-y-5">
+                  <div className="mt-10 pt-6 border-t border-border flex flex-col space-y-5">
                     <div className="space-y-1">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#6B7280]">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
                         Architecture
                       </span>
-                      <p className="text-sm font-semibold text-[#1A1A1A]">{product.stack}</p>
+                      <p className="text-sm font-semibold text-foreground">{product.stack}</p>
                     </div>
                     <Link href="/contact">
                       <Button variant="outline" className="w-full h-12 rounded-md font-semibold inline-flex items-center gap-2">

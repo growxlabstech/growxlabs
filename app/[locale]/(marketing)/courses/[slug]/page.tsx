@@ -122,7 +122,7 @@ export default function CourseDetailsPage() {
           {/* Right Column: Enrollment Card */}
           <div className="lg:col-span-4">
             <div className="sticky top-32">
-              <div className="bg-white/[0.03] border border-white/10 rounded-[40px] p-10 backdrop-blur-xl">
+              <div className="bg-card/[0.03] border border-white/10 rounded-[40px] p-10 backdrop-blur-xl">
                  <div className="relative aspect-video rounded-3xl overflow-hidden mb-8 border border-white/5">
                     <Image src={course.image} alt={course.title} fill className="object-cover" />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">

@@ -75,20 +75,20 @@ export default function WebsiteVsSystemPage() {
           <div className="mt-20">
             <h2 className="text-white font-bold text-3xl mb-12 text-center">Feature Comparison</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="p-8 rounded-[32px] border border-white/5 bg-white/[0.01] space-y-6">
+              <div className="p-8 rounded-[32px] border border-white/5 bg-card/[0.01] space-y-6">
                 <h3 className="text-white/40 font-bold text-xl uppercase tracking-widest text-center">Passive Website</h3>
                 <ul className="space-y-4">
                   <li className="text-white/30 flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-white/20" /> Static Content
+                    <div className="w-1.5 h-1.5 rounded-full bg-card/20" /> Static Content
                   </li>
                   <li className="text-white/30 flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-white/20" /> Generic Contact Form
+                    <div className="w-1.5 h-1.5 rounded-full bg-card/20" /> Generic Contact Form
                   </li>
                   <li className="text-white/30 flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-white/20" /> No Lead Tracking
+                    <div className="w-1.5 h-1.5 rounded-full bg-card/20" /> No Lead Tracking
                   </li>
                   <li className="text-white/30 flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-white/20" /> Manual Follow-ups
+                    <div className="w-1.5 h-1.5 rounded-full bg-card/20" /> Manual Follow-ups
                   </li>
                 </ul>
               </div>

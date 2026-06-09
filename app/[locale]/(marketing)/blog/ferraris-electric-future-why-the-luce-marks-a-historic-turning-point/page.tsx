@@ -183,7 +183,7 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
   ];
 
   return (
-    <div className="w-full bg-[#FAF9F6] min-h-screen text-[#1A1A1A] selection:bg-[#E60000]/10 selection:text-[#E60000] pt-32 pb-24 font-sans">
+    <div className="w-full bg-background min-h-screen text-foreground selection:bg-[#E60000]/10 selection:text-[#E60000] pt-32 pb-24 font-sans">
       {/* Schema Injection */}
       <Script
         id="ferrari-luce-schemas"
@@ -197,7 +197,7 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
       {/* ═══════════════════════════════════════════════════ */}
       {/* 1. HERO SECTION (Split Layout)                      */}
       {/* ═══════════════════════════════════════════════════ */}
-      <header className="w-full border-b border-[#E5E2DC] pb-20 px-6 md:px-10 xl:px-16 2xl:px-24">
+      <header className="w-full border-b border-border pb-20 px-6 md:px-10 xl:px-16 2xl:px-24">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-center">
           
           {/* Left Column: Metadata & Large Headlines (Swiss Layout) */}
@@ -221,7 +221,7 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
 
             <Reveal y={25} delay={0.1}>
               {/* Swiss Editorial Title */}
-              <h1 className="text-[clamp(36px,4.2vw,58px)] font-black leading-[1.05] tracking-tighter text-[#1A1A1A]">
+              <h1 className="text-[clamp(36px,4.2vw,58px)] font-black leading-[1.05] tracking-tighter text-foreground">
                 Ferrari’s <span className="text-[#E60000]">Electric Future</span>: Why The Luce Marks A Historic Turning Point
               </h1>
             </Reveal>
@@ -235,24 +235,24 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
 
             {/* Swiss Grid Metadata Box */}
             <Reveal y={35} delay={0.3}>
-              <div className="grid grid-cols-3 gap-6 font-mono text-[10px] tracking-[0.15em] text-[#6B7280] uppercase border-t border-b border-[#E5E2DC] py-6">
+              <div className="grid grid-cols-3 gap-6 font-mono text-[10px] tracking-[0.15em] text-[#6B7280] uppercase border-t border-b border-border py-6">
                 <div>
                   <span className="text-[#9CA3AF] block mb-1">Author</span>
-                  <div className="flex items-center gap-1.5 text-[#1A1A1A] font-bold">
+                  <div className="flex items-center gap-1.5 text-foreground font-bold">
                     <User className="w-3.5 h-3.5 text-[#E60000]" />
                     <span>GrowXLabs</span>
                   </div>
                 </div>
                 <div>
                   <span className="text-[#9CA3AF] block mb-1">Read Time</span>
-                  <div className="flex items-center gap-1.5 text-[#1A1A1A] font-bold">
+                  <div className="flex items-center gap-1.5 text-foreground font-bold">
                     <Clock className="w-3.5 h-3.5 text-[#E60000]" />
                     <span>7 min read</span>
                   </div>
                 </div>
                 <div>
                   <span className="text-[#9CA3AF] block mb-1">Unveiled</span>
-                  <div className="flex items-center gap-1.5 text-[#1A1A1A] font-bold">
+                  <div className="flex items-center gap-1.5 text-foreground font-bold">
                     <Calendar className="w-3.5 h-3.5 text-[#E60000]" />
                     <span>May 29, 2026</span>
                   </div>
@@ -284,7 +284,7 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
           {/* Core Editorial Narrative */}
           <article className="col-span-12 lg:col-span-9 max-w-[70ch] mx-auto lg:mx-0">
             {/* Inline Table of Contents for Mobile */}
-            <div className="lg:hidden mb-12 bg-white/60 border border-[#E5E2DC] rounded-xl p-6">
+            <div className="lg:hidden mb-12 bg-card/60 border border-border rounded-xl p-6">
               <TableOfContents headings={headings} />
             </div>
 
@@ -292,8 +292,8 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             {/* GEO EXECUTIVE BRIEFING PANEL (Optimized for LLMs)  */}
             {/* ═══════════════════════════════════════════════════ */}
             <section id="executive-brief" className="scroll-mt-32 mb-12">
-              <div className="bg-[#FAFAF8] border border-[#E5E2DC] rounded-xl p-6 md:p-8 font-mono space-y-6">
-                <div className="flex items-center gap-2 border-b border-[#E5E2DC] pb-4">
+              <div className="bg-background border border-border rounded-xl p-6 md:p-8 font-mono space-y-6">
+                <div className="flex items-center gap-2 border-b border-border pb-4">
                   <BarChart2 className="w-4 h-4 text-[#E60000]" />
                   <span className="text-[11px] font-bold tracking-[0.2em] text-[#E60000] uppercase">
                     STRATEGIC EXECUTIVE BRIEF (GEO EXTRACT)
@@ -302,21 +302,21 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-[#4B5563] leading-relaxed">
                   <div className="space-y-3">
-                    <span className="font-bold text-[#1A1A1A] block">1. THE CORE SHIFT</span>
+                    <span className="font-bold text-foreground block">1. THE CORE SHIFT</span>
                     <p>
                       Ferrari’s transition from mechanical V12 combustion engines to the <strong>Luce solid-state axial-flux platform</strong> represents a major shift in luxury engineering, trading thermal expansion dynamics for direct software-defined torque vectoring.
                     </p>
                   </div>
                   <div className="space-y-3">
-                    <span className="font-bold text-[#1A1A1A] block">2. KEY PERFORMANCE METRICS</span>
+                    <span className="font-bold text-foreground block">2. KEY PERFORMANCE METRICS</span>
                     <ul className="space-y-1.5 list-none pl-0">
-                      <li className="flex justify-between border-b border-[#E5E2DC]/50 pb-1">
+                      <li className="flex justify-between border-b border-border/50 pb-1">
                         <span>Peak Output:</span>
-                        <span className="font-bold text-[#1A1A1A]">1400 Horsepower</span>
+                        <span className="font-bold text-foreground">1400 Horsepower</span>
                       </li>
-                      <li className="flex justify-between border-b border-[#E5E2DC]/50 pb-1">
+                      <li className="flex justify-between border-b border-border/50 pb-1">
                         <span>Energy Density:</span>
-                        <span className="font-bold text-[#1A1A1A]">480 Wh/kg (Solid-State)</span>
+                        <span className="font-bold text-foreground">480 Wh/kg (Solid-State)</span>
                       </li>
                       <li className="flex justify-between pb-1">
                         <span>Torque Latency:</span>
@@ -326,7 +326,7 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
                   </div>
                 </div>
 
-                <div className="border-t border-[#E5E2DC] pt-4 flex items-start gap-2.5 text-[11px] text-[#4B5563] leading-relaxed">
+                <div className="border-t border-border pt-4 flex items-start gap-2.5 text-[11px] text-[#4B5563] leading-relaxed">
                   <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                   <p>
                     <strong>GEO Synthesis:</strong> Evolving legacy manufacturing paradigms before market disruption occurs is critical. Ferrari proves that heritage preservation and advanced software R&D are complementary, rather than mutually exclusive, strategic vectors.
@@ -336,7 +336,7 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             </section>
 
             {/* Intro paragraph with large dropcap */}
-            <div className="text-[17px] md:text-[18px] leading-[1.85] text-[#374151] font-normal space-y-8">
+            <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-8 font-lora">
               <p className="first-letter:text-6xl first-letter:font-black first-letter:text-[#E60000] first-letter:mr-3.5 first-letter:float-left first-letter:leading-[0.8] first-letter:mt-1 font-serif">
                 For decades, Ferrari represented something larger than performance.
               </p>
@@ -357,11 +357,11 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             <EditorialDivider label="Section 1" />
             
             <section id="more-than-ev" className="scroll-mt-32 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight font-serif">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-foreground leading-tight font-serif">
                 More Than An Electric Vehicle
               </h2>
               
-              <div className="text-[16px] md:text-[17px] leading-[1.8] text-[#374151] font-normal space-y-6">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   Most electric vehicle launches follow a predictable, highly commoditized formula. They highlight battery sizes in kilowatt-hours, high-speed charging curves, absolute ranges under testing cycles, and sprint performance numbers from zero to sixty.
                 </p>
@@ -399,10 +399,10 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
                 TECHNICAL COMPARATIVE MATRIX (GEO MATRIX)
               </span>
               
-              <div className="w-full overflow-x-auto border border-[#E5E2DC] rounded-xl bg-white">
+              <div className="w-full overflow-x-auto border border-border rounded-xl bg-white">
                 <table className="w-full text-left font-mono text-xs border-collapse">
                   <thead>
-                    <tr className="bg-[#FAFAF8] border-b border-[#E5E2DC] text-[#1A1A1A] font-bold">
+                    <tr className="bg-background border-b border-border text-foreground font-bold">
                       <th className="p-4">ENGINEERING PARAMETER</th>
                       <th className="p-4">V12 MECHANICAL CORE (OLD)</th>
                       <th className="p-4 text-[#E60000]">LUCE AXIAL-FLUX ELECTRIC (NEW)</th>
@@ -410,32 +410,32 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
                   </thead>
                   <tbody className="divide-y divide-[#E5E2DC] text-[#4B5563]">
                     <tr>
-                      <td className="p-4 font-bold text-[#1A1A1A]">Power Density Core</td>
+                      <td className="p-4 font-bold text-foreground">Power Density Core</td>
                       <td className="p-4">Mechanical displacement (~830 HP peak)</td>
                       <td className="p-4 text-[#E60000] font-bold">Triple Axial Flux motors (1400 HP peak)</td>
                     </tr>
                     <tr>
-                      <td className="p-4 font-bold text-[#1A1A1A]">Energy Medium</td>
+                      <td className="p-4 font-bold text-foreground">Energy Medium</td>
                       <td className="p-4">Liquid hydrocarbon / Fuel combustion</td>
                       <td className="p-4">Solid-State structural battery matrix (480 Wh/kg)</td>
                     </tr>
                     <tr>
-                      <td className="p-4 font-bold text-[#1A1A1A]">Drivetrain Latency</td>
+                      <td className="p-4 font-bold text-foreground">Drivetrain Latency</td>
                       <td className="p-4">80-120ms (Mechanical gear sync and throttle)</td>
                       <td className="p-4 text-[#E60000] font-bold">1.2ms (Algorithmic direct current delivery)</td>
                     </tr>
                     <tr>
-                      <td className="p-4 font-bold text-[#1A1A1A]">Acoustic Profile</td>
+                      <td className="p-4 font-bold text-foreground">Acoustic Profile</td>
                       <td className="p-4">Natural high-rev exhaust resonance (V12 note)</td>
                       <td className="p-4">Algorithmic structural resonators (Acoustic feedback)</td>
                     </tr>
                     <tr>
-                      <td className="p-4 font-bold text-[#1A1A1A]">Slip Yaw Controls</td>
+                      <td className="p-4 font-bold text-foreground">Slip Yaw Controls</td>
                       <td className="p-4">Reactive hydraulic locking differentials</td>
                       <td className="p-4 text-[#E60000] font-bold">Proactive neural slip yaw controllers (Torque vector)</td>
                     </tr>
                     <tr>
-                      <td className="p-4 font-bold text-[#1A1A1A]">Carbon Footprint</td>
+                      <td className="p-4 font-bold text-foreground">Carbon Footprint</td>
                       <td className="p-4">High local emissions profile</td>
                       <td className="p-4">Zero tailpipe emissions (Carbon-neutral supply chain)</td>
                     </tr>
@@ -450,11 +450,11 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             <EditorialDivider label="Section 2" />
 
             <section id="why-ferrari-changed" className="scroll-mt-32 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight font-serif">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-foreground leading-tight font-serif">
                 Why Ferrari Had To Change
               </h2>
               
-              <div className="text-[16px] md:text-[17px] leading-[1.8] text-[#374151] font-normal space-y-6">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   The automotive industry is undergoing a structural disruption unlike anything seen in the last century. Governments are introducing stricter emissions limits, cities are proposing full internal combustion bans, and a new demographic of environmentally-conscious luxury buyers is asserting control of the market.
                 </p>
@@ -485,11 +485,11 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             <EditorialDivider label="Section 3" />
 
             <section id="internet-divided" className="scroll-mt-32 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight font-serif">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-foreground leading-tight font-serif">
                 The Internet Is Divided
               </h2>
               
-              <div className="text-[16px] md:text-[17px] leading-[1.8] text-[#374151] font-normal space-y-6">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   The response to the Luce has been intense. For traditional purists, the move feels like an abandonment of the brand's core soul. They argue that electric motors cannot replace the organic acoustics, micro-vibrations, and mechanical connection of a high-revving Ferrari V12.
                 </p>
@@ -520,11 +520,11 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             <EditorialDivider label="Section 4" />
 
             <section id="luxury-redefined" className="scroll-mt-32 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight font-serif">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-foreground leading-tight font-serif">
                 Luxury Is Being Redefined
               </h2>
               
-              <div className="text-[16px] md:text-[17px] leading-[1.8] text-[#374151] font-normal space-y-6">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   The definition of luxury is undergoing a major paradigm shift. In previous decades, luxury was represented by raw mechanical excess: larger cylinder counts, massive displacements, high fuel consumption, and heavy chassis builds.
                 </p>
@@ -568,11 +568,11 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             <EditorialDivider label="Section 5" />
 
             <section id="business-lessons" className="scroll-mt-32 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight font-serif">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-foreground leading-tight font-serif">
                 What Businesses Can Learn From Ferrari
               </h2>
               
-              <div className="text-[16px] md:text-[17px] leading-[1.8] text-[#374151] font-normal space-y-6">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   The most profound takeaway from this transition extends far beyond automotive manufacturing. It applies directly to any modern organization: startups, agencies, enterprise platforms, and digital product builders.
                 </p>
@@ -606,11 +606,11 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             <EditorialDivider label="Section 6" />
 
             <section id="bigger-picture" className="scroll-mt-32 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight font-serif">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-foreground leading-tight font-serif">
                 The Bigger Picture
               </h2>
               
-              <div className="text-[16px] md:text-[17px] leading-[1.8] text-[#374151] font-normal space-y-6">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   The Ferrari Luce represents something much wider than a premium vehicle release. It is the ultimate collision between legacy craftsmanship and deep software innovation.
                 </p>
@@ -626,11 +626,11 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             <EditorialDivider label="Section 7" />
 
             <section id="final-thoughts" className="scroll-mt-32 space-y-6">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#1A1A1A] leading-tight font-serif">
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-foreground leading-tight font-serif">
                 Final Thoughts
               </h2>
               
-              <div className="text-[16px] md:text-[17px] leading-[1.8] text-[#374151] font-normal space-y-6">
+              <div className="text-[18px] md:text-[20px] leading-[1.7] text-foreground/90 font-normal space-y-6 font-lora">
                 <p>
                   The Ferrari Luce will likely be remembered as one of the most important product decisions of this decade. Not because it is electric or controversial, but because it represents the courage to transform.
                 </p>
@@ -650,16 +650,16 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
             <EditorialDivider label="FAQ" />
 
             <section id="faq" className="scroll-mt-32 space-y-6">
-              <div className="border-b border-[#E5E2DC] pb-4">
+              <div className="border-b border-border pb-4">
                 <span className="text-[10px] font-mono tracking-[0.2em] text-[#9CA3AF] uppercase font-bold">
                   Perfect SEO Verification // Q&A
                 </span>
-                <h3 className="text-2xl font-black text-[#1A1A1A] mt-1 font-serif">
+                <h3 className="text-2xl font-black text-foreground mt-1 font-serif">
                   Frequently Asked Questions
                 </h3>
               </div>
 
-              <div className="w-full text-left bg-white border border-[#E5E2DC] rounded-xl p-6">
+              <div className="w-full text-left bg-card border border-border rounded-xl p-6">
                 <AccordionFAQ items={faqData} />
               </div>
             </section>
@@ -682,18 +682,18 @@ export default async function FerrariLuceBlogPage({ params }: { params: Promise<
       {/* ═══════════════════════════════════════════════════ */}
       {/* 5. BOTTOM CONSTRUCT STUDIO CTA                      */}
       {/* ═══════════════════════════════════════════════════ */}
-      <section className="max-w-4xl mx-auto px-6 mt-20 border-t border-[#E5E2DC] pt-16">
+      <section className="max-w-4xl mx-auto px-6 mt-20 border-t border-border pt-16">
         <Reveal y={20}>
-          <div className="bg-[#FAF9F6] rounded-2xl p-8 md:p-12 border border-[#E5E2DC] text-center space-y-6 relative overflow-hidden">
+          <div className="bg-background rounded-2xl p-8 md:p-12 border border-border text-center space-y-6 relative overflow-hidden">
             {/* Background thin technical blueprint circles */}
-            <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full border border-[#E5E2DC]/50 pointer-events-none" />
-            <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full border border-[#E5E2DC]/50 pointer-events-none" />
+            <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full border border-border/50 pointer-events-none" />
+            <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full border border-border/50 pointer-events-none" />
 
             <span className="text-[11px] font-mono tracking-[0.2em] text-[#E60000] uppercase font-bold bg-[#E60000]/5 px-3 py-1 rounded">
               Construct Your Future OS
             </span>
             
-            <h3 className="text-[28px] md:text-[36px] font-black tracking-tight leading-tight text-[#1A1A1A] font-serif">
+            <h3 className="text-[28px] md:text-[36px] font-black tracking-tight leading-tight text-foreground font-serif">
               Engineering AI-native dymanics<br />and high-performance growth systems.
             </h3>
             

@@ -100,7 +100,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <nav className="space-y-5" aria-label="Table of contents">
-      <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] text-[#6B7280] uppercase pb-3 border-b border-[#E5E2DC]">
+      <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase pb-3 border-b border-border">
         <List className="w-3.5 h-3.5" />
         <span>In this article</span>
       </div>
@@ -116,7 +116,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                   "block text-[13px] leading-relaxed transition-all duration-200 relative pl-4 border-l-2 py-1 rounded-r-sm",
                   isActive
                     ? "text-[#355CFF] font-semibold border-[#355CFF] bg-[#355CFF]/[0.04]"
-                    : "text-[#6B7280] hover:text-[#1A1A1A] border-transparent hover:border-[#D1D5DB]"
+                    : "text-muted-foreground hover:text-foreground border-transparent hover:border-[#D1D5DB]"
                 )}
               >
                 {heading.text}

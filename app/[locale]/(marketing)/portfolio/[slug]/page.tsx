@@ -103,7 +103,7 @@ export default function CaseStudyPage() {
                 <h3 className="text-white font-bold mb-4 uppercase text-xs tracking-widest opacity-40">Tech Stack</h3>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((t, i) => (
-                    <span key={i} className="px-3 py-1 bg-white/5 rounded-md text-sm text-white/80 border border-white/10">
+                    <span key={i} className="px-3 py-1 bg-card/5 rounded-md text-sm text-white/80 border border-white/10">
                       {t}
                     </span>
                   ))}

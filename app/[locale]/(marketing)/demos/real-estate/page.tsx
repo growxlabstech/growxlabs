@@ -111,7 +111,7 @@ export default function RealEstateDemo() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-20 sm:py-32">
           <div className="max-w-2xl space-y-8">
-            <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.08] backdrop-blur-sm rounded-full border border-white/[0.08]">
+            <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-4 py-2 bg-card/[0.08] backdrop-blur-sm rounded-full border border-white/[0.08]">
               <Building2 size={14} style={{ color: ACCENT }} />
               <span className="text-xs font-medium text-zinc-300">Premium Real Estate · Hyderabad</span>
             </motion.div>
@@ -132,7 +132,7 @@ export default function RealEstateDemo() {
               >
                 Browse Properties
               </Button>
-              <Button variant="outline" className="h-13 px-8 rounded-xl text-zinc-300 border-white/10 hover:bg-white/[0.04] text-sm font-semibold">
+              <Button variant="outline" className="h-13 px-8 rounded-xl text-zinc-300 border-white/10 hover:bg-card/[0.04] text-sm font-semibold">
                 <Phone size={16} className="mr-2" /> Schedule a Visit
               </Button>
             </motion.div>
@@ -234,7 +234,7 @@ export default function RealEstateDemo() {
                     </span>
                   </div>
                   <div className="absolute top-4 right-4">
-                    <div className="h-10 w-10 bg-black/40 backdrop-blur-sm rounded-xl flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all cursor-pointer">
+                    <div className="h-10 w-10 bg-black/40 backdrop-blur-sm rounded-xl flex items-center justify-center text-white group-hover:bg-card group-hover:text-black transition-all cursor-pointer">
                       <ArrowUpRight size={18} />
                     </div>
                   </div>
@@ -249,13 +249,13 @@ export default function RealEstateDemo() {
                   </div>
 
                   <div className="flex flex-wrap gap-2 text-xs text-zinc-500">
-                    <span className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-lg">
+                    <span className="flex items-center gap-1.5 bg-card/[0.04] px-3 py-1.5 rounded-lg">
                       <BedDouble size={12} /> {l.beds} Beds
                     </span>
-                    <span className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-lg">
+                    <span className="flex items-center gap-1.5 bg-card/[0.04] px-3 py-1.5 rounded-lg">
                       <Bath size={12} /> {l.baths} Baths
                     </span>
-                    <span className="flex items-center gap-1.5 bg-white/[0.04] px-3 py-1.5 rounded-lg">
+                    <span className="flex items-center gap-1.5 bg-card/[0.04] px-3 py-1.5 rounded-lg">
                       <Ruler size={12} /> {l.area} sqft
                     </span>
                   </div>

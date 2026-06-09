@@ -107,7 +107,7 @@ export default function RestaurantDemo() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-20 sm:py-32">
           <div className="max-w-2xl space-y-8">
-            <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.08] backdrop-blur-sm rounded-full border border-white/[0.08]">
+            <motion.div {...fadeUp} className="inline-flex items-center gap-2 px-4 py-2 bg-card/[0.08] backdrop-blur-sm rounded-full border border-white/[0.08]">
               <Flame size={14} style={{ color: ACCENT }} />
               <span className="text-xs font-medium text-zinc-300">Fine Dining · Hyderabad</span>
             </motion.div>
@@ -128,7 +128,7 @@ export default function RestaurantDemo() {
               >
                 Reserve a Table
               </Button>
-              <Button variant="outline" className="h-13 px-8 rounded-xl text-zinc-300 border-white/10 hover:bg-white/[0.04] text-sm font-semibold">
+              <Button variant="outline" className="h-13 px-8 rounded-xl text-zinc-300 border-white/10 hover:bg-card/[0.04] text-sm font-semibold">
                 <Phone size={16} className="mr-2" /> Call Us
               </Button>
             </motion.div>

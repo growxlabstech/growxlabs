@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/marketing/Reveal";
 import { DynamicSchema } from "@/components/marketing/DynamicSchema";
 import { ArrowRight } from "lucide-react";
-import { FlickerText } from "@/components/marketing/FlickerText";
+import { PageHero } from "@/components/marketing/PageHero";
 
 const introBlocks = [
   {
@@ -45,7 +45,6 @@ export async function generateMetadata() {
 }
 
 export default function PortfolioPage() {
-  const titleName = "AI PORTFOLIO";
 
   return (
     <>
@@ -75,21 +74,14 @@ export default function PortfolioPage() {
         ]}
       />
 
-      <section
-        className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pt-32 pb-14 md:pb-16 min-h-[min(52dvh,560px)] flex flex-col items-center justify-center text-center"
-        aria-labelledby="portfolio-hero-heading"
-      >
-        <div className="max-w-6xl mx-auto w-full">
-          <h1
-            id="portfolio-hero-heading"
-            className="text-[9.2vw] font-black text-[#1A1A1A] tracking-[-0.06em] leading-[0.8] uppercase whitespace-nowrap"
-          >
-            <FlickerText text={titleName} />
-          </h1>
-        </div>
-      </section>
+      <PageHero
+        title="Portfolio"
+        viewingText="PORTFOLIO"
+        exploreText="OUR WORK"
+        tagline="REAL SYSTEMS"
+      />
 
-      <div className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pb-24 border-t border-[#E5E2DC]/90">
+      <div className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pb-24 border-t border-border/20 pt-16">
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
           <div className="text-center max-w-3xl mx-auto pt-10 md:pt-12 mb-10 md:mb-12">
             <Reveal scale={0.98}>
@@ -98,7 +90,7 @@ export default function PortfolioPage() {
               </span>
             </Reveal>
             <Reveal delay={0.08}>
-              <h2 className="text-[clamp(1.65rem,4vw,2.75rem)] font-black text-[#1A1A1A] tracking-tight leading-[1.12]">
+              <h2 className="text-[clamp(1.65rem,4vw,2.75rem)] font-black text-foreground tracking-tight leading-[1.12]">
                 Real systems, shipped for real users.
               </h2>
             </Reveal>
@@ -108,19 +100,19 @@ export default function PortfolioPage() {
             {introBlocks.map((card, i) => (
               <Reveal key={card.title} delay={0.06 + i * 0.05}>
                 <div
-                  className="h-full bg-white border border-[#E5E2DC] rounded-2xl p-6 md:p-7 shadow-sm relative overflow-hidden"
+                  className="h-full bg-card border border-border rounded-2xl p-6 md:p-7 shadow-sm relative overflow-hidden"
                   style={{
                     clipPath: "polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%)",
                   }}
                 >
-                  <h3 className="text-lg font-black text-[#1A1A1A] tracking-tight mb-5 pr-2">{card.title}</h3>
+                  <h3 className="text-lg font-black text-foreground tracking-tight mb-5 pr-2">{card.title}</h3>
                   <div className="divide-y divide-[#E5E2DC]">
                     {card.rows.map((row) => (
                       <div key={`${card.title}-${row.k}-${row.v}`} className="grid grid-cols-[minmax(0,88px)_1fr] gap-x-3 py-3 first:pt-0">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#6B7280] leading-snug">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground leading-snug">
                           {row.k}
                         </span>
-                        <span className="text-sm font-semibold text-[#1A1A1A] leading-snug">{row.v}</span>
+                        <span className="text-sm font-semibold text-foreground leading-snug">{row.v}</span>
                       </div>
                     ))}
                   </div>
@@ -138,11 +130,11 @@ export default function PortfolioPage() {
           </div>
 
           <Reveal y={40} className="mt-20">
-            <div className="text-center p-8 md:p-12 rounded-lg border border-[#E5E2DC] bg-white shadow-sm">
-              <h2 className="text-[clamp(28px,5vw,48px)] font-black text-[#1A1A1A] mb-5 tracking-tight leading-[1.1]">
+            <div className="text-center p-8 md:p-12 rounded-lg border border-border bg-card shadow-sm">
+              <h2 className="text-[clamp(28px,5vw,48px)] font-black text-foreground mb-5 tracking-tight leading-[1.1]">
                 Ready to be our next case study?
               </h2>
-              <p className="text-[#6B7280] mb-8 max-w-[660px] mx-auto text-lg leading-relaxed">
+              <p className="text-muted-foreground mb-8 max-w-[660px] mx-auto text-lg leading-relaxed">
                 We partner with ambitious businesses to build AI-powered digital systems that can be launched, measured,
                 and improved.
               </p>

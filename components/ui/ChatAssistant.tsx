@@ -109,9 +109,9 @@ export function ChatAssistant() {
             className="mb-6 w-[95vw] md:w-[450px] h-[650px] glass rounded-[2.5rem] border-white/10 shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="p-8 border-b border-white/5 bg-white/[0.02] flex items-center justify-between shrink-0">
+            <div className="p-8 border-b border-white/5 bg-card/[0.02] flex items-center justify-between shrink-0">
                <div className="flex items-center space-x-4">
-                 <div className="h-10 w-10 rounded-2xl bg-white flex items-center justify-center">
+                 <div className="h-10 w-10 rounded-2xl bg-card flex items-center justify-center">
                     <Bot className="text-black h-5 w-5" />
                  </div>
                  <div>
@@ -136,10 +136,10 @@ export function ChatAssistant() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                   <div className="bg-white/5 p-5 rounded-2xl border border-white/5 flex space-x-2">
-                     <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                     <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                     <span className="w-1.5 h-1.5 bg-white/40 rounded-full animate-bounce" />
+                   <div className="bg-card/5 p-5 rounded-2xl border border-white/5 flex space-x-2">
+                     <span className="w-1.5 h-1.5 bg-card/40 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                     <span className="w-1.5 h-1.5 bg-card/40 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                     <span className="w-1.5 h-1.5 bg-card/40 rounded-full animate-bounce" />
                    </div>
                 </div>
               )}
@@ -152,11 +152,11 @@ export function ChatAssistant() {
                   autoFocus value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about our services..."
-                  className="w-full h-16 bg-white/[0.03] border border-white/5 rounded-2xl pl-7 pr-16 text-white text-sm focus:outline-none focus:border-white/20 transition-all placeholder:text-white/20"
+                  className="w-full h-16 bg-card/[0.03] border border-white/5 rounded-2xl pl-7 pr-16 text-white text-sm focus:outline-none focus:border-white/20 transition-all placeholder:text-white/20"
                 />
                 <button 
                   type="submit" disabled={isLoading || !input.trim()}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-xl bg-white text-black flex items-center justify-center hover:bg-neutral-200 transition-all disabled:opacity-50"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-xl bg-card text-black flex items-center justify-center hover:bg-neutral-200 transition-all disabled:opacity-50"
                 ><Send size={18} /></button>
               </div>
             </form>
@@ -168,9 +168,9 @@ export function ChatAssistant() {
       <motion.button
         whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="h-20 w-20 bg-white rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(255,255,255,0.15)] text-black relative group"
+        className="h-20 w-20 bg-card rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(255,255,255,0.15)] text-black relative group"
       >
-        <div className="absolute inset-0 bg-white rounded-full animate-ping opacity-10" />
+        <div className="absolute inset-0 bg-card rounded-full animate-ping opacity-10" />
         {isOpen ? <X size={32} /> : <MessageCircle size={32} />}
       </motion.button>
     </div>

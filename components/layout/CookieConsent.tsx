@@ -37,7 +37,7 @@ export function CookieConsent() {
       <div className="w-full sm:w-[400px] bg-neutral-950 border border-neutral-800 p-5 rounded-[24px] pointer-events-auto shadow-2xl backdrop-blur-xl text-white">
         <div className="flex flex-col gap-5">
           <div className="flex items-start gap-4">
-            <div className="h-10 w-10 bg-white rounded-xl flex items-center justify-center shrink-0">
+            <div className="h-10 w-10 bg-card rounded-xl flex items-center justify-center shrink-0">
               <ShieldCheck className="text-black h-5 w-5" />
             </div>
             <div className="space-y-1">
@@ -65,7 +65,7 @@ export function CookieConsent() {
             </button>
             <Button 
               onClick={handleAccept}
-              className="flex-1 bg-white text-black hover:bg-neutral-200 h-10 rounded-xl font-bold text-[10px] uppercase tracking-widest"
+              className="flex-1 bg-card text-black hover:bg-neutral-200 h-10 rounded-xl font-bold text-[10px] uppercase tracking-widest"
             >
               Accept All
             </Button>

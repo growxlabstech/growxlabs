@@ -193,7 +193,7 @@ export function GrowXChatWidget() {
 
               {isSubmitting && (
                 <div className={cn("flex", isRTL ? "justify-end" : "justify-start")}>
-                  <div className="bg-white/5 border border-white/10 px-4 py-3 rounded-2xl animate-pulse text-xs text-white/40 italic">
+                  <div className="bg-card/5 border border-white/10 px-4 py-3 rounded-2xl animate-pulse text-xs text-white/40 italic">
                     {t("submitting")}
                   </div>
                 </div>
