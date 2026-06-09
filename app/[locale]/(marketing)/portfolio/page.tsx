@@ -1,10 +1,8 @@
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { projects } from "@/lib/data/projects";
 import { Link } from "@/navigation";
-import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/marketing/Reveal";
 import { DynamicSchema } from "@/components/marketing/DynamicSchema";
-import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/marketing/PageHero";
 
 const introBlocks = [
@@ -81,7 +79,7 @@ export default function PortfolioPage() {
         tagline="REAL SYSTEMS"
       />
 
-      <div className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pb-24 border-t border-border/20 pt-16">
+      <div className="w-full px-6 md:px-10 xl:px-16 2xl:px-24 pb-12 border-t border-border/20 pt-16">
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
           <div className="text-center max-w-3xl mx-auto pt-10 md:pt-12 mb-10 md:mb-12">
             <Reveal scale={0.98}>
@@ -128,23 +126,6 @@ export default function PortfolioPage() {
               </Reveal>
             ))}
           </div>
-
-          <Reveal y={40} className="mt-20">
-            <div className="text-center p-8 md:p-12 rounded-lg border border-border bg-card shadow-sm">
-              <h2 className="text-[clamp(28px,5vw,48px)] font-black text-foreground mb-5 tracking-tight leading-[1.1]">
-                Ready to be our next case study?
-              </h2>
-              <p className="text-muted-foreground mb-8 max-w-[660px] mx-auto text-lg leading-relaxed">
-                We partner with ambitious businesses to build AI-powered digital systems that can be launched, measured,
-                and improved.
-              </p>
-              <Link href="/contact">
-                <Button className="px-8 h-12 rounded-md font-semibold inline-flex items-center gap-2">
-                  Start your project <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </Reveal>
         </div>
       </div>
     </>

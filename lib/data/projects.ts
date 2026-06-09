@@ -79,6 +79,7 @@ export const projects: CaseStudy[] = [
     ],
     gallery: []
   },
+  /*
   {
     slug: "royalefeast",
     title: "Royale Feast",
@@ -259,4 +260,5 @@ export const projects: CaseStudy[] = [
     ],
     gallery: []
   }
+  */
 ];

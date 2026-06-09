@@ -111,7 +111,7 @@ const services = [
     weight: "Medium build",
     dimensions: "24h prototype / scoped delivery",
     buttonText: "GET IN TOUCH",
-    buttonHref: "/contact",
+    buttonHref: "https://wa.me/918790907144?text=Hi%2C%20I%27m%20interested%20in%20a%20Custom%20Software%20Build%20at%20GrowXLabs.",
   },
   {
     title: "Labs & Pre-built Tools",
@@ -131,7 +131,7 @@ const services = [
     weight: "Strategic",
     dimensions: "Base build + revenue share",
     buttonText: "GET IN TOUCH",
-    buttonHref: "/contact",
+    buttonHref: "https://wa.me/918790907144?text=Hi%2C%20I%27m%20interested%20in%20Fractional%20CTO%20services%20at%20GrowXLabs.",
   },
   {
     title: "Technical Co-founders",
@@ -141,7 +141,7 @@ const services = [
     weight: "Deep partnership",
     dimensions: "Equity or revenue aligned",
     buttonText: "GET IN TOUCH",
-    buttonHref: "/contact",
+    buttonHref: "https://wa.me/918790907144?text=Hi%2C%20I%27m%20interested%20in%20a%20Technical%20Co-founder%20partnership%20at%20GrowXLabs.",
   },
 ];
 
@@ -196,12 +196,12 @@ export default function ServicesPage() {
         tagline="SYSTEMS & AUTOMATION"
       />
 
-      <div className="pb-24 px-6 md:px-10 xl:px-16 2xl:px-24 w-full border-t border-border/20 pt-16">
+      <div className="pb-12 px-6 md:px-10 xl:px-16 2xl:px-24 w-full border-t border-border/20 pt-16">
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
 
           {/* Services Cards Grid */}
           <Reveal y={40}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-0">
               {services.map((service, index) => (
                 <div
                   key={service.title}
@@ -246,14 +246,30 @@ export default function ServicesPage() {
                       </div>
 
                       {/* Action Button */}
-                      <Link href={service.buttonHref} className="w-full block mt-6">
-                        <Button
-                          variant="outline"
-                          className="w-full uppercase font-bold text-[12px] tracking-wider py-5 border-border hover:border-[#C0F0FB]/40 hover:bg-[#C0F0FB] hover:text-black transition-all duration-300"
+                      {service.buttonHref.startsWith("http") ? (
+                        <a 
+                          href={service.buttonHref} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="w-full block mt-6"
                         >
-                          {service.buttonText}
-                        </Button>
-                      </Link>
+                          <Button
+                            variant="outline"
+                            className="w-full uppercase font-bold text-[12px] tracking-wider py-5 border-border hover:border-[#C0F0FB]/40 hover:bg-[#C0F0FB] hover:text-black transition-all duration-300"
+                          >
+                            {service.buttonText}
+                          </Button>
+                        </a>
+                      ) : (
+                        <Link href={service.buttonHref} className="w-full block mt-6">
+                          <Button
+                            variant="outline"
+                            className="w-full uppercase font-bold text-[12px] tracking-wider py-5 border-border hover:border-[#C0F0FB]/40 hover:bg-[#C0F0FB] hover:text-black transition-all duration-300"
+                          >
+                            {service.buttonText}
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>
