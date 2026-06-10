@@ -69,19 +69,19 @@
   --card-foreground: #FFFFFF;
   --popover: #0C0C0C;
   --popover-foreground: #FFFFFF;
-  --primary: #355CFF;
-  --primary-foreground: #FFFFFF;
+  --primary: #FFFFFF;
+  --primary-foreground: #020202;
   --secondary: #161616;
   --secondary-foreground: #FFFFFF;
   --muted: #161616;
   --muted-foreground: #8E8E93;
-  --accent: #355CFF;
-  --accent-foreground: #FFFFFF;
+  --accent: #FFFFFF;
+  --accent-foreground: #020202;
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
   --border: #161616;
   --input: #0C0C0C;
-  --ring: #355CFF;
+  --ring: #FFFFFF;
 }
 
 /* ═══════════════════════════════════════════════════ */
@@ -503,13 +503,13 @@ section:not(:first-of-type) {
 }
 
 .blog-prose li::marker {
-  color: #355CFF;
+  color: var(--foreground);
 }
 
 .blog-prose blockquote {
   margin: 2.5rem 0;
   padding-left: 1.5rem;
-  border-left: 3px solid #355CFF;
+  border-left: 3px solid var(--foreground);
   font-style: italic;
   font-size: 20px;
   color: #9CA3AF;
@@ -523,14 +523,14 @@ section:not(:first-of-type) {
 }
 
 .blog-prose a {
-  color: #355CFF;
+  color: var(--foreground);
   text-decoration: none;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   transition: border-color 0.2s ease;
 }
 
 .blog-prose a:hover {
-  border-bottom-color: #355CFF;
+  border-bottom-color: var(--foreground);
 }
 
 /* Smart layout overrides to bridge hardcoded class tags in old static markup */
@@ -557,6 +557,50 @@ section:not(:first-of-type) {
 .posts-page header h3 span.text-\[\#355CFF\],
 .posts-page header h3 span[class*="text-"] {
   color: var(--foreground) !important;
+}
+
+/* Remove all hardcoded blue (#355CFF) colors and map them to white/grey/black on blog pages */
+.posts-page [class*="text-[#355CFF]"],
+.posts-page [class*="text-[#355cff]"],
+.posts-page [class*="text-primary"],
+.posts-page selection\:text-\[\#355CFF\],
+.posts-page .text-primary {
+  color: var(--foreground) !important;
+}
+
+.posts-page [class*="bg-[#355CFF]"],
+.posts-page [class*="bg-[#355cff]"],
+.posts-page [class*="bg-primary"],
+.posts-page selection\:bg-\[\#355CFF\] {
+  background-color: var(--secondary) !important; /* Matte dark grey background for pills/badges */
+}
+
+/* Specific badge text/background should be monochrome */
+.posts-page [class*="bg-[#355CFF]/5"],
+.posts-page [class*="bg-[#355cff]/5"],
+.posts-page [class*="bg-primary/5"] {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: var(--foreground) !important;
+}
+
+.posts-page [class*="border-[#355CFF]"],
+.posts-page [class*="border-[#355cff]"],
+.posts-page [class*="border-primary"] {
+  border-color: var(--border) !important;
+}
+
+/* Hover effects */
+.posts-page [class*="hover:border-[#355CFF]"]:hover,
+.posts-page [class*="group-hover:text-[#355CFF]"],
+.posts-page [class*="group-hover:bg-[#355CFF]"],
+.posts-page [class*="group-hover:border-[#355CFF]"] {
+  border-color: var(--foreground) !important;
+  color: var(--foreground) !important;
+}
+
+/* Reset group hover action backgrounds to secondary dark grey instead of bright blue */
+.posts-page [class*="group-hover:bg-[#355CFF]"] {
+  background-color: var(--secondary) !important;
 }
 
 /* Smooth scroll behavior for anchor links */
