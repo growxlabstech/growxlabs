@@ -195,7 +195,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
         {/* Page Header */}
         <header className="pb-10 mb-10 text-center">
           <Reveal y={20}>
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-primary mb-4 block font-mono">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-4 block font-mono">
               Editorial Insights
             </span>
             <h1 className="font-serif font-black text-4xl md:text-5xl lg:text-6xl text-foreground tracking-tight leading-tight mb-4 uppercase">
@@ -214,7 +214,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
         <section className="mt-32 border-t border-border/20 pt-16">
           <Reveal y={20}>
             <div className="bg-[#111111]/20 rounded-3xl p-8 md:p-16 border border-border/10 text-center space-y-6 max-w-5xl mx-auto backdrop-blur-sm">
-              <span className="text-[11px] font-mono tracking-[0.2em] text-primary uppercase font-bold">
+              <span className="text-[11px] font-mono tracking-[0.2em] text-neutral-400 uppercase font-bold">
                 Let's construct your system
               </span>
               <h3 className="font-outfit font-black text-3xl md:text-4xl lg:text-5xl tracking-tight leading-tight text-foreground uppercase">
@@ -227,7 +227,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
               </p>
               <div className="pt-4">
                 <Link href="/contact">
-                  <Button className="bg-primary text-primary-foreground hover:opacity-90 rounded-md px-8 h-12 text-[15px] font-semibold transition-all inline-flex items-center gap-2 hover:gap-3 cursor-pointer">
+                  <Button className="bg-white text-black hover:bg-neutral-200 rounded-md px-8 h-12 text-[15px] font-semibold transition-all inline-flex items-center gap-2 hover:gap-3 cursor-pointer">
                     Work With GrowXLabsTech <ArrowRight className="w-4.5 h-4.5" />
                   </Button>
                 </Link>

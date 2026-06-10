@@ -39,7 +39,7 @@ export function Navbar() {
         : "bg-[#111111]/80 border-b border-transparent");
 
   const logoColor1 = isLightThemePage ? "text-[#1A1A1A]" : "text-white";
-  const logoColor2 = "text-primary";
+  const logoColor2 = isBlog ? "text-white" : "text-primary";
 
   const buttonOverrideClass = isLightThemePage
     ? "border-[#E5E2DC] text-[#1A1A1A] hover:bg-neutral-100"

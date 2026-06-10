@@ -16,19 +16,19 @@ export function Footer() {
 
   // Design tokens based on page context (Marketing / Blog)
   const footerBg = isBlog 
-    ? "bg-[#FDFAF7] border-[#E5E2DC]" 
+    ? "bg-transparent border-neutral-900" 
     : "bg-background border-border";
 
-  const logoColor1 = isBlog ? "text-[#111111]" : "text-white";
-  const logoColor2 = isBlog ? "text-[#355CFF]" : "text-[#C0F0FB]";
+  const logoColor1 = "text-white";
+  const logoColor2 = isBlog ? "text-white" : "text-[#C0F0FB]";
 
-  const textColor = isBlog ? "text-muted-foreground" : "text-[#8C8D91]";
-  const headingColor = isBlog ? "text-[#111111]" : "text-white";
-  const accentColor = isBlog ? "text-[#355CFF]" : "text-[#C0F0FB]";
-  const linkHoverColor = isBlog ? "hover:text-[#111111]" : "hover:text-white";
+  const textColor = isBlog ? "text-neutral-300" : "text-[#8C8D91]";
+  const headingColor = "text-white";
+  const accentColor = isBlog ? "text-neutral-300" : "text-[#C0F0FB]";
+  const linkHoverColor = "hover:text-white";
 
   const socialLinkClass = isBlog 
-    ? "text-muted-foreground hover:text-[#355CFF]" 
+    ? "text-neutral-400 hover:text-white" 
     : "text-[#8C8D91] hover:text-[#C0F0FB]";
 
   return (
@@ -116,7 +116,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className={`border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 ${isBlog ? "border-[#E5E2DC]" : "border-[#2B2D31]"}`}>
+        <div className={`border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 ${isBlog ? "border-neutral-900" : "border-[#2B2D31]"}`}>
           <p className={`text-[13px] ${textColor}`}>
             Copyright 2026 GrowXLabsTech. All rights reserved.
           </p>

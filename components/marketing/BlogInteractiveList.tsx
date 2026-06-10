@@ -143,7 +143,7 @@ export function BlogInteractiveList({ posts, featuredPost }: BlogInteractiveList
               onClick={() => setActiveCategory(cat)}
               className={`text-xs font-mono tracking-widest uppercase pb-2 border-b transition-all duration-300 cursor-pointer ${
                 activeCategory === cat
-                  ? "border-primary text-primary font-bold"
+                  ? "border-white text-white font-bold"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -158,7 +158,7 @@ export function BlogInteractiveList({ posts, featuredPost }: BlogInteractiveList
             value={realSearch}
             onChange={handleSearchChange}
             placeholder="Search insights..."
-            className="w-full bg-transparent border-b border-white/10 py-1.5 px-0 pl-7 text-xs focus:outline-none focus:border-primary text-foreground placeholder-muted-foreground transition-all font-mono"
+            className="w-full bg-transparent border-b border-white/10 py-1.5 px-0 pl-7 text-xs focus:outline-none focus:border-white text-foreground placeholder-muted-foreground transition-all font-mono"
           />
           <Search className="absolute left-0 top-1.5 w-4.5 h-4.5 text-muted-foreground" />
         </div>
@@ -168,110 +168,194 @@ export function BlogInteractiveList({ posts, featuredPost }: BlogInteractiveList
       {displayFeatured ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-start">
           
-          {/* 1. LEFT COLUMN (col-span-3): Stacked Stories */}
-          <div className="lg:col-span-3 space-y-12 order-2 lg:order-1">
-            {leftColumnPosts.map((post) => (
-              <div key={post.slug} className="group block space-y-3">
-                {/* Clean Widescreen Thumbnail */}
-                <Link href={`/blog/${post.slug}`}>
-                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-md bg-[#0C0C0C] border border-white/5 flex items-center justify-center">
-                    <Image
-                      src={getPostImage(post.slug)}
-                      alt={post.title}
-                      fill
-                      className="object-contain p-1 transition-transform duration-500 group-hover:scale-[1.03]"
-                      sizes="(max-w-768px) 100vw, 300px"
-                    />
-                  </div>
-                </Link>
-
-                {/* Metadata */}
-                <div className="text-[9px] font-mono tracking-[0.15em] text-muted-foreground uppercase">
-                  {post.date} IN <span className="text-primary font-semibold">{getCategoryGroup(post.category)}</span>
-                </div>
-
-                {/* Title */}
-                <Link href={`/blog/${post.slug}`} className="block">
-                  <h3 className="font-serif font-black text-xl text-foreground leading-snug tracking-tight group-hover:text-primary transition-colors">
-                    {renderSerifTitle(post.title, post.slug)}
-                  </h3>
-                </Link>
-
-                {/* Author row */}
-                <div className="flex items-center gap-2 mt-2">
-                  <div className="w-5 h-5 rounded-full overflow-hidden shrink-0 border border-white/10 bg-[#161616]">
-                    <img
-                      src="/images/avatars/growxlabs.png"
-                      alt="GXL Editor"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0a0a0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
-                      }}
-                    />
-                  </div>
-                  <span className="font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
-                    BY GROWXLABS TEAM
-                  </span>
-                </div>
-              </div>
-            ))}
+          {/* LEFT & CENTER COMBINED (col-span-9) */}
+          <div className="lg:col-span-9 space-y-16 order-2 lg:order-1">
             
-            {leftColumnPosts.length === 0 && (
-              <p className="text-xs font-mono text-muted-foreground text-center py-6">No matching insights in index feed.</p>
-            )}
-          </div>
+            {/* Top row: Stories */}
+            <div className="grid grid-cols-1 md:grid-cols-9 gap-10 items-start">
+              
+              {/* 1. LEFT COLUMN (col-span-3 inside the 9-col container): Stacked Stories */}
+              <div className="md:col-span-3 space-y-12">
+                {leftColumnPosts.map((post) => (
+                  <div key={post.slug} className="group block space-y-3">
+                    {/* Clean Widescreen Thumbnail */}
+                    <Link href={`/blog/${post.slug}`} className="block">
+                      <div className="w-full overflow-hidden rounded-md border border-white/5 flex items-center justify-center">
+                        <img
+                          src={getPostImage(post.slug)}
+                          alt={post.title}
+                          className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
+                      </div>
+                    </Link>
 
-          {/* 2. MIDDLE COLUMN (col-span-6): Huge Primary Featured Post */}
-          <div className="lg:col-span-6 space-y-5 order-1 lg:order-2 border-b border-white/10 lg:border-b-0 pb-10 lg:pb-0">
-            <div className="group block space-y-4">
-              {/* Huge featured cover image */}
-              <Link href={`/blog/${displayFeatured.slug}`}>
-                <div className="relative w-full aspect-[16/9] overflow-hidden rounded-md bg-[#0C0C0C] border border-white/5 flex items-center justify-center">
-                  <Image
-                    src={getPostImage(displayFeatured.slug)}
-                    alt={displayFeatured.title}
-                    fill
-                    className="object-contain p-2 transition-transform duration-700 group-hover:scale-[1.02]"
-                    sizes="(max-w-1024px) 100vw, 800px"
-                    priority
-                  />
-                </div>
-              </Link>
+                    {/* Metadata */}
+                    <div className="text-[9px] font-mono tracking-[0.15em] text-white font-semibold uppercase">
+                      {post.date} IN <span>{getCategoryGroup(post.category)}</span>
+                    </div>
 
-              {/* Metadata */}
-              <div className="text-[10px] font-mono tracking-[0.2em] text-muted-foreground uppercase">
-                {displayFeatured.date} IN <span className="text-primary font-bold">{getCategoryGroup(displayFeatured.category)}</span>
+                    {/* Title */}
+                    <Link href={`/blog/${post.slug}`} className="block">
+                      <h3 className="font-serif font-black text-xl text-foreground leading-snug tracking-tight group-hover:text-zinc-300 transition-colors">
+                        {renderSerifTitle(post.title, post.slug)}
+                      </h3>
+                    </Link>
+
+                    {/* Author row */}
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="w-5 h-5 rounded-full overflow-hidden shrink-0 border border-white/10 bg-[#161616]">
+                        <img
+                          src="/images/avatars/growxlabs.png"
+                          alt="GXL Editor"
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0a0a0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
+                          }}
+                        />
+                      </div>
+                      <span className="font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
+                        BY GROWXLABS TEAM
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                
+                {leftColumnPosts.length === 0 && (
+                  <p className="text-xs font-mono text-muted-foreground text-center py-6">No matching insights in index feed.</p>
+                )}
               </div>
 
-              {/* Large title */}
-              <Link href={`/blog/${displayFeatured.slug}`} className="block">
-                <h2 className="font-serif font-black text-3xl md:text-4xl text-foreground leading-[1.15] tracking-tight group-hover:text-primary transition-colors">
-                  {renderSerifTitle(displayFeatured.title, displayFeatured.slug)}
-                </h2>
-              </Link>
+              {/* 2. MIDDLE COLUMN (col-span-6 inside the 9-col container): Huge Primary Featured Post */}
+              <div className="md:col-span-6 space-y-5 border-b border-white/10 md:border-b-0 pb-10 md:pb-0">
+                <div className="group block space-y-4">
+                  {/* Huge featured cover image */}
+                  <Link href={`/blog/${displayFeatured.slug}`} className="block">
+                    <div className="w-full overflow-hidden rounded-md border border-white/5 flex items-center justify-center">
+                      <img
+                        src={getPostImage(displayFeatured.slug)}
+                        alt={displayFeatured.title}
+                        className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                      />
+                    </div>
+                  </Link>
 
-              {/* Excerpt */}
-              <p className="text-muted-foreground text-[14px] leading-relaxed max-w-3xl">
-                {displayFeatured.excerpt}
-              </p>
+                  {/* Metadata */}
+                  <div className="text-[10px] font-mono tracking-[0.2em] text-white font-bold uppercase">
+                    {displayFeatured.date} IN <span>{getCategoryGroup(displayFeatured.category)}</span>
+                  </div>
 
-              {/* Author row */}
-              <div className="flex items-center gap-2 pt-2">
-                <div className="w-5 h-5 rounded-full overflow-hidden shrink-0 border border-white/10 bg-[#161616]">
-                  <img
-                    src="/images/avatars/growxlabs.png"
-                    alt="GXL Editor"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0a0a0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
-                    }}
-                  />
+                  {/* Large title */}
+                  <Link href={`/blog/${displayFeatured.slug}`} className="block">
+                    <h2 className="font-serif font-black text-3xl md:text-4xl text-foreground leading-[1.15] tracking-tight group-hover:text-zinc-300 transition-colors">
+                      {renderSerifTitle(displayFeatured.title, displayFeatured.slug)}
+                    </h2>
+                  </Link>
+
+                  {/* Excerpt */}
+                  <p className="text-muted-foreground text-[14px] leading-relaxed max-w-3xl">
+                    {displayFeatured.excerpt}
+                  </p>
+
+                  {/* Author row */}
+                  <div className="flex items-center gap-2 pt-2">
+                    <div className="w-5 h-5 rounded-full overflow-hidden shrink-0 border border-white/10 bg-[#161616]">
+                      <img
+                        src="/images/avatars/growxlabs.png"
+                        alt="GXL Editor"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0a0a0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
+                        }}
+                      />
+                    </div>
+                    <span className="font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
+                      BY GROWXLABS TEAM
+                    </span>
+                  </div>
                 </div>
-                <span className="font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
-                  BY GROWXLABS TEAM
+              </div>
+
+            </div>
+
+            {/* Bottom row: "BUILT BY GROWXLABS" Section */}
+            <div className="border-t border-white/10 pt-12 space-y-8">
+              <div>
+                <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-400 uppercase">
+                  Built by GrowXLabs
                 </span>
+                <h3 className="font-serif font-black text-2xl text-foreground mt-2 uppercase tracking-tight">
+                  Try out our AI-powered products.
+                </h3>
+              </div>
+
+              {/* 3-column Projects grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  {
+                    name: "ResumeForgeAI",
+                    desc: "AI powered career platform for Indian professionals. Resume builder, ATS optimizer, and job matching.",
+                    image: "/portfolio/resumeforgeai.png",
+                    link: "https://resumeforgeai.in",
+                    bannerColor: "border-rose-900/40 text-rose-300",
+                    label: "Career Platform"
+                  },
+                  {
+                    name: "UniversalAI",
+                    desc: "Multi model AI chat platform supporting Claude, GPT-4, and Gemini in one unified interface.",
+                    image: "/portfolio/universalai.png",
+                    link: "https://universalai.co.in",
+                    bannerColor: "border-indigo-900/40 text-indigo-300",
+                    label: "AI Platform"
+                  },
+                  {
+                    name: "RecruitAI",
+                    desc: "AI recruitment automation with screening, scoring, and n8n workflow integration.",
+                    image: "/portfolio/recruitai.png",
+                    link: "https://recruitaitech.in",
+                    bannerColor: "border-emerald-900/40 text-emerald-300",
+                    label: "Automation Portal"
+                  }
+                ].map((proj) => (
+                  <div key={proj.name} className="bg-transparent border border-white/10 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-white/20 transition-all duration-300 h-full group/card">
+                    {/* Header Banner */}
+                    <div className={`py-3 px-4 flex items-center justify-center font-mono font-bold text-[10px] uppercase tracking-widest border-b bg-transparent ${proj.bannerColor}`}>
+                      {proj.label}
+                    </div>
+
+                    {/* Image */}
+                    <div className="w-full overflow-hidden border-b border-white/10 flex items-center justify-center p-3 bg-transparent">
+                      <img
+                        src={proj.image}
+                        alt={proj.name}
+                        className="w-full h-auto object-contain rounded-lg transition-transform duration-500 group-hover/card:scale-[1.02]"
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
+                      <div className="space-y-2">
+                        <h4 className="font-serif font-black text-lg text-white">
+                          {proj.name}
+                        </h4>
+                        <p className="text-xs text-neutral-400 leading-relaxed">
+                          {proj.desc}
+                        </p>
+                      </div>
+
+                      <a
+                        href={proj.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block w-full text-center bg-white text-black text-xs font-bold py-2.5 px-4 rounded-full hover:bg-neutral-200 transition-colors"
+                      >
+                        Try it
+                      </a>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
+
           </div>
 
           {/* 3. RIGHT COLUMN (col-span-3): RECENT ESSAYS Feed */}
@@ -288,14 +372,12 @@ export function BlogInteractiveList({ posts, featuredPost }: BlogInteractiveList
                 <div key={post.slug} className="group flex gap-4 pb-6 border-b border-white/5 last:border-0 last:pb-0 items-start">
                   
                   {/* Small Square Thumbnail */}
-                  <Link href={`/blog/${post.slug}`} className="shrink-0">
-                    <div className="relative w-16 h-16 rounded-md overflow-hidden bg-[#0C0C0C] border border-white/5 flex items-center justify-center">
-                      <Image
+                  <Link href={`/blog/${post.slug}`} className="shrink-0 block">
+                    <div className="w-16 h-16 overflow-hidden rounded-md border border-white/5 flex items-center justify-center">
+                      <img
                         src={getPostImage(post.slug)}
                         alt={post.title}
-                        fill
-                        className="object-contain p-1 transition-transform duration-500 group-hover:scale-[1.05]"
-                        sizes="80px"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
                       />
                     </div>
                   </Link>
@@ -303,7 +385,7 @@ export function BlogInteractiveList({ posts, featuredPost }: BlogInteractiveList
                   {/* Title & Author Info */}
                   <div className="flex-1 space-y-1">
                     <Link href={`/blog/${post.slug}`} className="block">
-                      <h4 className="font-serif font-black text-sm text-foreground leading-snug group-hover:text-primary transition-colors">
+                      <h4 className="font-serif font-black text-sm text-foreground leading-snug group-hover:text-zinc-300 transition-colors">
                         {renderSerifTitle(post.title, post.slug)}
                       </h4>
                     </Link>
@@ -331,7 +413,7 @@ export function BlogInteractiveList({ posts, featuredPost }: BlogInteractiveList
               setRealSearch("");
               setSearchQuery(" ");
             }}
-            className="mt-4 text-xs font-mono font-bold uppercase tracking-wider text-primary hover:underline cursor-pointer"
+            className="mt-4 text-xs font-mono font-bold uppercase tracking-wider text-white hover:underline cursor-pointer"
           >
             Reset search filters
           </button>

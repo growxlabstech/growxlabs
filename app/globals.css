@@ -560,47 +560,64 @@ section:not(:first-of-type) {
 }
 
 /* Remove all hardcoded blue (#355CFF) colors and map them to white/grey/black on blog pages */
-.posts-page [class*="text-[#355CFF]"],
-.posts-page [class*="text-[#355cff]"],
-.posts-page [class*="text-primary"],
-.posts-page selection\:text-\[\#355CFF\],
+.posts-page .text-\[\#355CFF\],
+.posts-page .text-\[\#355cff\],
+.posts-page .text-\[\#355CFF\]\/10,
+.posts-page .text-\[\#355cff\]\/10,
 .posts-page .text-primary {
   color: var(--foreground) !important;
 }
 
-.posts-page [class*="bg-[#355CFF]"],
-.posts-page [class*="bg-[#355cff]"],
-.posts-page [class*="bg-primary"],
-.posts-page selection\:bg-\[\#355CFF\] {
-  background-color: var(--secondary) !important; /* Matte dark grey background for pills/badges */
+/* Dropcaps / First letter overrides */
+.posts-page .first-letter\:text-\[\#355CFF\]::first-letter,
+.posts-page .first-letter\:text-\[\#355cff\]::first-letter {
+  color: var(--foreground) !important;
+}
+
+.posts-page .bg-\[\#355CFF\],
+.posts-page .bg-\[\#355cff\],
+.posts-page .bg-primary {
+  background-color: var(--secondary) !important;
 }
 
 /* Specific badge text/background should be monochrome */
-.posts-page [class*="bg-[#355CFF]/5"],
-.posts-page [class*="bg-[#355cff]/5"],
-.posts-page [class*="bg-primary/5"] {
+.posts-page .bg-\[\#355CFF\]\/5,
+.posts-page .bg-\[\#355cff\]\/5,
+.posts-page .bg-primary\/5 {
   background-color: rgba(255, 255, 255, 0.08) !important;
   color: var(--foreground) !important;
 }
 
-.posts-page [class*="border-[#355CFF]"],
-.posts-page [class*="border-[#355cff]"],
-.posts-page [class*="border-primary"] {
+.posts-page .border-\[\#355CFF\],
+.posts-page .border-\[\#355cff\],
+.posts-page .border-primary {
   border-color: var(--border) !important;
 }
 
 /* Hover effects */
-.posts-page [class*="hover:border-[#355CFF]"]:hover,
-.posts-page [class*="group-hover:text-[#355CFF]"],
-.posts-page [class*="group-hover:bg-[#355CFF]"],
-.posts-page [class*="group-hover:border-[#355CFF]"] {
+.posts-page .hover\:border-\[\#355CFF\]:hover,
+.posts-page .group-hover\:text-\[\#355CFF\],
+.posts-page .group-hover\:bg-\[\#355CFF\],
+.posts-page .group-hover\:border-\[\#355CFF\] {
   border-color: var(--foreground) !important;
   color: var(--foreground) !important;
 }
 
 /* Reset group hover action backgrounds to secondary dark grey instead of bright blue */
-.posts-page [class*="group-hover:bg-[#355CFF]"] {
+.posts-page .group-hover\:bg-\[\#355CFF\] {
   background-color: var(--secondary) !important;
+}
+
+/* Blockquote border overrides to be high-contrast light grey/white */
+.posts-page blockquote {
+  border-left-color: var(--foreground) !important;
+}
+
+/* Premium selection color override for blog pages - pure grey/white selection */
+.posts-page *::selection,
+.posts-page ::selection {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
 }
 
 /* Smooth scroll behavior for anchor links */
