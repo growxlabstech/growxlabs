@@ -14,6 +14,7 @@ import { ValuePropositions } from "@/components/marketing/ValuePropositions";
 import { AccordionFAQ } from "@/components/marketing/AccordionFAQ";
 import { AnimatedSection, AnimatedStagger, AnimatedItem } from "@/components/marketing/AnimatedSection";
 import { HotlineConsole } from "@/components/marketing/HotlineConsole";
+import { PipelineSection } from "@/components/marketing/PipelineSection";
 import { locales } from "@/navigation";
 import Script from "next/script";
 import { ArrowUpRight } from "lucide-react";
@@ -233,6 +234,8 @@ export default function Home() {
           </AnimatedStagger>
         </div>
       </section>
+
+      <PipelineSection />
 
       <section className="w-full py-20 px-6 md:px-10 xl:px-16 2xl:px-24 bg-card border-y border-border overflow-hidden">
         <AnimatedSection className="max-w-7xl mx-auto text-center">

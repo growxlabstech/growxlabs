@@ -27,7 +27,7 @@ export function HotlineConsole() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const logsEndRef = useRef<HTMLDivElement>(null);
+  const terminalBodyRef = useRef<HTMLDivElement>(null);
 
   // Initialize terminal logs on mount
   useEffect(() => {
@@ -60,8 +60,8 @@ export function HotlineConsole() {
 
   // Auto scroll to bottom
   useEffect(() => {
-    if (logsEndRef.current) {
-      logsEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (terminalBodyRef.current) {
+      terminalBodyRef.current.scrollTop = terminalBodyRef.current.scrollHeight;
     }
   }, [logs]);
 
@@ -273,7 +273,10 @@ export function HotlineConsole() {
             </div>
 
             {/* Terminal Screen Body */}
-            <div className="p-4 sm:p-6 h-[250px] overflow-y-auto text-left leading-relaxed">
+            <div 
+              ref={terminalBodyRef}
+              className="p-4 sm:p-6 h-[250px] overflow-y-auto text-left leading-relaxed"
+            >
               {activeTab === "logs" && (
                 <div className="space-y-1">
                   {logs.map((log, index) => {
@@ -321,7 +324,6 @@ export function HotlineConsole() {
                       spellCheck="false"
                     />
                   </form>
-                  <div ref={logsEndRef} />
                 </div>
               )}
 
