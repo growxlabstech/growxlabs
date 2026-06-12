@@ -50,7 +50,6 @@ export function Navbar() {
     { name: t("services"), href: "/services" },
     { name: t("portfolio"), href: "/portfolio" },
     { name: t("products"), href: "/products" },
-    { name: t("courses"), href: "/courses" },
     { name: t("blog"), href: "/blog" },
     { name: t("faq"), href: "/faq" },
     { name: t("contact"), href: "/contact" },
