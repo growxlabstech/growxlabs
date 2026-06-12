@@ -48,9 +48,10 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
                      normalizedPath.includes("/signup");
   
   const isCareersPage = normalizedPath.includes("/careers");
-
-  // Hide marketing UI for dashboard and auth components to prevent visual conflicts
-  if (isDashboard || isDemo || isAuthPage) {
+  const isCoursesPage = normalizedPath.includes("/courses");
+  
+  // Hide marketing UI for dashboard, auth, careers, and courses components to prevent visual conflicts
+  if (isDashboard || isDemo || isAuthPage || isCareersPage || isCoursesPage) {
     return <>{children}</>;
   }
 
@@ -60,7 +61,7 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
       <main className="flex-grow">
         {children}
       </main>
-      {!isCareersPage && <Footer />}
+      <Footer />
     </>
   );
 }
