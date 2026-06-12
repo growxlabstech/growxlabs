@@ -9,6 +9,7 @@ export function Footer() {
 
   const links = {
     legal: [
+      { name: "Careers", href: "/careers" },
       { name: "Privacy Policy", href: "/privacy" },
       { name: "Terms & Conditions", href: "/terms" },
     ],

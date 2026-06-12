@@ -207,7 +207,7 @@ export function Navbar() {
           {/* Bottom Section */}
           <div className="border-t border-neutral-900 flex flex-col mt-auto pt-4">
             <Link
-              href="/contact"
+              href="/careers"
               className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors text-left block w-full px-6 py-2.5 border-b border-neutral-800 hover:bg-white/[0.02]"
               onClick={() => setIsMobileMenuOpen(false)}
             >
