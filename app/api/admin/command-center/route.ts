@@ -303,7 +303,7 @@ export async function POST(req: Request) {
           if (process.env.GEMINI_API_KEY) {
             try {
               const model = genAI.getGenerativeModel({
-                model: "gemini-1.5-flash-latest",
+                model: "gemini-1.5-flash",
                 tools: [{ functionDeclarations: TOOLS_DEFINITIONS }] as any
               });
 
@@ -428,7 +428,8 @@ export async function POST(req: Request) {
                 model: "openai/gpt-4o-mini",
                 messages: openRouterMessages,
                 tools: OPENAI_TOOLS,
-                tool_choice: "auto"
+                tool_choice: "auto",
+                max_tokens: 1000
               });
 
               const msg = completion.choices[0].message;

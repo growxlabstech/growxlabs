@@ -640,6 +640,14 @@ export default function InteractiveWorkspace() {
                 messages: c.messages.map(m => m.id === gxlMsgId ? { ...m, chart: data } : m)
               };
             }));
+          } else if (eventName === "error") {
+            setConversations(prev => prev.map(c => {
+              if (c.id !== targetConvoId) return c;
+              return {
+                ...c,
+                messages: c.messages.map(m => m.id === gxlMsgId ? { ...m, text: `### ⚠️ Orchestration Interrupted\n${data.message || "An internal error occurred."}` } : m)
+              };
+            }));
           }
         }
       }
