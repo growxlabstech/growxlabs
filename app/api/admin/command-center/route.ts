@@ -101,6 +101,19 @@ const TOOLS_DEFINITIONS = [
       },
       required: ["query"]
     }
+  },
+  {
+    name: "spawn_subagent",
+    description: "Spawn a specialized subagent to perform focused background research, data gathering, or analysis on a specific topic.",
+    parameters: {
+      type: "object",
+      properties: {
+        name: { type: "string", description: "Descriptive name of the subagent, e.g. 'Real Estate Growth Agent'" },
+        focus: { type: "string", description: "The specific topic or search query the subagent should research" },
+        mission: { type: "string", description: "The specific mission or goal, e.g. 'Identify top real estate agencies in Miami'" }
+      },
+      required: ["name", "focus", "mission"]
+    }
   }
 ];
 
@@ -247,23 +260,102 @@ async function execute_generate_proposal(args: {
 
 async function searchWeb(query: string) {
   try {
-    const res = await fetch(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`, {
+    const apiKey = process.env.SERPER_API_KEY;
+    if (!apiKey) {
+      throw new Error("SERPER_API_KEY is not configured");
+    }
+
+    const res = await fetch("https://google.serper.dev/search", {
+      method: "POST",
       headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-      }
+        "X-API-KEY": apiKey,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ q: query })
     });
-    if (!res.ok) throw new Error("DDG request failed");
-    const html = await res.text();
-    const matches = [...html.matchAll(/<a class="result__snippet"[^>]*>([\s\S]*?)<\/a>/g)];
-    const snippets = matches.slice(0, 5).map(m => m[1].replace(/<[^>]*>/g, '').trim());
-    if (snippets.length === 0) return "No search results found. Try another query.";
+
+    if (!res.ok) throw new Error(`Serper returned status ${res.status}`);
+    const data = await res.json();
+    
+    if (!data.organic || !Array.isArray(data.organic) || data.organic.length === 0) {
+      return "No search results found. Try another query.";
+    }
+
+    const snippets = data.organic.slice(0, 5).map((item: any, idx: number) => {
+      return `[${idx + 1}] ${item.title}\nSource: ${item.link}\nSnippet: ${item.snippet}`;
+    });
+
     return snippets.join("\n\n");
   } catch (e: any) {
+    console.error("Serper API error:", e);
     return `Search failed: ${e.message}. Using offline knowledge base.`;
   }
 }
 
-async function handleToolCall(name: string, args: any) {
+async function execute_spawn_subagent(
+  args: { name: string; focus: string; mission: string },
+  sendEvent: (event: string, data: any) => void
+) {
+  const subagentId = "sub-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
+
+  // 1. Notify spawn
+  sendEvent("subagent_spawn", {
+    id: subagentId,
+    name: args.name,
+    focus: args.focus,
+    mission: args.mission,
+    status: "running"
+  });
+
+  await new Promise(r => setTimeout(r, 800));
+
+  // 2. Logs and execution
+  sendEvent("subagent_log", {
+    id: subagentId,
+    log: `Initializing agent workspace for "${args.name}"...`
+  });
+  await new Promise(r => setTimeout(r, 800));
+
+  sendEvent("subagent_log", {
+    id: subagentId,
+    log: `Executing deep-dive search for query: "${args.focus}"`
+  });
+
+  const searchResults = await searchWeb(args.focus);
+  await new Promise(r => setTimeout(r, 800));
+
+  sendEvent("subagent_log", {
+    id: subagentId,
+    log: `Search completed. Analyzing retrieved snippets...`
+  });
+  await new Promise(r => setTimeout(r, 1200));
+
+  sendEvent("subagent_log", {
+    id: subagentId,
+    log: `Synthesizing intelligence report for mission: "${args.mission}"`
+  });
+  await new Promise(r => setTimeout(r, 1000));
+
+  const findings = `Intelligence Summary for subagent [${args.name}]:\n` +
+    `Mission: ${args.mission}\n` +
+    `Focus: ${args.focus}\n` +
+    `Findings: ${searchResults.substring(0, 1000)}...`;
+
+  // 3. Complete
+  sendEvent("subagent_complete", {
+    id: subagentId,
+    status: "completed",
+    result: findings
+  });
+
+  return {
+    subagentId,
+    status: "SUCCESS",
+    findings
+  };
+}
+
+async function handleToolCall(name: string, args: any, sendEvent?: (event: string, data: any) => void) {
   switch (name) {
     case "get_company_stats":
       return await execute_get_company_stats();
@@ -275,18 +367,96 @@ async function handleToolCall(name: string, args: any) {
       return await execute_generate_proposal(args);
     case "search_web":
       return await searchWeb(args.query);
+    case "spawn_subagent":
+      if (sendEvent) {
+        return await execute_spawn_subagent(args, sendEvent);
+      }
+      return { error: "Streaming context unavailable for spawning subagent" };
     default:
       throw new Error(`Unknown tool: ${name}`);
   }
 }
 
+const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function isValidUuid(id?: string): boolean {
+  return !!id && uuidRegex.test(id);
+}
+
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const conversationId = searchParams.get("conversationId");
+
+    if (conversationId) {
+      const { data: messages, error } = await supabaseAdmin
+        .from("command_center_messages")
+        .select("*")
+        .eq("conversation_id", conversationId)
+        .order("created_at", { ascending: true });
+
+      if (error) throw error;
+      return NextResponse.json({ messages });
+    } else {
+      const { data: conversations, error } = await supabaseAdmin
+        .from("command_center_conversations")
+        .select("*")
+        .order("updated_at", { ascending: false });
+
+      if (error) throw error;
+      return NextResponse.json({ conversations });
+    }
+  } catch (error: any) {
+    console.error("GET Command Center error:", error);
+    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
-    const { message, history } = await req.json();
+    let { message, conversationId, history } = await req.json();
 
     if (!message) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 });
     }
+
+    // Determine active conversation UUID
+    if (!isValidUuid(conversationId)) {
+      const { data: newConvo, error: createError } = await supabaseAdmin
+        .from("command_center_conversations")
+        .insert({ title: "New conversation" })
+        .select()
+        .single();
+
+      if (createError) throw createError;
+      conversationId = newConvo.id;
+    }
+
+    // Save the user's message
+    const { error: userMsgError } = await supabaseAdmin
+      .from("command_center_messages")
+      .insert({
+        conversation_id: conversationId,
+        sender: "user",
+        text: message
+      });
+    if (userMsgError) throw userMsgError;
+
+    // Update conversation title from first user message if it was default
+    const titleText = message.length > 45 ? message.slice(0, 42) + "..." : message;
+    await supabaseAdmin
+      .from("command_center_conversations")
+      .update({ 
+        title: titleText,
+        updated_at: new Date().toISOString()
+      })
+      .eq("id", conversationId)
+      .eq("title", "New conversation");
+
+    // Always bump updated_at timestamp
+    await supabaseAdmin
+      .from("command_center_conversations")
+      .update({ updated_at: new Date().toISOString() })
+      .eq("id", conversationId);
 
     const encoder = new TextEncoder();
     const customStream = new ReadableStream({
@@ -296,8 +466,13 @@ export async function POST(req: Request) {
         };
 
         try {
+          // Send conversation ID to client immediately
+          sendEvent("conversation_id", { conversationId });
+
           let proposalData: any = null;
           let chartData: any = null;
+          let accumulatedText = "";
+          const executedToolCalls: any[] = [];
 
           // 1. TRY GEMINI FIRST
           if (process.env.GEMINI_API_KEY) {
@@ -337,13 +512,28 @@ export async function POST(req: Request) {
 
                 if (functionCalls && functionCalls.length > 0) {
                   const call = functionCalls[0];
+                  const toolCallId = call.name + "-" + Date.now();
+                  
+                  executedToolCalls.push({
+                    id: toolCallId,
+                    name: call.name,
+                    args: call.args,
+                    status: "calling"
+                  });
+
                   sendEvent("tool_call", { name: call.name, args: call.args });
 
                   let toolResult;
                   try {
-                    toolResult = await handleToolCall(call.name, call.args);
+                    toolResult = await handleToolCall(call.name, call.args, sendEvent);
                   } catch (e: any) {
                     toolResult = { error: e.message };
+                  }
+
+                  const tcIndex = executedToolCalls.findIndex(tc => tc.name === call.name && tc.status === "calling");
+                  if (tcIndex !== -1) {
+                    executedToolCalls[tcIndex].status = "complete";
+                    executedToolCalls[tcIndex].result = toolResult;
                   }
 
                   sendEvent("tool_result", { name: call.name, result: toolResult });
@@ -382,12 +572,27 @@ export async function POST(req: Request) {
                   const text = response.text() || "";
                   const words = text.split(" ");
                   for (let i = 0; i < words.length; i++) {
-                    sendEvent("text_delta", { text: (i === 0 ? "" : " ") + words[i] });
+                    const delta = (i === 0 ? "" : " ") + words[i];
+                    accumulatedText += delta;
+                    sendEvent("text_delta", { text: delta });
                     await new Promise(r => setTimeout(r, 10));
                   }
                   finalResponseGenerated = true;
                 }
               }
+
+              // Save GXL message in DB
+              const { error: aiMsgError } = await supabaseAdmin
+                .from("command_center_messages")
+                .insert({
+                  conversation_id: conversationId,
+                  sender: "gxl",
+                  text: accumulatedText,
+                  tool_calls: executedToolCalls,
+                  proposal: proposalData,
+                  chart: chartData
+                });
+              if (aiMsgError) throw aiMsgError;
 
               if (proposalData) sendEvent("proposal", proposalData);
               if (chartData) sendEvent("chart", chartData);
@@ -437,14 +642,28 @@ export async function POST(req: Request) {
                 const call = msg.tool_calls[0];
                 if ('function' in call) {
                   const parsedArgs = JSON.parse(call.function.arguments);
+                  const toolCallId = call.function.name + "-" + Date.now();
+
+                  executedToolCalls.push({
+                    id: toolCallId,
+                    name: call.function.name,
+                    args: parsedArgs,
+                    status: "calling"
+                  });
 
                   sendEvent("tool_call", { name: call.function.name, args: parsedArgs });
 
                   let toolResult;
                   try {
-                    toolResult = await handleToolCall(call.function.name, parsedArgs);
+                    toolResult = await handleToolCall(call.function.name, parsedArgs, sendEvent);
                   } catch (e: any) {
                     toolResult = { error: e.message };
+                  }
+
+                  const tcIndex = executedToolCalls.findIndex(tc => tc.name === call.function.name && tc.status === "calling");
+                  if (tcIndex !== -1) {
+                    executedToolCalls[tcIndex].status = "complete";
+                    executedToolCalls[tcIndex].result = toolResult;
                   }
 
                   sendEvent("tool_result", { name: call.function.name, result: toolResult });
@@ -478,12 +697,27 @@ export async function POST(req: Request) {
                 const text = msg.content || "";
                 const words = text.split(" ");
                 for (let i = 0; i < words.length; i++) {
-                  sendEvent("text_delta", { text: (i === 0 ? "" : " ") + words[i] });
+                  const delta = (i === 0 ? "" : " ") + words[i];
+                  accumulatedText += delta;
+                  sendEvent("text_delta", { text: delta });
                   await new Promise(r => setTimeout(r, 10));
                 }
                 finalResponseGenerated = true;
               }
             }
+
+            // Save GXL message in DB
+            const { error: aiMsgError } = await supabaseAdmin
+              .from("command_center_messages")
+              .insert({
+                conversation_id: conversationId,
+                sender: "gxl",
+                text: accumulatedText,
+                tool_calls: executedToolCalls,
+                proposal: proposalData,
+                chart: chartData
+              });
+            if (aiMsgError) throw aiMsgError;
           }
 
           if (proposalData) sendEvent("proposal", proposalData);

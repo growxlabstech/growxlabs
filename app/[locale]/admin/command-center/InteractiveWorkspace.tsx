@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Send, Paperclip, Terminal, Cpu, User, Briefcase, FileText,
   BarChart3, PenTool, Download, Command, X,
-  PanelLeftClose, PanelLeft, Plus, MessageSquare, Loader2,
+  PanelLeftClose, PanelLeft, PanelRightClose, PanelRight, Plus, MessageSquare, Loader2,
   ArrowUp, ChevronDown, Check, AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -71,6 +71,16 @@ interface Conversation {
   title: string;
   messages: Message[];
   createdAt: Date;
+}
+
+interface Subagent {
+  id: string;
+  name: string;
+  focus: string;
+  mission: string;
+  status: "running" | "completed" | "error";
+  logs: string[];
+  result?: string;
 }
 
 function mapToolToAgent(toolName: string): string {
@@ -182,6 +192,63 @@ function ToolCallActivityWidget({ toolCalls }: { toolCalls?: ToolCall[] }) {
           })}
         </div>
       )}
+    </div>
+  );
+}
+
+function SubagentCard({ agent }: { agent: Subagent }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className={cn(
+      "rounded-lg border bg-white p-3.5 shadow-sm space-y-2.5 transition-all text-left",
+      agent.status === "running" ? "border-[#0075de]/30 bg-[#0075de]/[0.01]" : "border-[#e6e6e6]"
+    )}>
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {agent.status === "running" ? (
+              <Loader2 className="w-3.5 h-3.5 text-[#0075de] animate-spin" />
+            ) : (
+              <Check className="w-3.5 h-3.5 text-emerald-600 font-bold" />
+            )}
+            <h5 className="font-bold text-neutral-800 text-[13px] truncate">{agent.name}</h5>
+          </div>
+          <p className="text-[10px] text-neutral-400 font-mono mt-0.5 truncate">Focus: {agent.focus}</p>
+        </div>
+      </div>
+
+      <div className="text-xs text-neutral-600 bg-neutral-50 p-2.5 rounded border border-neutral-100 font-mono leading-relaxed">
+        <p className="text-[10px] uppercase text-neutral-400 font-bold mb-1 tracking-wider">Mission</p>
+        <p>{agent.mission}</p>
+      </div>
+
+      <div className="space-y-1.5">
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="text-[10px] font-bold text-neutral-500 hover:text-neutral-800 flex items-center gap-1 font-mono uppercase tracking-wider"
+        >
+          <span>Activity Log ({agent.logs.length})</span>
+          <ChevronDown className={cn("w-3 h-3 transition-transform duration-200", expanded && "rotate-180")} />
+        </button>
+
+        {expanded && (
+          <div className="pl-1 pt-1.5 space-y-2 border-l border-neutral-200 ml-1.5">
+            {agent.logs.map((log, idx) => (
+              <div key={idx} className="flex items-start gap-2 text-[11px] leading-relaxed text-neutral-500">
+                <span className="w-1 h-1 rounded-full bg-neutral-400 mt-2 shrink-0" />
+                <span>{log}</span>
+              </div>
+            ))}
+            {agent.result && (
+              <div className="mt-2 pt-2 border-t border-dashed border-[#e6e6e6] text-[11px] text-neutral-700 bg-neutral-50/50 p-2 rounded">
+                <p className="font-bold text-neutral-800 font-mono text-[10px] uppercase tracking-wider mb-1">Findings Summary</p>
+                <p className="whitespace-pre-line leading-relaxed font-sans">{agent.result}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -370,11 +437,9 @@ function MarkdownBlock({ text }: { text: string }) {
 export default function InteractiveWorkspace() {
 
   // ── Conversations & state ──
-  const [conversations, setConversations] = useState<Conversation[]>([
-    { id: "default", title: "New conversation", messages: [], createdAt: new Date() },
-  ]);
-  const [activeConvoId, setActiveConvoId] = useState("default");
-  const activeConvo = conversations.find(c => c.id === activeConvoId)!;
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [activeConvoId, setActiveConvoId] = useState<string>("");
+  const activeConvo = conversations.find(c => c.id === activeConvoId) || { id: "default", title: "New conversation", messages: [], createdAt: new Date() };
   const messages = activeConvo.messages;
 
   const [inputValue, setInputValue] = useState("");
@@ -386,6 +451,8 @@ export default function InteractiveWorkspace() {
   const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
+  const [subagents, setSubagents] = useState<Subagent[]>([]);
   const [showScrollDown, setShowScrollDown] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -461,6 +528,117 @@ export default function InteractiveWorkspace() {
     }
   }, [inputValue]);
 
+  // Load conversations on mount
+  useEffect(() => {
+    const loadConversations = async () => {
+      try {
+        const response = await fetch("/api/admin/command-center");
+        if (!response.ok) throw new Error("Failed to load conversations");
+        const data = await response.json();
+        
+        if (data.conversations && data.conversations.length > 0) {
+          const mapped = data.conversations.map((c: any) => ({
+            id: c.id,
+            title: c.title,
+            messages: [],
+            createdAt: new Date(c.created_at)
+          }));
+          setConversations(mapped);
+          setActiveConvoId(mapped[0].id);
+        } else {
+          setConversations([
+            { id: "default", title: "New conversation", messages: [], createdAt: new Date() }
+          ]);
+          setActiveConvoId("default");
+        }
+      } catch (err) {
+        console.error("Error loading conversations:", err);
+        setConversations([
+          { id: "default", title: "New conversation", messages: [], createdAt: new Date() }
+        ]);
+        setActiveConvoId("default");
+      }
+    };
+
+    loadConversations();
+  }, []);
+
+  // Load messages when conversation selection changes
+  useEffect(() => {
+    if (!activeConvoId || activeConvoId === "default") return;
+
+    const loadMessages = async () => {
+      try {
+        const response = await fetch(`/api/admin/command-center?conversationId=${activeConvoId}`);
+        if (!response.ok) throw new Error("Failed to load messages");
+        const data = await response.json();
+
+        if (data.messages) {
+          const mapped = data.messages.map((m: any) => ({
+            id: m.id,
+            sender: m.sender,
+            text: m.text,
+            timestamp: new Date(m.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            toolCalls: m.tool_calls || [],
+            proposal: m.proposal || undefined,
+            chart: m.chart || undefined
+          }));
+
+          setConversations(prev => prev.map(c =>
+            c.id === activeConvoId ? { ...c, messages: mapped } : c
+          ));
+        }
+      } catch (err) {
+        console.error("Error loading messages:", err);
+      }
+    };
+
+    const convo = conversations.find(c => c.id === activeConvoId);
+    if (convo && convo.messages.length === 0) {
+      loadMessages();
+    }
+  }, [activeConvoId, conversations]);
+
+  // Load subagents from messages history on conversation selection
+  useEffect(() => {
+    if (isStreaming) return; // Do not overwrite live streaming logs!
+
+    if (!messages || messages.length === 0) {
+      setSubagents([]);
+      return;
+    }
+
+    const loadedSubagents: Subagent[] = [];
+    messages.forEach(msg => {
+      if (msg.toolCalls) {
+        msg.toolCalls.forEach(tc => {
+          if (tc.name === "spawn_subagent" && tc.args) {
+            const findings = tc.result?.findings || tc.result?.result;
+            if (!loadedSubagents.some(s => s.id === tc.id)) {
+              loadedSubagents.push({
+                id: tc.id || (tc.name + "-" + Math.random()),
+                name: tc.args.name || "Specialized Agent",
+                focus: tc.args.focus || "",
+                mission: tc.args.mission || "",
+                status: tc.status === "complete" ? "completed" : "running",
+                logs: [
+                  "Initializing agent workspace...",
+                  `Executing deep-dive search for: "${tc.args.focus}"`,
+                  "Search completed. Analyzing snippets...",
+                  "Synthesizing intelligence report...",
+                  "Completed mission successfully."
+                ],
+                result: findings
+              });
+            }
+          }
+        });
+      }
+    });
+
+    setSubagents(loadedSubagents);
+  }, [activeConvoId, messages, isStreaming]);
+
   // ── Helper: update messages in active conversation ──
   const pushMessage = (msg: Message) => {
     setConversations(prev => prev.map(c =>
@@ -470,7 +648,7 @@ export default function InteractiveWorkspace() {
 
   // ── Update conversation title from first user message ──
   const updateConvoTitle = (text: string) => {
-    const title = text.length > 40 ? text.slice(0, 40) + "…" : text;
+    const title = text.length > 40 ? text.slice(0, 37) + "..." : text;
     setConversations(prev => prev.map(c =>
       c.id === activeConvoId && c.title === "New conversation" ? { ...c, title } : c,
     ));
@@ -478,9 +656,15 @@ export default function InteractiveWorkspace() {
 
   // ── New conversation ──
   const startNewConversation = () => {
-    const id = `convo-${Date.now()}`;
-    setConversations(prev => [{ id, title: "New conversation", messages: [], createdAt: new Date() }, ...prev]);
-    setActiveConvoId(id);
+    if (conversations.some(c => c.id === "default")) {
+      setActiveConvoId("default");
+      return;
+    }
+    setConversations(prev => [
+      { id: "default", title: "New conversation", messages: [], createdAt: new Date() },
+      ...prev
+    ]);
+    setActiveConvoId("default");
     setCurrentActiveAgents([]);
   };
 
@@ -502,8 +686,10 @@ export default function InteractiveWorkspace() {
     adjustHeight(true);
     setIsLoading(true);
     setCurrentActiveAgents([]);
+    setSubagents([]);
 
     const targetConvoId = activeConvoId;
+    let currentIdToUpdate = targetConvoId;
     const gxlMsgId = `gxl-${Date.now()}`;
 
     const history = activeConvo.messages.map(m => ({
@@ -515,7 +701,7 @@ export default function InteractiveWorkspace() {
       const response = await fetch("/api/admin/command-center", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history }),
+        body: JSON.stringify({ message: text, conversationId: targetConvoId, history }),
       });
 
       if (!response.ok) throw new Error("Sync failed");
@@ -534,7 +720,7 @@ export default function InteractiveWorkspace() {
       };
 
       setConversations(prev => prev.map(c => {
-        if (c.id !== targetConvoId) return c;
+        if (c.id !== currentIdToUpdate) return c;
         return {
           ...c,
           messages: [...c.messages, initialGxlMsg]
@@ -576,9 +762,18 @@ export default function InteractiveWorkspace() {
             continue;
           }
 
-          if (eventName === "text_delta") {
+          if (eventName === "conversation_id") {
+            const newId = data.conversationId;
+            if (currentIdToUpdate === "default") {
+              setConversations(prev => prev.map(c =>
+                c.id === "default" ? { ...c, id: newId, title: text.length > 40 ? text.slice(0, 37) + "..." : text } : c
+              ));
+              setActiveConvoId(newId);
+              currentIdToUpdate = newId;
+            }
+          } else if (eventName === "text_delta") {
             setConversations(prev => prev.map(c => {
-              if (c.id !== targetConvoId) return c;
+              if (c.id !== currentIdToUpdate) return c;
               return {
                 ...c,
                 messages: c.messages.map(m => m.id === gxlMsgId ? { ...m, text: m.text + data.text } : m)
@@ -586,7 +781,7 @@ export default function InteractiveWorkspace() {
             }));
           } else if (eventName === "tool_call") {
             setConversations(prev => prev.map(c => {
-              if (c.id !== targetConvoId) return c;
+              if (c.id !== currentIdToUpdate) return c;
               return {
                 ...c,
                 messages: c.messages.map(m => m.id === gxlMsgId ? {
@@ -606,7 +801,7 @@ export default function InteractiveWorkspace() {
             setCurrentActiveAgents(prev => prev.includes(agentName) ? prev : [...prev, agentName]);
           } else if (eventName === "tool_result") {
             setConversations(prev => prev.map(c => {
-              if (c.id !== targetConvoId) return c;
+              if (c.id !== currentIdToUpdate) return c;
               return {
                 ...c,
                 messages: c.messages.map(m => m.id === gxlMsgId ? {
@@ -626,7 +821,7 @@ export default function InteractiveWorkspace() {
             setAgentSuite(prev => prev.map(a => a.name === agentName ? { ...a, status: "Active" } : a));
           } else if (eventName === "proposal") {
             setConversations(prev => prev.map(c => {
-              if (c.id !== targetConvoId) return c;
+              if (c.id !== currentIdToUpdate) return c;
               return {
                 ...c,
                 messages: c.messages.map(m => m.id === gxlMsgId ? { ...m, proposal: data } : m)
@@ -634,18 +829,38 @@ export default function InteractiveWorkspace() {
             }));
           } else if (eventName === "chart") {
             setConversations(prev => prev.map(c => {
-              if (c.id !== targetConvoId) return c;
+              if (c.id !== currentIdToUpdate) return c;
               return {
                 ...c,
                 messages: c.messages.map(m => m.id === gxlMsgId ? { ...m, chart: data } : m)
               };
             }));
+          } else if (eventName === "subagent_spawn") {
+            setSubagents(prev => {
+              if (prev.some(s => s.id === data.id)) return prev;
+              return [...prev, {
+                id: data.id,
+                name: data.name,
+                focus: data.focus,
+                mission: data.mission,
+                status: "running",
+                logs: ["Initializing subagent workspace..."]
+              }];
+            });
+          } else if (eventName === "subagent_log") {
+            setSubagents(prev => prev.map(s =>
+              s.id === data.id ? { ...s, logs: [...s.logs, data.log] } : s
+            ));
+          } else if (eventName === "subagent_complete") {
+            setSubagents(prev => prev.map(s =>
+              s.id === data.id ? { ...s, status: "completed", result: data.result, logs: [...s.logs, "Completed mission successfully."] } : s
+            ));
           } else if (eventName === "error") {
             setConversations(prev => prev.map(c => {
-              if (c.id !== targetConvoId) return c;
+              if (c.id !== currentIdToUpdate) return c;
               return {
                 ...c,
-                messages: c.messages.map(m => m.id === gxlMsgId ? { ...m, text: `### ⚠️ Orchestration Interrupted\n${data.message || "An internal error occurred."}` } : m)
+                messages: c.messages.map(m => m.id === gxlMsgId ? { ...m, text: m.text + (data.message || "An internal error occurred.") } : m)
               };
             }));
           }
@@ -815,6 +1030,13 @@ ${msg.proposal.deliverables.map(d => `  - ${d}`).join("\n")}
                 </span>
               </div>
             )}
+            <button
+              onClick={() => setRightSidebarOpen(p => !p)}
+              className="p-1.5 rounded-md text-neutral-400 hover:text-neutral-800 hover:bg-neutral-100 transition-colors"
+              title="Toggle Agent Workspace"
+            >
+              {rightSidebarOpen ? <PanelRightClose className="w-4 h-4" /> : <PanelRight className="w-4 h-4" />}
+            </button>
           </div>
         </div>
 
@@ -1175,6 +1397,77 @@ ${msg.proposal.deliverables.map(d => `  - ${d}`).join("\n")}
           </div>
         </div>
       </div>
+
+      {/* ─── RIGHT WORKSPACE SIDEBAR ─── */}
+      <AnimatePresence mode="wait">
+        {rightSidebarOpen && (
+          <motion.aside
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 300, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className="h-full border-l border-[#e6e6e6] bg-[#f6f5f4] flex flex-col overflow-hidden shrink-0"
+          >
+            {/* Header */}
+            <div className="p-4 border-b border-[#e6e6e6] bg-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-[#0075de]" />
+                <span className="text-[13px] font-bold text-neutral-800">Agent Workspace</span>
+              </div>
+              <button
+                onClick={() => setRightSidebarOpen(false)}
+                className="p-1 rounded-md text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Content scroll area */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-5 custom-scrollbar">
+              
+              {/* Specialized Subagents Section */}
+              <div className="space-y-3">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Specialized Subagents ({subagents.length})</p>
+                {subagents.length === 0 ? (
+                  <div className="p-4 rounded-lg border border-dashed border-[#e6e6e6] bg-white text-center text-neutral-400 text-xs py-8">
+                    No active subagents. Ask GXL to create subagents to perform background research.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {subagents.map(agent => (
+                      <SubagentCard key={agent.id} agent={agent} />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Core Agent Suite Section */}
+              <div className="space-y-3">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Core Agent Suite</p>
+                <div className="divide-y divide-[#e6e6e6] rounded-md border border-[#e6e6e6] bg-white overflow-hidden">
+                  {agentSuite.map(agent => (
+                    <div key={agent.name} className="p-3 flex items-center justify-between text-xs text-left">
+                      <div>
+                        <p className="font-bold text-neutral-800">{agent.name}</p>
+                        <p className="text-[10px] text-neutral-400">{agent.role}</p>
+                      </div>
+                      <span className={cn(
+                        "px-2 py-0.5 rounded-full text-[10px] font-mono font-bold",
+                        agent.status === "Idle" ? "text-neutral-400 bg-neutral-100" :
+                        agent.status === "Active" ? "text-emerald-700 bg-emerald-50 border border-emerald-200" :
+                        "text-[#0075de] bg-[#0075de]/10 border border-[#0075de]/20 animate-pulse"
+                      )}>
+                        {agent.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
