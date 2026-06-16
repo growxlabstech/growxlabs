@@ -72,7 +72,7 @@ export default function PortfolioPage() {
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto">
           <div className="text-center max-w-3xl mx-auto pt-10 md:pt-12 mb-10 md:mb-12">
             <Reveal scale={0.98}>
-              <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-[#355CFF] mb-3 block">
+              <span className="text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-primary mb-3 block">
                 Our work
               </span>
             </Reveal>
