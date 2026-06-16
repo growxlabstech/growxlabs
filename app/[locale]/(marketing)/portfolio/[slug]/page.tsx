@@ -68,11 +68,11 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           }
         ]}
       />
-      <div className="pt-28 pb-32 w-full">
+      <div className="pt-28 pb-32 w-full bg-[#111111]">
         {/* Back Button */}
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-6 md:px-10 xl:px-16 mb-8">
           <Link href="/portfolio">
-            <Button variant="ghost" className="text-muted-foreground hover:text-foreground h-auto py-1 pl-0 font-bold tracking-tight text-xs uppercase">
+            <Button variant="ghost" className="text-zinc-400 hover:text-white h-auto py-1 pl-0 font-bold tracking-tight text-xs uppercase cursor-pointer">
               <ArrowLeft className="mr-2 h-4 w-4" /> Back to Portfolio
             </Button>
           </Link>
@@ -80,7 +80,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
         {/* Hero Section */}
         <section className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-6 md:px-10 xl:px-16 mb-16">
-          <div className="relative aspect-[21/9] rounded-2xl overflow-hidden mb-10 border border-border">
+          <div className="relative aspect-[21/9] rounded-2xl overflow-hidden mb-10 border border-zinc-800">
             <Image
               src={project.image}
               alt={project.title}
@@ -88,12 +88,12 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
             <div className="absolute bottom-8 left-8 right-8 md:bottom-12 md:left-12 md:right-12">
               <span className="px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest bg-primary text-primary-foreground mb-4 inline-block">
                 {project.category}
               </span>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter">
                 {project.title}
               </h1>
             </div>
@@ -102,9 +102,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           {/* Results Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {project.results.map((result, i) => (
-              <div key={i} className="bg-card border border-border rounded-xl flex flex-col items-center justify-center p-8 md:p-10 text-center shadow-sm">
+              <div key={i} className="bg-zinc-900/40 border border-zinc-800/80 rounded-xl flex flex-col items-center justify-center p-8 md:p-10 text-center shadow-sm">
                 <span className="text-4xl md:text-5xl font-black text-primary mb-2 tracking-tighter">{result.value}</span>
-                <span className="text-muted-foreground uppercase text-[10px] font-bold tracking-widest">{result.label}</span>
+                <span className="text-zinc-500 uppercase text-[10px] font-bold tracking-widest">{result.label}</span>
               </div>
             ))}
           </div>
@@ -116,29 +116,29 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             {/* Left Column */}
             <div className="lg:col-span-8 space-y-12">
               <div>
-                <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center tracking-tight">
+                <h2 className="text-2xl font-bold text-white mb-4 flex items-center tracking-tight">
                   <Target className="mr-3 text-primary h-5 w-5" /> The Problem
                 </h2>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-medium">
+                <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-medium">
                   {project.problem}
                 </p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center tracking-tight">
+                <h2 className="text-2xl font-bold text-white mb-4 flex items-center tracking-tight">
                   <Cpu className="mr-3 text-primary h-5 w-5" /> The Solution
                 </h2>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-medium">
+                <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-medium">
                   {project.solution}
                 </p>
               </div>
 
               {project.gallery && project.gallery.length > 0 && (
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-6 tracking-tight">System Gallery</h2>
+                  <h2 className="text-2xl font-bold text-white mb-6 tracking-tight">System Gallery</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {project.gallery.map((img, i) => (
-                      <div key={i} className="relative aspect-video rounded-xl overflow-hidden border border-border">
+                      <div key={i} className="relative aspect-video rounded-xl overflow-hidden border border-zinc-800">
                         <Image src={img} alt={`${project.title} system view ${i}`} fill className="object-cover" />
                       </div>
                     ))}
@@ -149,12 +149,12 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
             {/* Right Column (Sidebar) */}
             <div className="lg:col-span-4">
-              <div className="bg-card border border-border rounded-2xl p-8 space-y-8 sticky top-28 shadow-sm">
+              <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-8 space-y-8 sticky top-28 shadow-sm">
                 <div>
-                  <h3 className="text-foreground font-bold mb-3 uppercase text-[10px] tracking-wider opacity-60">Tech Stack</h3>
+                  <h3 className="text-white font-bold mb-3 uppercase text-[10px] tracking-wider opacity-60">Tech Stack</h3>
                   <div className="flex flex-wrap gap-1.5">
                     {project.tech.map((t, i) => (
-                      <span key={i} className="px-2.5 py-1 bg-muted rounded-md text-[10px] font-bold text-muted-foreground border border-border uppercase tracking-wider">
+                      <span key={i} className="px-2.5 py-1 bg-zinc-800/60 rounded-md text-[10px] font-bold text-zinc-400 border border-zinc-700/50 uppercase tracking-wider">
                         {t}
                       </span>
                     ))}
@@ -162,19 +162,19 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
                 </div>
 
                 <div>
-                  <h3 className="text-foreground font-bold mb-3 uppercase text-[10px] tracking-wider opacity-60">Engineering Scope</h3>
+                  <h3 className="text-white font-bold mb-3 uppercase text-[10px] tracking-wider opacity-60">Engineering Scope</h3>
                   <ul className="space-y-2.5">
                     {["System Architecture", "Custom Engineering", "UI/UX Strategy", "Performance Audit"].map((s, i) => (
-                      <li key={i} className="flex items-center text-muted-foreground text-xs font-semibold">
+                      <li key={i} className="flex items-center text-zinc-300 text-xs font-semibold">
                         <CheckCircle2 size={14} className="text-primary mr-3 shrink-0" /> {s}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="pt-6 border-t border-border">
+                <div className="pt-6 border-t border-zinc-800">
                   <Link href="/contact" className="w-full block">
-                    <Button variant="primary" className="w-full h-12 font-bold uppercase tracking-wider text-xs">Book Strategy Call</Button>
+                    <Button variant="primary" className="w-full h-12 font-bold uppercase tracking-wider text-xs cursor-pointer">Book Strategy Call</Button>
                   </Link>
                 </div>
               </div>

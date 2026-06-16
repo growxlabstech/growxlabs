@@ -1,35 +1,43 @@
 import { ExternalLink } from "lucide-react";
 import { CaseStudy } from "@/lib/data/projects";
 import Image from "next/image";
+import { Link } from "@/navigation";
 
-type ProjectCardProps = Pick<CaseStudy, "title" | "tag" | "description" | "tech" | "metric" | "link" | "status" | "image">;
+type ProjectCardProps = Pick<CaseStudy, "slug" | "title" | "tag" | "description" | "tech" | "metric" | "link" | "status" | "image">;
 
-export function ProjectCard({ title, tag, description, tech, metric, link, status, image }: ProjectCardProps) {
+export function ProjectCard({ slug, title, tag, description, tech, metric, link, status, image }: ProjectCardProps) {
   return (
     <div className="group h-full relative overflow-hidden transform-none">
       <div className="h-full flex flex-col bg-card border border-border rounded-lg overflow-hidden transition-[opacity,background-color,border-color] duration-200 shadow-sm group-hover:border-primary/20">
-        {/* Image Section */}
-        {image && (
-          <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
-            <Image
-              src={image}
-              alt={title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-40" />
-            <div className="absolute top-4 left-4">
-              <span className="px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-card text-primary border border-border">
-                {tag}
-              </span>
-            </div>
+        
+        {/* Clickable Image Section */}
+        <Link href={`/portfolio/${slug}`} className="relative h-48 w-full overflow-hidden rounded-t-lg block">
+          {image && (
+            <>
+              <Image
+                src={image}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-102"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-40" />
+            </>
+          )}
+          <div className="absolute top-4 left-4">
+            <span className="px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-card text-primary border border-border">
+              {tag}
+            </span>
           </div>
-        )}
+        </Link>
 
         <div className="p-6 flex flex-col flex-1">
-          <h3 className="text-[20px] font-bold text-foreground mb-3 tracking-tight">{title}</h3>
+          {/* Clickable Title */}
+          <Link href={`/portfolio/${slug}`} className="hover:text-primary transition-colors block mb-2">
+            <h3 className="text-[20px] font-bold text-foreground tracking-tight">{title}</h3>
+          </Link>
+          
           <p className="text-muted-foreground text-[14px] leading-[1.6] mb-6 flex-1">
             {description}
           </p>
