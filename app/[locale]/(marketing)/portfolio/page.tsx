@@ -51,23 +51,12 @@ export default function PortfolioPage() {
           {
             "@type": "ItemList",
             "@id": "https://growxlabs.tech/portfolio#list",
-            itemListElement: [
-              {
-                "@type": "SoftwareApplication",
-                "@id": "https://growxlabs.tech/products/resumeforgeai#product",
-                name: "ResumeForgeAI",
-              },
-              {
-                "@type": "SoftwareApplication",
-                "@id": "https://growxlabs.tech/products/universalai#product",
-                name: "UniversalAI",
-              },
-              {
-                "@type": "SoftwareApplication",
-                "@id": "https://growxlabs.tech/products/recruitai#product",
-                name: "RecruitAI",
-              },
-            ],
+            itemListElement: projects.map((project, idx) => ({
+              "@type": "SoftwareApplication",
+              "@id": `https://growxlabs.tech/portfolio/${project.slug}#product`,
+              name: project.title,
+              position: idx + 1,
+            })),
           },
         ]}
       />
