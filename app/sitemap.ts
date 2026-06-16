@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { projects } from '@/lib/data/projects';
 
 const baseUrl = 'https://growxlabs.tech';
 
@@ -9,6 +10,7 @@ const locales = ['', '/en', '/en-IN', '/en-US', '/en-GB', '/en-AU'];
 const marketingRoutes = [
   { path: '', priority: 1.0, changefreq: 'daily' as const },
   { path: '/services', priority: 0.9, changefreq: 'weekly' as const },
+  { path: '/products', priority: 0.9, changefreq: 'weekly' as const },
   { path: '/pricing', priority: 0.9, changefreq: 'weekly' as const },
   { path: '/portfolio', priority: 0.8, changefreq: 'monthly' as const },
   { path: '/courses', priority: 0.8, changefreq: 'monthly' as const },
@@ -37,7 +39,14 @@ const blogRoutes = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const allRoutes = [...marketingRoutes, ...blogRoutes];
+  // Dynamically generated portfolio project routes
+  const portfolioRoutes = projects.map((project) => ({
+    path: `/portfolio/${project.slug}`,
+    priority: 0.8,
+    changefreq: 'weekly' as const,
+  }));
+
+  const allRoutes = [...marketingRoutes, ...blogRoutes, ...portfolioRoutes];
 
   const routes = allRoutes.flatMap((route) => 
     locales.map((locale) => ({
