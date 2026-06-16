@@ -114,8 +114,10 @@ export default function ProductsPage() {
                       <p className="text-sm font-semibold text-foreground">{product.stack}</p>
                     </div>
                     <Link href="/contact">
-                      <Button variant="outline" className="w-full h-12 rounded-md font-semibold flex items-center justify-center gap-1.5 text-xs sm:text-sm whitespace-nowrap px-3">
-                        Request Access <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <Button variant="outline" className="w-full h-12 rounded-md font-semibold px-3">
+                        <span className="flex items-center justify-center gap-1.5 text-xs sm:text-sm whitespace-nowrap">
+                          Request Access <ChevronRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                        </span>
                       </Button>
                     </Link>
                   </div>
