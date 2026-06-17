@@ -32,6 +32,25 @@ export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const hostname = req.headers.get('host') || '';
 
+  // Redirect underscores in locale and path if they match wish_game or en_IN
+  let rewrittenPath = pathname;
+  let shouldRedirect = false;
+
+  if (pathname.includes('wish_game')) {
+    rewrittenPath = rewrittenPath.replace('wish_game', 'wish-game');
+    shouldRedirect = true;
+  }
+  if (pathname.includes('en_IN')) {
+    rewrittenPath = rewrittenPath.replace('en_IN', 'en-IN');
+    shouldRedirect = true;
+  }
+
+  if (shouldRedirect) {
+    const url = req.nextUrl.clone();
+    url.pathname = rewrittenPath;
+    return NextResponse.redirect(url, 302);
+  }
+
   // 1. PERFORMANCE: Immediate skip for static assets and Next.js internals
   if (
     pathname.startsWith('/_next') ||
