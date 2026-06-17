@@ -1,3 +1,4 @@
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
@@ -17,6 +18,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const wish = typeof body?.wish === "string" ? body.wish.trim() : "";
+    const email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
 
     if (!wish) {
       return NextResponse.json({ error: "A wish is required." }, { status: 400 });
@@ -40,6 +42,17 @@ export async function POST(request: Request) {
 
     if (!consequence) {
       return NextResponse.json({ error: "The willow gave no answer." }, { status: 502 });
+    }
+
+    // Save wish and consequence to DB if email is provided
+    if (email) {
+      const { error: dbError } = await supabaseAdmin
+        .from("wishes")
+        .insert({ email, wish, consequence });
+
+      if (dbError) {
+        console.error("Failed to save wish to database:", dbError);
+      }
     }
 
     return NextResponse.json({ consequence });

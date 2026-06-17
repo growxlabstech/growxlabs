@@ -160,7 +160,7 @@ export default function WishGamePage() {
     const generate = fetch("/api/generate-consequence", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ wish: cleanWish }),
+      body: JSON.stringify({ wish: cleanWish, email: email.trim().toLowerCase() }),
     })
       .then(async (response) => {
         const data = await response.json().catch(() => null);
