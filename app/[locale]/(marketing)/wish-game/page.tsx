@@ -274,6 +274,29 @@ export default function WishGamePage() {
     return () => clearInterval(interval);
   }, [consequence]);
 
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      startAmbientSound();
+      window.removeEventListener("click", handleFirstInteraction);
+      window.removeEventListener("keydown", handleFirstInteraction);
+      window.removeEventListener("touchstart", handleFirstInteraction);
+    };
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("click", handleFirstInteraction);
+      window.addEventListener("keydown", handleFirstInteraction);
+      window.addEventListener("touchstart", handleFirstInteraction);
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("click", handleFirstInteraction);
+        window.removeEventListener("keydown", handleFirstInteraction);
+        window.removeEventListener("touchstart", handleFirstInteraction);
+      }
+    };
+  }, []);
+
   async function submitSubscriber(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
