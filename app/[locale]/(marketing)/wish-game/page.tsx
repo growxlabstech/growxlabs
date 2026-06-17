@@ -161,7 +161,7 @@ function playTypewriterSound() {
   }
 }
 
-type Screen = "gate" | "wish" | "cracking" | "consequence";
+type Screen = "gate" | "wish" | "cracking" | "consequence" | "video";
 
 function WillowStick({
   animated = false,
@@ -377,6 +377,10 @@ export default function WishGamePage() {
     await Promise.allSettled([reveal, generate]);
   }
 
+  function triggerVideoPlay() {
+    setScreen("video");
+  }
+
   function playAgain() {
     setWish("");
     setConsequence("");
@@ -513,12 +517,39 @@ export default function WishGamePage() {
 
           {error && screen === "consequence" ? <p className="error-text">{error}</p> : null}
           <p className="help-line">Need help? Call 1-323-747-7118</p>
-          <button className="play-button" onClick={playAgain} type="button">
+          <button className="play-button" onClick={triggerVideoPlay} type="button">
             PLAY AGAIN
           </button>
           <div className="box-poster">
             <img src="/images/willow-poster-bg.png" alt="One Wish Willow Poster" />
           </div>
+        </div>
+      </section>
+
+      <section
+        className={`game-screen video-screen ${screen === "video" ? "active" : ""}`}
+        aria-hidden={screen !== "video"}
+      >
+        <div className="box-panel video-panel">
+          <div className="simple-banner">
+            <h2 className={alfa.className}>THE OBSESSION</h2>
+          </div>
+          
+          <div className="video-container">
+            {screen === "video" && (
+              <video
+                src="/videos/obsession-video.mp4"
+                autoPlay
+                playsInline
+                controls
+                onEnded={playAgain}
+              />
+            )}
+          </div>
+
+          <button className="skip-button" onClick={playAgain} type="button">
+            SKIP VIDEO & PLAY AGAIN
+          </button>
         </div>
       </section>
 
@@ -1015,6 +1046,55 @@ export default function WishGamePage() {
           .consequence-copy {
             max-width: 18ch;
           }
+        }
+
+        .video-panel {
+          max-width: 640px !important;
+          width: min(100%, 640px) !important;
+          background: var(--stick) !important;
+          border: 6px solid var(--stick) !important;
+          box-shadow: 10px 10px 0 var(--shadow) !important;
+          padding: 0 0 16px !important;
+        }
+
+        .video-container {
+          width: 100%;
+          aspect-ratio: 16/9;
+          background: #000;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 12px;
+          border-top: 4px solid var(--stick);
+          border-bottom: 4px solid var(--stick);
+        }
+
+        .video-container video {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+
+        .skip-button {
+          background: transparent !important;
+          border: 2px dashed var(--red) !important;
+          color: var(--red) !important;
+          font-family: monospace !important;
+          font-weight: bold !important;
+          margin-top: 16px !important;
+          padding: 8px 16px !important;
+          cursor: pointer !important;
+          transition: all 200ms ease !important;
+          width: auto !important;
+          min-height: auto !important;
+          box-shadow: none !important;
+        }
+
+        .skip-button:hover {
+          background: var(--red) !important;
+          color: var(--white) !important;
+          border-style: solid !important;
         }
       `}</style>
     </main>
