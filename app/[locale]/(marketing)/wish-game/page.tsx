@@ -687,7 +687,10 @@ export default function WishGamePage() {
           {error && screen === "consequence" ? <p className="error-text">{error}</p> : null}
           <p className="help-line">Need help? Call 1-323-747-7118</p>
           <button className="play-button" onClick={triggerVideoPlay} type="button">
-            PLAY AGAIN
+            👁 WATCH NIKKI'S FATE
+          </button>
+          <button className="wish-again-button" onClick={playAgain} type="button">
+            🕯 MAKE ANOTHER WISH
           </button>
           <div className="box-poster">
             <img src="/images/willow-poster-bg.png" alt="One Wish Willow Poster" />
@@ -717,7 +720,7 @@ export default function WishGamePage() {
           </div>
 
           <button className="skip-button" onClick={playAgain} type="button">
-            SKIP VIDEO & PLAY AGAIN
+            SKIP VIDEO & MAKE ANOTHER WISH
           </button>
         </div>
       </section>
@@ -1210,6 +1213,25 @@ export default function WishGamePage() {
         .crack-button,
         .play-button {
           margin-top: 12px;
+        }
+
+        .wish-again-button {
+          background: transparent !important;
+          border: 4px solid var(--stick) !important;
+          color: var(--stick) !important;
+          box-shadow: 6px 6px 0 rgba(59, 42, 26, 0.26) !important;
+          margin-top: 14px !important;
+          transition: all 140ms ease !important;
+        }
+
+        .wish-again-button:hover {
+          background: var(--stick) !important;
+          color: var(--cream) !important;
+        }
+
+        .wish-again-button:active {
+          box-shadow: 2px 2px 0 rgba(59, 42, 26, 0.26) !important;
+          transform: translate(4px, 4px) !important;
         }
 
         .warning-text,
