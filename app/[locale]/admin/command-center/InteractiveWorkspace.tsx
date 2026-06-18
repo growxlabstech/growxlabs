@@ -5,7 +5,7 @@ import {
   Send, Paperclip, Terminal, Cpu, User, Briefcase, FileText,
   BarChart3, PenTool, Download, Command, X,
   PanelLeftClose, PanelLeft, PanelRightClose, PanelRight, Plus, MessageSquare, Loader2,
-  ArrowUp, ChevronDown, Check, AlertTriangle, Sparkles
+  ArrowUp, ChevronDown, Check, AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -805,7 +805,7 @@ function SubagentWorkspacePanel({
         {panel.chatHistory.length === 0 && panel.status === "idle" ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4 select-none">
             <div className="w-12 h-12 rounded-xl bg-white border border-[#e6e6e6] shadow-sm flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-[#0075de]" />
+              <Terminal className="w-6 h-6 text-[#0075de]" />
             </div>
             <div>
               <h5 className="text-[13px] font-bold text-neutral-800">Workspace Ready</h5>
@@ -828,7 +828,7 @@ function SubagentWorkspacePanel({
               {panel.chatHistory.map((ch, idx) => (
                 <div key={idx} className={cn("flex flex-col", ch.sender === "user" ? "items-end" : "items-start")}>
                   <div className={cn(
-                    "max-w-[90%] rounded-xl px-3.5 py-2.5 text-xs leading-relaxed border shadow-sm",
+                    "max-w-[90%] rounded-xl px-3.5 py-2.5 text-xs leading-relaxed border shadow-sm min-w-0 overflow-hidden",
                     ch.sender === "user"
                       ? "bg-white border-[#e6e6e6] text-neutral-800 rounded-tr-none"
                       : "bg-[#0075de]/5 border-[#0075de]/10 text-neutral-800 rounded-tl-none font-sans"
@@ -1761,14 +1761,14 @@ ${msg.proposal.deliverables.map(d => `  - ${d}`).join("\n")}
 
         {/* Top bar */}
         <div className="h-12 shrink-0 flex items-center justify-between px-4 border-b border-[#e6e6e6] bg-white/80 backdrop-blur-sm z-20">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => setSidebarOpen(p => !p)}
-              className="p-1.5 rounded-md text-neutral-400 hover:text-neutral-800 hover:bg-neutral-100 transition-colors"
+              className="p-1.5 rounded-md text-neutral-400 hover:text-neutral-800 hover:bg-neutral-100 transition-colors shrink-0"
             >
               {sidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeft className="w-4 h-4" />}
             </button>
-            <span className="text-[13px] font-bold text-neutral-600 hidden sm:inline">
+            <span className="text-[13px] font-bold text-neutral-600 hidden sm:inline truncate max-w-[150px] md:max-w-[280px] lg:max-w-[360px]">
               {activeConvo.title === "New conversation" ? "GXL Command Center" : activeConvo.title}
             </span>
           </div>
@@ -1793,7 +1793,7 @@ ${msg.proposal.deliverables.map(d => `  - ${d}`).join("\n")}
         </div>
 
         {/* Chat scroll container */}
-        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto custom-scrollbar relative">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto overflow-x-hidden w-full min-w-0 custom-scrollbar relative">
 
           {/* ─── EMPTY STATE (Claude-inspired) ─── */}
           {!hasMessages && !isLoading && (
@@ -1872,7 +1872,7 @@ ${msg.proposal.deliverables.map(d => `  - ${d}`).join("\n")}
                     </div>
                   ) : (
                     /* ── GXL message ── */
-                    <div className="w-full">
+                    <div className="w-full min-w-0 overflow-hidden">
                       <div className="flex items-start gap-3 mb-3">
                         <div className="w-7 h-7 rounded-md bg-gradient-to-br from-[#0075de] to-[#005bab] flex items-center justify-center shrink-0 shadow-md shadow-[#0075de]/10">
                           <Command className="w-3.5 h-3.5 text-white" />
@@ -1883,7 +1883,7 @@ ${msg.proposal.deliverables.map(d => `  - ${d}`).join("\n")}
                         </div>
                       </div>
 
-                      <div className="pl-10">
+                      <div className="pl-10 min-w-0 w-full overflow-hidden">
                         <ToolCallActivityWidget toolCalls={msg.toolCalls} />
                         <div
                           draggable
@@ -1892,7 +1892,7 @@ ${msg.proposal.deliverables.map(d => `  - ${d}`).join("\n")}
                             setDraggedMessage(msg.text);
                           }}
                           onDragEnd={() => setDraggedMessage(null)}
-                          className="cursor-grab active:cursor-grabbing hover:bg-neutral-50 rounded-lg p-2.5 -ml-2.5 transition-colors border border-transparent hover:border-[#e6e6e6]/40"
+                          className="cursor-grab active:cursor-grabbing hover:bg-neutral-50 rounded-lg p-2.5 -ml-2.5 transition-colors border border-transparent hover:border-[#e6e6e6]/40 min-w-0 w-full overflow-hidden"
                         >
                           <MarkdownBlock text={msg.text} />
                         </div>
