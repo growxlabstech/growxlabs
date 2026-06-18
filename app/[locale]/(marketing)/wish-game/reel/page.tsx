@@ -17,9 +17,9 @@ type ReelState = "idle" | "countdown" | "hook" | "teaser-video" | "game-video" |
 export default function ReelRecorderPage() {
   const [state, setState] = useState<ReelState>("idle");
   const [countdown, setCountdown] = useState(3);
-  const [videoSrc, setVideoSrc] = useState("/videos/obsession-video.mp4");
   const [videoFit, setVideoFit] = useState<"contain" | "cover">("contain");
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const teaserVideoRef = useRef<HTMLVideoElement>(null);
+  const gameVideoRef = useRef<HTMLVideoElement>(null);
 
   // Playback flow trigger
   useEffect(() => {
@@ -39,7 +39,6 @@ export default function ReelRecorderPage() {
 
     if (state === "hook") {
       const timer = setTimeout(() => {
-        setVideoSrc("/videos/obsession-video.mp4");
         setState("teaser-video");
       }, 3500); // Show hook for 3.5 seconds
       return () => clearTimeout(timer);
@@ -48,20 +47,42 @@ export default function ReelRecorderPage() {
 
   // Video play controller
   useEffect(() => {
-    if ((state === "teaser-video" || state === "game-video") && videoRef.current) {
-      videoRef.current.play().catch((e) => console.log("Video autoplay block:", e));
+    if (state === "teaser-video" && teaserVideoRef.current) {
+      teaserVideoRef.current.play().catch((e) => console.log("Teaser play error:", e));
+    } else if (state === "game-video" && gameVideoRef.current) {
+      gameVideoRef.current.play().catch((e) => console.log("Game play error:", e));
     }
-  }, [state, videoSrc]);
+  }, [state]);
 
   function startRecordingFlow() {
-    setVideoSrc("/videos/obsession-video.mp4");
     setState("countdown");
     setCountdown(3);
+
+    // Prime both video elements so they are whitelisted by the browser for unmuted autoplay
+    if (teaserVideoRef.current) {
+      teaserVideoRef.current.muted = false;
+      teaserVideoRef.current.load();
+      teaserVideoRef.current.play().then(() => {
+        teaserVideoRef.current?.pause();
+      }).catch((e) => console.log("Priming teaser video blocked:", e));
+    }
+    if (gameVideoRef.current) {
+      gameVideoRef.current.muted = false;
+      gameVideoRef.current.load();
+      gameVideoRef.current.play().then(() => {
+        gameVideoRef.current?.pause();
+      }).catch((e) => console.log("Priming game video blocked:", e));
+    }
   }
 
   function resetFlow() {
-    if (videoRef.current) {
-      videoRef.current.pause();
+    if (teaserVideoRef.current) {
+      teaserVideoRef.current.pause();
+      teaserVideoRef.current.currentTime = 0;
+    }
+    if (gameVideoRef.current) {
+      gameVideoRef.current.pause();
+      gameVideoRef.current.currentTime = 0;
     }
     setState("idle");
   }
@@ -152,25 +173,30 @@ export default function ReelRecorderPage() {
             </div>
           )}
 
-          {/* STATE: TEASER & GAME VIDEO (Single Video Player to bypass browser unmuted autoplay block) */}
+          {/* STATE: TEASER & GAME VIDEO (Dual Video Player to prevent reload/lag and bypass browser autoplay block) */}
           <div className={`screen-video ${(state === "teaser-video" || state === "game-video") ? "active" : ""}`}>
-            {(state === "teaser-video" || state === "game-video") && (
-              <video
-                ref={videoRef}
-                className={state === "game-video" ? (videoFit === "contain" ? "contain-video" : "cover-video") : ""}
-                src={videoSrc}
-                playsInline
-                autoPlay
-                onEnded={() => {
-                  if (state === "teaser-video") {
-                    setVideoSrc("/videos/gxl-wish-game-22.mp4");
-                    setState("game-video");
-                  } else {
-                    setState("cta");
-                  }
-                }}
-              />
-            )}
+            <video
+              ref={teaserVideoRef}
+              className="cover-video"
+              src="/videos/obsession-video.mp4"
+              playsInline
+              preload="auto"
+              style={{ display: state === "teaser-video" ? "block" : "none" }}
+              onEnded={() => {
+                setState("game-video");
+              }}
+            />
+            <video
+              ref={gameVideoRef}
+              className={videoFit === "contain" ? "contain-video" : "cover-video"}
+              src="/videos/gxl-wish-game-22.mp4"
+              playsInline
+              preload="auto"
+              style={{ display: state === "game-video" ? "block" : "none" }}
+              onEnded={() => {
+                setState("cta");
+              }}
+            />
             {state === "teaser-video" && (
               <div className="video-reel-caption">
                 <p className={alfa.className}>OBSESSION</p>
