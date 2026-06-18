@@ -480,6 +480,16 @@ export default function WishGamePage() {
           <img src="/images/willow-snapped-table.jpg" alt="Broken Willow" />
           <p className="polaroid-caption">Specimen B: Cursed</p>
         </div>
+        <div className="polaroid polaroid-left-5">
+          <div className="tape" />
+          <img src="/images/download-1.jpeg" alt="Obsession Wallpaper" />
+          <p className="polaroid-caption">Obsession: Wallpaper</p>
+        </div>
+        <div className="polaroid polaroid-left-6">
+          <div className="tape" />
+          <img src="/images/download-3.jpeg" alt="Niki from Obsession" />
+          <p className="polaroid-caption">Obsession: Niki Portrait</p>
+        </div>
         <div className="polaroid polaroid-right-1">
           <div className="tape" />
           <img src="/images/obsession-scene-3.jpg" alt="Obsession Scene 3" />
@@ -494,6 +504,21 @@ export default function WishGamePage() {
           <div className="tape" />
           <img src="/images/willow-snapping-action.png" alt="Willow Snap" />
           <p className="polaroid-caption">The Crack of Doom</p>
+        </div>
+        <div className="polaroid polaroid-right-4">
+          <div className="tape" />
+          <img src="/images/download-2.jpeg" alt="Obsession Nikki Aesthetic" />
+          <p className="polaroid-caption">Obsession: Aesthetic</p>
+        </div>
+        <div className="polaroid polaroid-right-5">
+          <div className="tape" />
+          <img src="/images/download-4.gif" alt="Obsession Clip" />
+          <p className="polaroid-caption">Obsession: Loop</p>
+        </div>
+        <div className="polaroid polaroid-right-6">
+          <div className="tape" />
+          <img src="/images/download-5.jpeg" alt="Nikki from Obsession 2025" />
+          <p className="polaroid-caption">Obsession: Nikki 2025</p>
         </div>
       </div>
 
@@ -797,43 +822,73 @@ export default function WishGamePage() {
         .polaroid-left-1 {
           left: 4%;
           bottom: 6%;
-          transform: rotate(-6deg);
+          transform: rotate(-10deg);
         }
 
         .polaroid-left-2 {
           left: 14%;
           bottom: 32%;
-          transform: rotate(5deg);
+          transform: rotate(8deg);
         }
 
         .polaroid-left-3 {
           left: 5%;
           top: 6%;
-          transform: rotate(4deg);
+          transform: rotate(11deg);
         }
 
         .polaroid-left-4 {
           left: 15%;
           top: 28%;
-          transform: rotate(-8deg);
+          transform: rotate(-12deg);
+        }
+
+        .polaroid-left-5 {
+          left: 3%;
+          top: 48%;
+          transform: rotate(13deg);
+        }
+
+        .polaroid-left-6 {
+          left: 8%;
+          top: 73%;
+          transform: rotate(-9deg);
         }
 
         .polaroid-right-1 {
           right: 4%;
           bottom: 8%;
-          transform: rotate(6deg);
+          transform: rotate(10deg);
         }
 
         .polaroid-right-2 {
           right: 14%;
           top: 32%;
-          transform: rotate(-5deg);
+          transform: rotate(-8deg);
         }
 
         .polaroid-right-3 {
           right: 5%;
           top: 6%;
-          transform: rotate(-7deg);
+          transform: rotate(-11deg);
+        }
+
+        .polaroid-right-4 {
+          right: 15%;
+          top: 18%;
+          transform: rotate(12deg);
+        }
+
+        .polaroid-right-5 {
+          right: 3%;
+          top: 48%;
+          transform: rotate(-14deg);
+        }
+
+        .polaroid-right-6 {
+          right: 12%;
+          bottom: 28%;
+          transform: rotate(9deg);
         }
 
         .polaroid-left-1:hover {
@@ -860,6 +915,18 @@ export default function WishGamePage() {
           z-index: 10;
         }
 
+        .polaroid-left-5:hover {
+          transform: scale(1.06) translateY(-5px) rotate(4deg);
+          box-shadow: 0 15px 35px rgba(59, 42, 26, 0.25);
+          z-index: 10;
+        }
+
+        .polaroid-left-6:hover {
+          transform: scale(1.06) translateY(-5px) rotate(-2deg);
+          box-shadow: 0 15px 35px rgba(59, 42, 26, 0.25);
+          z-index: 10;
+        }
+
         .polaroid-right-1:hover {
           transform: scale(1.06) translateY(-5px) rotate(3deg);
           box-shadow: 0 15px 35px rgba(59, 42, 26, 0.25);
@@ -874,6 +941,24 @@ export default function WishGamePage() {
 
         .polaroid-right-3:hover {
           transform: scale(1.06) translateY(-5px) rotate(-3deg);
+          box-shadow: 0 15px 35px rgba(59, 42, 26, 0.25);
+          z-index: 10;
+        }
+
+        .polaroid-right-4:hover {
+          transform: scale(1.06) translateY(-5px) rotate(4deg);
+          box-shadow: 0 15px 35px rgba(59, 42, 26, 0.25);
+          z-index: 10;
+        }
+
+        .polaroid-right-5:hover {
+          transform: scale(1.06) translateY(-5px) rotate(-5deg);
+          box-shadow: 0 15px 35px rgba(59, 42, 26, 0.25);
+          z-index: 10;
+        }
+
+        .polaroid-right-6:hover {
+          transform: scale(1.06) translateY(-5px) rotate(3deg);
           box-shadow: 0 15px 35px rgba(59, 42, 26, 0.25);
           z-index: 10;
         }
