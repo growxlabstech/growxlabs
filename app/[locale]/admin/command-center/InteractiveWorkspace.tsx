@@ -274,8 +274,8 @@ function MarkdownBlock({ text }: { text: string }) {
   
   const renderFormattedText = (str: string) => {
     return str
-      .replace(/\*\*(.*?)\*\*/g, "<strong class='text-neutral-950'>$1</strong>")
-      .replace(/`(.*?)`/g, "<code class='bg-[#f6f5f4] border border-[#e6e6e6] px-1.5 py-0.5 rounded text-[13px] font-mono text-purple-600'>$1</code>");
+      .replace(/\*\*(.*?)\*\*/g, "<strong class='text-neutral-950 dark:text-zinc-50 font-bold'>$1</strong>")
+      .replace(/\`(.*?)\`/g, "<code class='bg-[#f6f5f4] dark:bg-zinc-800 border border-[#e6e6e6] dark:border-white/10 px-1.5 py-0.5 rounded text-[13px] font-mono text-purple-600 dark:text-purple-400'>$1</code>");
   };
 
   const flush = (key: string | number) => {
@@ -286,7 +286,7 @@ function MarkdownBlock({ text }: { text: string }) {
             {currentList.items.map((item, idx) => {
               const html = renderFormattedText(item);
               return (
-                <li key={idx} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-neutral-700">
+                <li key={idx} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-neutral-700 dark:text-zinc-300">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#0075de] mt-2 shrink-0" />
                   <span dangerouslySetInnerHTML={{ __html: html }} />
                 </li>
@@ -300,7 +300,7 @@ function MarkdownBlock({ text }: { text: string }) {
             {currentList.items.map((item, idx) => {
               const html = renderFormattedText(item);
               return (
-                <li key={idx} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-neutral-700">
+                <li key={idx} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-neutral-700 dark:text-zinc-300">
                   <span className="text-[#0075de] font-mono text-xs font-bold mt-0.5 shrink-0 w-5">{idx + 1}.</span>
                   <span dangerouslySetInnerHTML={{ __html: html }} />
                 </li>
@@ -316,7 +316,7 @@ function MarkdownBlock({ text }: { text: string }) {
       const inner = currentBlockquote.join("\n");
       const html = renderFormattedText(inner);
       elements.push(
-        <blockquote key={`bq-${key}`} className="border-l-2 border-[#0075de]/50 pl-4 py-2 text-[14px] text-neutral-600 leading-relaxed italic my-2">
+        <blockquote key={`bq-${key}`} className="border-l-2 border-[#0075de]/50 pl-4 py-2 text-[14px] text-neutral-600 dark:text-zinc-400 leading-relaxed italic my-2">
           <span dangerouslySetInnerHTML={{ __html: html }} />
         </blockquote>
       );
@@ -329,20 +329,20 @@ function MarkdownBlock({ text }: { text: string }) {
         const headers = rows[0].split("|").map(h => h.trim()).filter(Boolean);
         const body = rows.slice(1).map(r => r.split("|").map(c => c.trim()).filter(Boolean));
         elements.push(
-          <div key={`tab-${key}`} className="overflow-x-auto my-4 rounded-lg border border-[#e6e6e6]">
+          <div key={`tab-${key}`} className="overflow-x-auto my-4 rounded-lg border border-[#e6e6e6] dark:border-white/10">
             <table className="w-full text-left text-[13px]">
               <thead>
-                <tr className="bg-[#f6f5f4] text-neutral-500 text-[11px] font-mono uppercase tracking-wider">
+                <tr className="bg-[#f6f5f4] dark:bg-white/5 text-neutral-500 dark:text-zinc-400 text-[11px] font-mono uppercase tracking-wider">
                   {headers.map((h, k) => <th key={k} className="px-4 py-3 font-medium">{h}</th>)}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e6e6e6]">
+              <tbody className="divide-y divide-[#e6e6e6] dark:divide-white/5">
                 {body.map((r, k) => (
-                  <tr key={k} className="hover:bg-neutral-50 transition-colors">
+                  <tr key={k} className="hover:bg-neutral-50 dark:hover:bg-white/[0.02] transition-colors">
                     {r.map((c, m) => {
                       const html = renderFormattedText(c);
                       return (
-                        <td key={m} className={cn("px-4 py-3 text-neutral-700", m === r.length - 1 && "font-mono font-semibold text-neutral-950")}>
+                        <td key={m} className={cn("px-4 py-3 text-neutral-700 dark:text-zinc-300", m === r.length - 1 && "font-mono font-semibold text-neutral-950 dark:text-zinc-100")}>
                           <span dangerouslySetInnerHTML={{ __html: html }} />
                         </td>
                       );
@@ -362,7 +362,7 @@ function MarkdownBlock({ text }: { text: string }) {
       if (content.trim()) {
         const html = renderFormattedText(content);
         elements.push(
-          <p key={`p-${key}`} className="text-[14px] leading-[1.75] text-neutral-700 my-2" dangerouslySetInnerHTML={{ __html: html }} />
+          <p key={`p-${key}`} className="text-[14px] leading-[1.75] text-neutral-700 dark:text-zinc-300 my-2" dangerouslySetInnerHTML={{ __html: html }} />
         );
       }
       currentParagraph = null;
@@ -378,21 +378,41 @@ function MarkdownBlock({ text }: { text: string }) {
       continue;
     }
 
-    // Headings
-    if (trimmed.startsWith("# ")) {
-      flush(i);
-      elements.push(<h2 key={`h2-${i}`} className="text-xl font-bold text-neutral-900 tracking-tight pt-2 my-2">{trimmed.slice(2)}</h2>);
-    } else if (trimmed.startsWith("## ")) {
-      flush(i);
-      elements.push(<h3 key={`h3-${i}`} className="text-lg font-bold text-neutral-800 tracking-tight pt-1 my-2">{trimmed.slice(3)}</h3>);
-    } else if (trimmed.startsWith("### ")) {
-      flush(i);
-      elements.push(<h4 key={`h4-${i}`} className="text-base font-semibold text-neutral-700 pt-1 my-2">{trimmed.slice(4)}</h4>);
-    } 
+    // Dynamic Heading matching (stripping any # hash tags)
+    if (trimmed.startsWith("#")) {
+      const match = trimmed.match(/^(#{1,6})\s+(.*)$/);
+      if (match) {
+        flush(i);
+        const level = match[1].length;
+        const headerText = match[2];
+        const levelNormalized = Math.min(6, level + 1);
+        const sizeClass = 
+          level === 1 ? "text-lg font-bold text-neutral-900 dark:text-zinc-100 tracking-tight pt-2 my-1.5" :
+          level === 2 ? "text-base font-bold text-neutral-800 dark:text-zinc-200 tracking-tight pt-1 my-1.5" :
+          level === 3 ? "text-sm font-semibold text-neutral-800 dark:text-zinc-300 pt-1 my-1" :
+          "text-xs font-bold uppercase tracking-wider text-neutral-700 dark:text-zinc-400 pt-1 my-1";
+        
+        let headerElement;
+        if (levelNormalized === 2) {
+          headerElement = <h2 key={`h-${i}`} className={sizeClass}>{headerText}</h2>;
+        } else if (levelNormalized === 3) {
+          headerElement = <h3 key={`h-${i}`} className={sizeClass}>{headerText}</h3>;
+        } else if (levelNormalized === 4) {
+          headerElement = <h4 key={`h-${i}`} className={sizeClass}>{headerText}</h4>;
+        } else if (levelNormalized === 5) {
+          headerElement = <h5 key={`h-${i}`} className={sizeClass}>{headerText}</h5>;
+        } else {
+          headerElement = <h6 key={`h-${i}`} className={sizeClass}>{headerText}</h6>;
+        }
+        elements.push(headerElement);
+        continue;
+      }
+    }
+    
     // Horizontal rule
     else if (trimmed === "---") {
       flush(i);
-      elements.push(<hr key={`hr-${i}`} className="border-[#e6e6e6] my-4" />);
+      elements.push(<hr key={`hr-${i}`} className="border-[#e6e6e6] dark:border-white/10 my-4" />);
     }
     // Blockquotes
     else if (trimmed.startsWith("> ")) {
@@ -517,156 +537,104 @@ function getLogStepsForAgent(agentName: string): string[] {
 }
 
 function generateSubagentResult(agentName: string, prompt: string): string {
-  const promptClean = prompt.trim();
+  const contextMatch = prompt.match(/\[Context:\s*"(.*?)"\]/i);
+  const context = contextMatch ? contextMatch[1] : "";
+  const cleanPrompt = prompt.replace(/\[Context:\s*".*?"\]/gi, "").trim();
   
+  // Extract a domain name if present in prompt or context
+  const domainMatch = (cleanPrompt + " " + context).match(/([a-zA-Z0-9-]+\.[a-zA-Z]{2,6})/);
+  const targetDomain = domainMatch ? domainMatch[1] : "growxlabs.com";
+  
+  // Extract keywords or target subjects
+  const words = cleanPrompt.split(/\s+/).filter(w => w.length > 4);
+  const targetSubject = words.length > 0 ? words.slice(0, 3).join(" ") : "Operational Strategy";
+
+  const timestamp = new Date().toLocaleDateString();
+
   if (agentName.includes("CEO")) {
-    return `### 💼 CEO Strategic Blueprint
-Generated in response to: *"${promptClean}"*
-
-#### 1. Strategic Summary
-We have parsed the GrowX Labs roadmap and aligned it with your request. Our core recommendation focuses on scaling the AI operating system integration.
-
-#### 2. SWOT Analysis
-| Strengths | Weaknesses |
-| :--- | :--- |
-| First-mover in agentic CRM tools | High latency in custom LLM pipelines |
-| High lead database conversion rate | Heavy reliance on external API keys |
-
-| Opportunities | Threats |
-| :--- | :--- |
-| Integration with local model nodes | Rapidly falling pricing margins |
-| Custom enterprise licensing options | Client reluctance toward autonomous agents |
-
-#### 3. Strategic Action Plan
-* **Q3 Target**: Establish a dedicated Enterprise sandbox for local screen-recordings.
-* **H2 Milestones**:
-  1. Complete supabase data sync.
-  2. Implement local model endpoints to guarantee client data privacy.
-  3. Deploy the Multi-Agent Workspace feature (allowing side-by-side agent canvas).
-`;
+    return "### CEO Strategic Brief: " + targetDomain + "\n" +
+      "Generated in response to: *\"" + cleanPrompt + "\"*" + "\n" +
+      "Date: " + timestamp + "\n\n" +
+      "## 1. Strategic Summary\n" +
+      "We have parsed the operational blueprint for **" + targetDomain + "** aligning with your directive: \"" + cleanPrompt + "\". Our core strategic mandate centers on accelerating product-market fit.\n\n" +
+      (context ? "## 2. Dragged Context Integration\nWe analyzed the provided context: *\"" + context.slice(0, 100) + "...\"*. Based on this telemetry, we recommend restructuring Q3 priorities.\n\n" : "") +
+      "## 3. SWOT Matrix for " + targetDomain + "\n" +
+      "| Strengths | Weaknesses |\n" +
+      "| :--- | :--- |\n" +
+      "| Strong positioning on \"" + targetSubject + "\" | Legacy database constraints |\n" +
+      "| High organic engagement | Dependency on external API pipelines |\n\n" +
+      "| Opportunities | Threats |\n" +
+      "| :--- | :--- |\n" +
+      "| Expand services under " + targetDomain + " brand | Rapidly falling model inference cost margins |\n" +
+      "| Integrated agent orchestration workspace | Aggressive competitor feature matching |\n\n" +
+      "## 4. Action Items\n" +
+      "* **Immediate**: Spin up a sandbox to isolate telemetry for the \"" + targetSubject + "\" initiative.\n" +
+      "* **Medium Term**: Refactor Supabase pipelines to optimize speed.\n";
   }
-  
+
   if (agentName.includes("CFO")) {
-    return `### 📊 CFO Financial Model & Revenue Forecast
-Generated in response to: *"${promptClean}"*
-
-#### 1. Revenue Forecast Breakdown (Next 4 Months)
-We simulated a 20% MoM growth rate on the active subscriber pool.
-
-| Month | Active Subscribers | Projected Revenue | Cost of Goods Sold (COGS) |
-| :--- | :--- | :--- | :--- |
-| July 2026 | 152 | ₹4,50,000 | ₹90,000 |
-| August 2026 | 182 | ₹5,40,000 | ₹1,08,000 |
-| September 2026 | 218 | ₹6,48,000 | ₹1,29,600 |
-| October 2026 | 261 | ₹7,77,600 | ₹1,55,520 |
-
-#### 2. Margin Analysis
-- **Gross Margins**: **80.0%** (SaaS industry standard is ~75%).
-- **Primary Cost Drivers**: Supabase database writes, OpenRouter API calls, and hosting infrastructure.
-- **Optimization Strategy**: Implement edge caching for common vector queries to reduce API costs by 15%.
-`;
+    return "### CFO Financial Model & Audit: " + targetDomain + "\n" +
+      "Generated in response to: *\"" + cleanPrompt + "\"*" + "\n\n" +
+      "## 1. Revenue Forecast & Projections\n" +
+      "Based on financial metrics associated with **" + targetDomain + "** and targeting \"" + targetSubject + "\":\n\n" +
+      "| Month | Active Accounts | Projected Billing | COGS (Model APIs) | Net Margin |\n" +
+      "| :--- | :--- | :--- | :--- | :--- |\n" +
+      "| Month 1 | 100 | ₹3,0,000 | ₹60,000 | ₹2,40,000 |\n" +
+      "| Month 2 | 135 | ₹4,05,000 | ₹78,000 | ₹3,27,000 |\n" +
+      "| Month 3 | 185 | ₹5,55,000 | ₹1,02,000 | ₹4,53,000 |\n\n" +
+      (context ? "## 2. Audited Context Reference\nOur financial model ingested the context payload: *\"" + context.slice(0, 100) + "...\"*.\n\n" : "") +
+      "## 3. Margin Insights\n" +
+      "- **Gross Margin**: **81.6%**\n" +
+      "- **Action Item**: Implement query caching to reduce COGS for the " + targetDomain + " API endpoints by 12%.\n";
   }
 
   if (agentName.includes("CTO")) {
-    return `### 💻 CTO Engineering & Architecture Spec
-Generated in response to: *"${promptClean}"*
-
-#### 1. Technical Audit
-We analyzed the repository structure and Next.js configuration.
-
-- **Frontend Tech Stack**: React 19, Next.js (App Router, Turbopack), Framer Motion.
-- **Backend Infrastructure**: Supabase PostgreSQL, Edge Functions, OpenRouter API.
-- **Bottleneck Identified**: Synchronous API calls in \`/api/admin/command-center/route.ts\` block response streams.
-
-#### 2. Proposed Architecture Refactoring
-\`\`\`typescript
-// Proposed Async Streaming Handler
-export async function POST(req: Request) {
-  const { message, conversationId } = await req.json();
-  const stream = new ReadableStream({
-    async start(controller) {
-      // Stream deltas line-by-line using SSE
-    }
-  });
-  return new NextResponse(stream, {
-    headers: { "Content-Type": "text/event-stream" }
-  });
-}
-\`\`\`
-
-#### 3. Action Items
-1. Migrated single video player on the Reel Simulator to a dual-element primed model to resolve autoplay blocks.
-2. Standardize all API route returns to follow standard Server-Sent Events (SSE).
-`;
+    return "### CTO Engineering & Architecture Spec: " + targetDomain + "\n" +
+      "Generated in response to: *\"" + cleanPrompt + "\"*" + "\n\n" +
+      "## 1. Technical Audit\n" +
+      "Analyzing codebase structure and endpoints for **" + targetDomain + "** in relation to \"" + targetSubject + "\".\n\n" +
+      "- **Core Framework**: Next.js App Router (React 19).\n" +
+      "- **Database Layer**: Supabase PostgreSQL.\n" +
+      "- **Identified Bottleneck**: telemetry requests lack caching.\n\n" +
+      (context ? "## 2. Context Integration Spec\nBased on the dragged code/text context:\n```text\n" + context.slice(0, 150) + "\n```\nWe propose implementing standard debounce hooks on input listeners.\n\n" : "") +
+      "## 3. Proposed Fix\n" +
+      "```typescript\n" +
+      "export async function POST(req: Request) {\n" +
+      "  // Optimizing " + targetDomain + " route handler\n" +
+      "  const { query } = await req.json();\n" +
+      "  const cached = await redis.get(query);\n" +
+      "  if (cached) return Response.json(cached);\n" +
+      "  \n" +
+      "  // Execute database telemetry logic...\n" +
+      "}\n" +
+      "```\n";
   }
 
-  if (agentName.includes("Research")) {
-    return `### 🔍 Competitive Intelligence Report
-Generated in response to: *"${promptClean}"*
-
-#### 1. Market Insights & Competitor Matrix
-We crawled industry reports for competitor offerings in autonomous AI operations.
-
-| Competitor | Primary Feature | Pricing model | Strengths |
-| :--- | :--- | :--- | :--- |
-| **AgentOps** | Agent debugging logs | Per seat pricing | Very deep debugging tools |
-| **CrewAI Suite** | Multi-agent pipelines | Open source / Cloud | Large developer community |
-| **GrowX Labs** | Unified Business CRM + OS | Subscription-based | Direct business ledger integration |
-
-#### 2. Strategic Insights
-- **Developer adoption** of multi-agent systems has grown **240% YoY**.
-- **Security & Privacy** are the number one concerns for enterprise clients (78% of decision makers cite it as a blocker).
-- **Recommendation**: Market GXL as a "Private Cloud" solution, utilizing local databases to secure client leads.
-`;
+  if (agentName.includes("Research") || agentName.includes("SEO") || agentName.includes("Content") || agentName.includes("Proposal") || agentName.includes("Sales") || agentName.includes("Project")) {
+    const isSEO = agentName.includes("SEO");
+    const isContent = agentName.includes("Content");
+    
+    return "### " + (isSEO ? "SEO Audit" : isContent ? "Content Brief" : "Intelligence Report") + ": " + targetDomain + "\n" +
+      "Generated in response to: *\"" + cleanPrompt + "\"*" + "\n\n" +
+      "## 1. Core Findings for " + targetDomain + "\n" +
+      "Our crawlers analyzed **" + targetDomain + "** for query targets matching \"" + targetSubject + "\".\n\n" +
+      "- **Performance Score**: **78/100**\n" +
+      "- **Keyword Targets**: \"" + targetSubject + "\", \"" + targetDomain + " features\", \"AI CRM Automation\".\n\n" +
+      (context ? "## 2. Contextual Focus\nWe integrated your reference: *\"" + context.slice(0, 100) + "...\"*.\n\n" : "") +
+      "## 3. Strategic Action Plan\n" +
+      "1. **Target Keyword Group**: Focus content around the primary term **\"" + targetSubject + "\"** to capture high-intent organic traffic.\n" +
+      "2. **Backlink Acquisition**: Build authoritative referring domains pointing back to **" + targetDomain + "**.\n" +
+      "3. **On-Page Optimization**: Ensure main landing page headers match semantic search criteria.\n";
   }
 
-  if (agentName.includes("Sales")) {
-    return `### 📈 Sales Pipeline & Leads Strategy
-Generated in response to: *"${promptClean}"*
-
-#### 1. CRM Lead Status Breakdown
-Querying active CRM leads records.
-
-- **Total Active Leads**: **128**
-- **Conversion Rate (Lead → Qualified)**: **24.5%**
-- **Hot Leads (Ready for Outreach)**:
-  1. *Apex Medical Center* (Status: Qualified, Est. Value: ₹5,0,000)
-  2. *Zenith Software Solutions* (Status: New, Est. Value: ₹3,50,000)
-
-#### 2. Recommended Sales Outreach Pitch
-- **Hook**: Introduce the GXL Command Center as a tool to automate their SOW generation and proposal dispatch.
-- **Call-to-Action**: Invite the lead to run a 7-day trial of the One Wish Willow interactive campaign.
-`;
-  }
-
-  if (agentName.includes("Content") || agentName.includes("SEO")) {
-    return `### ✍️ Content Strategy & SEO Brief
-Generated in response to: *"${promptClean}"*
-
-#### 1. SEO Keyword Focus
-- **Primary Keyword**: "Autonomous AI Agents for Business" (Search Vol: 12,000/mo, Difficulty: Medium)
-- **Secondary Keywords**: "Command Center OS", "Supabase CRM automation", "GrowX Labs".
-
-#### 2. Social Media & Blog Content Plan
-* **Headline Idea**: *"Why Chatbots Are Dying: The Rise of Autonomous AI Command Centers"*
-* **Key Arguments**:
-  1. Reactive chat is limited; proactive multi-agent grids can run background telemetry.
-  2. Integrating Supabase directly with LLMs removes manual administrative work.
-  3. Drag-and-drop subagent workspaces increase operational throughput.
-`;
-  }
-
-  return `### 🤖 Subagent Findings Report
-Generated in response to: *"${promptClean}"*
-
-#### 1. Task Summary
-The ${agentName} successfully executed the custom task loop. 
-
-#### 2. Key Findings
-- Completed deep scanning of the query parameters and context.
-- Organized the output structures into a unified operational brief.
-- Ready to push results to the main dashboard for central orchestrator review.
-`;
+  return "### Subagent Findings Report: " + targetDomain + "\n" +
+    "Generated in response to: *\"" + cleanPrompt + "\"*" + "\n\n" +
+    "## 1. Mission Status\n" +
+    "The " + agentName + " has qualified the task: \"" + cleanPrompt + "\".\n\n" +
+    "## 2. Key Findings\n" +
+    "- Subject domain evaluated: **" + targetDomain + "**.\n" +
+    "- Primary focus: **" + targetSubject + "**.\n" +
+    (context ? "- Dragged Context Contextualized: *\"" + context.slice(0, 85) + "...\"*\n" : "");
 }
 
 function StreamingTerminal({
@@ -772,44 +740,44 @@ function SubagentWorkspacePanel({
   };
 
   return (
-    <div className="flex flex-col h-full border-l border-[#e6e6e6] bg-[#f6f5f4]/30 overflow-hidden">
-      <div className="px-4 py-3 bg-white border-b border-[#e6e6e6] flex items-center justify-between shadow-sm shrink-0 select-none">
+    <div className="flex flex-col h-full border-l border-white/10 bg-[#0c0d12]/95 backdrop-blur-md overflow-hidden text-zinc-300">
+      <div className="px-4 py-3 bg-[#08090d] border-b border-white/5 flex items-center justify-between shadow-sm shrink-0 select-none">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded bg-neutral-100 flex items-center justify-center border border-[#e6e6e6]">
+          <div className="w-5 h-5 rounded bg-white/5 flex items-center justify-center border border-white/10">
             <Cpu className="w-3 h-3 text-[#0075de]" />
           </div>
           <div>
-            <h4 className="text-[13px] font-bold text-neutral-800 leading-tight">{panel.agentName}</h4>
-            <p className="text-[10px] text-neutral-400 font-medium leading-none mt-0.5">{panel.role}</p>
+            <h4 className="text-[13px] font-bold text-zinc-100 leading-tight">{panel.agentName}</h4>
+            <p className="text-[10px] text-zinc-400 font-medium leading-none mt-0.5">{panel.role}</p>
           </div>
         </div>
         <div className="flex items-center gap-1.5">
           <span className={cn(
             "text-[9px] font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border",
-            panel.status === "idle" ? "text-neutral-500 bg-neutral-100 border-[#e6e6e6]" :
-            panel.status === "running" ? "text-amber-700 bg-amber-50 border-amber-200 animate-pulse" :
-            "text-emerald-700 bg-emerald-50 border-emerald-200"
+            panel.status === "idle" ? "text-zinc-400 bg-white/5 border-white/10" :
+            panel.status === "running" ? "text-amber-400 bg-amber-500/10 border-amber-500/30 animate-pulse" :
+            "text-emerald-400 bg-emerald-500/10 border-emerald-500/30"
           )}>
             {panel.status}
           </span>
           <button
             onClick={onClose}
-            className="p-1 rounded-md text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors"
+            className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-[#0b0c10]">
         {panel.chatHistory.length === 0 && panel.status === "idle" ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4 select-none">
-            <div className="w-12 h-12 rounded-xl bg-white border border-[#e6e6e6] shadow-sm flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 shadow-sm flex items-center justify-center animate-pulse">
               <Terminal className="w-6 h-6 text-[#0075de]" />
             </div>
             <div>
-              <h5 className="text-[13px] font-bold text-neutral-800">Workspace Ready</h5>
-              <p className="text-[11px] text-neutral-500 max-w-[200px] mt-1.5 leading-relaxed">
+              <h5 className="text-[13px] font-bold text-zinc-100">Workspace Ready</h5>
+              <p className="text-[11px] text-zinc-400 max-w-[200px] mt-1.5 leading-relaxed">
                 Provide instructions or drag a chat bubble here as context to execute the subagent workflow.
               </p>
             </div>
@@ -830,8 +798,8 @@ function SubagentWorkspacePanel({
                   <div className={cn(
                     "max-w-[90%] rounded-xl px-3.5 py-2.5 text-xs leading-relaxed border shadow-sm min-w-0 overflow-hidden",
                     ch.sender === "user"
-                      ? "bg-white border-[#e6e6e6] text-neutral-800 rounded-tr-none"
-                      : "bg-[#0075de]/5 border-[#0075de]/10 text-neutral-800 rounded-tl-none font-sans"
+                      ? "bg-white/5 border-white/10 text-zinc-100 rounded-tr-none"
+                      : "bg-[#0075de]/10 border border-[#0075de]/20 text-zinc-100 rounded-tl-none font-sans"
                   )}>
                     {ch.sender === "agent" ? (
                       <MarkdownBlock text={ch.text} />
@@ -839,7 +807,7 @@ function SubagentWorkspacePanel({
                       <p className="whitespace-pre-wrap">{ch.text}</p>
                     )}
                   </div>
-                  <span className="text-[9px] text-neutral-400 font-mono mt-1 px-1">{ch.timestamp}</span>
+                  <span className="text-[9px] text-zinc-500 font-mono mt-1 px-1">{ch.timestamp}</span>
                 </div>
               ))}
             </div>
@@ -851,7 +819,7 @@ function SubagentWorkspacePanel({
                     const agentAnswer = panel.chatHistory.filter(ch => ch.sender === "agent").pop();
                     if (agentAnswer) onPushToMainChat(agentAnswer.text);
                   }}
-                  className="w-full flex items-center justify-center gap-1.5 bg-[#0075de] hover:bg-[#005bab] text-white font-bold text-[10px] uppercase tracking-wider py-2.5 rounded-md shadow-sm transition-all active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#0075de] to-[#005bab] hover:from-[#005bab] hover:to-[#004785] text-white font-bold text-[10px] uppercase tracking-wider py-3 rounded-md shadow-[0_0_15px_rgba(0,117,222,0.2)] hover:shadow-[0_0_20px_rgba(0,117,222,0.4)] transition-all active:scale-[0.98]"
                 >
                   <Send className="w-3.5 h-3.5" />
                   Synthesize & Send to Main Chat
@@ -863,7 +831,7 @@ function SubagentWorkspacePanel({
         )}
       </div>
 
-      <div className="p-3 border-t border-[#e6e6e6] bg-white shrink-0">
+      <div className="p-3 border-t border-white/5 bg-[#08090d] shrink-0">
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -880,12 +848,14 @@ function SubagentWorkspacePanel({
             }
           }}
           className={cn(
-            "relative flex items-center bg-[#f6f5f4] border rounded-md transition-all px-2.5 py-2",
-            isDragOverInput ? "border-[#0075de] ring-2 ring-[#0075de]/20 bg-[#0075de]/5" : "border-[#e6e6e6] focus-within:border-[#0075de] focus-within:bg-white"
+            "relative flex items-center bg-white/5 border rounded-md transition-all px-2.5 py-2",
+            isDragOverInput 
+              ? "border-[#0075de] ring-2 ring-[#0075de]/20 bg-[#0075de]/10" 
+              : "border-white/10 focus-within:border-[#0075de] focus-within:bg-white/[0.08]"
           )}
         >
           {isDragOverInput && (
-            <div className="absolute inset-0 bg-[#0075de]/10 border border-[#0075de] rounded-md flex items-center justify-center text-xs font-bold text-[#0075de] pointer-events-none">
+            <div className="absolute inset-0 bg-[#0075de]/20 border border-[#0075de] rounded-md flex items-center justify-center text-xs font-bold text-white pointer-events-none">
               Drop message to add context
             </div>
           )}
@@ -902,7 +872,7 @@ function SubagentWorkspacePanel({
             }}
             placeholder={panel.status === "running" ? "Agent is working..." : "Provide instructions to agent..."}
             disabled={panel.status === "running"}
-            className="flex-1 bg-transparent border-0 outline-none text-xs text-neutral-800 placeholder-neutral-400 py-1"
+            className="flex-1 bg-transparent border-0 outline-none text-xs text-white placeholder-zinc-500 py-1"
           />
 
           <button
@@ -912,7 +882,7 @@ function SubagentWorkspacePanel({
               "w-7 h-7 rounded flex items-center justify-center transition-all shrink-0 ml-1.5",
               localInput.trim() && panel.status !== "running"
                 ? "bg-[#0075de] text-white hover:bg-[#005bab]"
-                : "bg-neutral-200 text-neutral-400 cursor-not-allowed"
+                : "bg-white/5 text-zinc-500 cursor-not-allowed"
             )}
           >
             {panel.status === "running" ? (
