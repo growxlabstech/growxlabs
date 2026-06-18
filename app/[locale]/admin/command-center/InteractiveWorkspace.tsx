@@ -263,7 +263,7 @@ interface CommandSuggestion {
 /* ─────────────────────────────────────────────────────────
    Markdown renderer — clean prose blocks
    ───────────────────────────────────────────────────────── */
-function MarkdownBlock({ text }: { text: string }) {
+function MarkdownBlock({ text, isDark }: { text: string; isDark?: boolean }) {
   const lines = text.split("\n");
   const elements: React.ReactNode[] = [];
   
@@ -273,9 +273,14 @@ function MarkdownBlock({ text }: { text: string }) {
   let currentParagraph: string[] | null = null;
   
   const renderFormattedText = (str: string) => {
+    const strongClass = isDark ? "text-zinc-50 font-bold" : "text-neutral-950 font-bold";
+    const codeClass = isDark 
+      ? "bg-zinc-800 border border-white/10 px-1.5 py-0.5 rounded text-[13px] font-mono text-purple-400"
+      : "bg-[#f6f5f4] border border-[#e6e6e6] px-1.5 py-0.5 rounded text-[13px] font-mono text-purple-600";
+      
     return str
-      .replace(/\*\*(.*?)\*\*/g, "<strong class='text-neutral-950 dark:text-zinc-50 font-bold'>$1</strong>")
-      .replace(/\`(.*?)\`/g, "<code class='bg-[#f6f5f4] dark:bg-zinc-800 border border-[#e6e6e6] dark:border-white/10 px-1.5 py-0.5 rounded text-[13px] font-mono text-purple-600 dark:text-purple-400'>$1</code>");
+      .replace(/\*\*(.*?)\*\*/g, `<strong class="${strongClass}">$1</strong>`)
+      .replace(/\`(.*?)\`/g, `<code class="${codeClass}">$1</code>`);
   };
 
   const flush = (key: string | number) => {
@@ -286,7 +291,7 @@ function MarkdownBlock({ text }: { text: string }) {
             {currentList.items.map((item, idx) => {
               const html = renderFormattedText(item);
               return (
-                <li key={idx} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-neutral-700 dark:text-zinc-300">
+                <li key={idx} className={cn("flex items-start gap-2.5 text-[14px] leading-relaxed", isDark ? "text-zinc-300" : "text-neutral-700")}>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#0075de] mt-2 shrink-0" />
                   <span dangerouslySetInnerHTML={{ __html: html }} />
                 </li>
@@ -300,7 +305,7 @@ function MarkdownBlock({ text }: { text: string }) {
             {currentList.items.map((item, idx) => {
               const html = renderFormattedText(item);
               return (
-                <li key={idx} className="flex items-start gap-2.5 text-[14px] leading-relaxed text-neutral-700 dark:text-zinc-300">
+                <li key={idx} className={cn("flex items-start gap-2.5 text-[14px] leading-relaxed", isDark ? "text-zinc-300" : "text-neutral-700")}>
                   <span className="text-[#0075de] font-mono text-xs font-bold mt-0.5 shrink-0 w-5">{idx + 1}.</span>
                   <span dangerouslySetInnerHTML={{ __html: html }} />
                 </li>
@@ -316,7 +321,7 @@ function MarkdownBlock({ text }: { text: string }) {
       const inner = currentBlockquote.join("\n");
       const html = renderFormattedText(inner);
       elements.push(
-        <blockquote key={`bq-${key}`} className="border-l-2 border-[#0075de]/50 pl-4 py-2 text-[14px] text-neutral-600 dark:text-zinc-400 leading-relaxed italic my-2">
+        <blockquote key={`bq-${key}`} className={cn("border-l-2 border-[#0075de]/50 pl-4 py-2 text-[14px] leading-relaxed italic my-2", isDark ? "text-zinc-400" : "text-neutral-600")}>
           <span dangerouslySetInnerHTML={{ __html: html }} />
         </blockquote>
       );
@@ -329,20 +334,20 @@ function MarkdownBlock({ text }: { text: string }) {
         const headers = rows[0].split("|").map(h => h.trim()).filter(Boolean);
         const body = rows.slice(1).map(r => r.split("|").map(c => c.trim()).filter(Boolean));
         elements.push(
-          <div key={`tab-${key}`} className="overflow-x-auto my-4 rounded-lg border border-[#e6e6e6] dark:border-white/10">
+          <div key={`tab-${key}`} className={cn("overflow-x-auto my-4 rounded-lg border", isDark ? "border-white/10" : "border-[#e6e6e6]")}>
             <table className="w-full text-left text-[13px]">
               <thead>
-                <tr className="bg-[#f6f5f4] dark:bg-white/5 text-neutral-500 dark:text-zinc-400 text-[11px] font-mono uppercase tracking-wider">
+                <tr className={cn("text-[11px] font-mono uppercase tracking-wider", isDark ? "bg-white/5 text-zinc-400" : "bg-[#f6f5f4] text-neutral-500")}>
                   {headers.map((h, k) => <th key={k} className="px-4 py-3 font-medium">{h}</th>)}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e6e6e6] dark:divide-white/5">
+              <tbody className={cn("divide-y", isDark ? "divide-white/5" : "divide-[#e6e6e6]")}>
                 {body.map((r, k) => (
-                  <tr key={k} className="hover:bg-neutral-50 dark:hover:bg-white/[0.02] transition-colors">
+                  <tr key={k} className={cn("transition-colors", isDark ? "hover:bg-white/[0.02]" : "hover:bg-neutral-50")}>
                     {r.map((c, m) => {
                       const html = renderFormattedText(c);
                       return (
-                        <td key={m} className={cn("px-4 py-3 text-neutral-700 dark:text-zinc-300", m === r.length - 1 && "font-mono font-semibold text-neutral-950 dark:text-zinc-100")}>
+                        <td key={m} className={cn("px-4 py-3", isDark ? "text-zinc-300" : "text-neutral-700", m === r.length - 1 && (isDark ? "font-mono font-semibold text-zinc-100" : "font-mono font-semibold text-neutral-950"))}>
                           <span dangerouslySetInnerHTML={{ __html: html }} />
                         </td>
                       );
@@ -362,7 +367,7 @@ function MarkdownBlock({ text }: { text: string }) {
       if (content.trim()) {
         const html = renderFormattedText(content);
         elements.push(
-          <p key={`p-${key}`} className="text-[14px] leading-[1.75] text-neutral-700 dark:text-zinc-300 my-2" dangerouslySetInnerHTML={{ __html: html }} />
+          <p key={`p-${key}`} className={cn("text-[14px] leading-[1.75] my-2", isDark ? "text-zinc-300" : "text-neutral-700")} dangerouslySetInnerHTML={{ __html: html }} />
         );
       }
       currentParagraph = null;
@@ -378,7 +383,6 @@ function MarkdownBlock({ text }: { text: string }) {
       continue;
     }
 
-    // Dynamic Heading matching (stripping any # hash tags)
     if (trimmed.startsWith("#")) {
       const match = trimmed.match(/^(#{1,6})\s+(.*)$/);
       if (match) {
@@ -386,11 +390,12 @@ function MarkdownBlock({ text }: { text: string }) {
         const level = match[1].length;
         const headerText = match[2];
         const levelNormalized = Math.min(6, level + 1);
+        
         const sizeClass = 
-          level === 1 ? "text-lg font-bold text-neutral-900 dark:text-zinc-100 tracking-tight pt-2 my-1.5" :
-          level === 2 ? "text-base font-bold text-neutral-800 dark:text-zinc-200 tracking-tight pt-1 my-1.5" :
-          level === 3 ? "text-sm font-semibold text-neutral-800 dark:text-zinc-300 pt-1 my-1" :
-          "text-xs font-bold uppercase tracking-wider text-neutral-700 dark:text-zinc-400 pt-1 my-1";
+          level === 1 ? cn("text-lg font-bold tracking-tight pt-2 my-1.5", isDark ? "text-zinc-100" : "text-neutral-900") :
+          level === 2 ? cn("text-base font-bold tracking-tight pt-1 my-1.5", isDark ? "text-zinc-200" : "text-neutral-800") :
+          level === 3 ? cn("text-sm font-semibold pt-1 my-1", isDark ? "text-zinc-300" : "text-neutral-800") :
+          cn("text-xs font-bold uppercase tracking-wider pt-1 my-1", isDark ? "text-zinc-400" : "text-neutral-700");
         
         let headerElement;
         if (levelNormalized === 2) {
@@ -409,36 +414,30 @@ function MarkdownBlock({ text }: { text: string }) {
       }
     }
     
-    // Horizontal rule
     else if (trimmed === "---") {
       flush(i);
-      elements.push(<hr key={`hr-${i}`} className="border-[#e6e6e6] dark:border-white/10 my-4" />);
+      elements.push(<hr key={`hr-${i}`} className={cn("my-4", isDark ? "border-white/10" : "border-[#e6e6e6]")} />);
     }
-    // Blockquotes
     else if (trimmed.startsWith("> ")) {
       if (currentList || currentTable || currentParagraph) flush(i);
       if (!currentBlockquote) currentBlockquote = [];
       currentBlockquote.push(trimmed.slice(2));
     }
-    // Tables
     else if (trimmed.startsWith("| ")) {
       if (currentList || currentBlockquote || currentParagraph) flush(i);
       if (!currentTable) currentTable = [];
       currentTable.push(trimmed);
     }
-    // Bullet lists
     else if (trimmed.startsWith("* ") || trimmed.startsWith("- ")) {
       if (currentBlockquote || currentTable || currentParagraph || (currentList && currentList.type !== "bullet")) flush(i);
       if (!currentList) currentList = { type: "bullet", items: [] };
       currentList.items.push(trimmed.slice(2));
     }
-    // Numbered lists
     else if (/^\d+\.\s/.test(trimmed)) {
       if (currentBlockquote || currentTable || currentParagraph || (currentList && currentList.type !== "number")) flush(i);
       if (!currentList) currentList = { type: "number", items: [] };
       currentList.items.push(trimmed.replace(/^\d+\.\s*/, ""));
     }
-    // Normal paragraphs
     else {
       if (currentList || currentBlockquote || currentTable) flush(i);
       if (!currentParagraph) currentParagraph = [];
@@ -740,7 +739,7 @@ function SubagentWorkspacePanel({
   };
 
   return (
-    <div className="flex flex-col h-full border-l border-white/10 bg-[#0c0d12]/95 backdrop-blur-md overflow-hidden text-zinc-300">
+    <div className="flex flex-col h-full border-l border-white/10 bg-[#0c0d12]/95 backdrop-blur-md overflow-hidden text-zinc-300 animate-in fade-in duration-300">
       <div className="px-4 py-3 bg-[#08090d] border-b border-white/5 flex items-center justify-between shadow-sm shrink-0 select-none">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded bg-white/5 flex items-center justify-center border border-white/10">
@@ -802,7 +801,7 @@ function SubagentWorkspacePanel({
                       : "bg-[#0075de]/10 border border-[#0075de]/20 text-zinc-100 rounded-tl-none font-sans"
                   )}>
                     {ch.sender === "agent" ? (
-                      <MarkdownBlock text={ch.text} />
+                      <MarkdownBlock text={ch.text} isDark />
                     ) : (
                       <p className="whitespace-pre-wrap">{ch.text}</p>
                     )}
