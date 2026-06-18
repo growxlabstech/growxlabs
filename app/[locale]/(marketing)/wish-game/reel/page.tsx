@@ -12,12 +12,13 @@ const dmSans = DM_Sans({
   subsets: ["latin"],
 });
 
-type ReelState = "idle" | "countdown" | "hook" | "video" | "cta";
+type ReelState = "idle" | "countdown" | "hook" | "teaser-video" | "game-video" | "cta";
 
 export default function ReelRecorderPage() {
   const [state, setState] = useState<ReelState>("idle");
   const [countdown, setCountdown] = useState(3);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const teaserRef = useRef<HTMLVideoElement>(null);
+  const gameRef = useRef<HTMLVideoElement>(null);
 
   // Playback flow trigger
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function ReelRecorderPage() {
 
     if (state === "hook") {
       const timer = setTimeout(() => {
-        setState("video");
+        setState("teaser-video");
       }, 3500); // Show hook for 3.5 seconds
       return () => clearTimeout(timer);
     }
@@ -45,9 +46,12 @@ export default function ReelRecorderPage() {
 
   // Video play controller
   useEffect(() => {
-    if (state === "video" && videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch((e) => console.log("Video auto-play block:", e));
+    if (state === "teaser-video" && teaserRef.current) {
+      teaserRef.current.currentTime = 0;
+      teaserRef.current.play().catch((e) => console.log("Teaser autoplay block:", e));
+    } else if (state === "game-video" && gameRef.current) {
+      gameRef.current.currentTime = 0;
+      gameRef.current.play().catch((e) => console.log("Game autoplay block:", e));
     }
   }, [state]);
 
@@ -57,8 +61,11 @@ export default function ReelRecorderPage() {
   }
 
   function resetFlow() {
-    if (videoRef.current) {
-      videoRef.current.pause();
+    if (teaserRef.current) {
+      teaserRef.current.pause();
+    }
+    if (gameRef.current) {
+      gameRef.current.pause();
     }
     setState("idle");
   }
@@ -100,7 +107,7 @@ export default function ReelRecorderPage() {
             <div className="screen-idle">
               <span className="phone-camera-lens" />
               <h3>Instagram Reel Preview</h3>
-              <p>Ready to simulate: Hook → Video → CTA</p>
+              <p>Ready to simulate: Hook → Teaser → Game → CTA</p>
             </div>
           )}
 
@@ -127,18 +134,39 @@ export default function ReelRecorderPage() {
             </div>
           )}
 
-          {/* STATE: VIDEO (Teaser video playing) */}
-          <div className={`screen-video ${state === "video" ? "active" : ""}`}>
-            <video
-              ref={videoRef}
-              src="/videos/obsession-video.mp4"
-              playsInline
-              muted
-              onEnded={() => setState("cta")}
-            />
-            {state === "video" && (
+          {/* STATE: TEASER VIDEO */}
+          <div className={`screen-video ${state === "teaser-video" ? "active" : ""}`}>
+            {state === "teaser-video" && (
+              <video
+                ref={teaserRef}
+                src="/videos/obsession-video.mp4"
+                playsInline
+                autoPlay
+                onEnded={() => setState("game-video")}
+              />
+            )}
+            {state === "teaser-video" && (
               <div className="video-reel-caption">
-                <p className={alfa.className}>THE OBSESSION (2026)</p>
+                <p className={alfa.className}>THE TEASER</p>
+              </div>
+            )}
+          </div>
+
+          {/* STATE: GAME PLAY VIDEO */}
+          <div className={`screen-video ${state === "game-video" ? "active" : ""}`}>
+            {state === "game-video" && (
+              <video
+                ref={gameRef}
+                className="contain-video"
+                src="/videos/gxl-wish-game-22.mp4"
+                playsInline
+                autoPlay
+                onEnded={() => setState("cta")}
+              />
+            )}
+            {state === "game-video" && (
+              <div className="video-reel-caption">
+                <p className={alfa.className}>GXL SHOT 22</p>
               </div>
             )}
           </div>
@@ -429,6 +457,10 @@ export default function ReelRecorderPage() {
           width: 100%;
           height: 100%;
           object-fit: cover;
+        }
+
+        .screen-video video.contain-video {
+          object-fit: contain;
         }
 
         .video-reel-caption {
