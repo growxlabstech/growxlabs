@@ -32,6 +32,12 @@ export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const hostname = req.headers.get('host') || '';
 
+  if (hostname === 'spidey.growxlabs.tech') {
+    return NextResponse.rewrite(
+      new URL('/spiderman/dist/index.html', req.url)
+    );
+  }
+
   // Redirect old /wish-admin path to the new unified /admin/wish-game path
   if (pathname.includes('/wish-admin')) {
     const url = req.nextUrl.clone();

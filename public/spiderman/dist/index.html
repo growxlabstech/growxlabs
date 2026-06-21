@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" 
+    content="width=device-width, 
+    initial-scale=1.0, 
+    maximum-scale=1.0, 
+    user-scalable=no" />
+  <title>Spider-Man: Brand New Day</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #000;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      font-family: 'Arial Black', Arial, sans-serif;
+    }
+    #game-canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+    #hud {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    #film-counter {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: white;
+      border: 3px solid black;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #CC0000;
+      box-shadow: 3px 3px 0px black;
+    }
+    #timer {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border: 3px solid black;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #000;
+      box-shadow: 3px 3px 0px black;
+    }
+    #compass {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 80px;
+      height: 80px;
+    }
+    #state-indicator {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+    .state-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 900;
+      border: 2px solid black;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .state-badge.active { opacity: 1; }
+    #badge-swing { background: #4169E1; color: white; }
+    #badge-wall { background: #228B22; color: white; }
+    #badge-air { background: #888; color: white; }
+    #crosshair {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.6);
+    }
+    #crosshair.anchor-found {
+      border-color: #00FF00;
+      background: rgba(0,255,0,0.3);
+    }
+    #victory-screen {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 4px solid #CC0000;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 6px 6px 0px black;
+      pointer-events: all;
+      min-width: 320px;
+      z-index: 100;
+    }
+    #victory-screen h1 {
+      font-size: 36px;
+      color: #CC0000;
+      text-shadow: 2px 2px 0px black;
+      margin-bottom: 8px;
+    }
+    #victory-screen p {
+      font-size: 16px;
+      margin: 8px 0;
+      color: #333;
+    }
+    #victory-time {
+      font-size: 28px;
+      font-weight: 900;
+      color: #000;
+      margin: 16px 0;
+    }
+    .victory-btn {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 900;
+      border: 3px solid black;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px black;
+      pointer-events: all;
+    }
+    #btn-restart {
+      background: #CC0000;
+      color: white;
+    }
+    #btn-share {
+      background: #4169E1;
+      color: white;
+    }
+    .victory-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px black;
+    }
+    #title-screen {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(
+        135deg, #0a0a2e 0%, #1a0a0a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      z-index: 200;
+    }
+    #title-screen h1 {
+      font-size: 64px;
+      color: #CC0000;
+      text-shadow: 4px 4px 0px black,
+                   -2px -2px 0px black;
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+    #title-screen h2 {
+      font-size: 28px;
+      color: #4169E1;
+      text-shadow: 2px 2px 0px black;
+      letter-spacing: 8px;
+      margin-bottom: 48px;
+    }
+    #title-screen p {
+      font-size: 18px;
+      color: white;
+      animation: blink 1.2s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    #touch-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      pointer-events: none;
+      display: none;
+    }
+    @media (pointer: coarse) {
+      #touch-controls { display: block; }
+    }
+    #joystick-zone {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 120px;
+      height: 120px;
+      pointer-events: all;
+    }
+    #joystick-outer {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: 3px solid rgba(255,255,255,0.4);
+      position: relative;
+    }
+    #joystick-inner {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #btn-web {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #CC0000;
+      border: 3px solid black;
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      box-shadow: 3px 3px 0px black;
+    }
+    #btn-jump {
+      position: absolute;
+      bottom: 120px;
+      right: 40px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #4169E1;
+      border: 3px solid black;
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      box-shadow: 3px 3px 0px black;
+    }
+    #flash-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 50;
+    }
+  </style>
+  <script type="module" crossorigin src="/spiderman/dist/assets/index-C08hT5Py.js"></script>
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="film-counter">🎬 FILM: 0/10</div>
+    <div id="timer">⏱ 00:00</div>
+    <canvas id="compass" width="80" height="80"></canvas>
+    <div id="crosshair"></div>
+    <div id="state-indicator">
+      <div class="state-badge" id="badge-swing">
+        SWINGING
+      </div>
+      <div class="state-badge" id="badge-wall">
+        WALL RUN
+      </div>
+      <div class="state-badge" id="badge-air">
+        AIRBORNE
+      </div>
+    </div>
+  </div>
+
+  <!-- Flash overlay for collectible -->
+  <div id="flash-overlay"></div>
+
+  <!-- Touch controls -->
+  <div id="touch-controls">
+    <div id="joystick-zone">
+      <div id="joystick-outer">
+        <div id="joystick-inner"></div>
+      </div>
+    </div>
+    <div id="btn-web">WEB</div>
+    <div id="btn-jump">JUMP</div>
+  </div>
+
+  <!-- Title Screen -->
+  <div id="title-screen">
+    <h1>SPIDER-MAN</h1>
+    <h2>BRAND NEW DAY</h2>
+    <p>PRESS ENTER OR TAP TO START</p>
+  </div>
+
+  <!-- Victory Screen -->
+  <div id="victory-screen">
+    <h1>👁 SPIDER-MAN WINS!</h1>
+    <p>All Daily Bugle photos delivered!</p>
+    <div id="victory-time">00:00</div>
+    <p>Photos: 10/10</p>
+    <br/>
+    <button class="victory-btn" id="btn-restart">
+      PLAY AGAIN
+    </button>
+    <button class="victory-btn" id="btn-share">
+      SHARE SCORE
+    </button>
+  </div>
+
+</body>
+</html>
