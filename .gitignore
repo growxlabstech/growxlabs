@@ -46,3 +46,6 @@ next-env.d.ts
 
 # scratch files
 /scratch
+
+# spiderman game / vite folder
+/public/spiderman/
