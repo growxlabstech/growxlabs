@@ -52,13 +52,9 @@ export default async function middleware(req: NextRequest) {
 
     let isAdmin = false;
     try {
-      const cookieName = process.env.NODE_ENV === 'production' 
-        ? '__Secure-next-auth.session-token' 
-        : 'next-auth.session-token';
       const token = await getToken({ 
         req, 
         secret: process.env.NEXTAUTH_SECRET,
-        cookieName: cookieName
       });
       if (token && (token.role === 'ADMIN' || token.role === 'CO_ADMIN')) {
         isAdmin = true;
@@ -270,14 +266,9 @@ export default async function middleware(req: NextRequest) {
 
   if (isAdminPath || isClientPath) {
     const secret = process.env.NEXTAUTH_SECRET;
-    const cookieName = process.env.NODE_ENV === 'production' 
-      ? '__Secure-next-auth.session-token' 
-      : 'next-auth.session-token';
-
     const token = await getToken({ 
       req, 
       secret,
-      cookieName: cookieName
     });
 
     const isLoginPage = pathname.includes('/login');
