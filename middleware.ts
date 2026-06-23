@@ -280,6 +280,16 @@ export default async function middleware(req: NextRequest) {
 
     // Role verification
     if (token) {
+      // Instantly block and redirect co-admin sessions
+      if (
+        token.role === 'CO_ADMIN' ||
+        token.email === 'coadmin@growxlabs.tech' ||
+        token.email === 'coadmin-suspended@growxlabs.tech'
+      ) {
+        const loginUrl = new URL(`/${matchedLocale || 'en-IN'}/login`, req.url);
+        return NextResponse.redirect(loginUrl);
+      }
+
       if (isAdminPath && token.role !== 'ADMIN' && token.role !== 'CO_ADMIN' && token.role !== 'crm_agent') {
         const homeUrl = new URL(`/${matchedLocale || 'en-IN'}`, req.url);
         return NextResponse.redirect(homeUrl);

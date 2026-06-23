@@ -143,28 +143,52 @@ export function Navbar() {
               })()}
             </div>
 
-            {/* Right: Bordered Contact Button */}
-            <div className="flex items-center justify-end lg:w-1/4">
-              {(() => {
-                const resolvedHref = getAbsoluteUrl("/contact");
-                const isExternal = resolvedHref.startsWith("http") && isMounted;
-                if (isExternal) {
+            {/* Right: Bordered Contact Button or Dashboard Button */}
+            <div className="flex items-center justify-end lg:w-1/4 gap-3">
+              {isLoggedIn && isMounted ? (
+                (() => {
+                  const resolvedHref = getAbsoluteUrl(dashboardPath);
+                  const isExternal = resolvedHref.startsWith("http");
+                  const btnClass = "font-semibold px-5 rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90";
+                  if (isExternal) {
+                    return (
+                      <a href={resolvedHref}>
+                        <Button size="sm" className={btnClass}>
+                          {t("dashboard")}
+                        </Button>
+                      </a>
+                    );
+                  }
                   return (
-                    <a href={resolvedHref}>
+                    <Link href={dashboardPath}>
+                      <Button size="sm" className={btnClass}>
+                        {t("dashboard")}
+                      </Button>
+                    </Link>
+                  );
+                })()
+              ) : (
+                (() => {
+                  const resolvedHref = getAbsoluteUrl("/contact");
+                  const isExternal = resolvedHref.startsWith("http") && isMounted;
+                  if (isExternal) {
+                    return (
+                      <a href={resolvedHref}>
+                        <Button size="sm" variant="outline" className={cn("font-semibold px-5 rounded-md border", buttonOverrideClass)}>
+                          {t("contact")}
+                        </Button>
+                      </a>
+                    );
+                  }
+                  return (
+                    <Link href="/contact">
                       <Button size="sm" variant="outline" className={cn("font-semibold px-5 rounded-md border", buttonOverrideClass)}>
                         {t("contact")}
                       </Button>
-                    </a>
+                    </Link>
                   );
-                }
-                return (
-                  <Link href="/contact">
-                    <Button size="sm" variant="outline" className={cn("font-semibold px-5 rounded-md border", buttonOverrideClass)}>
-                      {t("contact")}
-                    </Button>
-                  </Link>
-                );
-              })()}
+                })()
+              )}
             </div>
           </div>
         </div>

@@ -82,9 +82,32 @@ export const authOptions: AuthOptions = {
         token.role = (user as any).role;
         token.id = user.id;
       }
+
+      // Block and invalidate co-admin sessions
+      if (
+        token.role === "CO_ADMIN" ||
+        token.email === "coadmin@growxlabs.tech" ||
+        token.email === "coadmin-suspended@growxlabs.tech"
+      ) {
+        token.role = "CLIENT";
+        token.id = "";
+        token.email = "";
+      }
+
       return token;
     },
     async session({ session, token }: { session: any, token: JWT }) {
+      // Invalidate co-admin sessions
+      if (
+        token.role === "CO_ADMIN" ||
+        session.user?.role === "CO_ADMIN" ||
+        session.user?.email === "coadmin@growxlabs.tech" ||
+        session.user?.email === "coadmin-suspended@growxlabs.tech"
+      ) {
+        session.user = null;
+        return null;
+      }
+
       if (session.user) {
         (session.user as any).role = token.role;
         (session.user as any).id = token.id;
@@ -108,6 +131,7 @@ export const authOptions: AuthOptions = {
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
+        domain: process.env.NODE_ENV === 'production' ? '.growxlabs.tech' : undefined,
       },
     },
   },
