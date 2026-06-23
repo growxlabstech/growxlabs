@@ -180,11 +180,12 @@ export default async function middleware(req: NextRequest) {
         cleanPath = cleanPath.replace(/^\/(courses|careers)/, '');
       }
 
-      const url = req.nextUrl.clone();
-      url.pathname = cleanPath === '' ? '/' : cleanPath;
       const baseHost = req.nextUrl.hostname.replace(/^(admin\.|client\.|restaurant\.|hotel\.|realestate\.|courses\.|careers\.)/, '');
-      url.hostname = `${targetSub}.${baseHost}`;
-      return NextResponse.redirect(url);
+      const protocol = req.nextUrl.protocol;
+      const port = req.nextUrl.port ? `:${req.nextUrl.port}` : '';
+      const targetPath = cleanPath === '' ? '/' : cleanPath;
+      const redirectUrl = `${protocol}//${targetSub}.${baseHost}${port}${targetPath}${req.nextUrl.search}`;
+      return NextResponse.redirect(redirectUrl);
     }
   }
 
@@ -206,11 +207,12 @@ export default async function middleware(req: NextRequest) {
     const targetSubRoute = `/${subdomain}`;
     if (cleanPath.startsWith(targetSubRoute)) {
       const remainingPath = cleanPath.substring(targetSubRoute.length);
-      const url = req.nextUrl.clone();
-      url.pathname = remainingPath === '' ? '/' : remainingPath;
       const baseHost = req.nextUrl.hostname.replace(/^(admin\.|client\.|restaurant\.|hotel\.|realestate\.|courses\.|careers\.)/, '');
-      url.hostname = `${subdomain}.${baseHost}`;
-      return NextResponse.redirect(url);
+      const protocol = req.nextUrl.protocol;
+      const port = req.nextUrl.port ? `:${req.nextUrl.port}` : '';
+      const targetPath = remainingPath === '' ? '/' : remainingPath;
+      const redirectUrl = `${protocol}//${subdomain}.${baseHost}${port}${targetPath}${req.nextUrl.search}`;
+      return NextResponse.redirect(redirectUrl);
     }
 
     const mainSitePaths = [
@@ -220,10 +222,24 @@ export default async function middleware(req: NextRequest) {
     ];
 
     if (mainSitePaths.some(path => cleanPath.startsWith(path))) {
-      const url = req.nextUrl.clone();
       const baseHost = req.nextUrl.hostname.replace(/^(admin\.|client\.|restaurant\.|hotel\.|realestate\.|courses\.|careers\.)/, '');
-      url.hostname = baseHost;
-      return NextResponse.redirect(url);
+      
+      // In local development, if we redirect to localhost:3000, Next.js strips the host and causes an infinite loop.
+      // To prevent this, we skip the redirect on localhost in development (falling through to a safe 404).
+      if (baseHost.includes('localhost') || baseHost.includes('127.0.0.1')) {
+        return NextResponse.next();
+      }
+
+      const protocol = req.nextUrl.protocol;
+      const port = req.nextUrl.port ? `:${req.nextUrl.port}` : '';
+      const redirectUrl = `${protocol}//${baseHost}${port}${req.nextUrl.pathname}${req.nextUrl.search}`;
+      console.log("MIDDLEWARE REDIRECT HIT:", req.nextUrl.href, "=>", redirectUrl);
+      return new NextResponse(null, {
+        status: 307,
+        headers: {
+          Location: redirectUrl,
+        },
+      });
     }
   }
 

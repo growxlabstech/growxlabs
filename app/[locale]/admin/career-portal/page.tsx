@@ -43,7 +43,7 @@ export default function AdminCareersPage() {
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/admin/careers/list?t=${Date.now()}`);
+      const res = await fetch(`/api/admin/career-portal/list?t=${Date.now()}`);
       const data = await res.json();
       setApplications(data || []);
     } catch (e) {
@@ -56,7 +56,7 @@ export default function AdminCareersPage() {
   const handleUpdateStatus = async (id: string, status: string) => {
     try {
       setUpdatingStatus(true);
-      const res = await fetch("/api/admin/careers/update", {
+      const res = await fetch("/api/admin/career-portal/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status })
@@ -80,7 +80,7 @@ export default function AdminCareersPage() {
     if (!activeCandidate) return;
     try {
       setSavingNotes(true);
-      const res = await fetch("/api/admin/careers/update", {
+      const res = await fetch("/api/admin/career-portal/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: activeCandidate.id, notes: candidateNotes })
@@ -258,178 +258,184 @@ export default function AdminCareersPage() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="relative w-full max-w-2xl bg-[#0a0a0a] border-l border-zinc-900 shadow-2xl flex flex-col h-full z-10"
+              className="relative w-full max-w-2xl bg-white border-l border-neutral-200 shadow-2xl flex flex-col h-full z-10"
             >
               {/* Header */}
-              <div className="p-6 border-b border-zinc-900 flex items-center justify-between bg-zinc-950">
+              <div className="p-6 border-b border-neutral-200 flex items-center justify-between bg-neutral-50">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-md bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
                     <FileText size={16} />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-white tracking-tight leading-none">{activeCandidate.name}</h2>
-                    <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest mt-1.5">// Candidate Dossier</p>
+                    <h2 className="text-lg font-bold text-neutral-900 tracking-tight leading-none">{activeCandidate.name}</h2>
+                    <p className="text-[9px] font-bold text-neutral-500 uppercase tracking-widest mt-1.5">// Candidate Dossier</p>
                   </div>
                 </div>
                 <button 
                   onClick={() => setActiveCandidate(null)} 
-                  className="p-2 hover:bg-zinc-900 rounded-md transition-colors text-zinc-500 hover:text-white"
+                  className="p-2 hover:bg-neutral-200 rounded-md transition-colors text-neutral-500 hover:text-neutral-950"
                 >
                   <XCircle size={20} />
                 </button>
               </div>
 
               {/* Scrollable details */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+              <div className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar bg-white">
                 
-                {/* 1. Header Info Cards */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900 space-y-1">
-                    <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Application Status</p>
-                    <div className="pt-1">{getStatusBadge(activeCandidate.status)}</div>
+                {/* 1. Header Info section with a neat structured profile header */}
+                <div className="border-b border-neutral-200 pb-6">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">// Application Dossier</p>
+                      <h3 className="text-2xl font-bold text-neutral-900 tracking-tight mt-1">{activeCandidate.name}</h3>
+                      <p className="text-xs text-primary font-bold mt-1 tracking-wider uppercase">{activeCandidate.role || "Not specified"}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest">Current Status</p>
+                      <div className="mt-1">{getStatusBadge(activeCandidate.status)}</div>
+                    </div>
                   </div>
-                  <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900 space-y-1">
-                    <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Applied Date</p>
-                    <p className="text-xs font-bold text-white mt-1.5">{new Date(activeCandidate.created_at).toLocaleString()}</p>
-                  </div>
-                </div>
-
-                {/* 2. Contact details */}
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2"><Clock size={12} /> Contact & Logistics</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900 flex items-center gap-3">
-                      <Mail className="h-4 w-4 text-zinc-500" />
-                      <div>
-                        <p className="text-[8px] font-bold text-zinc-500 uppercase">Email Address</p>
-                        <a href={`mailto:${activeCandidate.email}`} className="text-xs font-bold text-white hover:underline truncate block max-w-xs">{activeCandidate.email}</a>
-                      </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-neutral-100 text-xs font-mono">
+                    <div>
+                      <span className="block text-[9px] text-neutral-550 uppercase">Location</span>
+                      <span className="font-bold text-neutral-900 mt-1 block">{activeCandidate.location || "Unknown"}</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900 flex items-center gap-3">
-                      <Phone className="h-4 w-4 text-zinc-500" />
-                      <div>
-                        <p className="text-[8px] font-bold text-zinc-500 uppercase">Phone Number</p>
-                        <a href={`tel:${activeCandidate.phone}`} className="text-xs font-bold text-white hover:underline">{activeCandidate.phone || "Not provided"}</a>
-                      </div>
+                    <div>
+                      <span className="block text-[9px] text-neutral-550 uppercase">Experience</span>
+                      <span className="font-bold text-neutral-900 mt-1 block">{activeCandidate.experience || "0"} Years</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900 flex items-center gap-3">
-                      <MapPin className="h-4 w-4 text-zinc-500" />
-                      <div>
-                        <p className="text-[8px] font-bold text-zinc-500 uppercase">Current Location</p>
-                        <p className="text-xs font-bold text-white">{activeCandidate.location || "Not provided"}</p>
-                      </div>
+                    <div>
+                      <span className="block text-[9px] text-neutral-550 uppercase">Employment</span>
+                      <span className="font-bold text-neutral-900 mt-1 block">{activeCandidate.employment_type || "Unknown"}</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900 flex items-center gap-3">
-                      <Clock className="h-4 w-4 text-zinc-500" />
-                      <div>
-                        <p className="text-[8px] font-bold text-zinc-500 uppercase">Notice Period</p>
-                        <p className="text-xs font-bold text-white">{activeCandidate.notice_period || "Not specified"}</p>
-                      </div>
+                    <div>
+                      <span className="block text-[9px] text-neutral-550 uppercase">Applied Date</span>
+                      <span className="font-bold text-neutral-900 mt-1 block">{new Date(activeCandidate.created_at).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* 3. Role and Compensation */}
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2"><Briefcase size={12} /> Target Role & Compensation</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900">
-                      <p className="text-[8px] font-bold text-zinc-500 uppercase">Target Role</p>
-                      <p className="text-xs font-bold text-white mt-1">{activeCandidate.role || "Not specified"}</p>
+                {/* 2. Structured Dossier Form Layout */}
+                <div className="space-y-6">
+                  <div className="border border-neutral-200 rounded-xl overflow-hidden bg-neutral-50/50">
+                    <div className="bg-neutral-50 px-5 py-3 border-b border-neutral-200 flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-neutral-600 uppercase tracking-wider">01. Contact Credentials</span>
                     </div>
-                    <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900">
-                      <p className="text-[8px] font-bold text-zinc-500 uppercase">Employment Type</p>
-                      <p className="text-xs font-bold text-white mt-1">{activeCandidate.employment_type || "Not specified"}</p>
-                    </div>
-                    <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-900">
-                      <p className="text-[8px] font-bold text-zinc-500 uppercase">Expected Salary</p>
-                      <p className="text-xs font-bold text-white mt-1">{activeCandidate.expected_salary || "Not specified"}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 4. Experience & Tech Stack */}
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2"><Briefcase size={12} /> Experience & Technical Skills</p>
-                  <div className="p-5 rounded-xl bg-zinc-950 border border-zinc-900 space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-[8px] font-bold text-zinc-500 uppercase">Years of Experience</p>
-                        <p className="text-sm font-bold text-white mt-0.5">{activeCandidate.experience || "0"} Years</p>
+                    <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-sans">
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-neutral-450 uppercase tracking-wider block">Primary Email</span>
+                        <a href={`mailto:${activeCandidate.email}`} className="text-neutral-900 hover:text-primary transition-colors font-bold block truncate">{activeCandidate.email}</a>
                       </div>
-                      <div>
-                        <p className="text-[8px] font-bold text-zinc-500 uppercase">Current/Last Title</p>
-                        <p className="text-sm font-bold text-white mt-0.5">{activeCandidate.job_title || "Not specified"} at {activeCandidate.company || "Not specified"}</p>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-neutral-455 uppercase tracking-wider block">Phone Number</span>
+                        <a href={`tel:${activeCandidate.phone}`} className="text-neutral-900 hover:text-primary transition-colors font-bold block">{activeCandidate.phone || "Not provided"}</a>
                       </div>
                     </div>
-                    <div className="border-t border-zinc-900 pt-3">
-                      <p className="text-[8px] font-bold text-zinc-500 uppercase mb-1">Technical Stack Details</p>
-                      <p className="text-xs font-semibold text-zinc-300 leading-relaxed">{activeCandidate.tech_stack || "Not specified"}</p>
+                  </div>
+
+                  <div className="border border-neutral-200 rounded-xl overflow-hidden bg-neutral-50/50">
+                    <div className="bg-neutral-50 px-5 py-3 border-b border-neutral-200 flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-neutral-600 uppercase tracking-wider">02. Career & Compensation Settings</span>
+                    </div>
+                    <div className="p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm font-sans">
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-neutral-455 uppercase tracking-wider block">Expected Compensation</span>
+                        <span className="text-neutral-900 font-bold block">{activeCandidate.expected_salary || "Not specified"}</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-neutral-455 uppercase tracking-wider block">Notice Period / Availability</span>
+                        <span className="text-neutral-900 font-bold block">{activeCandidate.notice_period || "Not specified"}</span>
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-neutral-455 uppercase tracking-wider block">Last/Current Job Title</span>
+                        <span className="text-neutral-900 font-bold block">{activeCandidate.job_title || "Not specified"}</span>
+                      </div>
+                    </div>
+                    <div className="p-5 border-t border-neutral-200 text-sm font-sans">
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-mono text-neutral-455 uppercase tracking-wider block">Last/Current Employer</span>
+                        <span className="text-neutral-900 font-bold block">{activeCandidate.company || "Not specified"}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border border-neutral-200 rounded-xl overflow-hidden bg-neutral-50/50">
+                    <div className="bg-neutral-50 px-5 py-3 border-b border-neutral-200 flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-neutral-600 uppercase tracking-wider">03. Systems Expertise & Stack</span>
+                    </div>
+                    <div className="p-5 text-sm font-sans space-y-2">
+                      <span className="text-[10px] font-mono text-neutral-455 uppercase tracking-wider block">Primary Languages & Technologies</span>
+                      <p className="text-neutral-800 leading-relaxed font-bold">{activeCandidate.tech_stack || "Not specified"}</p>
+                    </div>
+                  </div>
+
+                  <div className="border border-neutral-200 rounded-xl overflow-hidden bg-neutral-50/50">
+                    <div className="bg-neutral-50 px-5 py-3 border-b border-neutral-200 flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-neutral-600 uppercase tracking-wider">04. Candidate Motivation</span>
+                    </div>
+                    <div className="p-5 text-sm font-sans space-y-2">
+                      <span className="text-[10px] font-mono text-neutral-455 uppercase tracking-wider block">Why join the team?</span>
+                      <p className="text-neutral-800 leading-relaxed italic whitespace-pre-line font-bold bg-neutral-100/50 p-4 rounded-lg border border-neutral-200">
+                        "{activeCandidate.motivation || "No motivation statement provided."}"
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="border border-neutral-200 rounded-xl overflow-hidden bg-neutral-50/50">
+                    <div className="bg-neutral-50 px-5 py-3 border-b border-neutral-200 flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-neutral-600 uppercase tracking-wider">05. Professional Footprints & Links</span>
+                    </div>
+                    <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {activeCandidate.resume_url && (
+                        <a 
+                          href={activeCandidate.resume_url} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="p-3.5 rounded-lg border border-neutral-200 hover:border-neutral-400 bg-white hover:bg-neutral-50 flex items-center justify-between text-xs font-bold text-neutral-800 transition-all duration-300"
+                        >
+                          <span className="flex items-center gap-2.5 text-neutral-750"><FileText className="h-4 w-4 text-emerald-600" /> Resume / CV Document</span>
+                          <ExternalLink size={12} className="text-neutral-450" />
+                        </a>
+                      )}
+                      {activeCandidate.github_url && (
+                        <a 
+                          href={activeCandidate.github_url} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="p-3.5 rounded-lg border border-neutral-200 hover:border-neutral-400 bg-white hover:bg-neutral-50 flex items-center justify-between text-xs font-bold text-neutral-800 transition-all duration-300"
+                        >
+                          <span className="flex items-center gap-2.5 text-neutral-750"><Link2 className="h-4 w-4 text-neutral-500" /> GitHub Repository</span>
+                          <ExternalLink size={12} className="text-neutral-450" />
+                        </a>
+                      )}
+                      {activeCandidate.linkedin_url && (
+                        <a 
+                          href={activeCandidate.linkedin_url} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="p-3.5 rounded-lg border border-neutral-200 hover:border-neutral-400 bg-white hover:bg-neutral-50 flex items-center justify-between text-xs font-bold text-neutral-800 transition-all duration-300"
+                        >
+                          <span className="flex items-center gap-2.5 text-neutral-750"><Link2 className="h-4 w-4 text-blue-600" /> LinkedIn Profile</span>
+                          <ExternalLink size={12} className="text-neutral-450" />
+                        </a>
+                      )}
+                      {activeCandidate.portfolio_url && (
+                        <a 
+                          href={activeCandidate.portfolio_url} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="p-3.5 rounded-lg border border-neutral-200 hover:border-neutral-400 bg-white hover:bg-neutral-50 flex items-center justify-between text-xs font-bold text-neutral-800 transition-all duration-300"
+                        >
+                          <span className="flex items-center gap-2.5 text-neutral-750"><Link2 className="h-4 w-4 text-purple-600" /> Portfolio Website</span>
+                          <ExternalLink size={12} className="text-neutral-450" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
 
-                {/* 5. Links */}
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2"><Link2 size={12} /> Professional Footprints</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {activeCandidate.resume_url && (
-                      <a 
-                        href={activeCandidate.resume_url} 
-                        target="_blank" 
-                        rel="noreferrer" 
-                        className="p-4 rounded-xl border border-zinc-900 hover:border-white bg-zinc-950 flex items-center justify-between text-xs font-bold text-white transition-all"
-                      >
-                        <span className="flex items-center gap-2.5 text-zinc-300"><FileText className="h-4 w-4 text-emerald-400" /> Resume / CV</span>
-                        <ExternalLink size={12} className="text-zinc-500" />
-                      </a>
-                    )}
-                    {activeCandidate.github_url && (
-                      <a 
-                        href={activeCandidate.github_url} 
-                        target="_blank" 
-                        rel="noreferrer" 
-                        className="p-4 rounded-xl border border-zinc-900 hover:border-white bg-zinc-950 flex items-center justify-between text-xs font-bold text-white transition-all"
-                      >
-                        <span className="flex items-center gap-2.5 text-zinc-300"><Link2 className="h-4 w-4 text-zinc-400" /> GitHub Profile</span>
-                        <ExternalLink size={12} className="text-zinc-500" />
-                      </a>
-                    )}
-                    {activeCandidate.linkedin_url && (
-                      <a 
-                        href={activeCandidate.linkedin_url} 
-                        target="_blank" 
-                        rel="noreferrer" 
-                        className="p-4 rounded-xl border border-zinc-900 hover:border-white bg-zinc-950 flex items-center justify-between text-xs font-bold text-white transition-all"
-                      >
-                        <span className="flex items-center gap-2.5 text-zinc-300"><Link2 className="h-4 w-4 text-blue-400" /> LinkedIn Profile</span>
-                        <ExternalLink size={12} className="text-zinc-500" />
-                      </a>
-                    )}
-                    {activeCandidate.portfolio_url && (
-                      <a 
-                        href={activeCandidate.portfolio_url} 
-                        target="_blank" 
-                        rel="noreferrer" 
-                        className="p-4 rounded-xl border border-zinc-900 hover:border-white bg-zinc-950 flex items-center justify-between text-xs font-bold text-white transition-all"
-                      >
-                        <span className="flex items-center gap-2.5 text-zinc-300"><Link2 className="h-4 w-4 text-purple-400" /> Portfolio Website</span>
-                        <ExternalLink size={12} className="text-zinc-500" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                {/* 6. Motivation */}
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2"><FileText size={12} /> Why GrowX Labs Tech?</p>
-                  <div className="p-5 rounded-xl bg-zinc-950 border border-zinc-900">
-                    <p className="text-xs text-zinc-300 leading-relaxed italic">"{activeCandidate.motivation || "No statement provided."}"</p>
-                  </div>
-                </div>
-
-                {/* 7. Notes and internal review */}
-                <div className="space-y-3 pt-2">
+                {/* 3. Notes and internal review */}
+                <div className="space-y-3 pt-4 border-t border-neutral-200">
                   <p className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-2"><Save size={12} /> Internal Hiring Notes</p>
                   <div className="space-y-2">
                     <textarea
@@ -437,13 +443,13 @@ export default function AdminCareersPage() {
                       onChange={e => setCandidateNotes(e.target.value)}
                       placeholder="Write internal notes about candidate interview, technical assessment results, or communications..."
                       rows={3}
-                      className="w-full bg-zinc-950 border border-zinc-900 focus:border-white focus:outline-none p-4 rounded-xl text-xs text-zinc-300 leading-relaxed resize-none transition-all"
+                      className="w-full bg-neutral-50 border border-neutral-200 focus:border-[#C0F0FB] focus:outline-none p-4 rounded-xl text-xs text-neutral-800 leading-relaxed resize-none transition-all duration-300"
                     />
                     <div className="flex justify-end">
                       <button
                         onClick={handleSaveNotes}
                         disabled={savingNotes}
-                        className="flex items-center gap-2 px-4 py-2 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-neutral-200 transition-all cursor-pointer"
+                        className="flex items-center gap-2 px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white text-[10px] font-black uppercase tracking-widest rounded-lg transition-all duration-300 cursor-pointer"
                       >
                         {savingNotes ? <Loader2 className="animate-spin h-3.5 w-3.5" /> : <Save className="h-3.5 w-3.5" />}
                         Save Notes
@@ -451,21 +457,20 @@ export default function AdminCareersPage() {
                     </div>
                   </div>
                 </div>
-
               </div>
 
               {/* Footer Actions (Status Updates) */}
-              <div className="p-6 border-t border-zinc-900 bg-zinc-950 flex flex-col gap-3">
-                <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">// Update Candidate Stage</p>
+              <div className="p-6 border-t border-neutral-200 bg-neutral-50 flex flex-col gap-3">
+                <p className="text-[9px] font-bold text-neutral-500 uppercase tracking-widest">// Update Candidate Stage</p>
                 <div className="flex flex-wrap gap-2.5">
                   <button
                     onClick={() => handleUpdateStatus(activeCandidate.id, "reviewed")}
                     disabled={updatingStatus || activeCandidate.status === "reviewed"}
                     className={cn(
-                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer",
+                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all duration-300 cursor-pointer",
                       activeCandidate.status === "reviewed"
-                        ? "bg-zinc-500/10 border-zinc-900/30 text-zinc-400"
-                        : "bg-transparent border-zinc-800 hover:border-zinc-500 text-zinc-300"
+                        ? "bg-neutral-200 border-neutral-300 text-neutral-850"
+                        : "bg-transparent border-neutral-300 hover:border-neutral-500 text-neutral-700"
                     )}
                   >
                     Reviewed
@@ -474,10 +479,10 @@ export default function AdminCareersPage() {
                     onClick={() => handleUpdateStatus(activeCandidate.id, "shortlisted")}
                     disabled={updatingStatus || activeCandidate.status === "shortlisted"}
                     className={cn(
-                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer",
+                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all duration-300 cursor-pointer",
                       activeCandidate.status === "shortlisted"
-                        ? "bg-purple-500/10 border-purple-900/30 text-purple-400"
-                        : "bg-transparent border-zinc-800 hover:border-purple-500 text-purple-300"
+                        ? "bg-purple-100 border-purple-200 text-purple-800"
+                        : "bg-transparent border-neutral-300 hover:border-purple-500 hover:text-purple-705 text-neutral-700"
                     )}
                   >
                     Shortlist
@@ -486,10 +491,10 @@ export default function AdminCareersPage() {
                     onClick={() => handleUpdateStatus(activeCandidate.id, "contacted")}
                     disabled={updatingStatus || activeCandidate.status === "contacted"}
                     className={cn(
-                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer",
+                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all duration-300 cursor-pointer",
                       activeCandidate.status === "contacted"
-                        ? "bg-amber-500/10 border-amber-900/30 text-amber-400"
-                        : "bg-transparent border-zinc-800 hover:border-amber-500 text-amber-300"
+                        ? "bg-amber-100 border-amber-200 text-amber-800"
+                        : "bg-transparent border-neutral-300 hover:border-amber-500 hover:text-amber-705 text-neutral-700"
                     )}
                   >
                     Contacted
@@ -498,10 +503,10 @@ export default function AdminCareersPage() {
                     onClick={() => handleUpdateStatus(activeCandidate.id, "hired")}
                     disabled={updatingStatus || activeCandidate.status === "hired"}
                     className={cn(
-                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer",
+                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all duration-300 cursor-pointer",
                       activeCandidate.status === "hired"
-                        ? "bg-emerald-500/10 border-emerald-900/30 text-emerald-400"
-                        : "bg-transparent border-zinc-800 hover:border-emerald-500 text-emerald-300"
+                        ? "bg-emerald-100 border-emerald-200 text-emerald-800"
+                        : "bg-transparent border-neutral-300 hover:border-emerald-500 hover:text-emerald-705 text-neutral-700"
                     )}
                   >
                     Hire
@@ -510,10 +515,10 @@ export default function AdminCareersPage() {
                     onClick={() => handleUpdateStatus(activeCandidate.id, "rejected")}
                     disabled={updatingStatus || activeCandidate.status === "rejected"}
                     className={cn(
-                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all cursor-pointer ml-auto",
+                      "px-3 py-2 text-[9px] font-bold uppercase tracking-wider rounded-lg border transition-all duration-300 cursor-pointer ml-auto",
                       activeCandidate.status === "rejected"
-                        ? "bg-rose-500/10 border-rose-900/30 text-rose-400"
-                        : "bg-transparent border-zinc-800 hover:border-rose-500 text-rose-350 hover:bg-rose-500/5"
+                        ? "bg-rose-100 border-rose-200 text-rose-800"
+                        : "bg-transparent border-neutral-300 hover:border-rose-500 hover:text-rose-705 text-neutral-700 hover:bg-rose-50/50"
                     )}
                   >
                     Reject

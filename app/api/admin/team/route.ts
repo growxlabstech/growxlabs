@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import bcrypt from "bcryptjs";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getToken } from "next-auth/jwt";
 
-async function checkAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "CO_ADMIN")) {
+async function checkAdmin(req: Request) {
+  const token = await getToken({
+    req: req as any,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+  if (!token || (token.role !== "ADMIN" && token.role !== "CO_ADMIN")) {
     return false;
   }
   return true;
@@ -14,7 +16,7 @@ async function checkAdmin() {
 
 export async function GET(req: Request) {
   try {
-    if (!await checkAdmin()) {
+    if (!await checkAdmin(req)) {
       return NextResponse.json({ error: "Access Denied" }, { status: 403 });
     }
     const { data, error } = await supabaseAdmin.from("team_members").select(`
@@ -32,7 +34,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    if (!await checkAdmin()) {
+    if (!await checkAdmin(req)) {
       return NextResponse.json({ error: "Access Denied" }, { status: 403 });
     }
     const body = await req.json();
@@ -58,7 +60,7 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
   try {
-    if (!await checkAdmin()) {
+    if (!await checkAdmin(req)) {
       return NextResponse.json({ error: "Access Denied" }, { status: 403 });
     }
     const { searchParams } = new URL(req.url);

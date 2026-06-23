@@ -1,17 +1,20 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getToken } from "next-auth/jwt";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    // Session validation
-    const session = await getServerSession(authOptions);
-    if (!session) {
+    // Session validation via JWT token
+    const token = await getToken({
+      req: request as any,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+
+    if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { role } = session.user as any;
+    const role = token.role;
     if (role !== "ADMIN" && role !== "CO_ADMIN") {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
@@ -29,3 +32,4 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
