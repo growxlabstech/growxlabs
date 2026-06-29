@@ -230,6 +230,18 @@ const TOOLS_DEFINITIONS = [
       },
       required: ["clientId", "title"]
     }
+  },
+  {
+    name: "send_admin_invoice",
+    description: "Send a billing invoice PDF link to a client user via email using Resend.",
+    parameters: {
+      type: "object",
+      properties: {
+        invoiceId: { type: "string", description: "The UUID of the invoice to send (required)" },
+        email: { type: "string", description: "Optional email address to override the invoice's default destination" }
+      },
+      required: ["invoiceId"]
+    }
   }
 ];
 
@@ -365,6 +377,28 @@ async function execute_create_admin_project(args: {
     .single();
   if (error) throw error;
   return data;
+}
+
+async function execute_send_admin_invoice(args: { invoiceId: string; email?: string }, baseUrl: string) {
+  try {
+    const res = await fetch(`${baseUrl}/api/invoice/send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ invoiceId: args.invoiceId, email: args.email })
+    });
+    
+    if (!res.ok) {
+      const errText = await res.text();
+      return { error: `Server returned error ${res.status}: ${errText}` };
+    }
+    
+    return await res.json();
+  } catch (error: any) {
+    console.error("Error sending invoice email via tool:", error);
+    return { error: error.message || "Failed to send invoice email." };
+  }
 }
 
 async function execute_get_company_stats() {
@@ -704,6 +738,8 @@ async function handleToolCall(name: string, args: any, sendEvent?: (event: strin
       return await execute_get_admin_projects(args);
     case "create_admin_project":
       return await execute_create_admin_project(args);
+    case "send_admin_invoice":
+      return await execute_send_admin_invoice(args, baseUrl || "http://localhost:3000");
     default:
       throw new Error(`Unknown tool: ${name}`);
   }
