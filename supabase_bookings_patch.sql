@@ -29,3 +29,45 @@ ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
 -- which bypasses RLS policies automatically. If you ever use client-side direct inserts,
 -- you can enable public inserts:
 -- CREATE POLICY "Allow public inserts" ON public.bookings FOR INSERT WITH CHECK (true);
+
+
+-- =====================================================================
+-- PART 2: DATABASE RELATION REPAIRS & SYNCHRONIZATION
+-- =====================================================================
+
+-- 1. Fix invoices foreign key constraint to reference public.users instead of auth.users
+ALTER TABLE public.invoices 
+DROP CONSTRAINT IF EXISTS invoices_client_id_fkey;
+
+ALTER TABLE public.invoices 
+ADD CONSTRAINT invoices_client_id_fkey 
+FOREIGN KEY (client_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+-- 2. Fix agreements foreign key constraint to reference public.users instead of auth.users
+ALTER TABLE public.agreements 
+DROP CONSTRAINT IF EXISTS agreements_client_id_fkey;
+
+ALTER TABLE public.agreements 
+ADD CONSTRAINT agreements_client_id_fkey 
+FOREIGN KEY (client_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+-- 3. Fix projects foreign key constraint to reference public.users instead of auth.users
+ALTER TABLE public.projects 
+DROP CONSTRAINT IF EXISTS projects_client_id_fkey;
+
+ALTER TABLE public.projects 
+ADD CONSTRAINT projects_client_id_fkey 
+FOREIGN KEY (client_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+-- 4. Sync your active Supabase Auth user into the public.users table
+-- This links your login email (saivarshith8284@gmail.com) so it works as a valid client.
+INSERT INTO public.users (id, name, email, password, role)
+VALUES (
+  'bcfd2085-a9e6-4445-984b-1a977e85a73d', 
+  'Sai Varshith', 
+  'saivarshith8284@gmail.com', 
+  '$2b$10$ieErAoR7OmFW2nMRVY74mezt/WH7.Hv3eBj/lV6990gA119SpwOp2', 
+  'CLIENT'
+)
+ON CONFLICT (email) DO NOTHING;
+
