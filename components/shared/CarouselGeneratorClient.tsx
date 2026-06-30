@@ -486,7 +486,7 @@ export function CarouselGeneratorClient() {
     const imageToast = toast.loading("Generating AI image from prompt...");
 
     try {
-      const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=500&height=500&nologo=true`;
+      const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=500&height=500&nologo=true&model=flux`;
       
       // Fetch via local proxy to avoid CORS and convert to base64
       const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(pollinationsUrl)}`;
@@ -1121,7 +1121,7 @@ export function CarouselGeneratorClient() {
       );
     }
 
-    const src = `https://image.pollinations.ai/prompt/${encodeURIComponent(slide.imagePrompt || slide.title)}?width=500&height=500&nologo=true`;
+    const src = `https://image.pollinations.ai/prompt/${encodeURIComponent(slide.imagePrompt || slide.title)}?width=500&height=500&nologo=true&model=flux`;
     return (
       <div style={{ position: "relative", overflow: "hidden", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <img 
@@ -1570,7 +1570,7 @@ export function CarouselGeneratorClient() {
                               updateActiveSlide({ customImage: undefined });
                             } else if (val === "ai-image") {
                               const prompt = activeSlide.imagePrompt || activeSlide.title || "Graphic";
-                              const defaultUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=500&height=500&nologo=true`;
+                              const defaultUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=500&height=500&nologo=true&model=flux`;
                               updateActiveSlide({ customImage: defaultUrl });
                             } else {
                               updateActiveSlide({ customImage: "" });

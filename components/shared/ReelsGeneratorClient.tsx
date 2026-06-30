@@ -674,7 +674,7 @@ export function ReelsGeneratorClient() {
             ) : (
               <div className="w-[180px] h-[180px] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center bg-white/5 relative">
                 <img 
-                  src={`https://image.pollinations.ai/prompt/${encodeURIComponent(activeScene.imagePrompt)}?width=500&height=500&nologo=true`}
+                  src={`https://image.pollinations.ai/prompt/${encodeURIComponent(activeScene.imagePrompt)}?width=500&height=500&nologo=true&model=flux`}
                   alt="AI Scene visual fallback"
                   className="w-full h-full object-cover"
                 />

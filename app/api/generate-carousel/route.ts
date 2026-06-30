@@ -22,7 +22,7 @@ Follow these content guidelines:
    - 'gold' (for luxury branding, growth coaching, high-ticket sales)
 6. Graphics (SVG + Image Prompt): For some slides (usually 1-2 value/educational slides), set 'imageEnabled: true'.
    - Generate a clean, responsive vector graphic in 'svgCode'. The graphic must be valid, well-formed inline SVG code inside <svg viewBox="0 0 400 400" width="100%" height="100%">...</svg>. Use vector elements like circles, rects, paths, lines, and text representing diagrams, flowcharts, technical blocks, graphs, or icons. Theme-harmonize it.
-   - Write a detailed descriptive prompt for AI text-to-image generation in 'imagePrompt'. Describe an illustration or diagram styled representation of the slide's main concept, suitable for a Stable Diffusion model. Keep it style-consistent, modern, and text-free.
+   - Write a detailed descriptive prompt for AI text-to-image generation in 'imagePrompt'. Synthesize the slide's title, subtitle, and bullet points into a highly coherent visual schematic. Prompt for a premium, clean technical 2D diagram, architectural blueprint, software flowchart, or polished dashboard mockup suitable for the FLUX.1 model. Emphasize crisp structure, high-end tech theme styling matching the chosen preset, and zero messy realistic photograph fluff or stock photo look. Keep it text-free.
 `;
 
 async function searchWeb(query: string): Promise<string> {
