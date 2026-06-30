@@ -20,11 +20,9 @@ Follow these content guidelines:
    - 'emerald' (for organic tech, finance, environment, clean energy)
    - 'minimal' (for stark contrast, high-fidelity layouts, thought leadership)
    - 'gold' (for luxury branding, growth coaching, high-ticket sales)
-6. Graphics (SVG): For some slides (usually 1-2 value/educational slides), set 'imageEnabled: true' and generate a clean, responsive vector graphic in 'svgCode'.
-   - The graphic must be valid, well-formed inline SVG code inside <svg viewBox="0 0 400 400" width="100%" height="100%">...</svg>.
-   - Use vector elements like circles, rects, paths, lines, and text (standard fonts, e.g., sans-serif) to represent diagrams, flowcharts, technical blocks, graphs, or icons.
-   - Theme harmonization: Use styles/colors that match the recommended theme (e.g. glowing neon greens/pinks for 'cyberpunk', stark white/amber coordinates and code paths for 'terminal', soft clean blues/greens with gradients and rounded nodes for 'glass').
-   - Keep the SVG background transparent. Ensure all XML tags are strictly closed so it parses correctly. Do not wrap the JSON value in markdown code blocks.
+6. Graphics (SVG + Image Prompt): For some slides (usually 1-2 value/educational slides), set 'imageEnabled: true'.
+   - Generate a clean, responsive vector graphic in 'svgCode'. The graphic must be valid, well-formed inline SVG code inside <svg viewBox="0 0 400 400" width="100%" height="100%">...</svg>. Use vector elements like circles, rects, paths, lines, and text representing diagrams, flowcharts, technical blocks, graphs, or icons. Theme-harmonize it.
+   - Write a detailed descriptive prompt for AI text-to-image generation in 'imagePrompt'. Describe an illustration or diagram styled representation of the slide's main concept, suitable for a Stable Diffusion model. Keep it style-consistent, modern, and text-free.
 `;
 
 async function searchWeb(query: string): Promise<string> {
@@ -104,6 +102,7 @@ export async function POST(req: Request) {
                 },
                 quoteAuthor: { type: SchemaType.STRING, description: "Author of the quote if layout is 'quote', otherwise empty." },
                 imageEnabled: { type: SchemaType.BOOLEAN, description: "Whether to enable a graphical illustration image on this slide." },
+                imagePrompt: { type: SchemaType.STRING, description: "Detailed descriptive visual prompt for AI text-to-image generation. Keep it style-consistent and text-free." },
                 svgCode: { type: SchemaType.STRING, description: "Valid, inline, responsive SVG code (wrapped in <svg viewBox=\"0 0 400 400\" width=\"100%\" height=\"100%\">...</svg>) representing the slide concept visually (e.g. diagrams, flowcharts, abstract tech nodes, icons). Use clean styles with color themes matching the suggested theme. Do not wrap in markdown code block ticks." }
               },
               required: ["title", "subtitle", "bullets", "layout"]

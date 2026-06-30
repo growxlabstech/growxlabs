@@ -11,6 +11,8 @@ import {
   Palette, 
   Edit3, 
   RefreshCw, 
+  RotateCw,
+  Sparkles,
   Check,
   Info,
   Type,
@@ -206,6 +208,7 @@ export function CarouselGeneratorClient() {
   const [streamBuffer, setStreamBuffer] = useState("");
   const [aspectRatio, setAspectRatio] = useState<"3:4" | "4:5" | "1:1" | "1.91:1">("1:1");
   const [visualMode, setVisualMode] = useState<"svg" | "image">("image");
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
   // Dynamic responsive scaling states & ref
   const previewRef = useRef<HTMLDivElement>(null);
@@ -467,6 +470,50 @@ export function CarouselGeneratorClient() {
       toast.error(err.message || "Something went wrong while generating.", { id: apiToast });
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const getGraphicType = (slide: Slide) => {
+    if (!slide.customImage) return "svg";
+    if (slide.customImage.startsWith("data:")) return "upload";
+    return "ai-image";
+  };
+
+  const handleGenerateAIImage = async () => {
+    if (!activeSlide) return;
+    const prompt = activeSlide.imagePrompt || activeSlide.title || "Graphic";
+    setIsGeneratingImage(true);
+    const imageToast = toast.loading("Generating AI image from prompt...");
+
+    try {
+      const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=500&height=500&nologo=true`;
+      
+      // Fetch via local proxy to avoid CORS and convert to base64
+      const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(pollinationsUrl)}`;
+      const response = await fetch(proxyUrl);
+      
+      if (!response.ok) {
+        throw new Error(`Failed to generate image: ${response.statusText}`);
+      }
+      
+      const blob = await response.blob();
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+
+      updateActiveSlide({ 
+        customImage: base64Data,
+        imagePrompt: prompt
+      });
+      toast.success("AI image generated and embedded successfully!", { id: imageToast });
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err.message || "Failed to generate AI image.", { id: imageToast });
+    } finally {
+      setIsGeneratingImage(false);
     }
   };
 
@@ -1516,17 +1563,23 @@ export function CarouselGeneratorClient() {
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Graphic Type</label>
                         <select
-                          value={activeSlide.customImage ? "upload" : "ai"}
+                          value={getGraphicType(activeSlide)}
                           onChange={(e) => {
-                            if (e.target.value === "ai") {
+                            const val = e.target.value;
+                            if (val === "svg") {
                               updateActiveSlide({ customImage: undefined });
+                            } else if (val === "ai-image") {
+                              const prompt = activeSlide.imagePrompt || activeSlide.title || "Graphic";
+                              const defaultUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=500&height=500&nologo=true`;
+                              updateActiveSlide({ customImage: defaultUrl });
                             } else {
                               updateActiveSlide({ customImage: "" });
                             }
                           }}
                           className="w-full h-10 bg-white border border-neutral-200 rounded-lg px-3 text-xs focus:outline-none focus:border-[#0075de] font-semibold"
                         >
-                          <option value="ai">AI Vector Graphic (SVG)</option>
+                          <option value="svg">AI Vector Graphic (SVG)</option>
+                          <option value="ai-image">AI Generated Image</option>
                           <option value="upload">Custom Image Upload</option>
                         </select>
                       </div>
@@ -1545,7 +1598,7 @@ export function CarouselGeneratorClient() {
                       </div>
                     </div>
 
-                    {!activeSlide.customImage && activeSlide.customImage !== "" ? (
+                    {getGraphicType(activeSlide) === "svg" && (
                       <div className="space-y-2">
                         <div className="flex justify-between items-center">
                           <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">AI SVG Vector Code</label>
@@ -1560,7 +1613,41 @@ export function CarouselGeneratorClient() {
                           style={{ minHeight: "100px" }}
                         />
                       </div>
-                    ) : (
+                    )}
+
+                    {getGraphicType(activeSlide) === "ai-image" && (
+                      <div className="space-y-3 p-3 bg-neutral-50 rounded-xl border border-neutral-200/60">
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">AI Image Prompt</label>
+                          <textarea
+                            value={activeSlide.imagePrompt || activeSlide.title || ""}
+                            onChange={(e) => updateActiveSlide({ imagePrompt: e.target.value })}
+                            placeholder="Describe the image details (e.g. isometric flat graphic vector of laptop, tech illustration, glowing paths)..."
+                            rows={3}
+                            className="w-full bg-white border border-neutral-200 rounded-lg p-3 text-xs focus:outline-none focus:border-[#0075de] resize-none"
+                          />
+                        </div>
+                        <button
+                          onClick={handleGenerateAIImage}
+                          disabled={isGeneratingImage}
+                          className="w-full h-10 bg-[#0075de] hover:bg-[#0075de]/95 disabled:bg-neutral-300 text-white font-bold rounded-lg flex items-center justify-center gap-2 text-xs transition-all uppercase tracking-wider"
+                        >
+                          {isGeneratingImage ? (
+                            <>
+                              <RotateCw className="animate-spin h-3.5 w-3.5" />
+                              Creating Image...
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className="h-3.5 w-3.5" />
+                              Generate & Embed Image
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+
+                    {getGraphicType(activeSlide) === "upload" && (
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Upload Image File</label>
                         <div className="flex items-center gap-4">
