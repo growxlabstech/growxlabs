@@ -2,6 +2,90 @@
 
 import React, { useEffect, useRef } from 'react';
 
+// Exact pre-rendered ASCII visual elements extracted from OpenAI's GPT-5.6 Sol page source
+const LEFT_WAVE = [
+  "                   655655555555",
+  "                55555666655555.665",
+  "             555556565.55555655555665",
+  "           566656655555.565665556565.65",
+  "         555.55555655556565.56656.5555556",
+  "        5555.555555.55565655555.5665555655",
+  "       56.6.565.5.66..55655665.55555555.556",
+  "     56.566555.556556556.665556556565665.5.55",
+  "     55555.55555655555.55565.565.66555555.5.5",
+  "    65.555566555...565555..5.555.565555.56.655",
+  "   556.5555656556.56555.55556556555555565665565",
+  "  5556.55555555555566555.5566.5555.556656.655556",
+  "  6.555555655556565565.55.5555655555555555.66555",
+  " .66555.5.65555555655566555555.665556.5555.565566",
+  " 5555.655555655.65.5.5565.55.655..55656.555555555",
+  " 5665.55555565656.55556.5..6656565555656555.65555",
+  "56.55655566555566656...5.5556.56.5655.555555655555",
+  "6555555555556555555555555.555565565556.55.55565556",
+  "5555.65555556565555556555.56665556566556.5556.5655",
+  ".5665.5.55555555565556566556565655.6655556.5555555",
+  "56656.565565555.5556.555555655555.5.55655.65.66.56",
+  "56.55.655555555555555555.565..55666555555555.55555",
+  "5555.556555665.5555555.555655555.5556565.555566555",
+  ".665565656566.5566655556565655656.5..55.6.65556655",
+  " 55.565.55666555555566.5555555555566..55555556..6",
+  " 55.555556655.56566.6565655.555.555655.5655555555",
+  " 665555555.555556665.6566555565565.55565565565556",
+  "  655.55555555555.5.55.65655566.5566565.55555.55",
+  "  56555565.556.5666666555.65665555565556655.5565",
+  "   5.555656555555555555655..5.5.655555655565555",
+  "    56655665556565655555.665555556555565566655",
+  "     .6655665.665555.55655655565665565555.555",
+  "     5555555655555565565555555.5.55.66656555.",
+  "       5565555556665.5.6555665556.665565555",
+  "        6.66566555555..5555555555555655555",
+  "         556656555555.55555555555555.5556",
+  "           56..5556665655.5565555555556",
+  "             .55555655655..6665555655",
+  "                6565656.5555555555",
+  "                   565555555665"
+];
+
+const GLOBE = [
+  "          565...65",
+  "       6555.5..6..565",
+  "     .5....566.5.555655",
+  "    56.55.6555.5566656.5",
+  "   5565.5556.5...6..656.6",
+  "  .65.56.566555555.5656..5",
+  " 656555565.65.6.5555566.556",
+  " 66.565.55566565555.5.555..",
+  "5555556555.6565.6555556.6565",
+  "5...56.55555...5..655.55..56",
+  "5655.666665.5566.5655..56665",
+  "55655566665.65555555655555..",
+  "5.66556.5...55.56.6.5.5.55.6",
+  ".6.5.65555..565.5555.55666..",
+  "565.5565..66556..56.555.655.",
+  " 5.55556....5.6555.65..5..6",
+  " 56566556.5665556556555.6.6",
+  "  55.5555555..6..565655.65",
+  "   665.56565556555565.555",
+  "    .555566.66..566..655",
+  "     56.65655566.655...",
+  "       .65665556.6656",
+  "          56.55555"
+];
+
+const MOON = [
+  "    556565",
+  "  56.5666.66",
+  " 5555.6.6....",
+  ".5.5...56.556.",
+  "55656.55..655.",
+  "5....555555.55",
+  ".6.5.5566565.5",
+  "6.65.566.5..6.",
+  " 556.555.5.6.",
+  "  66.55.6555",
+  "    6.5.55"
+];
+
 export function GPT56MatrixBanner() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -40,14 +124,13 @@ export function GPT56MatrixBanner() {
     canvas.addEventListener('mouseleave', handleMouseLeave);
 
     const render = () => {
-      // Clear canvas with deep space black
+      // Clear canvas with full pitch black
       ctx.fillStyle = '#030303';
       ctx.fillRect(0, 0, width, height);
 
+      // Compact grid spaces matching OpenAI's letter spacing
       const gridSpacingX = 11;
       const gridSpacingY = 13;
-      const cols = Math.ceil(width / gridSpacingX);
-      const rows = Math.ceil(height / gridSpacingY);
 
       ctx.font = '900 11px monospace';
       ctx.textAlign = 'center';
@@ -55,106 +138,119 @@ export function GPT56MatrixBanner() {
 
       const time = Date.now();
 
-      for (let r = 0; r < rows; r++) {
-        const y = r * gridSpacingY;
+      // Calculate responsive offsets for components
+      const leftWaveX = Math.max(10, width * 0.05);
+      const leftWaveY = height * 0.15;
 
-        // 1. Curved wave on the left (representing Sol / solar surface)
-        const waveX = 90 + Math.sin(y / 110 + time / 1800) * 45;
-        const waveWidth = 95;
+      const globeX = Math.min(width - 340, width * 0.72);
+      const globeY = height * 0.28;
 
-        // 2. 3D Spherical Globe on the right (representing Terra / Earth sphere)
-        const globeX = width - 180 + Math.cos(time / 4500) * 8;
-        const globeY = height * 0.45 + Math.sin(time / 4500) * 8;
-        const R = 140; // Globe radius
+      const moonX = Math.min(width - 130, width * 0.9);
+      const moonY = height * 0.48;
 
-        for (let c = 0; c < cols; c++) {
-          const x = c * gridSpacingX;
+      // Draw character helper
+      const drawChar = (
+        char: string, 
+        x: number, 
+        y: number, 
+        type: 'wave' | 'globe' | 'moon',
+        colRatio: number
+      ) => {
+        const flickerVal = Math.sin(x * 17 + y * 23 + time / 190);
+        let baseOpacity = 0.55;
 
-          // Check left wave boundary
-          const insideLeftWave = x >= waveX - waveWidth && x <= waveX + waveWidth;
-          
-          // Check 3D sphere boundaries
-          const dx = x - globeX;
-          const dy = y - globeY;
-          const distSq = dx * dx + dy * dy;
-          const insideRightGlobe = distSq <= R * R;
+        // Introduce organic density wave variations
+        const densityFactor = Math.sin(x * 0.15 + y * 0.2) * 0.5 + 0.5;
+        baseOpacity *= (0.35 + densityFactor * 0.65);
 
-          if (insideLeftWave || insideRightGlobe) {
-            let opacity = 0;
-            let colorStr = '';
-
-            if (insideRightGlobe) {
-              // 3D sphere projection coordinates
-              const z = Math.sqrt(R * R - distSq);
-              const lat = Math.asin(dy / R);
-              const lon = Math.atan2(dx, z) + (time / 3200); // Smooth 3D rotation over time
-
-              // Spherical grid lines for latitude and longitude (every 30 degrees)
-              const latGrid = Math.abs(Math.sin(lat * 6)) < 0.17;
-              const lonGrid = Math.abs(Math.sin(lon * 6)) < 0.17;
-              
-              // Outer silhouette rim
-              const isOutline = distSq >= (R - 3) * (R - 3);
-
-              if (latGrid || lonGrid || isOutline) {
-                // Sphere shading: brighter in center, faded near edges
-                const shading = z / R;
-                
-                const mdx = x - mouseX;
-                const mdy = y - mouseY;
-                const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-                let mouseBonus = 0;
-                if (mdist < 100) {
-                  mouseBonus = (1 - mdist / 100) * 0.45;
-                }
-
-                opacity = (shading * 0.65 + mouseBonus) * (Math.random() < 0.04 ? 0.4 : 1.0);
-                
-                // Color mapping: gold/yellow for the globe
-                const cVal = Math.sin(x * y + time / 500);
-                if (cVal > 0.4) {
-                  colorStr = '234, 179, 8, ';  // Glowing Yellow
-                } else if (cVal > 0.0) {
-                  colorStr = '249, 115, 22, '; // Soft Orange
-                } else {
-                  colorStr = '156, 163, 175, '; // Grey
-                }
-              }
-            } else if (insideLeftWave) {
-              const distToCenter = Math.abs(x - waveX);
-              const distRatio = 1 - distToCenter / waveWidth;
-
-              const mdx = x - mouseX;
-              const mdy = y - mouseY;
-              const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-              let mouseBonus = 0;
-              if (mdist < 100) {
-                mouseBonus = (1 - mdist / 100) * 0.45;
-              }
-
-              opacity = (distRatio * 0.6 + mouseBonus) * (Math.random() < 0.03 ? 0.45 : 1.0);
-
-              // Orange/red tones for left wave
-              const cVal = Math.sin(x * y + time / 500);
-              if (cVal > 0.4) {
-                colorStr = '249, 115, 22, '; // Orange
-              } else if (cVal > 0.0) {
-                colorStr = '234, 179, 8, ';  // Gold/Yellow
-              } else {
-                colorStr = '156, 163, 175, '; // Grey
-              }
-            }
-
-            if (opacity > 0.05) {
-              const charSeed = Math.floor(y * 13 + x * 7 + time / 220);
-              const char = charSeed % 15 === 0 ? '.' : charSeed % 2 === 0 ? '5' : '6';
-
-              ctx.fillStyle = `rgba(${colorStr}${opacity})`;
-              ctx.fillText(char, x, y);
-            }
+        let colorStr = '';
+        if (type === 'wave') {
+          // Warm gold/orange gradient for solar wave
+          if (flickerVal > 0.4) {
+            colorStr = '249, 115, 22, '; // Orange
+          } else if (flickerVal > 0.0) {
+            colorStr = '234, 179, 8, ';  // Gold/Yellow
+          } else {
+            colorStr = '156, 163, 175, '; // Grey
+          }
+        } else if (type === 'globe') {
+          // Subtle yellow/grey tones for earth globe
+          if (flickerVal > 0.3) {
+            colorStr = '234, 179, 8, ';  // Yellow
+          } else if (flickerVal > -0.3) {
+            colorStr = '107, 114, 128, '; // Dark Grey
+          } else {
+            colorStr = '75, 85, 99, ';    // Medium Grey
+          }
+        } else {
+          // Soft grey/whites for moon
+          if (flickerVal > 0.35) {
+            colorStr = '243, 244, 246, '; // Light Grey
+          } else {
+            colorStr = '107, 114, 128, '; // Dark Grey
           }
         }
-      }
+
+        // Proximity hover highlight effects
+        const mdx = x - mouseX;
+        const mdy = y - mouseY;
+        const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+        let mouseBonus = 0;
+        let scale = 1.0;
+
+        if (mdist < 100) {
+          const factor = 1 - mdist / 100;
+          mouseBonus = factor * 0.45;
+          scale = 1.0 + factor * 0.35;
+          colorStr = '245, 158, 11, '; // Amber highlight on hover
+        }
+
+        const finalOpacity = Math.max(0.05, Math.min(1.0, baseOpacity + mouseBonus));
+        
+        // Soft shimmers
+        const currentChar = (Math.random() < 0.005) 
+          ? (Math.random() < 0.5 ? '5' : '6') 
+          : char;
+
+        ctx.save();
+        ctx.fillStyle = `rgba(${colorStr}${finalOpacity})`;
+        ctx.font = `${type === 'wave' && colRatio > 0.4 ? 'bold' : 'normal'} ${Math.floor(11 * scale)}px monospace`;
+        ctx.fillText(currentChar, x, y);
+        ctx.restore();
+      };
+
+      // 1. Draw Left Wave
+      LEFT_WAVE.forEach((rowStr, r) => {
+        const y = leftWaveY + r * gridSpacingY;
+        for (let c = 0; c < rowStr.length; c++) {
+          const char = rowStr[c];
+          if (char === ' ') continue;
+          const x = leftWaveX + c * gridSpacingX;
+          drawChar(char, x, y, 'wave', c / rowStr.length);
+        }
+      });
+
+      // 2. Draw Globe
+      GLOBE.forEach((rowStr, r) => {
+        const y = globeY + r * gridSpacingY;
+        for (let c = 0; c < rowStr.length; c++) {
+          const char = rowStr[c];
+          if (char === ' ') continue;
+          const x = globeX + c * gridSpacingX;
+          drawChar(char, x, y, 'globe', c / rowStr.length);
+        }
+      });
+
+      // 3. Draw Moon
+      MOON.forEach((rowStr, r) => {
+        const y = moonY + r * gridSpacingY;
+        for (let c = 0; c < rowStr.length; c++) {
+          const char = rowStr[c];
+          if (char === ' ') continue;
+          const x = moonX + c * gridSpacingX;
+          drawChar(char, x, y, 'moon', c / rowStr.length);
+        }
+      });
 
       animationFrameId = requestAnimationFrame(render);
     };
