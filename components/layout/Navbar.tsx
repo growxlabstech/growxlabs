@@ -107,7 +107,7 @@ export function Navbar() {
         <div className="w-full px-6 md:px-10">
           <div className="flex justify-between items-center relative h-10">
             {/* Left Hamburger Button (Standard on Desktop & Mobile) */}
-            <div className="flex items-center lg:w-1/4">
+            <div className="flex items-center w-1/4 md:w-1/4 lg:w-1/4">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(true)}
@@ -121,15 +121,15 @@ export function Navbar() {
               </button>
             </div>
 
-            {/* Desktop Center: Centered Serif Logo */}
-            <div className="absolute left-1/2 -translate-x-1/2">
+            {/* Desktop Center: Centered Serif Logo (Flex centered on mobile, absolute centered on desktop) */}
+            <div className="flex justify-center items-center flex-1 md:absolute md:left-1/2 md:top-1/2 md:-translate-y-1/2 md:-translate-x-1/2">
               {(() => {
                 const resolvedHref = getAbsoluteUrl("/");
                 const isExternal = resolvedHref.startsWith("http") && isMounted;
                 if (isExternal) {
                   return (
                     <a href={resolvedHref} className="flex items-center group notranslate" translate="no" aria-label="GrowXLabsTech home">
-                      <div className="flex items-center text-xl md:text-2xl font-serif font-bold tracking-tight transition-transform group-hover:scale-[1.02] duration-300">
+                      <div className="flex items-center text-base sm:text-xl md:text-2xl font-serif font-bold tracking-tight transition-transform group-hover:scale-[1.02] duration-300">
                         <span className={logoColor1}>GrowXLabs</span>
                         <span className={logoColor2}>.tech</span>
                       </div>
@@ -138,7 +138,7 @@ export function Navbar() {
                 }
                 return (
                   <Link href="/" className="flex items-center group notranslate" translate="no" aria-label="GrowXLabsTech home">
-                    <div className="flex items-center text-xl md:text-2xl font-serif font-bold tracking-tight transition-transform group-hover:scale-[1.02] duration-300">
+                    <div className="flex items-center text-base sm:text-xl md:text-2xl font-serif font-bold tracking-tight transition-transform group-hover:scale-[1.02] duration-300">
                       <span className={logoColor1}>GrowXLabs</span>
                       <span className={logoColor2}>.tech</span>
                     </div>
@@ -148,11 +148,11 @@ export function Navbar() {
             </div>
 
             {/* Right: Bordered Contact Button with Hover Fill Effect */}
-            <div className="flex items-center justify-end lg:w-1/4 gap-3">
+            <div className="flex items-center justify-end w-1/4 md:w-1/4 lg:w-1/4 gap-3">
               {(() => {
                 const resolvedHref = getAbsoluteUrl("/contact");
                 const isExternal = resolvedHref.startsWith("http") && isMounted;
-                const contactBtnClass = "font-semibold px-5 rounded-md border border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm";
+                const contactBtnClass = "font-semibold px-3 sm:px-5 text-xs sm:text-sm rounded-md border border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm";
                 if (isExternal) {
                   return (
                     <a href={resolvedHref}>
