@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { usePathname } from '@/navigation';
 
 export function WhatsAppWidget() {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const pathname = usePathname();
 
   // International format for Indian number: 918185958336
   const phoneNumber = '918185958336';
@@ -24,10 +26,10 @@ export function WhatsAppWidget() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check on mount
+    handleScroll(); // Initial check on mount/route-change
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [pathname]);
 
   return (
     <div 
