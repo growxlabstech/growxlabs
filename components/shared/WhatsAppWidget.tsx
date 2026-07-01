@@ -28,7 +28,13 @@ export function WhatsAppWidget() {
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check on mount/route-change
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Fallback check to handle async browser scroll restoration
+    const timeoutId = setTimeout(handleScroll, 150);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timeoutId);
+    };
   }, [pathname]);
 
   return (
