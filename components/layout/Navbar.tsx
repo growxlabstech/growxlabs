@@ -304,13 +304,7 @@ export function Navbar() {
                 </Link>
               );
             })()}
-            <Link
-              href="/contact"
-              className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors text-left block w-full px-6 py-2.5 border-b border-neutral-800 hover:bg-white/[0.02]"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Advertise with us
-            </Link>
+            {/* Removed Advertise with us link */}
           </div>
         </div>
       </div>
