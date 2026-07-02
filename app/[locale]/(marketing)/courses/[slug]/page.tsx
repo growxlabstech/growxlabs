@@ -53,14 +53,14 @@ export default function CourseDetailsPage() {
               animate={{ opacity: 1, y: 0 }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <span className="px-3 py-1 bg-[#00A86B]/10 rounded-full text-[10px] font-bold uppercase text-[#00A86B] border border-[#00A86B]/20">
+                <span className="px-3 py-1 bg-[#C0F0FB]/10 rounded-full text-[10px] font-mono font-bold uppercase text-[#C0F0FB] border border-[#C0F0FB]/20">
                   {course.difficulty}
                 </span>
-                <span className="text-white/40 text-[10px] uppercase font-bold tracking-widest flex items-center gap-2">
+                <span className="text-white/40 text-[10px] uppercase font-mono font-bold tracking-widest flex items-center gap-2">
                    <Clock size={12} /> {course.duration}
                 </span>
               </div>
-              <h1 className="text-white font-bold text-5xl md:text-6xl tracking-tighter leading-tight mb-8">
+              <h1 className="text-white font-serif font-black text-5xl md:text-6xl lg:text-7xl tracking-tight leading-none mb-8">
                 {course.title}
               </h1>
               <p className="text-[#A0A0A0] text-xl font-light leading-relaxed mb-12">
@@ -70,15 +70,15 @@ export default function CourseDetailsPage() {
 
             {/* Curriculum Sections */}
             <div className="space-y-4 mb-20">
-              <h2 className="text-white font-bold text-2xl mb-8 flex items-center gap-3">
-                <PlayCircle className="text-[#00A86B]" /> Detailed Curriculum
+              <h2 className="text-white font-serif font-bold text-2xl mb-8 flex items-center gap-3">
+                <PlayCircle className="text-[#C0F0FB]" /> Detailed Curriculum
               </h2>
               {course.modules.map((module, mIdx) => (
                 <div key={module.id} className="bg-white/[0.02] border border-white/5 rounded-3xl p-8 hover:bg-white/[0.04] transition-all">
                    <div className="flex justify-between items-start mb-6">
                       <div>
-                        <span className="text-[10px] font-black uppercase text-[#00A86B] tracking-[0.2em] block mb-2">Module 0{mIdx + 1}</span>
-                        <h3 className="text-white font-bold text-xl">{module.title}</h3>
+                        <span className="text-[10px] font-mono font-bold uppercase text-[#C0F0FB] tracking-[0.2em] block mb-2">MODULE 0{mIdx + 1}</span>
+                        <h3 className="text-white font-serif font-bold text-xl">{module.title}</h3>
                         <p className="text-[#A0A0A0] text-sm mt-1">{module.description}</p>
                       </div>
                    </div>
@@ -98,12 +98,12 @@ export default function CourseDetailsPage() {
             </div>
 
             {/* Final Project Details */}
-            <div className="bg-[#00A86B]/5 border border-[#00A86B]/20 rounded-[40px] p-10 md:p-14">
+            <div className="bg-[#C0F0FB]/5 border border-[#C0F0FB]/20 rounded-[40px] p-10 md:p-14">
                 <div className="flex items-center gap-4 mb-6">
-                   <div className="w-12 h-12 rounded-2xl bg-[#00A86B] flex items-center justify-center">
-                      <Award className="text-white" size={24} />
+                   <div className="w-12 h-12 rounded-2xl bg-[#C0F0FB] flex items-center justify-center">
+                      <Award className="text-black" size={24} />
                    </div>
-                   <h2 className="text-white font-bold text-3xl tracking-tight">Capstone Evaluation</h2>
+                   <h2 className="text-white font-serif font-bold text-3xl tracking-tight">Capstone Evaluation</h2>
                 </div>
                 <h3 className="text-white font-bold text-xl mb-4 italic">"{course.finalProject.title}"</h3>
                 <p className="text-[#A0A0A0] leading-relaxed mb-8">
@@ -112,7 +112,7 @@ export default function CourseDetailsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {course.finalProject.requirements.map((req, i) => (
                     <div key={i} className="flex items-center gap-3 text-white/70 text-sm">
-                       <CheckCircle2 size={16} className="text-[#00A86B]" /> {req}
+                       <CheckCircle2 size={16} className="text-[#C0F0FB]" /> {req}
                     </div>
                   ))}
                 </div>
@@ -142,7 +142,7 @@ export default function CourseDetailsPage() {
                     <div className="flex items-center justify-between text-sm py-2 border-b border-white/5">
                        <span className="text-[#A0A0A0]">Validation</span>
                         <span className="text-white font-bold flex items-center gap-2">
-                           Verifiable <ShieldCheck size={14} className="text-[#00A86B]" />
+                           Verifiable <ShieldCheck size={14} className="text-[#C0F0FB]" />
                         </span>
                     </div>
                  </div>
@@ -150,7 +150,7 @@ export default function CourseDetailsPage() {
                  <Button 
                    onClick={handleEnroll}
                    isLoading={isLoading}
-                   className="w-full bg-[#00A86B] hover:bg-[#00A86B]/90 text-white rounded-[20px] h-16 font-black text-sm uppercase tracking-widest shadow-xl shadow-[#00A86B]/10"
+                   className="w-full bg-[#C0F0FB] hover:bg-[#C0F0FB]/90 text-black rounded-[20px] h-16 font-black text-sm uppercase tracking-widest shadow-xl shadow-[#C0F0FB]/10"
                  >
                    Enroll In Course <ChevronRight size={18} className="ml-2" />
                  </Button>
