@@ -8,8 +8,7 @@ import {
   ChevronLeft, 
   Check, 
   AlertCircle, 
-  Loader2,
-  Sparkles
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -190,7 +189,6 @@ export function BookingScheduler({ onClose }: BookingSchedulerProps) {
             {/* Header Block */}
             <div className="mb-4 shrink-0">
               <span className="text-[10px] font-mono tracking-[0.25em] text-[#C0F0FB] uppercase font-bold flex items-center gap-1.5">
-                <Sparkles className="w-3 h-3 animate-pulse text-[#C0F0FB]" />
                 GrowXLabs Booking
               </span>
               <h3 className="text-xl font-bold tracking-tight text-white mt-1">
@@ -219,7 +217,7 @@ export function BookingScheduler({ onClose }: BookingSchedulerProps) {
                   <span className="text-[10px] font-mono tracking-wider text-zinc-500 uppercase mb-2 block font-semibold">
                     1. Select Date
                   </span>
-                  <div className="flex-1 overflow-y-auto space-y-1.5 pr-2 custom-scrollbar">
+                  <div className="flex md:flex-col overflow-x-auto md:overflow-x-hidden md:overflow-y-auto space-x-1.5 md:space-x-0 md:space-y-1.5 pb-2 md:pb-0 pr-0 md:pr-2 custom-scrollbar">
                     {availableDays.map((day) => {
                       const isSelected = selectedDate && formatDbDate(day) === formatDbDate(selectedDate);
                       const isTomorrow = (() => {
@@ -232,7 +230,7 @@ export function BookingScheduler({ onClose }: BookingSchedulerProps) {
                         <button
                           key={day.getTime()}
                           onClick={() => handleDateSelect(day)}
-                          className={`w-full text-left px-4 py-2.5 rounded-lg border text-xs font-medium transition-all cursor-pointer flex justify-between items-center ${
+                          className={`w-auto min-w-[90px] md:w-full text-center md:text-left px-3 py-2.5 rounded-lg border text-[10px] md:text-xs font-medium transition-all cursor-pointer flex flex-col md:flex-row justify-center md:justify-between items-center gap-1 md:gap-2 shrink-0 ${
                             isSelected 
                               ? "bg-[#C0F0FB] border-[#C0F0FB] text-black shadow-[0_0_15px_rgba(192,240,251,0.2)]" 
                               : "bg-white/[0.02] border-white/5 hover:border-white/20 text-zinc-300 hover:text-white"
@@ -246,7 +244,7 @@ export function BookingScheduler({ onClose }: BookingSchedulerProps) {
                             })}
                           </span>
                           {isTomorrow && (
-                            <span className={`text-[9px] px-1.5 py-0.5 rounded font-mono uppercase font-bold ${
+                            <span className={`text-[8px] md:text-[9px] px-1 md:px-1.5 py-0.5 rounded font-mono uppercase font-bold ${
                               isSelected ? "bg-black/10 text-black" : "bg-primary/10 text-primary"
                             }`}>
                               Tomorrow
@@ -269,7 +267,7 @@ export function BookingScheduler({ onClose }: BookingSchedulerProps) {
                       <Loader2 className="w-6 h-6 animate-spin text-[#C0F0FB]/80" />
                     </div>
                   ) : (
-                    <div className="flex-1 overflow-y-auto space-y-1.5 pr-2 custom-scrollbar">
+                    <div className="flex-grow overflow-y-auto grid grid-cols-3 sm:grid-cols-4 md:grid-cols-1 gap-1.5 md:space-y-1.5 md:gap-0 pr-1 md:pr-2 custom-scrollbar">
                       {AVAILABLE_SLOTS.map((slot) => {
                         const isBooked = bookedSlots.includes(slot);
                         return (
@@ -277,7 +275,7 @@ export function BookingScheduler({ onClose }: BookingSchedulerProps) {
                             key={slot}
                             disabled={isBooked}
                             onClick={() => handleTimeSelect(slot)}
-                            className={`w-full py-2.5 rounded-lg border text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                            className={`w-full py-2 md:py-2.5 rounded-lg border text-[10px] md:text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                               isBooked
                                 ? "bg-white/[0.01] border-white/5 text-zinc-600 opacity-40 cursor-not-allowed line-through"
                                 : "bg-white/[0.03] border-white/10 hover:border-[#C0F0FB]/35 hover:bg-[#C0F0FB]/5 text-white active:scale-[0.98]"
