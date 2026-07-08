@@ -14,7 +14,7 @@ const VALUES = [
     subtitle: "building AI-native systems.",
   },
   {
-    title: "More than an agency.",
+    title: "More than a software company.",
     subtitle: "A technical growth partner.",
   },
 ];

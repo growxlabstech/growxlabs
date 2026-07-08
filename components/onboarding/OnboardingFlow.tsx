@@ -176,7 +176,7 @@ export default function OnboardingFlow() {
       <form ref={formRef} onSubmit={handleSubmit} className="paper">
         <div className="header">
           <h1>✕ GROWXLABSTECH</h1>
-          <p>AI Digital Agency | growxlabs.tech | hello@growxlabs.tech</p>
+          <p>AI-native Software Company | growxlabs.tech | sai@growxlabs.tech</p>
         </div>
 
         <div className="doc-title">CLIENT ONBOARDING FORM</div>
@@ -400,7 +400,7 @@ export default function OnboardingFlow() {
         </button>
 
         <div className="footer">
-          GrowXLabsTech | growxlabs.tech | hello@growxlabs.tech | © {new Date().getFullYear()} GrowXLabsTech. All rights reserved.
+          GrowXLabsTech | growxlabs.tech | sai@growxlabs.tech | © {new Date().getFullYear()} GrowXLabsTech. All rights reserved.
         </div>
       </form>
     </div>
