@@ -3,9 +3,6 @@ import { projects } from '@/lib/data/projects';
 
 const baseUrl = 'https://growxlabs.tech';
 
-// Supported international locales from navigation.ts
-const locales = ['', '/en', '/en-IN', '/en-US', '/en-GB', '/en-AU'];
-
 // Static marketing and landing page routes
 const marketingRoutes = [
   { path: '', priority: 1.0, changefreq: 'daily' as const },
@@ -56,14 +53,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const allRoutes = [...marketingRoutes, ...blogRoutes, ...portfolioRoutes];
 
-  const routes = allRoutes.flatMap((route) => 
-    locales.map((locale) => ({
-      url: `${baseUrl}${locale}${route.path}`,
-      lastModified: new Date(),
-      changeFrequency: route.changefreq,
-      priority: route.priority,
-    }))
-  );
+  const routes = allRoutes.map((route) => ({
+    url: `${baseUrl}${route.path}`,
+    lastModified: new Date(),
+    changeFrequency: route.changefreq,
+    priority: route.priority,
+  }));
 
   return routes;
 }
