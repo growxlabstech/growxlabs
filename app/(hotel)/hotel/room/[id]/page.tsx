@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useRouter } from '@/navigation';
+import { useRouter } from '@/navigation-client';
 import { rooms } from '@/lib/hotel-data';
 import { Button } from '@/components/ui/Button';
 

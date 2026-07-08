@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Globe, ChevronDown } from "lucide-react";
-import { useRouter, usePathname } from "@/navigation";
+import { useRouter, usePathname } from "@/navigation-client";
 import { useLocale } from "next-intl";
 
 const REGIONS = [

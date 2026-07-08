@@ -1,6 +1,6 @@
 "use client";
 
-import { Link, usePathname } from "@/navigation";
+import { Link, usePathname } from "@/navigation-client";
 import { cn } from "@/lib/utils";
 import {
   Layout, FileText, CreditCard,

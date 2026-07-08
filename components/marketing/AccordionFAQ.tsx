@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { usePathname } from "@/navigation";
+import { usePathname } from "@/navigation-client";
 import { cn } from "@/lib/utils";
 
 interface FAQItem {

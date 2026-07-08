@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "@/navigation";
+import { useRouter } from "@/navigation-client";
 
 /** Old URL: subscription plans now live on Services (`#subscriptions`). */
 export default function SubscriptionsRedirectPage() {

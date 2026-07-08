@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Check, AlertCircle } from "lucide-react";
-import { useRouter } from "@/navigation";
+import { useRouter } from "@/navigation-client";
 import { cn } from "@/lib/utils";
 
 // Roles list

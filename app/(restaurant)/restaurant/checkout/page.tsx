@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { useRouter } from '@/navigation';
+import { useRouter } from '@/navigation-client';
 import { Button } from '@/components/ui/Button';
 
 export default function CheckoutPage() {

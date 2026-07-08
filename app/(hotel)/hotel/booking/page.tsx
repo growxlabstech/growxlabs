@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { useRouter } from '@/navigation';
+import { useRouter } from '@/navigation-client';
 import { Button } from '@/components/ui/Button';
 
 export default function BookingPage() {

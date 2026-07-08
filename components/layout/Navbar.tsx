@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
-import { usePathname } from "@/navigation";
-import { Link } from "@/navigation";
+import { usePathname } from "@/navigation-client";
+import { Link } from "@/navigation-client";
 import { useSession, signOut } from "next-auth/react";
 import { getAbsoluteUrl } from "@/lib/subdomains";
 

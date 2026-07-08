@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { usePathname } from "@/navigation";
+import { usePathname } from "@/navigation-client";
 
 /**
  * GlobalBackground Component

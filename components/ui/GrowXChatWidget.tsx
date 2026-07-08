@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Bot, CheckCircle2, Phone, Globe, HelpCircle, Mail, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { usePathname } from "@/navigation";
+import { usePathname } from "@/navigation-client";
 
 interface Message {
   role: "assistant" | "user";

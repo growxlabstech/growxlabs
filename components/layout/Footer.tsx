@@ -1,7 +1,7 @@
 "use client";
 
 import { Mail } from "lucide-react";
-import { Link, usePathname } from "@/navigation";
+import { Link, usePathname } from "@/navigation-client";
 import { useState, useEffect } from "react";
 import { getAbsoluteUrl } from "@/lib/subdomains";
 
