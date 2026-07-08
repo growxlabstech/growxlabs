@@ -95,11 +95,11 @@ export function PipelineSection() {
         {/* Left Column: Copy */}
         <div className="lg:col-span-5 space-y-6 text-center lg:text-left z-10">
             <h2 className="text-[clamp(32px,4.5vw,52px)] font-black text-foreground leading-[1.05] tracking-tight">
-              Powering the <br className="hidden sm:inline" />
-              Growth Pipeline
+              Enterprise AI & <br className="hidden sm:inline" />
+              Custom Product Engineering
             </h2>
           <p className="text-muted-foreground text-[15px] sm:text-[16px] leading-relaxed max-w-xl mx-auto lg:mx-0">
-            We are an AI-native product studio. We design, build, and automate custom pipelines to ship your systems at production speed.
+            We are an AI Engineering Lab and software company. We design, build, and deploy production-grade AI systems, custom workflows, and automated pipelines for enterprise operations at scale.
           </p>
         </div>
 
