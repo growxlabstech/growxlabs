@@ -225,7 +225,20 @@ export default function AdminCareersPage() {
                     <p className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-1">Submitted On</p>
                     <p className="text-xs text-[var(--text-secondary)] font-semibold">{new Date(app.created_at).toLocaleDateString()}</p>
                   </div>
-                  {getStatusBadge(app.status)}
+                  <div className="flex items-center gap-2">
+                    {app.resume_url && (
+                      <a
+                        href={app.resume_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="px-2.5 py-1 border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 rounded text-[9px] font-mono font-bold tracking-wider text-zinc-300 hover:text-white flex items-center gap-1.5 transition-all"
+                      >
+                        <FileText size={10} className="text-emerald-400" /> RESUME
+                      </a>
+                    )}
+                    {getStatusBadge(app.status)}
+                  </div>
                 </div>
               </div>
             </Reveal>

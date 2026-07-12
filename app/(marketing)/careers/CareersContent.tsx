@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Check, AlertCircle } from "lucide-react";
+import { ArrowLeft, Check, AlertCircle, Loader2, FileText } from "lucide-react";
 import { useRouter } from "@/navigation-client";
 import { cn } from "@/lib/utils";
 import { FlickerText } from "@/components/marketing/FlickerText";
@@ -99,6 +99,36 @@ export function CareersContent() {
   const [showForm, setShowForm] = useState(false);
 
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState("");
+
+  const handleFileUpload = async (file: File) => {
+    if (!file) return;
+    setError("");
+    setUploading(true);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+
+      const res = await fetch("/api/careers/upload", {
+        method: "POST",
+        body: data,
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.error || "Upload failed");
+      }
+
+      setFormData(prev => ({ ...prev, resume: result.url }));
+      setUploadedFileName(file.name);
+    } catch (err: any) {
+      console.error("Upload error:", err);
+      setError(err.message || "Failed to upload resume. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const startApplication = (roleName: string) => {
     setFormData(prev => ({ ...prev, role: roleName }));
@@ -285,8 +315,7 @@ export function CareersContent() {
         if (formData.linkedin && !formData.linkedin.startsWith("http")) return "Must be a valid URL starting with http:// or https://";
         break;
       case 12:
-        if (!formData.resume.trim()) return "Resume URL is required.";
-        if (!formData.resume.startsWith("http")) return "Must be a valid link URL.";
+        if (!formData.resume.trim()) return "Please upload your resume or CV.";
         break;
       case 13:
         if (!formData.jobTitle.trim()) return "Current/last job title is required.";
@@ -901,17 +930,73 @@ export function CareersContent() {
                 {/* ═══ STEP 12: RESUME CV ═══ */}
                 {step === 12 && (
                   <div className="w-full space-y-6">
-                    <label className="text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight">
-                      Please provide a link to your resume or CV.
+                    <label className="text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight block">
+                      Upload your resume or CV.
                     </label>
-                    <input
-                      ref={inputRef as any}
-                      type="url"
-                      value={formData.resume}
-                      onChange={e => setFormData({ ...formData, resume: e.target.value })}
-                      placeholder="Google Drive, Dropbox, or custom PDF link..."
-                      className="border-b border-white/20 focus:border-white py-4 outline-none text-2xl md:text-3xl font-sans tracking-tight font-black bg-transparent w-full text-white transition-colors placeholder-zinc-700"
-                    />
+                    
+                    {uploading ? (
+                      <div className="flex flex-col items-center justify-center p-8 border border-dashed border-white/20 rounded-xl bg-white/5 space-y-4">
+                        <Loader2 className="animate-spin text-[#C0F0FB] h-8 w-8" />
+                        <span className="font-mono text-xs text-zinc-400 uppercase tracking-widest">Uploading Document...</span>
+                      </div>
+                    ) : formData.resume ? (
+                      <div className="flex items-center justify-between p-5 border border-emerald-500/20 bg-emerald-950/10 rounded-xl">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded bg-emerald-950/40 flex items-center justify-center text-emerald-400">
+                            <Check size={16} />
+                          </div>
+                          <div>
+                            <p className="font-bold text-white text-sm">{uploadedFileName || "resume.pdf"}</p>
+                            <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">Upload Complete</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setFormData(prev => ({ ...prev, resume: "" }));
+                            setUploadedFileName("");
+                          }}
+                          className="px-3 py-1.5 border border-red-500/20 hover:border-red-500/40 text-red-400 hover:bg-red-500/5 rounded text-[9px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ) : (
+                      <div 
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          const file = e.dataTransfer.files[0];
+                          if (file) handleFileUpload(file);
+                        }}
+                        onClick={() => {
+                          const fileInput = document.getElementById("resume-upload-input");
+                          fileInput?.click();
+                        }}
+                        className="border border-dashed border-white/20 hover:border-[#C0F0FB]/40 bg-white/5 hover:bg-white/10 rounded-2xl p-8 text-center cursor-pointer transition-all space-y-4 group"
+                      >
+                        <input
+                          id="resume-upload-input"
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleFileUpload(file);
+                          }}
+                        />
+                        <div className="w-12 h-12 rounded-full bg-white/5 group-hover:bg-[#C0F0FB]/10 text-zinc-400 group-hover:text-[#C0F0FB] flex items-center justify-center mx-auto transition-all">
+                          <FileText size={24} />
+                        </div>
+                        <div>
+                          <p className="font-sans font-bold text-white text-sm">
+                            Drag and drop your file here, or <span className="text-[#C0F0FB] underline">browse</span>
+                          </p>
+                          <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider mt-1">
+                            Supports PDF, DOC, DOCX up to 10MB
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
