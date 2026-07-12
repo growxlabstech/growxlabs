@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Check, AlertCircle } from "lucide-react";
 import { useRouter } from "@/navigation-client";
 import { cn } from "@/lib/utils";
+import { FlickerText } from "@/components/marketing/FlickerText";
 
 // Roles list
 const ROLES = [
@@ -434,7 +435,7 @@ export function CareersContent() {
           {/* Bottom Row */}
           <div className="w-full flex flex-col items-start">
             <h1 className="text-[12vw] font-bold tracking-tighter leading-none select-none text-white font-serif">
-              Careers
+              <FlickerText text="Careers" />
             </h1>
           </div>
         </motion.div>
@@ -501,9 +502,9 @@ export function CareersContent() {
                 {/* ═══ STEP 0: JOB BOARD ═══ */}
                 {step === 0 && (
                   <div className="w-full space-y-12">
-                    {/* Header / Intro: Two-Column Corporate Layout */}
-                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 border-b border-white/10 pb-10">
-                      <div className="lg:col-span-2 space-y-2">
+                    {/* Header / Intro: Single-Column Corporate Layout */}
+                    <div className="space-y-6 border-b border-white/10 pb-10">
+                      <div className="space-y-2">
                         <span className="text-[10px] font-mono font-bold tracking-widest text-[#C0F0FB] uppercase">
                           GrowX Labs // Careers
                         </span>
@@ -511,7 +512,7 @@ export function CareersContent() {
                           Join the Lab.
                         </h1>
                       </div>
-                      <div className="lg:col-span-3 text-zinc-400 text-sm leading-relaxed font-sans font-medium space-y-4">
+                      <div className="text-zinc-400 text-sm md:text-base leading-relaxed font-sans font-medium space-y-4 max-w-4xl">
                         <p>
                           GrowX Labs Tech is a growing AI-native software company and product studio based in India. We specialize in custom software development, AI agent engineering, intelligent automation solutions, and mobile and web application development.
                         </p>
