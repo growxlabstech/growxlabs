@@ -501,14 +501,24 @@ export function CareersContent() {
                 {/* ═══ STEP 0: JOB BOARD ═══ */}
                 {step === 0 && (
                   <div className="w-full space-y-12">
-                    {/* Header / Intro */}
-                    <div className="space-y-4">
-                      <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white leading-none font-serif">
-                        Open Positions
-                      </h1>
-                      <p className="text-zinc-400 text-sm md:text-base font-sans tracking-tight max-w-xl leading-relaxed">
-                        Join the founding journey at GrowX Labs. Build cinematic web systems, autonomous agentic workflows, and scale B2B software consulting.
-                      </p>
+                    {/* Header / Intro: Two-Column Corporate Layout */}
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 border-b border-white/10 pb-10">
+                      <div className="lg:col-span-2 space-y-2">
+                        <span className="text-[10px] font-mono font-bold tracking-widest text-[#C0F0FB] uppercase">
+                          GrowX Labs // Careers
+                        </span>
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tighter text-white leading-none font-sans">
+                          Join the Lab.
+                        </h1>
+                      </div>
+                      <div className="lg:col-span-3 text-zinc-400 text-sm leading-relaxed font-sans font-medium space-y-4">
+                        <p>
+                          GrowX Labs Tech is a growing AI-native software company and product studio based in India. We specialize in custom software development, AI agent engineering, intelligent automation solutions, and mobile and web application development.
+                        </p>
+                        <p>
+                          We combine deep AI expertise with rapid product development to ship production-ready solutions in weeks, built to scale from day one. We don't build off-the-shelf systems. We build products.
+                        </p>
+                      </div>
                     </div>
 
                     {/* Open Job Listings Grid */}
@@ -527,30 +537,33 @@ export function CareersContent() {
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 w-full">
                               <div>
                                 <span className="text-[10px] font-mono font-bold tracking-widest text-[#C0F0FB] uppercase">
-                                  {job.department} • {job.type}
+                                  {job.department} // {job.type.toUpperCase()}
                                 </span>
                                 <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mt-1 font-sans">
                                   {job.title}
                                 </h2>
-                                <div className="flex flex-wrap gap-2 mt-3">
-                                  <span className="px-2 py-0.5 text-[9px] font-mono font-bold uppercase bg-white/5 border border-white/10 rounded-full text-zinc-300">
-                                    {job.location}
+                                <div className="flex flex-wrap gap-2 mt-3 font-mono text-[9px] text-zinc-400 tracking-wider">
+                                  <span className="border border-white/10 bg-white/5 px-2 py-0.5 rounded">
+                                    {job.location.toUpperCase()}
                                   </span>
-                                  <span className="px-2 py-0.5 text-[9px] font-mono font-bold uppercase bg-white/5 border border-white/10 rounded-full text-zinc-300">
-                                    Incentive-Based
+                                  <span className="border border-white/10 bg-white/5 px-2 py-0.5 rounded">
+                                    INCENTIVE-BASED
+                                  </span>
+                                  <span className="border border-white/10 bg-white/5 px-2 py-0.5 rounded">
+                                    FOUNDING INTERNSHIP
                                   </span>
                                 </div>
                               </div>
                               <div className="flex items-center gap-3 self-start md:self-center">
                                 <button
                                   onClick={() => setExpandedJob(isExpanded ? null : job.slug)}
-                                  className="px-3.5 py-1.5 border border-white/10 hover:border-white/20 hover:bg-white/5 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 hover:text-white transition-all cursor-pointer"
+                                  className="px-3.5 py-1.5 border border-white/10 hover:border-white/20 hover:bg-white/5 rounded text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400 hover:text-white transition-all cursor-pointer"
                                 >
                                   {isExpanded ? "Close Details" : "View Details"}
                                 </button>
                                 <button
                                   onClick={() => startApplication(job.title)}
-                                  className="px-4 py-1.5 bg-white hover:bg-zinc-200 text-black rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider transition-all active:scale-95 cursor-pointer font-bold"
+                                  className="px-4 py-1.5 bg-white hover:bg-zinc-200 text-black rounded text-[10px] font-mono font-bold uppercase tracking-wider transition-all active:scale-95 cursor-pointer font-bold"
                                 >
                                   Apply Now
                                 </button>
@@ -578,27 +591,36 @@ export function CareersContent() {
 
                                   <div className="space-y-3">
                                     <h3 className="font-mono text-xs font-bold text-white uppercase tracking-wider">// What You'll Do</h3>
-                                    <ul className="list-disc list-inside space-y-2 text-zinc-400 font-sans">
+                                    <ul className="space-y-2 text-zinc-400 font-sans">
                                       {job.whatYoullDo.map((item, idx) => (
-                                        <li key={idx} className="leading-relaxed">{item}</li>
+                                        <li key={idx} className="leading-relaxed flex items-start gap-2">
+                                          <span className="text-[#C0F0FB] shrink-0 font-mono mt-0.5">→</span>
+                                          <span>{item}</span>
+                                        </li>
                                       ))}
                                     </ul>
                                   </div>
 
                                   <div className="space-y-3">
                                     <h3 className="font-mono text-xs font-bold text-white uppercase tracking-wider">// Who Can Apply</h3>
-                                    <ul className="list-disc list-inside space-y-2 text-zinc-400 font-sans">
+                                    <ul className="space-y-2 text-zinc-400 font-sans">
                                       {job.whoCanApply.map((item, idx) => (
-                                        <li key={idx} className="leading-relaxed">{item}</li>
+                                        <li key={idx} className="leading-relaxed flex items-start gap-2">
+                                          <span className="text-[#C0F0FB] shrink-0 font-mono mt-0.5">→</span>
+                                          <span>{item}</span>
+                                        </li>
                                       ))}
                                     </ul>
                                   </div>
 
                                   <div className="space-y-3">
                                     <h3 className="font-mono text-xs font-bold text-white uppercase tracking-wider">// What You'll Gain</h3>
-                                    <ul className="list-disc list-inside space-y-2 text-zinc-400 font-sans">
+                                    <ul className="space-y-2 text-zinc-400 font-sans">
                                       {job.whatYoullGain.map((item, idx) => (
-                                        <li key={idx} className="leading-relaxed">{item}</li>
+                                        <li key={idx} className="leading-relaxed flex items-start gap-2">
+                                          <span className="text-[#C0F0FB] shrink-0 font-mono mt-0.5">→</span>
+                                          <span>{item}</span>
+                                        </li>
                                       ))}
                                     </ul>
                                   </div>
@@ -614,7 +636,7 @@ export function CareersContent() {
                                     <h3 className="font-mono text-xs font-bold text-white uppercase tracking-wider">// Hiring Process</h3>
                                     <div className="flex flex-wrap gap-2 items-center">
                                       {job.hiringProcess.map((step, idx) => (
-                                        <span key={idx} className="flex items-center text-[9px] font-mono font-bold text-zinc-400 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded-lg">
+                                        <span key={idx} className="flex items-center text-[9px] font-mono font-bold text-zinc-400 bg-white/5 border border-white/10 px-2.5 py-1.5 rounded">
                                           {idx + 1}. {step} {idx < job.hiringProcess.length - 1 && <span className="text-[#C0F0FB] ml-2 font-sans font-normal">➔</span>}
                                         </span>
                                       ))}
@@ -624,7 +646,7 @@ export function CareersContent() {
                                   <div className="pt-6 flex justify-end">
                                     <button
                                       onClick={() => startApplication(job.title)}
-                                      className="px-6 py-2.5 bg-[#C0F0FB] hover:bg-[#a8e3f0] text-black font-mono font-bold text-[10px] uppercase tracking-wider rounded-lg transition-all active:scale-95 cursor-pointer"
+                                      className="px-6 py-2.5 bg-[#C0F0FB] hover:bg-[#a8e3f0] text-black font-mono font-bold text-[10px] uppercase tracking-wider rounded transition-all active:scale-95 cursor-pointer"
                                     >
                                       Apply for this role
                                     </button>
