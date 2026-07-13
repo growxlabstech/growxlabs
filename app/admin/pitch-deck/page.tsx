@@ -3,14 +3,138 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { 
-  Presentation, Sparkles, Download, ChevronLeft, ChevronRight, 
-  Play, Mail, Phone, Globe, Loader2, Lightbulb, 
-  Settings, Key, Trophy, PieChart, ShieldAlert, CheckCircle2,
-  XCircle, Edit3, Eye, FileText
-} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Reveal } from "@/components/marketing/Reveal";
+
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number | string;
+}
+
+const PresentationIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M2 3h20" />
+    <path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3" />
+    <path d="m7 21 5-5 5 5" />
+  </svg>
+);
+
+const SparklesIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z" />
+    <path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5.5Z" />
+    <path d="m19 17 1 2.5 2.5.5-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1Z" />
+  </svg>
+);
+
+const DownloadIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+    <polyline points="7 10 12 15 17 10" />
+    <line x1="12" x2="12" y1="15" y2="3" />
+  </svg>
+);
+
+const ChevronLeftIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="m15 18-6-6 6-6" />
+  </svg>
+);
+
+const ChevronRightIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
+
+const PlayIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <polygon points="6 3 20 12 6 21 6 3" />
+  </svg>
+);
+
+const MailIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+);
+
+const PhoneIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+  </svg>
+);
+
+const GlobeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+    <path d="M2 12h20" />
+  </svg>
+);
+
+const Loader2Icon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props} className={`animate-spin ${props.className}`}>
+    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+  </svg>
+);
+
+const LightbulbIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1 .3 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+    <path d="M9 18h6" />
+    <path d="M10 22h4" />
+  </svg>
+);
+
+const SettingsIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const KeyIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4" />
+  </svg>
+);
+
+const PieChartIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+    <path d="M22 12A10 10 0 0 0 12 2v10z" />
+  </svg>
+);
+
+const ShieldAlertIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <line x1="12" x2="12" y1="8" y2="12" />
+    <line x1="12" x2="12.01" y1="16" y2="16" />
+  </svg>
+);
+
+const CheckCircle2Icon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
+
+const Edit3Icon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M12 20h9" />
+    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+  </svg>
+);
+
+const EyeIcon = ({ size = 24, ...props }: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width={size} height={size} {...props}>
+    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
 
 export default function PitchDeckGenPage() {
   const [outlineText, setOutlineText] = useState("");
@@ -199,7 +323,7 @@ export default function PitchDeckGenPage() {
           </div>
         );
 
-      case 4: // Our Solution
+      case 3: // Our Solution
         return (
           <div className={`w-full h-full flex flex-col justify-between p-16 ${themeBg}`}>
             <div className="flex justify-between items-start">
@@ -233,7 +357,7 @@ export default function PitchDeckGenPage() {
           </div>
         );
 
-      case 5: // Market Opportunity
+      case 4: // Market Opportunity
         return (
           <div className={`w-full h-full flex flex-col justify-between p-16 ${themeBg}`}>
             <div className="flex justify-between items-start">
@@ -277,7 +401,7 @@ export default function PitchDeckGenPage() {
           </div>
         );
 
-      case 6: // Business Model
+      case 5: // Business Model
         return (
           <div className={`w-full h-full flex flex-col justify-between p-16 ${themeBg}`}>
             <h2 className={headerTitle}>{deckData.slide6.title}</h2>
@@ -304,7 +428,7 @@ export default function PitchDeckGenPage() {
           </div>
         );
 
-      case 7: // Key Product Features
+      case 6: // Key Product Features
         return (
           <div className={`w-full h-full flex flex-col justify-between p-16 ${themeBg}`}>
             <h2 className={headerTitle}>{deckData.slide7.title}</h2>
@@ -333,7 +457,7 @@ export default function PitchDeckGenPage() {
           </div>
         );
 
-      case 8: // Competitive Advantage
+      case 7: // Competitive Advantage
         return (
           <div className={`w-full h-full flex flex-col justify-between p-16 ${themeBg}`}>
             <h2 className={headerTitle}>{deckData.slide8.title}</h2>
@@ -365,7 +489,7 @@ export default function PitchDeckGenPage() {
           </div>
         );
 
-      case 9: // Traction & Growth
+      case 8: // Traction & Growth
         return (
           <div className={`w-full h-full flex flex-col justify-between p-16 ${themeBg}`}>
             <h2 className={headerTitle}>{deckData.slide9.title}</h2>
@@ -389,7 +513,7 @@ export default function PitchDeckGenPage() {
           </div>
         );
 
-      case 10: // Use of Funds & Contact
+      case 9: // Use of Funds & Contact
         return (
           <div className={`w-full h-full flex flex-col justify-between p-16 ${themeBg}`}>
             <h2 className={headerTitle}>{deckData.slide10.title}</h2>
@@ -421,13 +545,13 @@ export default function PitchDeckGenPage() {
                 <h3 className="text-[9px] font-mono text-neutral-500 uppercase tracking-wider">Contact Info</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-xs font-normal text-neutral-300">
-                    <Phone size={12} className="text-neutral-500" /> {deckData.slide10.contact.phone}
+                    <PhoneIcon size={12} className="text-neutral-500" /> {deckData.slide10.contact.phone}
                   </div>
                   <div className="flex items-center gap-2 text-xs font-normal text-neutral-300">
-                    <Mail size={12} className="text-neutral-500" /> {deckData.slide10.contact.email}
+                    <MailIcon size={12} className="text-neutral-500" /> {deckData.slide10.contact.email}
                   </div>
                   <div className="flex items-center gap-2 text-xs font-normal text-neutral-300">
-                    <Globe size={12} className="text-neutral-500" /> {deckData.slide10.contact.website}
+                    <GlobeIcon size={12} className="text-neutral-500" /> {deckData.slide10.contact.website}
                   </div>
                 </div>
               </div>
@@ -453,7 +577,7 @@ export default function PitchDeckGenPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-1">
             <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-2">
-              <Presentation className="text-primary" /> Investor Pitch Deck Generator
+              <PresentationIcon className="text-primary" /> Investor Pitch Deck Generator
             </h1>
             <p className="text-white/40 font-medium">Automatically draft and export high-converting pitch deck slides based on business outlines.</p>
           </div>
@@ -470,7 +594,7 @@ export default function PitchDeckGenPage() {
               : "bg-red-500/10 border-red-500/20 text-red-400"
           }`}
         >
-          {toast.type === "success" ? <CheckCircle2 size={16} /> : <ShieldAlert size={16} />}
+          {toast.type === "success" ? <CheckCircle2Icon size={16} /> : <ShieldAlertIcon size={16} />}
           {toast.message}
         </motion.div>
       )}
@@ -529,9 +653,9 @@ export default function PitchDeckGenPage() {
                     className="bg-white text-black hover:bg-neutral-100 font-bold px-8 py-3 h-12 shadow-2xl flex items-center gap-1.5"
                   >
                     {loading ? (
-                      <><Loader2 className="h-4 w-4 animate-spin" /> Analyzing & Generating...</>
+                      <><Loader2Icon className="h-4 w-4 animate-spin" /> Analyzing & Generating...</>
                     ) : (
-                      <><Sparkles size={16} /> Generate Pitch Deck</>
+                      <><SparklesIcon size={16} /> Generate Pitch Deck</>
                     )}
                   </Button>
                 </div>
@@ -568,19 +692,19 @@ export default function PitchDeckGenPage() {
                   onClick={() => setIsEditing(!isEditing)}
                   className={`text-xs font-bold ${isEditing ? "bg-green-600 hover:bg-green-500 text-white" : "bg-neutral-800 text-white/70 hover:bg-neutral-700"}`}
                 >
-                  {isEditing ? <><Eye size={12} className="mr-1.5" /> Preview Mode</> : <><Edit3 size={12} className="mr-1.5" /> Quick Edit</>}
+                  {isEditing ? <><EyeIcon size={12} className="mr-1.5" /> Preview Mode</> : <><Edit3Icon size={12} className="mr-1.5" /> Quick Edit</>}
                 </Button>
                 <Button 
                   onClick={() => setPresentationMode(true)}
                   className="bg-neutral-800 text-white hover:bg-neutral-700 text-xs font-bold"
                 >
-                  <Play size={12} className="mr-1.5" /> Present
+                  <PlayIcon size={12} className="mr-1.5" /> Present
                 </Button>
                 <Button 
                   onClick={handlePrint}
                   className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold"
                 >
-                  <Download size={12} className="mr-1.5" /> Save PDF Presentation
+                  <DownloadIcon size={12} className="mr-1.5" /> Save PDF Presentation
                 </Button>
               </div>
             </div>
@@ -600,7 +724,7 @@ export default function PitchDeckGenPage() {
                     disabled={currentSlideIndex === 0}
                     className="bg-white/5 hover:bg-white/10 text-white"
                   >
-                    <ChevronLeft size={16} /> Prev
+                    <ChevronLeftIcon size={16} /> Prev
                   </Button>
                   <div className="flex gap-1">
                     {Array.from({ length: 10 }).map((_, idx) => (
@@ -618,7 +742,7 @@ export default function PitchDeckGenPage() {
                     disabled={currentSlideIndex === 9}
                     className="bg-white/5 hover:bg-white/10 text-white"
                   >
-                    Next <ChevronRight size={16} />
+                    Next <ChevronRightIcon size={16} />
                   </Button>
                 </div>
               </div>
@@ -810,7 +934,7 @@ export default function PitchDeckGenPage() {
                 disabled={currentSlideIndex === 0}
                 className="bg-white/5 hover:bg-white/10 text-white"
               >
-                <ChevronLeft size={16} /> Prev
+                <ChevronLeftIcon size={16} /> Prev
               </Button>
               <span className="text-xs font-bold text-white/40">
                 Slide {currentSlideIndex + 1} of 10
@@ -820,7 +944,7 @@ export default function PitchDeckGenPage() {
                 disabled={currentSlideIndex === 9}
                 className="bg-white/5 hover:bg-white/10 text-white"
               >
-                Next <ChevronRight size={16} />
+                Next <ChevronRightIcon size={16} />
               </Button>
             </div>
           </div>
