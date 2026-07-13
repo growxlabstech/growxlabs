@@ -43,6 +43,29 @@ const CATEGORIES = [
 
 const EMAIL_DOMAINS = ["@gmail.com", "@yahoo.com", "@outlook.com", "@hotmail.com"];
 
+const IG_NICHES = [
+  "All Niches",
+  "clothing brand",
+  "sarees",
+  "restaurant",
+  "salon",
+  "gym",
+  "bakery",
+  "cafe",
+  "boutique",
+  "founder"
+];
+
+const IG_CITIES = [
+  "All Cities",
+  "Mumbai",
+  "Bengaluru",
+  "Hyderabad",
+  "Chennai",
+  "Pune",
+  "Delhi"
+];
+
 export default function ScrapeLeadsPage() {
   const [activeTab, setActiveTab] = useState<"local" | "instagram">("local");
 
@@ -53,8 +76,8 @@ export default function ScrapeLeadsPage() {
   const [maxResults, setMaxResults] = useState(100);
   
   // Instagram Scraper States
-  const [igNiche, setIgNiche] = useState("clothing brand");
-  const [igCity, setIgCity] = useState("Mumbai");
+  const [igNiche, setIgNiche] = useState("All Niches");
+  const [igCity, setIgCity] = useState("All Cities");
   const [igEmailDomain, setIgEmailDomain] = useState("@gmail.com");
 
   const [loading, setLoading] = useState(false);
@@ -278,13 +301,13 @@ export default function ScrapeLeadsPage() {
                   <label className="text-xs font-bold uppercase tracking-wider text-white/40 ml-1">Target Niche / Role</label>
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 h-4 w-4" />
-                    <input 
-                      type="text"
-                      placeholder="e.g., clothing brand, founder"
+                    <select 
                       value={igNiche}
                       onChange={(e) => setIgNiche(e.target.value)}
-                      className="w-full h-12 bg-white/[0.03] border border-white/5 rounded-lg pl-11 pr-4 text-white text-sm focus:outline-none focus:border-white/20 hover:bg-white/[0.05] transition-colors"
-                    />
+                      className="w-full h-12 bg-white/[0.03] border border-white/5 rounded-lg pl-11 pr-4 text-white text-sm focus:outline-none focus:border-white/20 appearance-none cursor-pointer hover:bg-white/[0.05] transition-colors"
+                    >
+                      {IG_NICHES.map(n => <option key={n} value={n} className="bg-neutral-900">{n}</option>)}
+                    </select>
                   </div>
                 </div>
 
@@ -292,13 +315,13 @@ export default function ScrapeLeadsPage() {
                   <label className="text-xs font-bold uppercase tracking-wider text-white/40 ml-1">Target City</label>
                   <div className="relative">
                     <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 h-4 w-4" />
-                    <input 
-                      type="text"
-                      placeholder="e.g., Mumbai, Bengaluru"
+                    <select 
                       value={igCity}
                       onChange={(e) => setIgCity(e.target.value)}
-                      className="w-full h-12 bg-white/[0.03] border border-white/5 rounded-lg pl-11 pr-4 text-white text-sm focus:outline-none focus:border-white/20 hover:bg-white/[0.05] transition-colors"
-                    />
+                      className="w-full h-12 bg-white/[0.03] border border-white/5 rounded-lg pl-11 pr-4 text-white text-sm focus:outline-none focus:border-white/20 appearance-none cursor-pointer hover:bg-white/[0.05] transition-colors"
+                    >
+                      {IG_CITIES.map(c => <option key={c} value={c} className="bg-neutral-900">{c}</option>)}
+                    </select>
                   </div>
                 </div>
 

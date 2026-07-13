@@ -27,13 +27,24 @@ export async function POST(req: Request) {
     }
 
     const targetEmailDomain = emailDomain || "@gmail.com";
-    const searchQuery = `site:instagram.com "${niche}" "${city}" "${targetEmailDomain}"`;
+    
+    let nicheQuery = `"${niche}"`;
+    if (niche === "All Niches") {
+      nicheQuery = `("clothing brand" OR "restaurant" OR "salon" OR "gym" OR "boutique" OR "founder" OR "sarees")`;
+    }
 
-    console.log(`Instagram X-Ray Search Initiated: ${searchQuery}`);
+    let cityQuery = `"${city}"`;
+    if (city === "All Cities") {
+      cityQuery = `"India"`; // Scope to all of India
+    }
 
-    // 2. Fetch google search HTML using user-agent simulation
-    const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}&num=40`;
-    const response = await fetch(googleUrl, {
+    const searchQuery = `site:instagram.com ${nicheQuery} ${cityQuery} "${targetEmailDomain}"`;
+
+    console.log(`Instagram X-Ray Search Initiated via DuckDuckGo: ${searchQuery}`);
+
+    // 2. Fetch DuckDuckGo Search HTML
+    const ddgUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(searchQuery)}`;
+    const response = await fetch(ddgUrl, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -44,43 +55,45 @@ export async function POST(req: Request) {
     });
 
     if (!response.ok) {
-      throw new Error(`Google Search responded with status ${response.status}`);
+      throw new Error(`DuckDuckGo Search responded with status ${response.status}`);
     }
 
     const html = await response.text();
     const leads: any[] = [];
 
-    // 3. Parse Google Search Results HTML
-    // We split by typical google result dividers (e.g. class="g" or class="MjjYud" or class="kvH3rc")
-    const resultBlocks = html.split(/class="g"|class="MjjYud"|class="kvH3rc"/);
+    // 3. Parse DuckDuckGo Search Results HTML
+    // DuckDuckGo separates links with class="result results_links results_links_deep web-result"
+    const resultBlocks = html.split(/class="result results_links/);
     const blocksToProcess = resultBlocks.slice(1);
 
     for (const block of blocksToProcess) {
-      // Find instagram handle inside this block
-      const urlMatch = block.match(/instagram\.com\/([a-zA-Z0-9_\.]+)/);
+      // Find instagram handle link inside the block
+      // e.g. uddg=https%3A%2F%2Fwww.instagram.com%2Fvinnu_lifestyle
+      const urlMatch = block.match(/uddg=https?(?:%3A%2F%2F|:\/\/)(?:www\.)?instagram\.com%2F([a-zA-Z0-9_\.]+)/i) || 
+                       block.match(/instagram\.com\/([a-zA-Z0-9_\.]+)/i);
+                       
       if (!urlMatch) continue;
 
-      const rawUsername = urlMatch[1];
-      const username = rawUsername.split(/[/?#]/)[0].trim().toLowerCase();
+      const rawUsername = decodeURIComponent(urlMatch[1]);
+      const username = rawUsername.split(/[/?#&%]/)[0].trim().toLowerCase();
 
       if (!username || IGNORED_PATHS.has(username) || username.length < 3) {
         continue;
       }
 
-      // Find email inside this block
+      // Find email inside this result snippet block
       const emailMatch = block.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
       if (!emailMatch) continue;
       const email = emailMatch[0].trim().toLowerCase();
 
-      // Find profile / business name from page title or headers in the block
-      const titleMatch = block.match(/<h3[^>]*>([^<]+)<\/h3>/);
-      let name = titleMatch ? titleMatch[1].trim() : `@${username}`;
+      // Find profile / business name from the result__a title tag
+      const titleMatch = block.match(/class="result__a"[^>]*>([\s\S]*?)<\/a>/i);
+      let name = titleMatch ? titleMatch[1].replace(/<[^>]*>/g, "").trim() : `@${username}`;
       name = name.replace(/\s*[•|(-]\s*Instagram.*$/i, "").trim();
       name = name.replace(/^@/, "").trim();
-      name = name.replace(/<[^>]*>/g, "");
 
       // Check if snippet lists any other website domains
-      const snippetMatch = block.match(/<div[^>]+class="VwiC3b[^>]*>([\s\S]*?)<\/div>/);
+      const snippetMatch = block.match(/class="result__snippet"[^>]*>([\s\S]*?)<\/a>/i);
       const snippet = snippetMatch ? snippetMatch[1].replace(/<[^>]*>/g, "").trim() : "";
 
       const linksInSnippet = snippet.match(/[a-zA-Z0-9-]+\.(com|in|org|net|co|io|me|linktr\.ee|info)/gi) || [];
