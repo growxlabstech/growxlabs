@@ -107,6 +107,10 @@ export default function AdminCareersPage() {
   const [playbookSubTab, setPlaybookSubTab] = useState<"screening" | "assessment" | "roleplay" | "scorecard">("screening");
   const [sendingAssessment, setSendingAssessment] = useState(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [showScheduleForm, setShowScheduleForm] = useState(false);
+  const [interviewDateTime, setInterviewDateTime] = useState("");
+  const [customMeetLink, setCustomMeetLink] = useState("");
+  const [schedulingInterview, setSchedulingInterview] = useState(false);
 
   useEffect(() => {
     fetchApplications();
@@ -207,6 +211,38 @@ export default function AdminCareersPage() {
     navigator.clipboard.writeText(text);
     setCopiedKey(key);
     setTimeout(() => setCopiedKey(null), 2000);
+  };
+
+  const handleScheduleInterview = async () => {
+    if (!activeCandidate || !interviewDateTime) return;
+    try {
+      setSchedulingInterview(true);
+      const res = await fetch("/api/admin/career-portal/schedule-interview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: activeCandidate.id,
+          dateTime: interviewDateTime,
+          customMeetLink: customMeetLink || null
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setApplications(prev => prev.map(app => app.id === activeCandidate.id ? { ...app, status: "contacted" } : app));
+        setActiveCandidate((prev: any) => prev && prev.id === activeCandidate.id ? { ...prev, status: "contacted" } : prev);
+        alert("Interview successfully scheduled and emailed to candidate!");
+        setShowScheduleForm(false);
+        setInterviewDateTime("");
+        setCustomMeetLink("");
+      } else {
+        alert(data.error || "Failed to schedule interview");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error scheduling interview");
+    } finally {
+      setSchedulingInterview(false);
+    }
   };
 
   // Filter candidates
@@ -774,20 +810,73 @@ export default function AdminCareersPage() {
 
               {/* Footer Actions (Status Updates) */}
               <div className="p-6 border-t border-neutral-200 bg-neutral-50 flex flex-col gap-4">
-                <div className="flex items-center justify-between border-b border-neutral-250 pb-3">
-                  <p className="text-[9px] font-bold text-neutral-550 uppercase tracking-widest">// Operations & Actions</p>
-                  <button
-                    onClick={() => handleSendAssessment(activeCandidate.id)}
-                    disabled={sendingAssessment}
-                    className="px-3.5 py-2 bg-neutral-900 hover:bg-neutral-800 disabled:opacity-50 text-white text-[9.5px] font-black uppercase tracking-wider rounded-lg flex items-center gap-1.5 transition-all duration-300 cursor-pointer"
-                  >
-                    {sendingAssessment ? (
-                      <Loader2 className="animate-spin h-3 w-3" />
-                    ) : (
-                      <Mail size={11} className="text-primary" />
-                    )}
-                    Send Stage 2 Task
-                  </button>
+                <div className="border-b border-neutral-250 pb-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[9px] font-bold text-neutral-550 uppercase tracking-widest">// Operations & Actions</p>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleSendAssessment(activeCandidate.id)}
+                        disabled={sendingAssessment}
+                        className="px-2.5 py-1.5 bg-neutral-900 hover:bg-neutral-800 disabled:opacity-50 text-white text-[9px] font-black uppercase tracking-wider rounded-lg flex items-center gap-1.5 transition-all duration-300 cursor-pointer"
+                      >
+                        {sendingAssessment ? (
+                          <Loader2 className="animate-spin h-3 w-3" />
+                        ) : (
+                          <Mail size={10} className="text-primary" />
+                        )}
+                        Send Task
+                      </button>
+                      <button
+                        onClick={() => setShowScheduleForm(prev => !prev)}
+                        className={cn(
+                          "px-2.5 py-1.5 disabled:opacity-50 text-[9px] font-black uppercase tracking-wider rounded-lg flex items-center gap-1.5 transition-all duration-300 cursor-pointer",
+                          showScheduleForm 
+                            ? "bg-primary text-black font-bold"
+                            : "bg-neutral-900 hover:bg-neutral-800 text-white"
+                        )}
+                      >
+                        <Calendar size={10} className={showScheduleForm ? "text-black" : "text-primary"} />
+                        Schedule
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Inline Schedule Form */}
+                  {showScheduleForm && (
+                    <div className="mt-4 p-4 border border-neutral-200 bg-white rounded-lg space-y-3 font-sans">
+                      <p className="text-[9.5px] font-bold text-neutral-600 uppercase tracking-wider">// Schedule Interview Details</p>
+                      
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-mono text-neutral-550 uppercase tracking-wider block">Interview Date & Time</label>
+                        <input
+                          type="datetime-local"
+                          value={interviewDateTime}
+                          onChange={e => setInterviewDateTime(e.target.value)}
+                          className="w-full bg-neutral-50 border border-neutral-200 focus:outline-none focus:border-neutral-400 p-2 rounded text-xs text-neutral-800"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-mono text-neutral-550 uppercase tracking-wider block">Custom Meet Link (Optional)</label>
+                        <input
+                          type="url"
+                          placeholder="Leave empty for default meet URL"
+                          value={customMeetLink}
+                          onChange={e => setCustomMeetLink(e.target.value)}
+                          className="w-full bg-neutral-50 border border-neutral-200 focus:outline-none focus:border-neutral-400 p-2 rounded text-xs text-neutral-800"
+                        />
+                      </div>
+
+                      <button
+                        onClick={handleScheduleInterview}
+                        disabled={schedulingInterview || !interviewDateTime}
+                        className="w-full py-2 bg-neutral-900 hover:bg-neutral-800 text-white disabled:opacity-50 text-[10px] font-black uppercase tracking-widest rounded-lg flex items-center justify-center gap-2 transition-all cursor-pointer"
+                      >
+                        {schedulingInterview ? <Loader2 className="animate-spin h-3.5 w-3.5" /> : <CheckCircle size={12} />}
+                        Send Interview Invite
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <p className="text-[9px] font-bold text-neutral-500 uppercase tracking-widest">// Update Candidate Stage</p>
                 <div className="flex flex-wrap gap-2.5">
