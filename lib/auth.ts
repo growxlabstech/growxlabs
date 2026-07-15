@@ -56,6 +56,7 @@ export const authOptions: AuthOptions = {
                 email: member.email,
                 name: member.name,
                 role: member.role || "crm_agent",
+                allowed_paths: member.allowed_paths || [],
               };
 
               // Record Session
@@ -89,6 +90,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.role = (user as any).role;
         token.id = user.id;
+        token.allowed_paths = (user as any).allowed_paths || [];
       }
 
       // Block and invalidate co-admin sessions
@@ -119,6 +121,7 @@ export const authOptions: AuthOptions = {
       if (session.user) {
         (session.user as any).role = token.role;
         (session.user as any).id = token.id;
+        (session.user as any).allowed_paths = (token as any).allowed_paths || [];
       }
       return session;
     }

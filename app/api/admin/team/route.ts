@@ -22,7 +22,7 @@ export async function GET(req: Request) {
     
     // 1. Fetch team members with their individual sessions
     const { data: teamMembers, error: teamError } = await supabaseAdmin.from("team_members").select(`
-      id, name, email, phone, role, is_active, accepted_terms, created_at,
+      id, name, email, phone, role, is_active, accepted_terms, allowed_paths, created_at,
       sessions:team_sessions(login_at, logout_at, ip_address, device)
     `).order("created_at", { ascending: false });
     
@@ -58,14 +58,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Access Denied" }, { status: 403 });
     }
     const body = await req.json();
-    const { name, email, phone, role, password } = body;
+    const { name, email, phone, role, password, allowed_paths } = body;
     
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
     
     const { data, error } = await supabaseAdmin.from("team_members").insert([{
-      name, email, phone, role, password_hash
+      name, email, phone, role, password_hash, allowed_paths: allowed_paths || []
     }]).select("id, name, email").single();
     
     if (error) throw error;

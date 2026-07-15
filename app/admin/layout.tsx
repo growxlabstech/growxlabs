@@ -29,18 +29,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (role === "ADMIN" || role === "CO_ADMIN") {
       setAuthorized(true);
     } else if (role === "crm_agent") {
-      // CRM Agents are only allowed to access leads, crm, and outreach paths
-      const isAllowed = 
-        pathname.startsWith("/admin/leads") || 
-        pathname.startsWith("/admin/crm") || 
-        pathname.startsWith("/admin/outreach") ||
-        pathname === "/admin" ||
-        pathname === "/admin/";
+      const allowedPaths = (session?.user as any)?.allowed_paths || [];
+      let isAllowed = false;
+      
+      for (const p of allowedPaths) {
+        if (p === "/admin/leads/scrape") {
+          if (pathname.startsWith("/admin/leads/scrape")) {
+            isAllowed = true;
+            break;
+          }
+        } else if (p === "/admin/leads") {
+          // Allow leads subroutes EXCEPT scrape unless they explicitly have scrape permission
+          if (pathname.startsWith("/admin/leads") && !pathname.startsWith("/admin/leads/scrape")) {
+            isAllowed = true;
+            break;
+          }
+        } else if (pathname.startsWith(p)) {
+          isAllowed = true;
+          break;
+        }
+      }
 
-      if (isAllowed) {
+      const isRootPath = pathname === "/admin" || pathname === "/admin/";
+      if (isAllowed || isRootPath) {
         setAuthorized(true);
-        if (pathname.endsWith("/admin") || pathname.endsWith("/admin/")) {
-          router.push("/admin/leads");
+        if (isRootPath) {
+          const fallbackPath = allowedPaths.find((p: string) => p !== "/admin/leads/scrape") || allowedPaths[0] || "/admin/leads";
+          router.push(fallbackPath);
         }
       } else {
         setAuthorized(false);

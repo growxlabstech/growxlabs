@@ -86,9 +86,20 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
   const { data: session } = useSession();
   const role = (session?.user as any)?.role;
   const isCrmAgent = role === "crm_agent";
+  const allowedPaths = (session?.user as any)?.allowed_paths || [];
 
   const filteredNavItems = isCrmAgent 
-    ? navItems.filter(i => ["CRM", "Leads", "Outreach"].includes(i.name))
+    ? navItems.filter(item => {
+        return allowedPaths.some((p: string) => {
+          if (p === "/admin/leads/scrape") {
+            return item.href === "/admin/leads/scrape";
+          }
+          if (p === "/admin/leads") {
+            return item.href === "/admin/leads";
+          }
+          return item.href.startsWith(p);
+        });
+      })
     : navItems;
 
   const renderLink = (item: any) => {

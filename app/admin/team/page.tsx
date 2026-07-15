@@ -7,6 +7,17 @@ import { Reveal } from "@/components/marketing/Reveal";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
+const AVAILABLE_PATHS = [
+  { label: "CRM Dashboard", path: "/admin/crm" },
+  { label: "Sales Pipeline", path: "/admin/leads" },
+  { label: "AI Lead Scraper", path: "/admin/leads/scrape" },
+  { label: "AI Outreach Planner", path: "/admin/outreach" },
+  { label: "GrowX Email Client", path: "/admin/growx-email" },
+  { label: "Client Onboarding", path: "/admin/onboarding" },
+  { label: "Apollo Lead Generation", path: "/admin/apollo" },
+  { label: "Pitch Deck Generator", path: "/admin/pitch-deck" }
+];
+
 export default function AdminTeamPage() {
   const { data: session } = useSession();
   const role = (session?.user as any)?.role;
@@ -20,12 +31,17 @@ export default function AdminTeamPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedMember, setSelectedMember] = useState<any>(null);
   
+  // Permission Editing States
+  const [editPermissionsMember, setEditPermissionsMember] = useState<any | null>(null);
+  const [editAllowedPaths, setEditAllowedPaths] = useState<string[]>([]);
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     password: "",
-    role: "crm_agent"
+    role: "crm_agent",
+    allowed_paths: ["/admin/crm", "/admin/leads", "/admin/outreach"] as string[]
   });
 
   useEffect(() => {
@@ -66,7 +82,34 @@ export default function AdminTeamPage() {
 
       toast.success("Agent created successfully");
       setShowAddModal(false);
-      setFormData({ name: "", email: "", phone: "", password: "", role: "crm_agent" });
+      setFormData({ name: "", email: "", phone: "", password: "", role: "crm_agent", allowed_paths: ["/admin/crm", "/admin/leads", "/admin/outreach"] });
+      fetchTeam();
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSavePermissions = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editPermissionsMember) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`/api/admin/team?id=${editPermissionsMember.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ allowed_paths: editAllowedPaths })
+      });
+      
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to update permissions");
+      }
+
+      toast.success("Agent permissions updated successfully");
+      setEditPermissionsMember(null);
       fetchTeam();
     } catch (err: any) {
       toast.error(err.message);
@@ -295,6 +338,24 @@ export default function AdminTeamPage() {
                         </span>
                       </div>
                       
+                      <div className="flex justify-between items-center pb-3 border-b border-[#e6e6e6]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Permissions</span>
+                        <div className="flex flex-wrap gap-1 justify-end max-w-[70%]">
+                          {(member.allowed_paths || []).length === 0 ? (
+                            <span className="text-[8px] font-bold text-neutral-400 uppercase tracking-widest bg-neutral-100 px-2 py-0.5 rounded border border-neutral-200">None</span>
+                          ) : (
+                            (member.allowed_paths || []).map((path: string, i: number) => {
+                              const match = AVAILABLE_PATHS.find(p => p.path === path);
+                              return (
+                                <span key={i} className="text-[8px] font-extrabold text-[#0075de] uppercase tracking-wider bg-[#0075de]/5 border border-[#0075de]/10 px-2 py-0.5 rounded">
+                                  {match ? match.label.split(" ")[0] : path.replace("/admin/", "")}
+                                </span>
+                              );
+                            })
+                          )}
+                        </div>
+                      </div>
+                      
                       <div className="flex justify-between items-center">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Sessions</span>
                         <span className="text-neutral-800 font-mono text-xs">{member.sessions?.length || 0}</span>
@@ -302,18 +363,20 @@ export default function AdminTeamPage() {
                    </div>
                  </div>
 
-                 <div className="flex gap-2.5 mt-4">
-                    <Button onClick={() => setSelectedMember(member)} variant="outline" size="sm" className="flex-1 bg-white border-[#e6e6e6] hover:bg-neutral-50 text-neutral-600 hover:text-neutral-800 text-[10px] font-bold uppercase tracking-widest h-10 rounded-md transition-all shadow-sm">
-                       <Clock className="w-3.5 h-3.5 mr-2" /> Logs
+                 <div className="flex gap-2 mt-4">
+                    <Button onClick={() => setSelectedMember(member)} variant="outline" className="flex-1 bg-white border-[#e6e6e6] hover:bg-neutral-50 text-neutral-600 hover:text-neutral-800 text-[9px] font-bold uppercase tracking-wider h-9 rounded-md transition-all shadow-sm px-2">
+                       <Clock className="w-3 h-3 mr-1.5" /> Logs
+                    </Button>
+                    <Button onClick={() => { setEditPermissionsMember(member); setEditAllowedPaths(member.allowed_paths || []); }} variant="outline" className="flex-1 bg-white border-[#e6e6e6] hover:bg-neutral-50 text-neutral-600 hover:text-neutral-800 text-[9px] font-bold uppercase tracking-wider h-9 rounded-md transition-all shadow-sm px-2">
+                       <Key className="w-3 h-3 mr-1.5" /> Access
                     </Button>
                     <Button 
                       onClick={() => handleDeactivate(member.id, member.is_active)} 
                       variant="outline" 
-                      size="sm" 
-                      className={`px-3 bg-white border-[#e6e6e6] hover:bg-neutral-50 ${member.is_active ? 'text-neutral-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50' : 'text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50'} transition-all h-10 rounded-md shadow-sm`} 
+                      className={`px-3 bg-white border-[#e6e6e6] hover:bg-neutral-50 ${member.is_active ? 'text-neutral-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50' : 'text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50'} transition-all h-9 rounded-md shadow-sm`} 
                       title={member.is_active ? "Deactivate" : "Activate"}
                     >
-                       {member.is_active ? <UserX className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
+                       {member.is_active ? <UserX className="w-3.5 h-3.5" /> : <Shield className="w-3.5 h-3.5" />}
                     </Button>
                  </div>
               </div>
@@ -399,6 +462,31 @@ export default function AdminTeamPage() {
                   className="w-full bg-[#f6f5f4] border border-[#e6e6e6] rounded-md px-4 py-3 text-neutral-800 focus:outline-none focus:border-[#0075de] focus:bg-white transition-all text-sm" 
                 />
               </div>
+
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">Access Permissions</label>
+                <div className="grid grid-cols-2 gap-2 bg-[#f6f5f4] border border-[#e6e6e6] p-4 rounded-md">
+                  {AVAILABLE_PATHS.map((p) => {
+                    const checked = formData.allowed_paths.includes(p.path);
+                    return (
+                      <label key={p.path} className="flex items-center gap-2 text-[11px] font-bold text-neutral-600 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(e) => {
+                            const newPaths = checked
+                              ? formData.allowed_paths.filter(x => x !== p.path)
+                              : [...formData.allowed_paths, p.path];
+                            setFormData({ ...formData, allowed_paths: newPaths });
+                          }}
+                          className="rounded border-[#e6e6e6] bg-white text-[#0075de] focus:ring-[#0075de]"
+                        />
+                        {p.label}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
               
               <div className="pt-6 flex justify-end gap-3 border-t border-[#e6e6e6] mt-8">
                  <Button type="button" onClick={() => setShowAddModal(false)} variant="ghost" className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-neutral-700">Cancel</Button>
@@ -409,6 +497,53 @@ export default function AdminTeamPage() {
                  >
                    {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Create Agent"}
                  </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT PERMISSIONS MODAL */}
+      {editPermissionsMember && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white border border-[#e6e6e6] rounded-md w-full max-w-md p-8 shadow-2xl animate-in zoom-in-95 duration-200">
+            <h2 className="text-xl font-bold text-neutral-800 tracking-tight mb-2">Edit Permissions</h2>
+            <p className="text-neutral-400 text-sm mb-8">Manage path access permissions for {editPermissionsMember.name}.</p>
+            <form onSubmit={handleSavePermissions} className="space-y-5">
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">Access Permissions</label>
+                <div className="grid grid-cols-2 gap-2 bg-[#f6f5f4] border border-[#e6e6e6] p-4 rounded-md">
+                  {AVAILABLE_PATHS.map((p) => {
+                    const checked = editAllowedPaths.includes(p.path);
+                    return (
+                      <label key={p.path} className="flex items-center gap-2 text-[11px] font-bold text-neutral-600 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(e) => {
+                            const newPaths = checked
+                              ? editAllowedPaths.filter(x => x !== p.path)
+                              : [...editAllowedPaths, p.path];
+                            setEditAllowedPaths(newPaths);
+                          }}
+                          className="rounded border-[#e6e6e6] bg-white text-[#0075de] focus:ring-[#0075de]"
+                        />
+                        {p.label}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="pt-6 flex justify-end gap-3 border-t border-[#e6e6e6] mt-8">
+                <Button type="button" onClick={() => setEditPermissionsMember(null)} variant="ghost" className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-neutral-700">Cancel</Button>
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="bg-[#0075de] hover:bg-[#005bab] text-white text-[10px] font-bold uppercase tracking-widest h-10 px-6 min-w-[120px] rounded-md shadow-sm"
+                >
+                  {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save Changes"}
+                </Button>
               </div>
             </form>
           </div>
