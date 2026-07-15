@@ -9,26 +9,31 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 async function run() {
-  console.log("=== USERS TABLE ===");
-  const { data: users, error: userError } = await supabase
-    .from("users")
-    .select("id, email, name, role");
+  const reshwanthId = "d1a1506c-caaf-4203-8759-ada2a12ac4b2";
+
+  console.log("=== ASSIGNING LEADS ===");
+  // Update 'leads' table
+  const { data: leadsData, error: err1 } = await supabase
+    .from("leads")
+    .update({ assigned_to: reshwanthId })
+    .is("assigned_to", null);
   
-  if (userError) {
-    console.error("Error reading users:", userError.message);
+  if (err1) {
+    console.error("Error updating leads:", err1.message);
   } else {
-    console.log(JSON.stringify(users, null, 2));
+    console.log("Successfully updated 'leads' table.");
   }
 
-  console.log("\n=== TEAM MEMBERS TABLE ===");
-  const { data: team, error: teamError } = await supabase
-    .from("team_members")
-    .select("id, email, name, role, is_active");
+  // Update 'crm_leads' table
+  const { data: crmData, error: err2 } = await supabase
+    .from("crm_leads")
+    .update({ assigned_to: reshwanthId })
+    .is("assigned_to", null);
   
-  if (teamError) {
-    console.error("Error reading team_members:", teamError.message);
+  if (err2) {
+    console.error("Error updating crm_leads:", err2.message);
   } else {
-    console.log(JSON.stringify(team, null, 2));
+    console.log("Successfully updated 'crm_leads' table.");
   }
 }
 

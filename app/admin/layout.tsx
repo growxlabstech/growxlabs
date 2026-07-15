@@ -29,9 +29,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (role === "ADMIN" || role === "CO_ADMIN") {
       setAuthorized(true);
     } else if (role === "crm_agent") {
-      // CRM Agents are only allowed to access leads and outreach paths
+      // CRM Agents are only allowed to access leads, crm, and outreach paths
       const isAllowed = 
         pathname.startsWith("/admin/leads") || 
+        pathname.startsWith("/admin/crm") || 
         pathname.startsWith("/admin/outreach") ||
         pathname === "/admin" ||
         pathname === "/admin/";
