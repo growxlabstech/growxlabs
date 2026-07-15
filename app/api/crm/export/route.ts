@@ -10,16 +10,15 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { role, id } = session.user as any;
+    const { role } = session.user as any;
+    if (role !== "ADMIN" && role !== "CO_ADMIN") {
+      return NextResponse.json({ error: "Access Denied: Agents are not permitted to export data." }, { status: 403 });
+    }
+
     const { searchParams } = new URL(req.url);
     const format = searchParams.get('format') || 'csv';
     
     let query = supabaseAdmin.from("leads").select("*");
-    
-    // Filter by assigned agent if it's a CRM Agent
-    if (role === "crm_agent") {
-      query = query.eq("assigned_to", id);
-    }
 
     const { data: leads, error } = await query.order("created_at", { ascending: false });
     if (error) throw error;

@@ -8,8 +8,13 @@ import {
 import Link from "next/link";
 import { Reveal } from "@/components/marketing/Reveal";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 export default function AdminCRMPage() {
+  const { data: session } = useSession();
+  const role = (session?.user as any)?.role;
+  const isAdminOrCoAdmin = role === "ADMIN" || role === "CO_ADMIN";
+
   const [leads, setLeads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showExport, setShowExport] = useState(false);
@@ -167,9 +172,11 @@ export default function AdminCRMPage() {
             <Button onClick={() => setShowImport(true)} variant="outline" className="h-10 px-4 bg-[var(--surface-1)] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-hover)]">
               <Upload className="w-4 h-4 mr-2" /> Import CSV
             </Button>
-            <Button onClick={() => setShowExport(true)} variant="outline" className="h-10 px-4 bg-[var(--surface-1)] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-hover)]">
-              <Download className="w-4 h-4 mr-2" /> Export Data
-            </Button>
+            {isAdminOrCoAdmin && (
+              <Button onClick={() => setShowExport(true)} variant="outline" className="h-10 px-4 bg-[var(--surface-1)] border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-white hover:border-[var(--border-hover)]">
+                <Download className="w-4 h-4 mr-2" /> Export Data
+              </Button>
+            )}
           </div>
         </div>
       </Reveal>

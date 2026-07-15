@@ -376,9 +376,11 @@ export default function LeadsAdminPage() {
             <Button onClick={() => setShowImportLead(true)} className="bg-white border border-[#e6e6e6] hover:bg-[#f6f5f4] text-neutral-600 h-10 px-5 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all">
               <Upload size={13} className="mr-2" /> Import CSV
             </Button>
-            <Button onClick={handleExportCSV} className="bg-white border border-[#e6e6e6] hover:bg-[#f6f5f4] text-neutral-600 h-10 px-5 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all">
-              <Download size={13} className="mr-2" /> Export
-            </Button>
+            {isAdminOrCoAdmin && (
+              <Button onClick={handleExportCSV} className="bg-white border border-[#e6e6e6] hover:bg-[#f6f5f4] text-neutral-600 h-10 px-5 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all">
+                <Download size={13} className="mr-2" /> Export
+              </Button>
+            )}
             <Button onClick={() => setShowAddLead(true)} className="bg-white border border-[#e6e6e6] hover:bg-[#f6f5f4] text-neutral-600 h-10 px-5 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all">
               <Plus size={13} className="mr-2" /> Add Lead
             </Button>
