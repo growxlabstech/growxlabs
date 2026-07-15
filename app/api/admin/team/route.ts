@@ -19,14 +19,34 @@ export async function GET(req: Request) {
     if (!await checkAdmin(req)) {
       return NextResponse.json({ error: "Access Denied" }, { status: 403 });
     }
-    const { data, error } = await supabaseAdmin.from("team_members").select(`
+    
+    // 1. Fetch team members with their individual sessions
+    const { data: teamMembers, error: teamError } = await supabaseAdmin.from("team_members").select(`
       id, name, email, phone, role, is_active, accepted_terms, created_at,
       sessions:team_sessions(login_at, logout_at, ip_address, device)
     `).order("created_at", { ascending: false });
     
-    if (error) throw error;
+    if (teamError) throw teamError;
+
+    // 2. Fetch recent activities from lead_activities table
+    const { data: activityLogs, error: logError } = await supabaseAdmin
+      .from("lead_activities")
+      .select(`
+        id,
+        activity_type,
+        notes,
+        created_at,
+        team_member:team_members(name)
+      `)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    if (logError) throw logError;
     
-    return NextResponse.json({ team: data });
+    return NextResponse.json({ 
+      team: teamMembers, 
+      logs: activityLogs || [] 
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

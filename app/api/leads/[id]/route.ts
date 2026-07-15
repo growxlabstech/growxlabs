@@ -88,6 +88,29 @@ export async function PATCH(
     }
 
     console.log(`[API] Successfully updated lead ${id}`);
+
+    // Log status updates to lead_activities
+    if (updateData.status && data) {
+      try {
+        // Query for corresponding crm_leads row
+        const { data: crmLead } = await supabaseAdmin
+          .from("crm_leads")
+          .select("id")
+          .eq("business_name", data.business_name)
+          .maybeSingle();
+
+        await supabaseAdmin.from("lead_activities").insert([{
+          lead_id: crmLead ? crmLead.id : null,
+          team_member_id: userId,
+          activity_type: "SYNC",
+          notes: `${session.user?.name || "Agent"} updated status of "${data.business_name}" to ${updateData.status}.`,
+          created_at: new Date().toISOString()
+        }]);
+      } catch (e) {
+        console.error("CRM Sync logging error (non-fatal):", e);
+      }
+    }
+
     return NextResponse.json(data);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "An unknown error occurred";

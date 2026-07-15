@@ -70,8 +70,9 @@ export async function POST(req: Request) {
     }
 
     // 2. Sync with 'crm_leads'
+    let crmLeadId = null;
     try {
-      await supabaseAdmin.from("crm_leads").insert({
+      const { data: crmLead } = await supabaseAdmin.from("crm_leads").insert({
         business_name: leadData.business_name,
         contact_name: leadData.name,
         email: leadData.email,
@@ -82,9 +83,26 @@ export async function POST(req: Request) {
         created_by: userId,
         added_manually: true,
         assigned_to: assignedTo
-      });
+      }).select("id").single();
+      
+      if (crmLead) {
+        crmLeadId = crmLead.id;
+      }
     } catch (e) {
       console.error("CRM Sync Error (non-fatal):", e);
+    }
+
+    // Log the lead creation activity in database
+    try {
+      await supabaseAdmin.from("lead_activities").insert([{
+        lead_id: crmLeadId,
+        team_member_id: userId,
+        activity_type: "INFO",
+        notes: `${creatorName} added "${leadData.business_name}" manually.`,
+        created_at: now
+      }]);
+    } catch (e) {
+      console.error("Activity Logging Error (non-fatal):", e);
     }
 
     return NextResponse.json(data);

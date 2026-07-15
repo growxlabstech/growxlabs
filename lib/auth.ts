@@ -64,6 +64,14 @@ export const authOptions: AuthOptions = {
                 login_at: new Date().toISOString(),
                 is_active: true
               }]);
+
+              // Log session in lead_activities
+              await supabaseAdmin.from("lead_activities").insert([{
+                team_member_id: member.id,
+                activity_type: "AUTH",
+                notes: `${member.name} signed in to terminal.`,
+                created_at: new Date().toISOString()
+              }]);
             }
           }
         }

@@ -13,6 +13,7 @@ export default function AdminTeamPage() {
   const isAdmin = role === "ADMIN" || role === "CO_ADMIN";
 
   const [team, setTeam] = useState<any[]>([]);
+  const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
@@ -36,6 +37,7 @@ export default function AdminTeamPage() {
       const res = await fetch(`/api/admin/team?t=${Date.now()}`);
       const data = await res.json();
       setTeam(data.team || []);
+      setLogs(data.logs || []);
     } catch (err) {
       console.error(err);
       toast.error("Failed to fetch team members");
@@ -196,23 +198,36 @@ export default function AdminTeamPage() {
              </div>
            </div>
            
-           <div className="space-y-3 h-40 overflow-y-auto custom-scrollbar pr-2 font-mono text-[12px] leading-relaxed">
-              <div className="flex items-start gap-4 p-2.5 rounded hover:bg-white/40 transition-colors border border-transparent hover:border-[#e6e6e6]/45">
-                 <span className="text-[10px] text-neutral-400 w-12 shrink-0">14:02:11</span>
-                 <span className="px-2 py-0.5 rounded text-[8px] font-bold bg-[#0075de]/10 text-[#0075de] border border-[#0075de]/20 uppercase tracking-wider shrink-0">INFO</span>
-                 <span className="text-neutral-700"><strong className="text-neutral-900 font-semibold">Sarah J.</strong> added 5 leads manually.</span>
-              </div>
-              <div className="flex items-start gap-4 p-2.5 rounded hover:bg-white/40 transition-colors border border-transparent hover:border-[#e6e6e6]/45">
-                 <span className="text-[10px] text-neutral-400 w-12 shrink-0">13:45:04</span>
-                 <span className="px-2 py-0.5 rounded text-[8px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200 uppercase tracking-wider shrink-0">SYNC</span>
-                 <span className="text-neutral-700"><strong className="text-neutral-900 font-semibold">Michael T.</strong> updated status of \"Royal Palace\" to <span className="text-[#0075de] font-semibold">Contacted</span>.</span>
-              </div>
-              <div className="flex items-start gap-4 p-2.5 rounded hover:bg-white/40 transition-colors border border-transparent hover:border-[#e6e6e6]/45">
-                 <span className="text-[10px] text-neutral-400 w-12 shrink-0">09:12:56</span>
-                 <span className="px-2 py-0.5 rounded text-[8px] font-bold bg-purple-50 text-purple-600 border border-purple-200 uppercase tracking-wider shrink-0">AUTH</span>
-                 <span className="text-neutral-700"><strong className="text-neutral-900 font-semibold">Sarah J.</strong> signed in to terminal.</span>
-              </div>
-           </div>
+            <div className="space-y-3 h-40 overflow-y-auto custom-scrollbar pr-2 font-mono text-[12px] leading-relaxed">
+               {logs.length === 0 ? (
+                  <div className="text-neutral-400 text-center py-10 uppercase tracking-widest text-[10px] font-bold">No terminal logs recorded yet</div>
+               ) : (
+                 logs.map((log: any) => {
+                   const timeStr = log.created_at 
+                     ? new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) 
+                     : "--:--:--";
+                   
+                   let badgeBg = "bg-[#0075de]/10 text-[#0075de] border border-[#0075de]/20";
+                   if (log.activity_type === "SYNC") {
+                     badgeBg = "bg-emerald-50 text-emerald-600 border border-emerald-200";
+                   } else if (log.activity_type === "AUTH") {
+                     badgeBg = "bg-purple-50 text-purple-600 border border-purple-200";
+                   }
+                   
+                   return (
+                     <div key={log.id} className="flex items-start gap-4 p-2.5 rounded hover:bg-white/40 transition-colors border border-transparent hover:border-[#e6e6e6]/45">
+                        <span className="text-[10px] text-neutral-400 w-12 shrink-0">{timeStr}</span>
+                        <span className={`px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider shrink-0 ${badgeBg}`}>
+                          {log.activity_type || "INFO"}
+                        </span>
+                        <span className="text-neutral-700">
+                          {log.notes}
+                        </span>
+                     </div>
+                   );
+                 })
+               )}
+            </div>
         </div>
       </Reveal>
 
