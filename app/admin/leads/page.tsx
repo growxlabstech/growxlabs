@@ -526,17 +526,17 @@ export default function LeadsAdminPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <Button onClick={() => setShowImportLead(true)} variant="outline" className="h-8 px-3.5 bg-[#ffffff] border border-[#E5E7EB] hover:bg-slate-50 text-[#111827] text-xs font-semibold rounded-lg shadow-sm">
-                  <Upload size={12} className="mr-1.5" /> Import CSV
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-start sm:justify-end shrink-0">
+                <Button onClick={() => setShowImportLead(true)} variant="outline" className="h-8 px-3 bg-[#ffffff] border border-[#E5E7EB] hover:bg-slate-50 text-[#111827] text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                  <Upload size={12} className="shrink-0" /> Import CSV
                 </Button>
-                <Link href="/admin/leads/scrape">
-                  <Button className="h-8 px-3.5 bg-[#ffffff] border border-[#E5E7EB] hover:bg-slate-50 text-neutral-700 text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1.5">
-                    <Zap size={12} className="text-[#2563EB] fill-[#2563EB]" /> Hunt Leads
+                <Link href="/admin/leads/scrape" className="shrink-0">
+                  <Button className="h-8 px-3 bg-[#ffffff] border border-[#E5E7EB] hover:bg-slate-50 text-neutral-700 text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                    <Zap size={12} className="text-[#2563EB] fill-[#2563EB] shrink-0" /> Hunt Leads
                   </Button>
                 </Link>
-                <Button onClick={() => setShowAddLead(true)} className="h-8 px-3.5 bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm">
-                  + Add Lead
+                <Button onClick={() => setShowAddLead(true)} className="h-8 px-3 bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                  <Plus size={12} className="shrink-0" /> Add Lead
                 </Button>
               </div>
             </div>

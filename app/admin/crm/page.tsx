@@ -556,19 +556,19 @@ export default function AdminCRMPage() {
             </div>
             <p className="text-[#615d59] text-xs">Manage workspace accounts, monitor pipeline value, and audit sales activities.</p>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <Button onClick={() => setShowAddLead(true)} className="h-8 px-3 bg-[#0075de] hover:bg-[#005bab] text-white text-[11px] font-semibold rounded-md shadow-sm">
-              <Plus size={12} className="mr-1.5" /> Add Lead
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-start sm:justify-end shrink-0">
+            <Button onClick={() => setShowAddLead(true)} className="h-8 px-3 bg-[#0075de] hover:bg-[#005bab] text-white text-[11px] font-semibold rounded-md shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+              <Plus size={12} className="shrink-0" /> Add Lead
             </Button>
-            <Button onClick={() => setShowImport(true)} variant="outline" className="h-8 px-3 bg-white border border-[#e6e6e6] hover:bg-[#f6f5f4] text-[#31302e] text-[11px] font-semibold rounded-md shadow-sm">
-              <Upload size={12} className="mr-1.5" /> Import CSV
+            <Button onClick={() => setShowImport(true)} variant="outline" className="h-8 px-3 bg-white border border-[#e6e6e6] hover:bg-[#f6f5f4] text-[#31302e] text-[11px] font-semibold rounded-md shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+              <Upload size={12} className="shrink-0" /> Import CSV
             </Button>
             {isAdminOrCoAdmin ? (
-              <Button onClick={() => setShowExport(true)} variant="outline" className="h-8 px-3 bg-white border border-[#e6e6e6] hover:bg-[#f6f5f4] text-[#31302e] text-[11px] font-semibold rounded-md shadow-sm">
-                <Download size={12} className="mr-1.5" /> Export Data
+              <Button onClick={() => setShowExport(true)} variant="outline" className="h-8 px-3 bg-white border border-[#e6e6e6] hover:bg-[#f6f5f4] text-[#31302e] text-[11px] font-semibold rounded-md shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                <Download size={12} className="shrink-0" /> Export Data
               </Button>
             ) : (
-              <div className="h-8 px-3 bg-slate-50 border border-[#e6e6e6] text-[#a39e98] text-[10px] font-semibold rounded-md flex items-center cursor-not-allowed select-none" title="Admin permissions required to export database data">
+              <div className="h-8 px-3 bg-slate-50 border border-[#e6e6e6] text-[#a39e98] text-[10px] font-semibold rounded-md flex items-center justify-center whitespace-nowrap shrink-0 cursor-not-allowed select-none" title="Admin permissions required to export database data">
                 🔒 Export
               </div>
             )}
