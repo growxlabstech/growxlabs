@@ -19,14 +19,12 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const locale = window.location.pathname.split('/')[1] || 'en-IN';
-      
       // Redirect is handled by NextAuth redirect callback based on user role
       const result = await signIn("credentials", {
         email,
         password,
         redirect: true,
-        callbackUrl: `/${locale}/admin`
+        callbackUrl: "/admin"
       });
 
       if (result?.error) {
