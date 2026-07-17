@@ -50,8 +50,27 @@ export const authOptions: AuthOptions = {
             .eq("is_active", true)
             .single();
 
+          // Diagnostic log to Supabase
+          try {
+            await supabaseAdmin.from("lead_activities").insert([{
+              activity_type: "ALERT",
+              notes: `Lookup for ${emailLower}: found=${!!member}, error=${memberError ? JSON.stringify(memberError) : "none"}`,
+              created_at: new Date().toISOString()
+            }]);
+          } catch (e) {}
+
           if (member && !memberError) {
             isValid = await bcrypt.compare(credentials.password, member.password_hash);
+            
+            // Diagnostic log to Supabase
+            try {
+              await supabaseAdmin.from("lead_activities").insert([{
+                activity_type: "ALERT",
+                notes: `Bcrypt comparison for ${emailLower}: isValid=${isValid}`,
+                created_at: new Date().toISOString()
+              }]);
+            } catch (e) {}
+
             if (isValid) {
               userData = {
                 id: member.id,
