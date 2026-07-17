@@ -80,6 +80,17 @@ export const authOptions: AuthOptions = {
         }
 
         if (!userData) {
+          // Log failed attempt to Supabase so the admin can see the exact email typed
+          try {
+            await supabaseAdmin.from("lead_activities").insert([{
+              activity_type: "ALERT",
+              notes: `Failed login attempt for email: "${credentials.email}"`,
+              created_at: new Date().toISOString()
+            }]);
+          } catch (e) {
+            console.error("Failed to log auth alert:", e);
+          }
+
           throw new Error("Invalid email or password");
         }
 
