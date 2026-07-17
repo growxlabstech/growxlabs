@@ -17,11 +17,13 @@ export const authOptions: AuthOptions = {
           throw new Error("Missing credentials");
         }
 
+        const emailLower = credentials.email.toLowerCase().trim();
+
         // 1. Try finding in 'users' table (Clients/Admins)
         let { data: user, error } = await supabaseAdmin
           .from("users")
           .select("*")
-          .eq("email", credentials.email)
+          .eq("email", emailLower)
           .single();
 
         let isValid = false;
@@ -44,7 +46,7 @@ export const authOptions: AuthOptions = {
           const { data: member, error: memberError } = await supabaseAdmin
             .from("team_members")
             .select("*")
-            .eq("email", credentials.email)
+            .eq("email", emailLower)
             .eq("is_active", true)
             .single();
 
