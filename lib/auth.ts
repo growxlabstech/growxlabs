@@ -58,6 +58,7 @@ export const authOptions: AuthOptions = {
             isValid = await bcrypt.compare(credentials.password, member.password_hash);
             
             if (isValid) {
+              console.log(`Auth success: User ${emailLower} logged in successfully!`);
               userData = {
                 id: member.id,
                 email: member.email,
