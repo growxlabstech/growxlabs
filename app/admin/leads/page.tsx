@@ -95,23 +95,23 @@ const DropdownFilter = ({ label, value, options, onChange }: DropdownFilterProps
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "inline-flex items-center gap-1.5 px-3 py-1.5 border border-slate-200/60 bg-slate-50/50 hover:bg-slate-100/50 text-slate-700 hover:text-slate-900 text-xs font-semibold rounded-lg transition-all",
-          isOpen && "border-[#2563EB]/40 bg-white text-[#2563EB] ring-1 ring-[#2563EB]/10 shadow-sm"
+          "inline-flex items-center gap-1.5 px-3 py-1.5 border border-[var(--border-subtle)] bg-[var(--surface-1)] hover:bg-[var(--surface-2)] text-[var(--text-secondary)] text-xs font-semibold rounded-lg transition-all cursor-pointer",
+          isOpen && "border-[var(--primary)]/45 bg-[var(--card)] text-[var(--primary)] ring-1 ring-[var(--primary)]/10 shadow-sm"
         )}
       >
-        <span className="text-slate-400 font-normal">{label}:</span>
-        <span className="text-[#111827]">{activeOption ? activeOption.label : "All"}</span>
-        <ChevronDown size={12} className={cn("text-slate-400 transition-transform duration-200", isOpen && "rotate-180")} />
+        <span className="text-[var(--text-muted)] font-normal">{label}:</span>
+        <span className="text-[var(--text-primary)]">{activeOption ? activeOption.label : "All"}</span>
+        <ChevronDown size={12} className={cn("text-[var(--text-muted)] transition-transform duration-200", isOpen && "rotate-180")} />
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 mt-1 w-44 bg-[#ffffff] border border-slate-200/80 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.06)] py-1 z-[120] animate-in fade-in-50 slide-in-from-top-1 duration-150">
+        <div className="absolute left-0 mt-1 w-44 bg-[var(--card)] border border-[var(--border-subtle)] rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.15)] py-1 z-[120] animate-in fade-in-50 slide-in-from-top-1 duration-150">
           <button
             type="button"
             onClick={() => { onChange(null); setIsOpen(false); }}
             className={cn(
-              "w-full text-left px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 font-medium flex items-center justify-between transition-colors",
-              !value && "bg-[#EFF6FF]/65 text-[#2563EB] font-bold"
+              "w-full text-left px-3 py-1.5 text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-2)] font-medium flex items-center justify-between transition-colors cursor-pointer",
+              !value && "bg-[var(--primary)]/15 text-[var(--primary)] font-bold"
             )}
           >
             <span>All</span>
@@ -123,8 +123,8 @@ const DropdownFilter = ({ label, value, options, onChange }: DropdownFilterProps
               type="button"
               onClick={() => { onChange(opt.value); setIsOpen(false); }}
               className={cn(
-                "w-full text-left px-3 py-1.5 text-xs text-slate-700 hover:bg-slate-50 font-medium flex items-center justify-between transition-colors",
-                value === opt.value && "bg-[#EFF6FF]/65 text-[#2563EB] font-bold"
+                "w-full text-left px-3 py-1.5 text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-2)] font-medium flex items-center justify-between transition-colors cursor-pointer",
+                value === opt.value && "bg-[var(--primary)]/15 text-[var(--primary)] font-bold"
               )}
             >
               <span>{opt.label}</span>
@@ -482,7 +482,7 @@ export default function LeadsAdminPage() {
   const selectedLead = leads.find(l => l.id === activeLeadId) || null;
 
   return (
-    <div className="relative min-h-screen bg-[#F8FAFC] text-[#111827] font-sans antialiased -m-6 p-6">
+    <div className="relative min-h-screen bg-[var(--background)] text-[var(--text-primary)] font-sans antialiased -m-6 p-6">
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -491,7 +491,7 @@ export default function LeadsAdminPage() {
             exit={{ opacity: 0, y: -20, x: "-50%" }}
             className={cn(
               "fixed top-6 left-1/2 z-[150] px-4 py-2.5 rounded-lg shadow-md border flex items-center gap-2 min-w-[280px]",
-              toast.type === 'success' ? "bg-white border-[#E5E7EB] text-[#111827]" : "bg-red-50 border-red-200 text-[#DC2626]"
+              toast.type === 'success' ? "bg-[var(--card)] border-[var(--border-subtle)] text-[var(--text-primary)]" : "bg-red-500/10 border-red-500/20 text-red-400"
             )}
           >
             {toast.type === 'success' ? <CheckCircle size={15} className="text-emerald-500" /> : <AlertCircle size={15} />}
@@ -502,40 +502,40 @@ export default function LeadsAdminPage() {
 
       <div className="space-y-6">
         {/* --- PAGE HEADER TOOLBAR --- */}
-        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-sm space-y-4">
+        <div className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl p-5 shadow-sm space-y-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-[#111827] tracking-tight leading-none">Leads</h1>
+                <h1 className="text-xl font-bold text-[var(--text-primary)] tracking-tight leading-none">Leads</h1>
                 <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse mt-0.5" />
               </div>
-              <p className="text-[#6B7280] text-xs mt-1">Sales Pipeline & CRM Hub</p>
+              <p className="text-[var(--text-muted)] text-xs mt-1">Sales Pipeline & CRM Hub</p>
             </div>
             
             <div className="flex flex-wrap items-center gap-2 md:gap-3">
               {/* Search */}
               <div className="relative w-full sm:w-60">
-                <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[#6B7280]" />
+                <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-[var(--text-muted)]" />
                 <input
                   type="text"
                   placeholder="Search leads..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 border border-[#E5E7EB] rounded-lg text-xs bg-white text-[#111827] placeholder-[#6B7280] focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:border-[#2563EB] transition-all"
+                  className="w-full pl-8 pr-3 py-1.5 border border-[var(--border-subtle)] rounded-lg text-xs bg-[var(--surface-1)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--primary)] focus:border-[var(--primary)] transition-all"
                 />
               </div>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-start sm:justify-end shrink-0">
-                <Button onClick={() => setShowImportLead(true)} variant="outline" className="h-8 px-3 bg-[#ffffff] border border-[#E5E7EB] hover:bg-slate-50 text-[#111827] text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                <Button onClick={() => setShowImportLead(true)} variant="outline" className="h-8 px-3 bg-[var(--card)] border border-[var(--border-subtle)] hover:bg-[var(--surface-2)] text-[var(--text-secondary)] text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer">
                   <Upload size={12} className="shrink-0" /> Import CSV
                 </Button>
                 <Link href="/admin/leads/scrape" className="shrink-0">
-                  <Button className="h-8 px-3 bg-[#ffffff] border border-[#E5E7EB] hover:bg-slate-50 text-neutral-700 text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
-                    <Zap size={12} className="text-[#2563EB] fill-[#2563EB] shrink-0" /> Hunt Leads
+                  <Button className="h-8 px-3 bg-[var(--card)] border border-[var(--border-subtle)] hover:bg-[var(--surface-2)] text-[var(--text-secondary)] text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer">
+                    <Zap size={12} className="text-[var(--primary)] fill-[var(--primary)] shrink-0" /> Hunt Leads
                   </Button>
                 </Link>
-                <Button onClick={() => setShowAddLead(true)} className="h-8 px-3 bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
+                <Button onClick={() => setShowAddLead(true)} className="h-8 px-3 bg-[#0075de] hover:bg-[#005bab] text-white text-xs font-semibold rounded-lg shadow-sm flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer">
                   <Plus size={12} className="shrink-0" /> Add Lead
                 </Button>
               </div>
@@ -628,18 +628,18 @@ export default function LeadsAdminPage() {
             { label: "Conversion", value: `${conversionRate}%` },
             { label: "Revenue", value: `₹${(revenueValue / 100000).toFixed(1)}L` },
           ].map((widget, i) => (
-            <div key={i} className="bg-white border border-[#E5E7EB] p-4 rounded-xl shadow-sm flex flex-col justify-between h-20 hover:border-slate-300 transition-colors">
-              <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider leading-none">{widget.label}</p>
-              <p className="text-xl font-bold text-[#111827] leading-none">{widget.value}</p>
+            <div key={i} className="bg-[var(--card)] border border-[var(--border-subtle)] p-4 rounded-xl shadow-sm flex flex-col justify-between h-20 hover:border-[var(--border-hover)] transition-colors">
+              <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider leading-none">{widget.label}</p>
+              <p className="text-xl font-bold text-[var(--text-primary)] leading-none">{widget.value}</p>
             </div>
           ))}
         </div>
 
         {/* --- MAIN DATA TABLE --- */}
-        <div className="bg-white border border-[#E5E7EB] rounded-xl shadow-sm overflow-hidden">
+        <div className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs whitespace-nowrap table-fixed">
-              <thead className="bg-slate-50 border-b border-[#E5E7EB] text-[#6B7280] font-semibold sticky top-0 z-10">
+              <thead className="bg-[var(--surface-2)]/30 border-b border-[var(--border-subtle)] text-[var(--text-secondary)] font-semibold sticky top-0 z-10">
                 <tr>
                   <th className="px-4 py-3 w-10 text-center">
                     <input
@@ -680,14 +680,14 @@ export default function LeadsAdminPage() {
                   </tr>
                 ) : filteredLeads.length === 0 ? (
                   <tr>
-                    <td colSpan={12} className="px-6 py-20 text-center bg-slate-50/50">
+                    <td colSpan={12} className="px-6 py-20 text-center bg-[var(--surface-2)]/10">
                       <div className="flex flex-col items-center justify-center space-y-4 max-w-sm mx-auto">
-                        <div className="w-12 h-12 rounded-full bg-[#EFF6FF] border border-[#DBEAFE] flex items-center justify-center text-[#2563EB]">
+                        <div className="w-12 h-12 rounded-full bg-[var(--primary)]/10 border border-[var(--primary)]/20 flex items-center justify-center text-[var(--primary)]">
                           <Building2 size={20} />
                         </div>
                         <div>
-                          <h4 className="text-sm font-bold text-[#111827]">No leads matching criteria</h4>
-                          <p className="text-xs text-[#6B7280] mt-1">Try adjusting your filters or search terms to locate leads.</p>
+                          <h4 className="text-sm font-bold text-[var(--text-primary)]">No leads matching criteria</h4>
+                          <p className="text-xs text-[var(--text-muted)] mt-1">Try adjusting your filters or search terms to locate leads.</p>
                         </div>
                       </div>
                     </td>
@@ -696,13 +696,13 @@ export default function LeadsAdminPage() {
                   const isChecked = selectedLeadIds.includes(lead.id || "");
                   const isCurrentActive = activeLeadId === lead.id;
                   const industry = getMockIndustry(lead.business_name);
-
+ 
                   return (
                     <tr 
                       key={lead.id} 
                       className={cn(
-                        "h-14 hover:bg-slate-50/70 transition-all cursor-pointer", 
-                        isCurrentActive && "bg-blue-50/40 hover:bg-blue-50/50"
+                        "h-14 hover:bg-[var(--surface-2)]/40 border-b border-[var(--border-subtle)] transition-all cursor-pointer", 
+                        isCurrentActive && "bg-[var(--primary)]/10 hover:bg-[var(--primary)]/15"
                       )}
                       onClick={() => setActiveLeadId(lead.id || null)}
                     >
@@ -717,10 +717,10 @@ export default function LeadsAdminPage() {
                               setSelectedLeadIds(curr => curr.filter(id => id !== lead.id));
                             }
                           }}
-                          className="rounded border-[#E5E7EB] text-[#2563EB] focus:ring-[#2563EB] h-3.5 w-3.5"
+                          className="rounded border-[var(--border-subtle)] text-[var(--primary)] focus:ring-[var(--primary)] h-3.5 w-3.5"
                         />
                       </td>
-                      <td className="px-5 py-3 font-semibold text-[#111827]">
+                      <td className="px-5 py-3 font-semibold text-[var(--text-primary)]">
                         <div className="truncate" title={lead.business_name}>
                           {lead.business_name}
                         </div>
@@ -728,12 +728,12 @@ export default function LeadsAdminPage() {
                       <td className="px-4 py-3">
                         <StatusChip status={lead.status} />
                       </td>
-                      <td className="px-4 py-3 text-[#6B7280]">
+                      <td className="px-4 py-3 text-[var(--text-secondary)]">
                         <div className="truncate" title={lead.city}>
                           {lead.city || "—"}
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-[#6B7280] font-medium">
+                      <td className="px-4 py-3 text-[var(--text-secondary)] font-medium">
                         {industry}
                       </td>
                       <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
@@ -742,36 +742,36 @@ export default function LeadsAdminPage() {
                             href={lead.website_url.startsWith("http") ? lead.website_url : `https://${lead.website_url}`}
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className="inline-flex items-center gap-1 text-[#2563EB] hover:underline font-medium"
+                            className="inline-flex items-center gap-1 text-[var(--primary)] hover:underline font-medium cursor-pointer"
                           >
                             <Globe size={11} className="shrink-0" />
                             <span className="truncate max-w-[120px]">{lead.website_url.replace(/(https?:\/\/)?(www\.)?/, "")}</span>
-                            <ExternalLink size={10} className="shrink-0 text-slate-400" />
+                            <ExternalLink size={10} className="shrink-0 text-[var(--text-muted)]" />
                           </a>
                         ) : (
-                          <span className="text-slate-400 font-normal italic">No website</span>
+                          <span className="text-[var(--text-muted)] font-normal italic">No website</span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-[#6B7280] font-medium truncate" title={lead.email}>
+                      <td className="px-4 py-3 text-[var(--text-secondary)] font-medium truncate" title={lead.email}>
                         {lead.email || "—"}
                       </td>
-                      <td className="px-4 py-3 text-[#6B7280] font-medium">
+                      <td className="px-4 py-3 text-[var(--text-secondary)] font-medium">
                         {lead.phone || "—"}
                       </td>
                       <td className="px-4 py-3">
                         <LeadScoreBar score={lead.lead_score || 0} />
                       </td>
-                      <td className="px-4 py-3 text-[#6B7280] font-semibold uppercase tracking-wider text-[9px]">
+                      <td className="px-4 py-3 text-[var(--text-secondary)] font-semibold uppercase tracking-wider text-[9px]">
                         {lead.assigned_to_member?.name || "Unassigned"}
                       </td>
-                      <td className="px-4 py-3 text-[#6B7280]">
+                      <td className="px-4 py-3 text-[var(--text-secondary)]">
                         {lead.created_at ? new Date(lead.created_at).toLocaleDateString() : "—"}
                       </td>
                       <td className="px-4 py-3 text-center" onClick={(e) => e.stopPropagation()}>
                         <div className="relative inline-block text-left">
                           <button
                             onClick={() => setActiveActionMenuId(activeActionMenuId === lead.id ? null : (lead.id || null))}
-                            className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-700 transition-colors"
+                            className="p-1.5 hover:bg-[var(--surface-2)] rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                           >
                             <MoreHorizontal size={14} />
                           </button>
@@ -780,30 +780,30 @@ export default function LeadsAdminPage() {
                           {activeActionMenuId === lead.id && (
                             <div 
                               ref={actionMenuRef}
-                              className="absolute right-0 mt-1 w-36 bg-white border border-[#E5E7EB] rounded-lg shadow-lg py-1 z-[120] text-left"
+                              className="absolute right-0 mt-1 w-36 bg-[var(--card)] border border-[var(--border-subtle)] rounded-lg shadow-lg py-1 z-[120] text-left"
                             >
                               <button 
                                 onClick={() => { setActiveLeadId(lead.id || null); setActiveActionMenuId(null); }}
-                                className="w-full text-left px-3 py-1.5 text-xs text-[#111827] hover:bg-slate-50 font-medium"
+                                className="w-full text-left px-3 py-1.5 text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-2)] font-medium cursor-pointer"
                               >
                                 View Details
                               </button>
                               <button 
                                 onClick={() => { handleOpenOutreach(lead); setActiveActionMenuId(null); }}
-                                className="w-full text-left px-3 py-1.5 text-xs text-[#2563EB] hover:bg-slate-50 font-medium"
+                                className="w-full text-left px-3 py-1.5 text-xs text-[var(--primary)] hover:bg-[var(--surface-2)] font-medium cursor-pointer"
                               >
                                 Start Outreach
                               </button>
                               <button 
                                 onClick={() => { updateStatus(lead.id, 'qualified'); setActiveActionMenuId(null); }}
-                                className="w-full text-left px-3 py-1.5 text-xs text-[#111827] hover:bg-slate-50 font-medium"
+                                className="w-full text-left px-3 py-1.5 text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-2)] font-medium cursor-pointer"
                               >
                                 Mark Qualified
                               </button>
                               {isAdminOrCoAdmin && (
                                 <button 
                                   onClick={() => { handleDeleteLead(lead.id!); setActiveActionMenuId(null); }}
-                                  className="w-full text-left px-3 py-1.5 text-xs text-[#DC2626] hover:bg-red-50 font-semibold border-t border-[#E5E7EB]"
+                                  className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-red-500/10 font-semibold border-t border-[var(--border-subtle)] cursor-pointer"
                                 >
                                   Delete
                                 </button>
@@ -1064,59 +1064,59 @@ export default function LeadsAdminPage() {
 
       {/* --- ADD LEAD MODAL --- */}
       {showAddLead && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white border border-[#E5E7EB] rounded-xl w-full max-w-md p-8 shadow-2xl animate-in zoom-in-95 duration-200">
-            <h2 className="text-lg font-bold text-[#111827] tracking-tight mb-1">Add New Lead</h2>
-            <p className="text-[#6B7280] text-xs mb-6">Manually register a business lead in the sales pipeline.</p>
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm">
+          <div className="bg-[var(--card)] border border-[var(--border-subtle)] w-full max-w-md p-8 shadow-2xl rounded-xl animate-in zoom-in-95 duration-200">
+            <h2 className="text-lg font-bold text-[var(--text-primary)] tracking-tight mb-1">Add New Lead</h2>
+            <p className="text-[var(--text-muted)] text-xs mb-6">Manually register a business lead in the sales pipeline.</p>
             
             <form onSubmit={handleAddLead} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Business Name</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)]">Business Name</label>
                 <input 
                   required
                   value={newLead.business_name}
                   onChange={(e) => setNewLead({...newLead, business_name: e.target.value})}
-                  className="w-full bg-slate-50 border border-[#E5E7EB] rounded-lg h-10 px-3.5 text-xs text-[#111827] focus:outline-none focus:border-[#2563EB] focus:bg-white transition-all"
+                  className="w-full bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-lg h-10 px-3.5 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--card)] transition-all"
                   placeholder="Company name..."
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Contact Person</label>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)]">Contact Person</label>
                 <input 
                   value={newLead.business_name} // default mock name field mapping
                   onChange={(e) => setNewLead({...newLead, business_name: e.target.value})}
-                  className="w-full bg-slate-50 border border-[#E5E7EB] rounded-lg h-10 px-3.5 text-xs text-[#111827] focus:outline-none focus:border-[#2563EB] focus:bg-white transition-all"
+                  className="w-full bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-lg h-10 px-3.5 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--card)] transition-all"
                   placeholder="Founder or manager name..."
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Email</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)]">Email</label>
                   <input 
-                    type="email"
-                    value={newLead.email}
-                    onChange={(e) => setNewLead({...newLead, email: e.target.value})}
-                    className="w-full bg-slate-50 border border-[#E5E7EB] rounded-lg h-10 px-3.5 text-xs text-[#111827] focus:outline-none focus:border-[#2563EB] focus:bg-white transition-all"
-                    placeholder="email@example.com"
+                     type="email"
+                     value={newLead.email}
+                     onChange={(e) => setNewLead({...newLead, email: e.target.value})}
+                     className="w-full bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-lg h-10 px-3.5 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--card)] transition-all"
+                     placeholder="email@example.com"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280]">Phone</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)]">Phone</label>
                   <input 
                     value={newLead.phone}
                     onChange={(e) => setNewLead({...newLead, phone: e.target.value})}
-                    className="w-full bg-slate-50 border border-[#E5E7EB] rounded-lg h-10 px-3.5 text-xs text-[#111827] focus:outline-none focus:border-[#2563EB] focus:bg-white transition-all"
+                    className="w-full bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-lg h-10 px-3.5 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--card)] transition-all"
                     placeholder="+91 98..."
                   />
                 </div>
               </div>
 
-              <div className="mt-8 flex justify-end gap-2 pt-4 border-t border-[#E5E7EB]">
-                <Button type="button" onClick={() => setShowAddLead(false)} variant="ghost" className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280] hover:text-[#111827] h-9 px-4 rounded-lg">Cancel</Button>
+              <div className="mt-8 flex justify-end gap-2 pt-4 border-t border-[var(--border-subtle)]">
+                <Button type="button" onClick={() => setShowAddLead(false)} variant="ghost" className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] h-9 px-4 rounded-lg cursor-pointer">Cancel</Button>
                 <Button 
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-[#2563EB] hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider h-9 px-5 rounded-lg shadow-sm min-w-[100px]"
+                  className="bg-[#0075de] hover:bg-[#005bab] text-white text-[10px] font-bold uppercase tracking-wider h-9 px-5 rounded-lg shadow-sm min-w-[100px] cursor-pointer"
                 >
                   {isSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Save Lead"}
                 </Button>
@@ -1128,15 +1128,15 @@ export default function LeadsAdminPage() {
 
       {/* --- IMPORT LEAD MODAL --- */}
       {showImportLead && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white border border-[#E5E7EB] rounded-xl w-full max-w-md p-8 shadow-2xl animate-in zoom-in-95 duration-200">
-            <h2 className="text-lg font-bold text-[#111827] tracking-tight mb-1">Import Leads</h2>
-            <p className="text-[#6B7280] text-xs mb-6">Bulk upload business leads from a CSV spreadsheet.</p>
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm">
+          <div className="bg-[var(--card)] border border-[var(--border-subtle)] w-full max-w-md p-8 shadow-2xl rounded-xl animate-in zoom-in-95 duration-200">
+            <h2 className="text-lg font-bold text-[var(--text-primary)] tracking-tight mb-1">Import Leads</h2>
+            <p className="text-[var(--text-muted)] text-xs mb-6">Bulk upload business leads from a CSV spreadsheet.</p>
             
             <div 
               className={cn(
                 "relative border border-dashed rounded-lg p-10 text-center transition-all cursor-pointer",
-                selectedFile ? "border-emerald-300 bg-emerald-50/50" : "border-[#E5E7EB] bg-slate-50/55 hover:bg-slate-100/50"
+                selectedFile ? "border-emerald-500/20 bg-emerald-500/5" : "border-[var(--border-subtle)] bg-[var(--surface-1)] hover:bg-[var(--surface-2)]"
               )}
             >
               <input 
@@ -1145,16 +1145,16 @@ export default function LeadsAdminPage() {
                 accept=".csv"
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />
-              <Upload size={24} className={cn("mx-auto mb-2.5", selectedFile ? "text-emerald-600" : "text-[#6B7280]")} />
-              <p className="text-xs font-bold text-[#111827] uppercase tracking-wide">
+              <Upload size={24} className={cn("mx-auto mb-2.5", selectedFile ? "text-emerald-500" : "text-[var(--text-muted)]")} />
+              <p className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wide">
                 {selectedFile ? selectedFile.name : "Select CSV File"}
               </p>
-              <p className="text-[10px] text-[#6B7280] mt-1">
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">
                 {selectedFile ? `${(selectedFile.size / 1024).toFixed(2)} KB` : "Maximum file size 5MB"}
               </p>
             </div>
 
-            <div className="mt-6 flex justify-end gap-2 border-t border-[#E5E7EB] pt-4">
+            <div className="mt-6 flex justify-end gap-2 border-t border-[var(--border-subtle)] pt-4">
               <Button 
                 type="button" 
                 onClick={() => {
@@ -1162,14 +1162,14 @@ export default function LeadsAdminPage() {
                   setSelectedFile(null);
                 }} 
                 variant="ghost"
-                className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280] hover:text-[#111827] h-9 px-4 rounded-lg"
+                className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] h-9 px-4 rounded-lg cursor-pointer"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleImportCSV}
                 disabled={!selectedFile || isSubmitting}
-                className="bg-[#2563EB] hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider h-9 px-5 rounded-lg shadow-sm min-w-[100px]"
+                className="bg-[#0075de] hover:bg-[#005bab] text-white text-[10px] font-bold uppercase tracking-wider h-9 px-5 rounded-lg shadow-sm min-w-[100px] cursor-pointer"
               >
                 {isSubmitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Process Import"}
               </Button>
