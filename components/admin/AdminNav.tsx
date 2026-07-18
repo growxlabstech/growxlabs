@@ -99,6 +99,8 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
     setMounted(true);
   }, []);
 
+  console.log("[AdminNav] Render -> mounted:", mounted, "theme:", theme);
+
   // Change Password state
   const [showPwModal, setShowPwModal] = useState(false);
   const [currentPw, setCurrentPw] = useState("");
@@ -305,6 +307,7 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
             <button
               onClick={() => {
                 const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
+                console.log("Collapsed theme switcher clicked. Setting to:", nextTheme);
                 setTheme(nextTheme);
               }}
               className="flex items-center justify-center w-7 h-7 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-2)] rounded-md transition-all cursor-pointer"
@@ -321,7 +324,10 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
                 return (
                   <button
                     key={t}
-                    onClick={() => setTheme(t)}
+                    onClick={() => {
+                      console.log("Theme switcher clicked. Setting to:", t);
+                      setTheme(t);
+                    }}
                     className={cn(
                       "flex-1 flex items-center justify-center gap-1 rounded-md text-[9px] font-extrabold uppercase tracking-wider transition-all duration-200 cursor-pointer h-full px-1.5",
                       isActive 
