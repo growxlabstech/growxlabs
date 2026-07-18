@@ -1101,4 +1101,142 @@ html {
   box-sizing: border-box;
 }
 
+/* ═══════════════════════════════════════════════════ */
+/* VERCEL DARK THEME — Global color overrides         */
+/* ═══════════════════════════════════════════════════ */
+.dark .notion-theme .bg-white {
+  background-color: var(--card) !important;
+}
+.dark .notion-theme .bg-white\/40 {
+  background-color: rgba(14, 14, 14, 0.4) !important;
+}
+.dark .notion-theme .bg-\[\#f6f5f4\] {
+  background-color: var(--surface-2) !important;
+}
+.dark .notion-theme .bg-\[\#f6f5f4\]\/30 {
+  background-color: rgba(8, 8, 8, 0.3) !important;
+}
+.dark .notion-theme .bg-\[\#f6f5f4\]\/40 {
+  background-color: rgba(8, 8, 8, 0.4) !important;
+}
+.dark .notion-theme .hover\:bg-white\/40:hover {
+  background-color: rgba(14, 14, 14, 0.4) !important;
+}
+.dark .notion-theme .hover\:bg-white:hover {
+  background-color: var(--card) !important;
+}
+.dark .notion-theme .hover\:bg-\[\#f6f5f4\]:hover {
+  background-color: var(--surface-2) !important;
+}
+
+/* Borders overrides */
+.dark .notion-theme .border-\[\#e6e6e6\] {
+  border-color: var(--border-subtle) !important;
+}
+.dark .notion-theme .border-b.border-\[\#e6e6e6\] {
+  border-bottom-color: var(--border-subtle) !important;
+}
+.dark .notion-theme .border-t.border-\[\#e6e6e6\] {
+  border-top-color: var(--border-subtle) !important;
+}
+.dark .notion-theme .border-r.border-\[\#e6e6e6\] {
+  border-right-color: var(--border-subtle) !important;
+}
+.dark .notion-theme .border-l.border-\[\#e6e6e6\] {
+  border-left-color: var(--border-subtle) !important;
+}
+.dark .notion-theme .divide-\[\#e6e6e6\] > * + * {
+  border-color: var(--border-subtle) !important;
+}
+.dark .notion-theme .divide-y.divide-\[\#e6e6e6\] > * + * {
+  border-bottom-color: var(--border-subtle) !important;
+  border-top-color: var(--border-subtle) !important;
+}
+
+/* Text overrides */
+.dark .notion-theme .text-neutral-900,
+.dark .notion-theme .text-neutral-800 {
+  color: var(--text-primary) !important;
+}
+.dark .notion-theme .text-neutral-700,
+.dark .notion-theme .text-neutral-600 {
+  color: var(--text-secondary) !important;
+}
+.dark .notion-theme .text-neutral-500,
+.dark .notion-theme .text-neutral-400 {
+  color: var(--text-muted) !important;
+}
+.dark .notion-theme .text-\[\#615d59\] {
+  color: var(--text-secondary) !important;
+}
+.dark .notion-theme .text-\[\#a39e98\] {
+  color: var(--text-muted) !important;
+}
+.dark .notion-theme .text-\[\#31302e\] {
+  color: var(--text-primary) !important;
+}
+
+/* Hover overrides */
+.dark .notion-theme .hover\:text-neutral-950:hover,
+.dark .notion-theme .hover\:text-neutral-900:hover {
+  color: var(--text-primary) !important;
+}
+.dark .notion-theme .hover\:border-\[\#0075de\]\/30:hover {
+  border-color: rgba(0, 117, 222, 0.4) !important;
+}
+
+/* Inputs & Form controls override */
+.dark .notion-theme input,
+.dark .notion-theme textarea,
+.dark .notion-theme select {
+  background-color: var(--input) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+}
+.dark .notion-theme input::placeholder,
+.dark .notion-theme textarea::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.7;
+}
+
+/* Modals & Dialogs (if nested in theme container) */
+.dark [role="dialog"],
+.dark .modal-content {
+  background-color: var(--card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* Activity Monitor specific */
+.dark .notion-theme .bg-purple-50 {
+  background-color: rgba(168, 85, 247, 0.1) !important;
+  color: rgb(192, 132, 252) !important;
+  border-color: rgba(168, 85, 247, 0.2) !important;
+}
+.dark .notion-theme .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: rgb(52, 211, 153) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+.dark .notion-theme .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: rgb(251, 191, 36) !important;
+  border-color: rgba(245, 158, 11, 0.2) !important;
+}
+.dark .notion-theme .bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: rgb(248, 113, 113) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+.dark .notion-theme .text-neutral-700 {
+  color: var(--text-secondary) !important;
+}
+.dark .notion-theme .hover\:bg-white\/40:hover {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+.dark .notion-theme .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+
 

@@ -182,14 +182,14 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
         className={cn(
           "flex items-center h-9 px-3 rounded-md transition-all duration-200 group relative border border-transparent",
           isActive
-            ? "bg-white text-neutral-900 border-[#e6e6e6] shadow-sm font-semibold"
-            : "text-[#615d59] hover:text-neutral-900 hover:bg-[#e6e6e6]/50",
+            ? "bg-[var(--card)] text-[var(--text-primary)] border-[var(--border-subtle)] shadow-sm font-semibold"
+            : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--border-subtle)]/50",
           isCollapsed && "lg:justify-center lg:px-0"
         )}
       >
         <item.icon className={cn(
           "h-4 w-4 shrink-0 transition-colors",
-          isActive ? "text-[#0075de]" : "text-[#615d59] group-hover:text-neutral-950",
+          isActive ? "text-[#0075de]" : "text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]",
           !isCollapsed && "mr-3"
         )} />
         {/* Always show labels on mobile drawer, conditionally on desktop */}
@@ -209,23 +209,23 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
 
   // Shared sidebar content (used in both desktop fixed sidebar and mobile drawer)
   const sidebarContent = (
-    <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden no-scrollbar bg-[#f6f5f4]">
+    <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden no-scrollbar bg-[var(--surface-2)] text-[var(--text-primary)] transition-colors duration-300">
       
       {/* Branding Header */}
       <div className={cn(
-          "p-6 border-b border-[#e6e6e6] transition-all duration-500 bg-white/40", 
+          "p-6 border-b border-[var(--border-subtle)] transition-all duration-500 bg-[var(--card)]/30", 
           isCollapsed ? "lg:px-0 lg:flex lg:justify-center px-6" : "px-6"
       )}>
          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 bg-[#f6f5f4] rounded-md border border-[#e6e6e6] flex items-center justify-center shrink-0">
+            <div className="h-8 w-8 bg-[var(--surface-2)] rounded-md border border-[var(--border-subtle)] flex items-center justify-center shrink-0">
                <ShieldCheck className="text-[#0075de] h-4 w-4" />
             </div>
             <div className={cn(
               "flex flex-col overflow-hidden whitespace-nowrap",
               isCollapsed ? "lg:hidden" : ""
             )}>
-                 <span className="text-sm font-bold tracking-tight text-neutral-900 leading-none">GrowX<span className="text-[#0075de]">Labs</span></span>
-                 <span className="text-[8px] font-bold text-[#a39e98] uppercase tracking-[0.15em] mt-1">Admin Central</span>
+                 <span className="text-sm font-bold tracking-tight text-[var(--text-primary)] leading-none">GrowX<span className="text-[#0075de]">Labs</span></span>
+                 <span className="text-[8px] font-bold text-[var(--text-muted)] uppercase tracking-[0.15em] mt-1">Admin Central</span>
             </div>
          </div>
       </div>
@@ -286,11 +286,11 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
       </div>
 
       {/* Footer Area */}
-      <div className={cn("mt-auto py-4 border-t border-[#e6e6e6] dark:border-neutral-800 bg-white/40 dark:bg-black/10 space-y-2", isCollapsed ? "lg:px-2 px-4" : "px-4")}>
+      <div className={cn("mt-auto py-4 border-t border-[var(--border-subtle)] bg-[var(--card)]/30 space-y-2.5", isCollapsed ? "lg:px-2 px-4" : "px-4")}>
         {/* Theme Switcher Segmented Control */}
         <div className={cn(
-          "flex items-center bg-[#f6f5f4] dark:bg-neutral-950 border border-[#e6e6e6] dark:border-neutral-800 rounded-lg p-0.5 transition-all",
-          isCollapsed ? "justify-center h-8 w-8 mx-auto" : "h-8"
+          "flex items-center bg-[var(--surface-1)] border border-[var(--border-subtle)] rounded-lg p-0.5 transition-all w-full",
+          isCollapsed ? "justify-center h-9 w-9 mx-auto" : "h-9"
         )}>
           {isCollapsed ? (
             <button
@@ -298,15 +298,15 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
                 const nextTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
                 setTheme(nextTheme);
               }}
-              className="flex items-center justify-center w-7 h-7 text-[#615d59] dark:text-neutral-400 hover:text-[#0075de] dark:hover:text-white rounded-md transition-all cursor-pointer"
+              className="flex items-center justify-center w-7 h-7 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-2)] rounded-md transition-all cursor-pointer"
               title={`Theme: ${theme}`}
             >
-              {theme === 'light' && <Sun size={13} />}
-              {theme === 'dark' && <Moon size={13} />}
-              {theme === 'system' && <Monitor size={13} />}
+              {theme === 'light' && <Sun size={14} />}
+              {theme === 'dark' && <Moon size={14} />}
+              {theme === 'system' && <Monitor size={14} />}
             </button>
           ) : (
-            <div className="flex w-full h-full">
+            <div className="flex w-full h-full gap-0.5">
               {(['light', 'dark', 'system'] as const).map((t) => {
                 const isActive = theme === t;
                 return (
@@ -314,16 +314,16 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
                     key={t}
                     onClick={() => setTheme(t)}
                     className={cn(
-                      "flex-1 flex items-center justify-center gap-1 rounded-[5px] text-[9px] font-bold uppercase tracking-wider transition-all cursor-pointer h-full",
+                      "flex-1 flex items-center justify-center gap-1 rounded-md text-[9px] font-extrabold uppercase tracking-wider transition-all duration-200 cursor-pointer h-full px-1.5",
                       isActive 
-                        ? "bg-white dark:bg-neutral-850 text-[#0075de] dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.06)] border border-[#e6e6e6] dark:border-neutral-750" 
-                        : "text-[#a39e98] dark:text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-350"
+                        ? "bg-[var(--surface-2)] text-[#0075de] dark:text-white border border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(0,0,0,0.05)] font-black" 
+                        : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-2)]/40"
                     )}
                   >
                     {t === 'light' && <Sun size={11} />}
                     {t === 'dark' && <Moon size={11} />}
                     {t === 'system' && <Monitor size={11} />}
-                    <span className="hidden sm:inline">{t}</span>
+                    <span>{t}</span>
                   </button>
                 );
               })}
@@ -366,19 +366,19 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
   return (
     <>
       {/* ═══ MOBILE TOP BAR ═══ */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-[250] h-14 bg-white border-b border-[#e6e6e6] flex items-center justify-between px-4">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-[250] h-14 bg-[var(--card)] border-b border-[var(--border-subtle)] flex items-center justify-between px-4">
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 bg-[#f6f5f4] rounded-md border border-[#e6e6e6] flex items-center justify-center shrink-0">
+          <div className="h-8 w-8 bg-[var(--surface-2)] rounded-md border border-[var(--border-subtle)] flex items-center justify-center shrink-0">
             <ShieldCheck className="text-[#0075de] h-4 w-4" />
           </div>
           <div className="flex flex-col overflow-hidden whitespace-nowrap">
-            <span className="text-sm font-bold tracking-tight text-neutral-900 leading-none">GrowXLabsTech</span>
-            <span className="text-[8px] font-bold text-[#a39e98] uppercase tracking-[0.15em] mt-1">Admin</span>
+            <span className="text-sm font-bold tracking-tight text-[var(--text-primary)] leading-none">GrowXLabsTech</span>
+            <span className="text-[8px] font-bold text-[var(--text-muted)] uppercase tracking-[0.15em] mt-1">Admin</span>
           </div>
         </div>
         <button
           onClick={onMobileToggle}
-          className="h-9 w-9 rounded-md bg-white border border-[#e6e6e6] flex items-center justify-center text-neutral-800 hover:bg-[#f6f5f4] transition-all"
+          className="h-9 w-9 rounded-md bg-[var(--card)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-primary)] hover:bg-[var(--surface-2)] transition-all"
           aria-label="Toggle navigation"
         >
           {isMobileOpen ? <X size={16} /> : <Menu size={16} />}
@@ -388,7 +388,7 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
       {/* ═══ MOBILE DRAWER OVERLAY ═══ */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/30 backdrop-blur-[2px] z-[290]"
+          className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[290]"
           onClick={onMobileToggle}
         />
       )}
@@ -396,7 +396,7 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
       {/* ═══ MOBILE DRAWER SIDEBAR ═══ */}
       <aside
         className={cn(
-          "lg:hidden fixed left-0 top-0 h-screen w-72 bg-[#f6f5f4] border-r border-[#e6e6e6] z-[300] transition-transform duration-300 ease-in-out overflow-visible",
+          "lg:hidden fixed left-0 top-0 h-screen w-72 bg-[var(--surface-2)] border-r border-[var(--border-subtle)] z-[300] transition-transform duration-300 ease-in-out overflow-visible",
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -404,7 +404,7 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
         <div className="absolute top-4 right-4 z-10">
           <button
             onClick={onMobileToggle}
-            className="h-8 w-8 rounded-lg bg-white border border-[#e6e6e6] flex items-center justify-center text-[#615d59] hover:text-neutral-900 hover:bg-[#f6f5f4] transition-all"
+            className="h-8 w-8 rounded-lg bg-[var(--card)] border border-[var(--border-subtle)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-2)] transition-all"
           >
             <X size={16} />
           </button>
@@ -415,7 +415,7 @@ export function AdminNav({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }
       {/* ═══ DESKTOP FIXED SIDEBAR (hidden on mobile) ═══ */}
       <aside 
         className={cn(
-          "hidden lg:flex h-screen border-r border-[#e6e6e6] bg-[#f6f5f4] flex-col fixed left-0 top-0 overflow-visible transition-all duration-500 ease-in-out z-[200]",
+          "hidden lg:flex h-screen border-r border-[var(--border-subtle)] bg-[var(--surface-2)] flex-col fixed left-0 top-0 overflow-visible transition-all duration-500 ease-in-out z-[200]",
           isCollapsed ? "w-20" : "w-64"
         )}
       >
