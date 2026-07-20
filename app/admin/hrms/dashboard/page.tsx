@@ -68,8 +68,8 @@ export default function HrmsDashboardPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-neutral-950 tracking-tight leading-none">HR Overview</h1>
-        <p className="text-neutral-500 text-xs">Monitor workforce metrics, headcount, attendance, and HR operational KPIs.</p>
+        <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tight leading-none">HR Overview</h1>
+        <p className="text-[var(--text-secondary)] text-xs">Monitor workforce metrics, headcount, attendance, and HR operational KPIs.</p>
       </div>
 
       {loading || !stats ? (

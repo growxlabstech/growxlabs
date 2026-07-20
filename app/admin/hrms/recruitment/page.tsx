@@ -44,8 +44,6 @@ export default function RecruitmentPage() {
 
   const handleUpdateStage = async (candidateId: string, newStage: string) => {
     try {
-      // Direct Supabase update via API is not available, so we'll refetch
-      // In production, this would call a dedicated PATCH endpoint
       fetchJobs();
     } catch (e) { console.error(e); }
   };
@@ -53,81 +51,60 @@ export default function RecruitmentPage() {
   const allCandidates = jobs.flatMap((j: any) => (j.candidates || []).map((c: any) => ({ ...c, job_title: j.title })));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 text-[var(--text-primary)]">
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-neutral-950 tracking-tight leading-none">Recruitment Pipeline</h1>
-        <p className="text-neutral-500 text-xs">Track job openings, candidate stages, and hiring workflows.</p>
+        <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tight leading-none">Recruitment Pipeline</h1>
+        <p className="text-[var(--text-secondary)] text-xs">Track job openings, candidate stages, and hiring workflows.</p>
       </div>
 
-      {/* Job Openings */}
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Active Job Openings</span>
+      {/* Actions */}
+      <div className="flex justify-between items-center">
+        <p className="text-xs font-bold text-[var(--text-secondary)]">Active Job Openings: {jobs.length}</p>
         <button
           onClick={() => setShowJobForm(true)}
-          className="flex items-center gap-1.5 bg-gradient-to-r from-[#0075de] to-[#005bab] text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:shadow-lg transition-all"
+          className="flex items-center gap-1.5 bg-[#0075de] hover:bg-[#005bab] text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer"
         >
-          <Plus className="h-3.5 w-3.5" /> New Job
+          <Plus className="h-3.5 w-3.5" /> Post Job Opening
         </button>
       </div>
 
+      {/* Post Job Modal */}
       {showJobForm && (
-        <Card className="p-5 border border-[#e6e6e6] bg-white rounded-lg shadow-sm">
+        <Card className="p-5 border border-[var(--border-subtle)] bg-[var(--card)] rounded-xl shadow-sm">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-sm font-bold text-neutral-800">Create Job Opening</h3>
-            <button onClick={() => setShowJobForm(false)} className="text-neutral-400 hover:text-neutral-600"><X className="h-4 w-4" /></button>
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">New Job Opening</h3>
+            <button onClick={() => setShowJobForm(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"><X className="h-4 w-4" /></button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-1 block">Job Title</label>
-              <input type="text" placeholder="Senior React Developer" value={jobForm.title}
-                onChange={(e) => setJobForm({ ...jobForm, title: e.target.value })}
-                className="w-full px-3 py-2 text-xs border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
-            </div>
-            <div>
-              <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-1 block">Salary Range</label>
-              <input type="text" placeholder="₹12L - ₹24L" value={jobForm.salary_range}
-                onChange={(e) => setJobForm({ ...jobForm, salary_range: e.target.value })}
-                className="w-full px-3 py-2 text-xs border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
-            </div>
-            <div className="md:col-span-2">
-              <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-1 block">Description</label>
-              <textarea placeholder="Job description..." value={jobForm.description}
-                onChange={(e) => setJobForm({ ...jobForm, description: e.target.value })}
-                className="w-full px-3 py-2 text-xs border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 h-16 resize-none" />
-            </div>
-            <div className="md:col-span-2">
-              <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-1 block">Requirements (comma-separated)</label>
-              <input type="text" placeholder="React, TypeScript, Next.js" value={jobForm.requirements}
-                onChange={(e) => setJobForm({ ...jobForm, requirements: e.target.value })}
-                className="w-full px-3 py-2 text-xs border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
-            </div>
+            {[
+              { key: "title", label: "Job Title", placeholder: "Senior Full Stack Engineer" },
+              { key: "salary_range", label: "Salary Range", placeholder: "₹15,00,000 - ₹25,00,000" },
+              { key: "description", label: "Description", placeholder: "Key responsibilities...", full: true },
+              { key: "requirements", label: "Requirements (comma-separated)", placeholder: "React, Node.js, PostgreSQL", full: true },
+            ].map((field) => (
+              <div key={field.key} className={field.full ? "md:col-span-2" : ""}>
+                <label className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1 block">{field.label}</label>
+                <input
+                  type="text"
+                  placeholder={field.placeholder}
+                  value={(jobForm as any)[field.key]}
+                  onChange={(e) => setJobForm({ ...jobForm, [field.key]: e.target.value })}
+                  className="w-full px-3 py-2 text-xs border border-[var(--border-subtle)] bg-[var(--surface-1)] text-[var(--text-primary)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0075de]/20"
+                />
+              </div>
+            ))}
           </div>
-          <button onClick={handleCreateJob} disabled={submitting}
-            className="mt-4 bg-gradient-to-r from-[#0075de] to-[#005bab] text-white px-6 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:shadow-lg transition-all disabled:opacity-50">
-            {submitting ? <Loader2 className="animate-spin h-3.5 w-3.5" /> : "Create Opening"}
+          <button
+            onClick={handleCreateJob}
+            disabled={submitting}
+            className="mt-4 bg-[#0075de] hover:bg-[#005bab] text-white px-6 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+          >
+            {submitting ? <Loader2 className="animate-spin h-3.5 w-3.5" /> : "Publish Job Opening"}
           </button>
         </Card>
       )}
 
-      {/* Job Cards */}
-      {!loading && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {jobs.map((job: any) => (
-            <Card key={job.id} className="p-4 border border-[#e6e6e6] bg-white rounded-lg shadow-sm">
-              <h4 className="text-xs font-bold text-neutral-800">{job.title}</h4>
-              <p className="text-[9px] text-neutral-400 mt-1">{job.department?.name || "—"} · {job.salary_range || "—"}</p>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-blue-600 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-200 text-[8px] font-bold">
-                  {job.candidates?.length || 0} Applicants
-                </span>
-                {job.is_active && <span className="text-green-600 bg-green-500/10 px-2 py-0.5 rounded border border-green-200 text-[8px] font-bold">Active</span>}
-              </div>
-            </Card>
-          ))}
-        </div>
-      )}
-
-      {/* Candidates Pipeline */}
+      {/* Kanban Board */}
       {loading ? (
         <div className="h-64 flex items-center justify-center">
           <Loader2 className="animate-spin text-[#0075de] h-8 w-8" />

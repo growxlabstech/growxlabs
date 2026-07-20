@@ -4,16 +4,16 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0075de] disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer",
   {
     variants: {
       variant: {
-        default: "bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-sm",
+        default: "bg-[#0075de] text-white hover:bg-[#005bab] active:bg-[#004a8f] shadow-sm",
         destructive: "bg-red-600 text-white hover:bg-red-700 active:bg-red-800 shadow-sm",
-        outline: "border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 shadow-sm",
-        secondary: "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700",
-        ghost: "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white",
-        link: "text-blue-600 underline-offset-4 hover:underline dark:text-blue-400",
+        outline: "border border-[var(--border-subtle)] bg-[var(--card)] text-[var(--text-primary)] hover:bg-[var(--surface-2)] shadow-sm",
+        secondary: "bg-[var(--surface-2)] text-[var(--text-primary)] hover:bg-[var(--surface-1)] border border-[var(--border-subtle)]",
+        ghost: "text-[var(--text-secondary)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]",
+        link: "text-[#0075de] underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

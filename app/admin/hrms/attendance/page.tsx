@@ -20,7 +20,6 @@ export default function AttendancePage() {
       const data = await res.json();
       setAttendance(data.attendance || []);
 
-      // Check if latest record for today has check_in but no check_out
       const today = new Date().toISOString().split("T")[0];
       const todayRecord = (data.attendance || []).find((a: any) => a.work_date === today);
       setIsCheckedIn(todayRecord && !todayRecord.check_out);
@@ -50,10 +49,10 @@ export default function AttendancePage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 text-[var(--text-primary)]">
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-neutral-950 tracking-tight leading-none">Attendance Records</h1>
-        <p className="text-neutral-500 text-xs">Clock in/out tracking, working hours audit, and weekly heatmap analysis.</p>
+        <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tight leading-none">Attendance Records</h1>
+        <p className="text-[var(--text-secondary)] text-xs">Clock in/out tracking, working hours audit, and weekly heatmap analysis.</p>
       </div>
 
       {loading ? (
@@ -69,44 +68,40 @@ export default function AttendancePage() {
             isCheckedIn={isCheckedIn}
           />
 
-          {/* Attendance Log Table */}
-          <Card className="border border-[#e6e6e6] bg-white rounded-lg shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-neutral-100">
-              <h4 className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Attendance Log</h4>
+          {/* Audit Log Table */}
+          <Card className="border border-[var(--border-subtle)] bg-[var(--card)] rounded-xl shadow-sm overflow-hidden mt-6">
+            <div className="px-5 py-4 border-b border-[var(--border-subtle)]">
+              <h3 className="text-sm font-bold text-[var(--text-primary)]">Recent Attendance Logs</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="bg-neutral-50 border-b border-neutral-100">
-                    <th className="text-left px-4 py-2.5 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Date</th>
-                    <th className="text-left px-4 py-2.5 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Employee</th>
-                    <th className="text-left px-4 py-2.5 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Check-In</th>
-                    <th className="text-left px-4 py-2.5 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Check-Out</th>
-                    <th className="text-right px-4 py-2.5 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Hours</th>
-                    <th className="text-left px-4 py-2.5 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Status</th>
+                  <tr className="bg-[var(--surface-2)] border-b border-[var(--border-subtle)]">
+                    <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Date</th>
+                    <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Check In</th>
+                    <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Check Out</th>
+                    <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Total Hours</th>
+                    <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {attendance.length === 0 && (
-                    <tr><td colSpan={6} className="text-center py-12 text-neutral-400">No attendance records</td></tr>
+                    <tr><td colSpan={5} className="text-center py-12 text-[var(--text-muted)]">No attendance logs found</td></tr>
                   )}
-                  {attendance.slice(0, 20).map((record: any) => (
-                    <tr key={record.id} className="border-b border-neutral-50 hover:bg-neutral-50/50 transition-colors">
-                      <td className="px-4 py-2.5 font-mono text-neutral-600">{record.work_date}</td>
-                      <td className="px-4 py-2.5 font-semibold text-neutral-800">{record.employee?.full_name || "—"}</td>
-                      <td className="px-4 py-2.5 font-mono text-neutral-500">
-                        {record.check_in ? new Date(record.check_in).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) : "—"}
+                  {attendance.map((log) => (
+                    <tr key={log.id} className="border-b border-[var(--border-subtle)] hover:bg-[var(--surface-2)] transition-colors">
+                      <td className="px-4 py-3 font-mono font-bold text-[var(--text-secondary)]">{log.work_date}</td>
+                      <td className="px-4 py-3 font-mono text-[var(--text-primary)]">
+                        {log.check_in ? new Date(log.check_in).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) : "—"}
                       </td>
-                      <td className="px-4 py-2.5 font-mono text-neutral-500">
-                        {record.check_out ? new Date(record.check_out).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) : "—"}
+                      <td className="px-4 py-3 font-mono text-[var(--text-primary)]">
+                        {log.check_out ? new Date(log.check_out).toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }) : "—"}
                       </td>
-                      <td className="px-4 py-2.5 text-right font-mono font-bold text-neutral-700">{record.working_hours || "0.00"}h</td>
-                      <td className="px-4 py-2.5">
-                        {record.late_check_in ? (
-                          <span className="text-amber-600 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-200 text-[8px] font-bold">Late</span>
-                        ) : (
-                          <span className="text-green-600 bg-green-500/10 px-2 py-0.5 rounded border border-green-200 text-[8px] font-bold">On Time</span>
-                        )}
+                      <td className="px-4 py-3 font-mono font-bold text-[#0075de]">{log.working_hours ? `${log.working_hours}h` : "—"}</td>
+                      <td className="px-4 py-3">
+                        <span className={cn("px-2 py-0.5 rounded border text-[8px] font-bold", log.status === "PRESENT" ? "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" : "text-amber-500 bg-amber-500/10 border-amber-500/20")}>
+                          {log.status || "PRESENT"}
+                        </span>
                       </td>
                     </tr>
                   ))}

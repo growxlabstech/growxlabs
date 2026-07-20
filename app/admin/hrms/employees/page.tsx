@@ -6,10 +6,10 @@ import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
 
 const STATUS_BADGES: Record<string, string> = {
-  ACTIVE: "text-green-600 bg-green-500/10 border-green-200",
-  ON_LEAVE: "text-amber-600 bg-amber-500/10 border-amber-200",
-  SUSPENDED: "text-red-600 bg-red-500/10 border-red-200",
-  TERMINATED: "text-neutral-500 bg-neutral-100 border-neutral-200",
+  ACTIVE: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
+  ON_LEAVE: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+  SUSPENDED: "text-red-500 bg-red-500/10 border-red-500/20",
+  TERMINATED: "text-[var(--text-muted)] bg-[var(--surface-2)] border-[var(--border-subtle)]",
 };
 
 export default function EmployeesPage() {
@@ -55,27 +55,27 @@ export default function EmployeesPage() {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 text-[var(--text-primary)]">
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold text-neutral-950 tracking-tight leading-none">Employees Directory</h1>
-        <p className="text-neutral-500 text-xs">Manage employee profiles, department assignments, and employment status.</p>
+        <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tight leading-none">Employees Directory</h1>
+        <p className="text-[var(--text-secondary)] text-xs">Manage employee profiles, department assignments, and employment status.</p>
       </div>
 
       {/* Actions Bar */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-neutral-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[var(--text-muted)]" />
           <input
             type="text"
             placeholder="Search by name or ID..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-xs border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400"
+            className="w-full pl-9 pr-3 py-2 text-xs border border-[var(--border-subtle)] bg-[var(--surface-1)] text-[var(--text-primary)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0075de]/20 focus:border-[#0075de]"
           />
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center gap-1.5 bg-gradient-to-r from-[#0075de] to-[#005bab] text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:shadow-lg transition-all"
+          className="flex items-center gap-1.5 bg-[#0075de] hover:bg-[#005bab] text-white px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm transition-all"
         >
           <Plus className="h-3.5 w-3.5" /> Add Employee
         </button>
@@ -83,10 +83,10 @@ export default function EmployeesPage() {
 
       {/* Add Employee Modal */}
       {showForm && (
-        <Card className="p-5 border border-[#e6e6e6] bg-white rounded-lg shadow-sm">
+        <Card className="p-5 border border-[var(--border-subtle)] bg-[var(--card)] rounded-xl shadow-sm">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-sm font-bold text-neutral-800">New Employee Profile</h3>
-            <button onClick={() => setShowForm(false)} className="text-neutral-400 hover:text-neutral-600"><X className="h-4 w-4" /></button>
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">New Employee Profile</h3>
+            <button onClick={() => setShowForm(false)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]"><X className="h-4 w-4" /></button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {[
@@ -97,13 +97,13 @@ export default function EmployeesPage() {
               { key: "joining_date", label: "Joining Date", placeholder: "", type: "date" },
             ].map((field) => (
               <div key={field.key}>
-                <label className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 mb-1 block">{field.label}</label>
+                <label className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1 block">{field.label}</label>
                 <input
                   type={field.type || "text"}
                   placeholder={field.placeholder}
                   value={(formData as any)[field.key]}
                   onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                  className="w-full px-3 py-2 text-xs border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3 py-2 text-xs border border-[var(--border-subtle)] bg-[var(--surface-1)] text-[var(--text-primary)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0075de]/20"
                 />
               </div>
             ))}
@@ -111,7 +111,7 @@ export default function EmployeesPage() {
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="mt-4 bg-gradient-to-r from-[#0075de] to-[#005bab] text-white px-6 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:shadow-lg transition-all disabled:opacity-50"
+            className="mt-4 bg-[#0075de] hover:bg-[#005bab] text-white px-6 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm transition-all disabled:opacity-50"
           >
             {submitting ? <Loader2 className="animate-spin h-3.5 w-3.5" /> : "Create Employee"}
           </button>
@@ -124,35 +124,35 @@ export default function EmployeesPage() {
           <Loader2 className="animate-spin text-[#0075de] h-8 w-8" />
         </div>
       ) : (
-        <Card className="border border-[#e6e6e6] bg-white rounded-lg shadow-sm overflow-hidden">
+        <Card className="border border-[var(--border-subtle)] bg-[var(--card)] rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr className="bg-neutral-50 border-b border-neutral-100">
-                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Employee ID</th>
-                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Name</th>
-                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Email</th>
-                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Department</th>
-                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Status</th>
-                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-neutral-400">Joining Date</th>
+                <tr className="bg-[var(--surface-2)] border-b border-[var(--border-subtle)]">
+                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Employee ID</th>
+                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Name</th>
+                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Email</th>
+                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Department</th>
+                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Status</th>
+                  <th className="text-left px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)]">Joining Date</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 && (
-                  <tr><td colSpan={6} className="text-center py-12 text-neutral-400">No employees found</td></tr>
+                  <tr><td colSpan={6} className="text-center py-12 text-[var(--text-muted)]">No employees found</td></tr>
                 )}
                 {filtered.map((emp) => (
-                  <tr key={emp.id} className="border-b border-neutral-50 hover:bg-neutral-50/50 transition-colors">
-                    <td className="px-4 py-3 font-mono font-bold text-neutral-600">{emp.employee_id}</td>
-                    <td className="px-4 py-3 font-semibold text-neutral-800">{emp.full_name}</td>
-                    <td className="px-4 py-3 text-neutral-500">{emp.email}</td>
-                    <td className="px-4 py-3 text-neutral-500">{emp.department?.name || "—"}</td>
+                  <tr key={emp.id} className="border-b border-[var(--border-subtle)] hover:bg-[var(--surface-2)] transition-colors">
+                    <td className="px-4 py-3 font-mono font-bold text-[var(--text-secondary)]">{emp.employee_id}</td>
+                    <td className="px-4 py-3 font-semibold text-[var(--text-primary)]">{emp.full_name}</td>
+                    <td className="px-4 py-3 text-[var(--text-secondary)]">{emp.email}</td>
+                    <td className="px-4 py-3 text-[var(--text-secondary)]">{emp.department?.name || "—"}</td>
                     <td className="px-4 py-3">
                       <span className={cn("px-2 py-0.5 rounded border text-[8px] font-bold", STATUS_BADGES[emp.status] || STATUS_BADGES.ACTIVE)}>
                         {emp.status || "ACTIVE"}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-mono text-neutral-500">{emp.joining_date || "—"}</td>
+                    <td className="px-4 py-3 font-mono text-[var(--text-secondary)]">{emp.joining_date || "—"}</td>
                   </tr>
                 ))}
               </tbody>

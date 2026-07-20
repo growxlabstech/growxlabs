@@ -85,43 +85,11 @@
 }
 
 /* ═══════════════════════════════════════════════════ */
-/* DARK THEME — Admin / Dashboard pages               */
+/* NOTION LIGHT THEME — Dashboard pages (Default Light)*/
 /* ═══════════════════════════════════════════════════ */
-.dark {
-  --background: #050810;
-  --foreground: #F1F1F1;
-  --card: rgba(13, 20, 38, 0.45);
-  --card-foreground: #F1F1F1;
-  --popover: #090E1A;
-  --popover-foreground: #F1F1F1;
-  --primary: #355CFF;
-  --primary-foreground: #FFFFFF;
-  --secondary: rgba(20, 30, 55, 0.65);
-  --secondary-foreground: #F1F1F1;
-  --muted: rgba(20, 30, 55, 0.4);
-  --muted-foreground: rgba(255, 255, 255, 0.45);
-  --accent: rgba(53, 92, 255, 0.1);
-  --accent-foreground: #F1F1F1;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --border: rgba(255, 255, 255, 0.05);
-  --input: rgba(20, 30, 55, 0.65);
-  --ring: #355CFF;
-  
-  --surface-1: rgba(13, 20, 38, 0.45);
-  --surface-2: rgba(20, 30, 55, 0.65);
-  --border-subtle: rgba(255, 255, 255, 0.05);
-  --border-hover: rgba(53, 92, 255, 0.3);
-  
-  --text-primary: #FFFFFF;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted: rgba(255, 255, 255, 0.4);
-}
-
-/* ═══════════════════════════════════════════════════ */
-/* NOTION LIGHT THEME — Dashboard pages               */
-/* ═══════════════════════════════════════════════════ */
-.notion-theme {
+.notion-theme,
+html:not(.dark) .notion-theme,
+html.light .notion-theme {
   --background: #f6f5f4;
   --foreground: #000000;
   --card: #ffffff;
@@ -154,9 +122,11 @@
 }
 
 /* ═══════════════════════════════════════════════════ */
-/* VERCEL DARK THEME — Dashboard Override              */
+/* VERCEL DARK THEME — Dashboard Dark Mode Override    */
 /* ═══════════════════════════════════════════════════ */
-.dark .notion-theme {
+html.dark .notion-theme,
+.dark .notion-theme,
+.dark.notion-theme {
   --background: #080808;
   --foreground: #ffffff;
   --card: #0e0e0e;
@@ -223,7 +193,9 @@
 .notion-theme .bg-white\/\[0\.05\],
 .notion-theme .bg-zinc-900,
 .notion-theme .bg-slate-900,
-.notion-theme .bg-neutral-900 {
+.notion-theme .bg-neutral-900,
+.notion-theme .bg-\[\#18181b\],
+.notion-theme .bg-\[\#141416\] {
   background-color: var(--card) !important;
 }
 
@@ -244,10 +216,10 @@
 .notion-theme .border-neutral-800,
 .notion-theme .border-white\/20,
 .notion-theme .border-white\/30 {
-  border-color: var(--border) !important;
+  border-color: var(--border-subtle) !important;
 }
 
-/* Text overrides: mapping white-text classes to black/charcoal inside notion-theme */
+/* Text overrides: mapping white-text classes to theme primary text inside notion-theme */
 .notion-theme .text-white,
 .notion-theme .text-neutral-100,
 .notion-theme .text-slate-100,
@@ -257,6 +229,9 @@
 
 .notion-theme .text-white\/40,
 .notion-theme .text-white\/60,
+.notion-theme .text-\[var\(--text-secondary\)\] {
+  color: var(--text-secondary) !important;
+}
 .notion-theme .text-\[var\(--text-secondary\)\],
 .notion-theme .text-slate-300,
 .notion-theme .text-zinc-300,
