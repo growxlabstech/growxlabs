@@ -134,7 +134,7 @@ export default function DedicatedOfferLetterStudioPage() {
     window.print();
   };
 
-  // Generate Formal 10-Page Fortune 500 Corporate Employment Contract PDF
+  // Generate Continuous Legal Flow Executive Employment Contract PDF
   const generatePDFBase64 = async (): Promise<string | null> => {
     try {
       const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -142,7 +142,17 @@ export default function DedicatedOfferLetterStudioPage() {
       const height = doc.internal.pageSize.getHeight();
       const candidateName = selectedCandidate?.name || "Lakshmi Akhilesh P";
 
-      const addHeader = (pageNo: number) => {
+      let y = 50;
+
+      const checkPageBreak = (neededHeight: number) => {
+        if (y + neededHeight > height - 55) {
+          doc.addPage();
+          y = 55;
+          addHeader();
+        }
+      };
+
+      const addHeader = () => {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(8);
         doc.setTextColor(15, 23, 42); // #0F172A
@@ -158,7 +168,329 @@ export default function DedicatedOfferLetterStudioPage() {
         doc.line(45, 44, width - 45, 44);
       };
 
-      const addFooter = (pageNo: number) => {
+      // ── PAGE 1: BRAND HEADER & LETTERHEAD ──
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      doc.setTextColor(15, 23, 42);
+      doc.text("GROWX LABS TECH PVT. LTD.", 45, y);
+      y += 16;
+
+      doc.setFontSize(8.5);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(37, 99, 235);
+      doc.text("AI-NATIVE PRODUCT STUDIO & ENTERPRISE AI SOLUTIONS", 45, y);
+      y += 14;
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(100, 116, 139);
+      doc.text("Andhra Pradesh, India • https://growxlabs.tech • contact@growxlabs.tech", 45, y);
+      y += 12;
+
+      doc.setDrawColor(15, 23, 42);
+      doc.setLineWidth(1.5);
+      doc.line(45, y, width - 45, y);
+      y += 16;
+
+      // Clean Metadata Box (Fixed Overflow)
+      doc.setFillColor(248, 250, 252);
+      doc.setDrawColor(226, 232, 240);
+      doc.roundedRect(45, y, width - 90, 52, 4, 4, "FD");
+
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(100, 116, 139);
+      doc.text("CONTRACT REF:", 55, y + 18);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text(refNumber, 145, y + 18);
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(100, 116, 139);
+      doc.text("DATE OF ISSUANCE:", 55, y + 36);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(15, 23, 42);
+      doc.text(offerDate, 145, y + 36);
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(100, 116, 139);
+      doc.text("COMMENCEMENT:", 310, y + 18);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(15, 23, 42);
+      doc.text(joiningDate, 410, y + 18);
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(100, 116, 139);
+      doc.text("CLASSIFICATION:", 310, y + 36);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(37, 99, 235);
+      doc.text("CONFIDENTIAL CONTRACT", 410, y + 36);
+      y += 68;
+
+      // Main Document Title
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("FORMAL OFFER OF EMPLOYMENT & ENGAGEMENT CONTRACT", 45, y);
+      y += 20;
+
+      // Address & Role Details Block
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(226, 232, 240);
+      doc.roundedRect(45, y, width - 90, 48, 4, 4, "FD");
+
+      doc.setFontSize(8.5);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("Candidate Name:", 55, y + 18);
+      doc.setFont("helvetica", "normal");
+      doc.text(candidateName, 140, y + 18);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Offered Role:", 55, y + 34);
+      doc.setFont("helvetica", "normal");
+      doc.text(roleTitle, 140, y + 34);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Department:", 330, y + 18);
+      doc.setFont("helvetica", "normal");
+      doc.text(department, 410, y + 18);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Engagement:", 330, y + 34);
+      doc.setFont("helvetica", "normal");
+      doc.text(employmentType, 410, y + 34);
+      y += 62;
+
+      // Preamble Opening Letter
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(51, 65, 85);
+      doc.text(`Dear ${candidateName},`, 45, y);
+      y += 15;
+
+      const p1 = `On behalf of GrowX Labs Tech Pvt. Ltd. (the "Company"), we are pleased to extend this formal offer of engagement for the position of ${roleTitle}. This contract sets forth the legal terms, remuneration structure, performance benchmarks, and confidentiality obligations governing your engagement.`;
+      const p1Split = doc.splitTextToSize(p1, width - 90);
+      doc.text(p1Split, 45, y);
+      y += p1Split.length * 12 + 15;
+
+      // ── SECTION 1: APPOINTMENT & SCOPE ──
+      checkPageBreak(90);
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("1. APPOINTMENT, SCOPE OF DUTIES & PROBATION", 45, y);
+      y += 15;
+
+      doc.setFontSize(8.5);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      const s1 = `1.1 Scope: You accept engagement as a ${roleTitle} in the ${department} department. You agree to perform all duties as assigned by executive management.\n1.2 Location & Hours: Fully remote engagement adhering to IST operational hours (09:00 to 18:00 IST).\n1.3 Probation: Ninety (90) calendar day performance review window commencing on ${joiningDate}.\n1.4 Background Checks: Contingent upon successful credential and background verification.`;
+      const s1Split = doc.splitTextToSize(s1, width - 90);
+      doc.text(s1Split, 45, y);
+      y += s1Split.length * 11.5 + 20;
+
+      // ── SECTION 2: REMUNERATION & COMMISSION SCHEME ──
+      checkPageBreak(140);
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("2. REMUNERATION & COMMISSION SCHEDULE", 45, y);
+      y += 14;
+
+      // Corporate B&W Data Table
+      const tY = y;
+      doc.setFillColor(15, 23, 42);
+      doc.rect(45, tY, width - 90, 20, "F");
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(255, 255, 255);
+      doc.text("COMPENSATION COMPONENT", 55, tY + 13);
+      doc.text("RATE / STRUCTURE", 220, tY + 13);
+      doc.text("ELIGIBILITY & PAYOUT SCHEDULE", 380, tY + 13);
+
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(226, 232, 240);
+      doc.rect(45, tY + 20, width - 90, 22, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("Net Revenue Commission", 55, tY + 34);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(37, 99, 235);
+      doc.text(commissionRate, 220, tY + 34);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      doc.text("Disbursed monthly on net contract revenue", 380, tY + 34);
+
+      doc.setFillColor(248, 250, 252);
+      doc.rect(45, tY + 42, width - 90, 22, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("Discovery Call Bonus", 55, tY + 56);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(22, 163, 74);
+      doc.text(`${meetingBonus} per qualified meeting`, 220, tY + 56);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      doc.text("Disbursed bi-weekly for validated BANT calls", 380, tY + 56);
+
+      y += 76;
+
+      doc.setFontSize(8.5);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      const s2 = `2.1 BANT Call Qualification: Discovery calls qualify when prospect meets Budget, Authority, Need, Timeline, attends scheduled meeting, and receives executive validation.\n2.2 Invoicing: Submit invoices electronically by 1st of each month. Payouts processed within 10 business days.\n2.3 Tax TDS: Subject to statutory tax deductions at source under Indian tax regulations.`;
+      const s2Split = doc.splitTextToSize(s2, width - 90);
+      doc.text(s2Split, 45, y);
+      y += s2Split.length * 11.5 + 20;
+
+      // ── SECTION 3: KEY PERFORMANCE INDICATORS (KPIS) ──
+      checkPageBreak(140);
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("3. KEY PERFORMANCE INDICATOR (KPI) BENCHMARKS", 45, y);
+      y += 14;
+
+      const kY = y;
+      doc.setFillColor(15, 23, 42);
+      doc.rect(45, kY, width - 90, 20, "F");
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(255, 255, 255);
+      doc.text("METRIC CATEGORY", 55, kY + 13);
+      doc.text("MANDATORY TARGET BENCHMARK", 220, kY + 13);
+      doc.text("EVALUATION FREQUENCY", 400, kY + 13);
+
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(226, 232, 240);
+      doc.rect(45, kY + 20, width - 90, 20, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("Daily Prospecting", 55, kY + 33);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      doc.text("40 Outbound Dials / 50 Personalised Emails", 220, kY + 33);
+      doc.text("Daily Logged in CRM", 400, kY + 33);
+
+      doc.setFillColor(248, 250, 252);
+      doc.rect(45, kY + 40, width - 90, 20, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("Weekly Discovery Calls", 55, kY + 53);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      doc.text("5 Qualified BANT Discovery Meetings Booked", 220, kY + 53);
+      doc.text("Weekly Audit", 400, kY + 53);
+
+      doc.setFillColor(255, 255, 255);
+      doc.rect(45, kY + 60, width - 90, 20, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("Monthly Converted Deals", 55, kY + 73);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      doc.text("3 Converted Partner Contracts (SQOs)", 220, kY + 73);
+      doc.text("Monthly Review", 400, kY + 73);
+
+      y += 92;
+
+      // ── SECTION 4: CONFIDENTIALITY & NDA ──
+      checkPageBreak(110);
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("4. CONFIDENTIALITY, IP ASSIGNMENT & NON-SOLICITATION", 45, y);
+      y += 15;
+
+      doc.setFontSize(8.5);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      const s4 = `4.1 Confidentiality (NDA): You agree to hold all lead lists, client databases, software algorithms, and company workflows strictly confidential.\n4.2 IP Assignment: All work product, sales materials, and code created during your engagement belong exclusively to the Company as a work made for hire.\n4.3 Non-Solicitation: A 12-month post-termination restriction applies prohibiting solicitation of Company clients, leads, or personnel.`;
+      const s4Split = doc.splitTextToSize(s4, width - 90);
+      doc.text(s4Split, 45, y);
+      y += s4Split.length * 11.5 + 20;
+
+      // ── SECTION 5: TERMINATION & GOVERNING LAW ──
+      checkPageBreak(110);
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("5. TERMINATION, NOTICE PERIOD & GOVERNING LAW", 45, y);
+      y += 15;
+
+      doc.setFontSize(8.5);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      const s5 = `5.1 Termination: Either party may terminate with fourteen (14) calendar days' written notice. Immediate termination applies for cause (breach, fraud, negligence).\n5.2 Asset Return: Upon termination, immediately return all client records, credentials, and company property.\n5.3 Governing Law: Governed by laws of India under exclusive jurisdiction of courts in Visakhapatnam, Andhra Pradesh.`;
+      const s5Split = doc.splitTextToSize(s5, width - 90);
+      doc.text(s5Split, 45, y);
+      y += s5Split.length * 11.5 + 25;
+
+      // ── COUNTERPART EXECUTION & SIGNATURE BLOCK ──
+      checkPageBreak(120);
+      doc.setDrawColor(226, 232, 240);
+      doc.line(45, y, width - 45, y);
+      y += 15;
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("6. FORMAL COUNTERPART EXECUTION", 45, y);
+      y += 15;
+
+      const sigY = y;
+      doc.setFillColor(248, 250, 252);
+      doc.setDrawColor(226, 232, 240);
+      doc.roundedRect(45, sigY, 240, 75, 4, 4, "FD");
+
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(100, 116, 139);
+      doc.text("FOR GROWX LABS TECH PVT. LTD.", 55, sigY + 18);
+      doc.setFontSize(10);
+      doc.setTextColor(37, 99, 235);
+      doc.text(senderName, 55, sigY + 40);
+      doc.setFontSize(8);
+      doc.setTextColor(100, 116, 139);
+      doc.text("Founder & CEO", 55, sigY + 54);
+      doc.text(`Date: ${offerDate}`, 55, sigY + 66);
+
+      doc.roundedRect(width - 285, sigY, 240, 75, 4, 4, "FD");
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(100, 116, 139);
+      doc.text("CANDIDATE ACCEPTANCE", width - 275, sigY + 18);
+      doc.setFontSize(10);
+      doc.setTextColor(15, 23, 42);
+      doc.text(candidateName, width - 275, sigY + 40);
+      doc.setFontSize(8);
+      doc.setTextColor(100, 116, 139);
+      doc.text("Signature: ______________________", width - 275, sigY + 54);
+      doc.text("Date: _________________________", width - 275, sigY + 66);
+
+      y += 90;
+
+      // ── ANNEXURE A ──
+      checkPageBreak(80);
+      doc.setFontSize(9.5);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(15, 23, 42);
+      doc.text("ANNEXURE A: COMMISSION TIERS & MILESTONES", 45, y);
+      y += 14;
+
+      doc.setFontSize(8);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(71, 85, 105);
+      doc.text("• Base Quota (1–3 SQOs): 10% Net Contract Revenue Commission", 55, y);
+      doc.text("• High Performer (4–6 SQOs): 12.5% Net Contract Revenue Commission", 55, y + 14);
+      doc.text("• President's Club (7+ SQOs): 15% Net Contract Revenue + INR 10,000 Milestone Bonus", 55, y + 28);
+      y += 42;
+
+      // Dynamic Page Footers across all generated pages
+      const totalPages = doc.getNumberOfPages();
+      for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
         doc.setDrawColor(226, 232, 240);
         doc.setLineWidth(0.5);
         doc.line(45, height - 44, width - 45, height - 44);
@@ -169,611 +501,14 @@ export default function DedicatedOfferLetterStudioPage() {
         doc.text("STRICTLY CONFIDENTIAL", 45, height - 30);
 
         doc.setFont("helvetica", "normal");
-        doc.text(`GROWX LABS TECH PVT. LTD. • Page ${pageNo} of 10`, width - 45, height - 30, { align: "right" });
-      };
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 1: TITLE PAGE & EXECUTIVE TRANSMITTAL LETTER
-      // ═════════════════════════════════════════════════════════════
-      
-      // Corporate Letterhead
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(22);
-      doc.setTextColor(15, 23, 42);
-      doc.text("GROWX LABS TECH PVT. LTD.", 45, 65);
-
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(37, 99, 235);
-      doc.text("AI-NATIVE PRODUCT STUDIO & ENTERPRISE AI SOLUTIONS", 45, 80);
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(8.5);
-      doc.setTextColor(100, 116, 139);
-      doc.text("Andhra Pradesh, India • https://growxlabs.tech • contact@growxlabs.tech", 45, 94);
-
-      doc.setDrawColor(15, 23, 42);
-      doc.setLineWidth(1.5);
-      doc.line(45, 106, width - 45, 106);
-
-      // Metadata Table
-      doc.setFillColor(248, 250, 252);
-      doc.setDrawColor(226, 232, 240);
-      doc.roundedRect(45, 120, width - 90, 48, 4, 4, "FD");
-
-      doc.setFontSize(8.5);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text(`CONTRACT REFERENCE:`, 55, 138);
-      doc.setFont("helvetica", "normal");
-      doc.text(refNumber, 175, 138);
-
-      doc.setFont("helvetica", "bold");
-      doc.text(`DATE OF ISSUANCE:`, 55, 154);
-      doc.setFont("helvetica", "normal");
-      doc.text(offerDate, 175, 154);
-
-      doc.setFont("helvetica", "bold");
-      doc.text(`TARGET COMMENCEMENT:`, 330, 138);
-      doc.setFont("helvetica", "normal");
-      doc.text(joiningDate, 460, 138);
-
-      doc.setFont("helvetica", "bold");
-      doc.text(`CLASSIFICATION:`, 330, 154);
-      doc.setFont("helvetica", "normal");
-      doc.text("CONFIDENTIAL CONTRACT", 460, 154);
-
-      // Main Document Title
-      doc.setFontSize(15);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("FORMAL OFFER OF EMPLOYMENT AND CONTRACT OF ENGAGEMENT", 45, 200);
-
-      // Address Block
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("PREPARED FOR:", 45, 228);
-
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      doc.text(`Name: ${candidateName}`, 45, 243);
-      doc.text(`Offered Position: ${roleTitle}`, 45, 257);
-      doc.text(`Department: ${department}`, 45, 271);
-      doc.text(`Engagement Model: ${employmentType}`, 45, 285);
-
-      // Cover Letter Paragraphs
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      doc.text(`Dear ${candidateName},`, 45, 320);
-
-      const p1 = `On behalf of GrowX Labs Tech Pvt. Ltd. (the "Company"), we are pleased to extend this formal offer of engagement for the position of ${roleTitle}. Following our thorough review of your background and professional track record, we are confident in your ability to drive exceptional results for our outbound sales organization.`;
-      doc.text(doc.splitTextToSize(p1, width - 90), 45, 338);
-
-      const p2 = `This document, together with its appended Annexures, constitutes a binding legal agreement governing the terms of your engagement, remuneration structure, performance benchmarks, and confidentiality obligations. Please review all ten pages of this agreement carefully prior to execution.`;
-      doc.text(doc.splitTextToSize(p2, width - 90), 45, 385);
-
-      const p3 = `Should you accept the terms outlined herein, please sign and return the execution page (Page 10) on or before ${joiningDate}. This offer remains valid until 17:00 IST on ${joiningDate}.`;
-      doc.text(doc.splitTextToSize(p3, width - 90), 45, 432);
-
-      // Cover Letter Signature
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("Sincerely,", 45, 485);
-      doc.text("For GrowX Labs Tech Pvt. Ltd.", 45, 500);
-
-      doc.setFontSize(11);
-      doc.setTextColor(37, 99, 235);
-      doc.text(senderName, 45, 545);
-
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(100, 116, 139);
-      doc.text("Founder & Chief Executive Officer", 45, 560);
-      doc.text("GrowX Labs Tech Pvt. Ltd.", 45, 574);
-
-      addFooter(1);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 2: SECTION 1 — APPOINTMENT, SCOPE & PROBATION
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(2);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 1: APPOINTMENT, SCOPE OF DUTIES & PROBATION", 45, 75);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("1.1 Scope of Engagement", 45, 98);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t1_1 = `The Company hereby engages you, and you accept engagement with the Company, as a ${roleTitle} in the ${department} department. In this capacity, you shall perform all duties and exercise all powers consistent with your position as directed from time to time by the Chief Executive Officer or designated managers.`;
-      doc.text(doc.splitTextToSize(t1_1, width - 90), 45, 112);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("1.2 Reporting Line and Supervision", 45, 165);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t1_2 = `You shall report directly to the Founder & CEO or such other executive as the Company may designate. You agree to comply with all lawful directions, policies, procedures, and ethical standards enforced by the Company.`;
-      doc.text(doc.splitTextToSize(t1_2, width - 90), 45, 179);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("1.3 Location and Remote Operational Protocol", 45, 222);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t1_3 = `This engagement is designated as a remote position. You are required to maintain a secure, professional working environment equipped with high-speed internet connectivity. Operational hours strictly align with Indian Standard Time (IST) business hours (09:00 IST to 18:00 IST), unless otherwise specified for international client outreach.`;
-      doc.text(doc.splitTextToSize(t1_3, width - 90), 45, 236);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("1.4 Probationary Evaluation Window", 45, 288);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t1_4 = `Your engagement is subject to an initial ninety (90) calendar day probationary performance evaluation window commencing on ${joiningDate}. During this period, your performance, activity volume, meeting conversion rates, and adherence to company policies will be assessed. The Company reserves the right to extend the probation window or terminate the engagement during probation in accordance with Section 7.`;
-      doc.text(doc.splitTextToSize(t1_4, width - 90), 45, 302);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("1.5 Verification of Credentials", 45, 362);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t1_5 = `This offer is contingent upon the successful verification of your identity, educational qualifications, prior employment references, and background checks. Any misrepresentation or omission of material facts shall constitute grounds for immediate cancellation of this offer.`;
-      doc.text(doc.splitTextToSize(t1_5, width - 90), 45, 376);
-
-      addFooter(2);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 3: SECTION 2 — REMUNERATION & COMMISSION SCHEME
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(3);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 2: REMUNERATION, COMMISSION & INCENTIVES", 45, 75);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("2.1 Remuneration Principles", 45, 98);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t2_1 = `Your total remuneration is structured under an independent performance contractor model. Compensation comprises a Revenue Commission Tier on converted contract value and a Qualified Discovery Call Bonus for validated sales meetings.`;
-      doc.text(doc.splitTextToSize(t2_1, width - 90), 45, 112);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("2.2 Commission Structure Overview Table", 45, 150);
-
-      // Corporate Black & White Table
-      const tY = 162;
-      doc.setFillColor(15, 23, 42);
-      doc.rect(45, tY, width - 90, 22, "F");
-      doc.setFontSize(8);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(255, 255, 255);
-      doc.text("COMPENSATION ELEMENT", 55, tY + 14);
-      doc.text("RATE / AMOUNT", 220, tY + 14);
-      doc.text("ELIGIBILITY & PAYOUT SCHEDULE", 380, tY + 14);
-
-      doc.setFillColor(255, 255, 255);
-      doc.setDrawColor(226, 232, 240);
-      doc.rect(45, tY + 22, width - 90, 24, "FD");
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("Net Revenue Commission", 55, tY + 37);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text(commissionRate, 220, tY + 37);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(71, 85, 105);
-      doc.text("Disbursed monthly upon net client realization", 380, tY + 37);
-
-      doc.setFillColor(248, 250, 252);
-      doc.rect(45, tY + 46, width - 90, 24, "FD");
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("Discovery Call Incentive", 55, tY + 61);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text(`${meetingBonus} per qualified call`, 220, tY + 61);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(71, 85, 105);
-      doc.text("Disbursed bi-weekly for validated BANT calls", 380, tY + 61);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("2.3 Qualified Discovery Meeting Terms", 45, 255);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t2_3 = `A Discovery Meeting qualifies for incentive payout only when: (a) the prospect satisfies BANT criteria (Budget, Authority, Need, Timeline); (b) the prospect attends the scheduled meeting; and (c) a executive team member confirms meeting validation. Cancelled or no-show meetings do not qualify.`;
-      doc.text(doc.splitTextToSize(t2_3, width - 90), 45, 269);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("2.4 Invoicing & Payout Protocol", 45, 325);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t2_4 = `Invoices for earned commissions and meeting bonuses must be submitted electronically by the 1st of each calendar month. Payments are processed within ten (10) business days following verification by the accounts department.`;
-      doc.text(doc.splitTextToSize(t2_4, width - 90), 45, 339);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("2.5 Tax Withholding & Statutory Deductions", 45, 385);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t2_5 = `All payments made hereunder shall be subject to applicable tax deductions at source (TDS) under Indian income tax regulations. You are solely responsible for filing your tax returns and complying with personal tax liabilities.`;
-      doc.text(doc.splitTextToSize(t2_5, width - 90), 45, 399);
-
-      addFooter(3);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 4: SECTION 3 — KEY PERFORMANCE INDICATORS (KPIS)
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(4);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 3: KEY PERFORMANCE INDICATORS & AUDITS", 45, 75);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("3.1 Core Target Benchmarks", 45, 98);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t3_1 = `You are expected to maintain high activity volume and quality metrics consistent with enterprise sales standards. Your performance will be evaluated against the following mandatory benchmarks:`;
-      doc.text(doc.splitTextToSize(t3_1, width - 90), 45, 112);
-
-      // KPI Formal Table
-      const kpiY = 142;
-      doc.setFillColor(15, 23, 42);
-      doc.rect(45, kpiY, width - 90, 22, "F");
-      doc.setFontSize(8);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(255, 255, 255);
-      doc.text("PERFORMANCE CATEGORY", 55, kpiY + 14);
-      doc.text("MANDATORY MINIMUM TARGET", 220, kpiY + 14);
-      doc.text("EVALUATION INTERVAL", 400, kpiY + 14);
-
-      doc.setFillColor(255, 255, 255);
-      doc.setDrawColor(226, 232, 240);
-      doc.rect(45, kpiY + 22, width - 90, 24, "FD");
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("Daily Prospecting Volume", 55, kpiY + 37);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(71, 85, 105);
-      doc.text("40 Outbound Dials / 50 Personalised Emails", 220, kpiY + 37);
-      doc.text("Daily Logged in CRM", 400, kpiY + 37);
-
-      doc.setFillColor(248, 250, 252);
-      doc.rect(45, kpiY + 46, width - 90, 24, "FD");
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("Weekly Discovery Meetings", 55, kpiY + 61);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(71, 85, 105);
-      doc.text("5 Qualified BANT Discovery Meetings Booked", 220, kpiY + 61);
-      doc.text("Weekly Audit (Friday)", 400, kpiY + 61);
-
-      doc.setFillColor(255, 255, 255);
-      doc.rect(45, kpiY + 70, width - 90, 24, "FD");
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("Monthly Converted Deals", 55, kpiY + 85);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(71, 85, 105);
-      doc.text("3 Converted Partner Contracts (SQOs)", 220, kpiY + 85);
-      doc.text("Monthly Review", 400, kpiY + 85);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("3.2 Performance Review and Audit Framework", 45, 280);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t3_2 = `The Company conducts bi-weekly activity reviews and monthly performance audits. Failure to meet at least 70% of targets for two consecutive evaluation periods may trigger a Performance Improvement Plan (PIP) or lead to contract termination.`;
-      doc.text(doc.splitTextToSize(t3_2, width - 90), 45, 294);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("3.3 CRM Data Accuracy & Compliance", 45, 345);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t3_3 = `All calls, emails, lead notes, and meeting schedules must be accurately logged into the Company CRM system in real time. Failure to maintain accurate records shall result in forfeiture of incentive eligibility.`;
-      doc.text(doc.splitTextToSize(t3_3, width - 90), 45, 359);
-
-      addFooter(4);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 5: SECTION 4 — CONFIDENTIALITY & PROPRIETARY INFO (NDA)
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(5);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 4: CONFIDENTIALITY & NON-DISCLOSURE (NDA)", 45, 75);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("4.1 Definition of Proprietary Information", 45, 98);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t4_1 = `For purposes of this Agreement, "Confidential Information" shall include, without limitation, all technical data, trade secrets, research, product plans, client databases, lead lists, pricing models, software algorithms, sales scripts, workflows, and business strategies disclosed to you by the Company.`;
-      doc.text(doc.splitTextToSize(t4_1, width - 90), 45, 112);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("4.2 Non-Disclosure Obligations", 45, 170);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t4_2 = `You agree to hold all Confidential Information in strict confidence and shall not disclose, copy, publish, summarize, or distribute any portion thereof to any third party without the prior written consent of the Company. You shall use Confidential Information solely for performing your obligations under this Agreement.`;
-      doc.text(doc.splitTextToSize(t4_2, width - 90), 45, 184);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("4.3 Protection of Lead Databases and Client Records", 45, 245);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t4_3 = `All prospect data, contact information, email lists, and CRM records generated or accessed during your engagement constitute exclusive proprietary property of the Company. Downloading, exporting, or transmitting client data to personal devices or unauthorized platforms is strictly prohibited.`;
-      doc.text(doc.splitTextToSize(t4_3, width - 90), 45, 259);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("4.4 Survival of Obligations", 45, 320);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t4_4 = `Your confidentiality obligations under this Section 4 shall survive the termination of this Agreement for a period of five (5) years, provided that trade secrets and proprietary code shall remain confidential perpetually.`;
-      doc.text(doc.splitTextToSize(t4_4, width - 90), 45, 334);
-
-      addFooter(5);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 6: SECTION 5 — INTELLECTUAL PROPERTY ASSIGNMENT
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(6);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 5: INTELLECTUAL PROPERTY & INVENTIONS", 45, 75);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("5.1 Ownership of Work Product", 45, 98);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t5_1 = `You acknowledge and agree that all inventions, software code, algorithms, workflows, sales playbooks, graphics, designs, and written materials created or developed by you during your engagement with the Company ("Work Product") shall belong exclusively to the Company.`;
-      doc.text(doc.splitTextToSize(t5_1, width - 90), 45, 112);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("5.2 Assignment of Rights", 45, 170);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t5_2 = `You hereby irrevocably assign and transfer to the Company all worldwide right, title, and interest in and to the Work Product, including all copyrights, patents, trade secret rights, and other intellectual property rights associated therewith.`;
-      doc.text(doc.splitTextToSize(t5_2, width - 90), 45, 184);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("5.3 Work Made for Hire", 45, 238);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t5_3 = `To the extent allowed by applicable law, all copyrightable Work Product created by you shall be deemed a "work made for hire" for the benefit of the Company.`;
-      doc.text(doc.splitTextToSize(t5_3, width - 90), 45, 252);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("5.4 Further Assurances", 45, 292);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t5_4 = `You agree to execute all applications, assignments, and legal instruments required by the Company to register, perfect, and enforce its intellectual property rights in any jurisdiction.`;
-      doc.text(doc.splitTextToSize(t5_4, width - 90), 45, 306);
-
-      addFooter(6);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 7: SECTION 6 — NON-SOLICITATION & EXCLUSIVITY
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(7);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 6: NON-SOLICITATION & EXCLUSIVITY", 45, 75);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("6.1 Non-Solicitation of Clients and Partners", 45, 98);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t6_1 = `During your engagement and for a period of twelve (12) months following termination of this Agreement, you shall not, directly or indirectly, solicit, divert, or attempt to solicit business from any client, partner, or active lead of the Company.`;
-      doc.text(doc.splitTextToSize(t6_1, width - 90), 45, 112);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("6.2 Non-Solicitation of Personnel and Contractors", 45, 168);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t6_2 = `During your engagement and for twelve (12) months thereafter, you shall not induce, entice, or solicit any employee, contractor, or officer of the Company to terminate their employment or contractual relationship with the Company.`;
-      doc.text(doc.splitTextToSize(t6_2, width - 90), 45, 182);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("6.3 Exclusivity of Engagement", 45, 238);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t6_3 = `During your engagement, you agree not to render sales outreach or business development services to any direct competitor of the Company without express written authorization from the Chief Executive Officer.`;
-      doc.text(doc.splitTextToSize(t6_3, width - 90), 45, 252);
-
-      addFooter(7);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 8: SECTION 7 — TERMINATION & NOTICE PERIOD
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(8);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 7: TERMINATION & NOTICE PERIOD", 45, 75);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("7.1 Termination for Convenience", 45, 98);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t7_1 = `Either party may terminate this Agreement without cause by providing fourteen (14) calendar days' written notice to the other party. Compensation earned prior to the effective termination date shall be paid in accordance with Section 2.`;
-      doc.text(doc.splitTextToSize(t7_1, width - 90), 45, 112);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("7.2 Termination for Cause", 45, 162);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t7_2 = `The Company reserves the right to terminate this Agreement immediately for cause upon written notice. Cause includes, but is not limited to: (a) breach of confidentiality; (b) fraud or dishonesty; (c) gross negligence; or (d) persistent failure to perform duties.`;
-      doc.text(doc.splitTextToSize(t7_2, width - 90), 45, 176);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("7.3 Post-Termination Obligations", 45, 232);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t7_3 = `Upon termination, you shall immediately return to the Company all materials, lead lists, documents, login credentials, and property belonging to the Company.`;
-      doc.text(doc.splitTextToSize(t7_3, width - 90), 45, 246);
-
-      addFooter(8);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 9: SECTION 8 — GOVERNING LAW & JURISDICTION
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(9);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 8: GOVERNING LAW & GENERAL PROVISIONS", 45, 75);
-
-      doc.setFontSize(9.5);
-      doc.setFont("helvetica", "bold");
-      doc.text("8.1 Governing Law", 45, 98);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t8_1 = `This Agreement shall be governed by, construed, and enforced in accordance with the laws of the Republic of India, without regard to its conflict of laws rules.`;
-      doc.text(doc.splitTextToSize(t8_1, width - 90), 45, 112);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("8.2 Dispute Resolution and Jurisdiction", 45, 155);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t8_2 = `Any dispute, controversy, or claim arising out of or relating to this Agreement shall be submitted to the exclusive jurisdiction of the competent courts located in Visakhapatnam, Andhra Pradesh, India.`;
-      doc.text(doc.splitTextToSize(t8_2, width - 90), 45, 169);
-
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("8.3 Severability & Entire Agreement", 45, 218);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      const t8_3 = `If any provision of this Agreement is held invalid, the remaining provisions shall continue in full force. This Agreement contains the entire understanding of the parties regarding its subject matter.`;
-      doc.text(doc.splitTextToSize(t8_3, width - 90), 45, 232);
-
-      addFooter(9);
-
-      // ═════════════════════════════════════════════════════════════
-      // PAGE 10: EXECUTION & ANNEXURES
-      // ═════════════════════════════════════════════════════════════
-      doc.addPage();
-      addHeader(10);
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("SECTION 9: COUNTERPART EXECUTION & ANNEXURES", 45, 75);
-
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(51, 65, 85);
-      doc.text("IN WITNESS WHEREOF, the parties hereto have executed this Agreement on the date set forth below.", 45, 95);
-
-      // Counterpart Signature Boxes
-      const sigY = 118;
-      doc.setFillColor(248, 250, 252);
-      doc.setDrawColor(226, 232, 240);
-      doc.roundedRect(45, sigY, 240, 90, 4, 4, "FD");
-
-      doc.setFontSize(8.5);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(100, 116, 139);
-      doc.text("FOR GROWX LABS TECH PVT. LTD.", 55, sigY + 20);
-      doc.setFontSize(11);
-      doc.setTextColor(37, 99, 235);
-      doc.text(senderName, 55, sigY + 45);
-      doc.setFontSize(8.5);
-      doc.setTextColor(100, 116, 139);
-      doc.text("Founder & Chief Executive Officer", 55, sigY + 60);
-      doc.text(`Date: ${offerDate}`, 55, sigY + 74);
-
-      doc.roundedRect(width - 285, sigY, 240, 90, 4, 4, "FD");
-      doc.setFontSize(8.5);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(100, 116, 139);
-      doc.text("CANDIDATE ACCEPTANCE", width - 275, sigY + 20);
-      doc.setFontSize(11);
-      doc.setTextColor(15, 23, 42);
-      doc.text(candidateName, width - 275, sigY + 45);
-      doc.setFontSize(8.5);
-      doc.setTextColor(100, 116, 139);
-      doc.text("Signature: ______________________", width - 275, sigY + 60);
-      doc.text("Date: _________________________", width - 275, sigY + 74);
-
-      // Annexure A Section
-      const annY = sigY + 115;
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("ANNEXURE A: COMMISSION TIERS & MILESTONE SCHEDULE", 45, annY);
-
-      doc.setFontSize(8.5);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(71, 85, 105);
-      doc.text("• Base Quota (1–3 SQOs): 10% Net Contract Revenue Commission", 55, annY + 18);
-      doc.text("• High Performer (4–6 SQOs): 12.5% Net Contract Revenue Commission", 55, annY + 32);
-      doc.text("• President's Club (7+ SQOs): 15% Net Contract Revenue + INR 10,000 Milestone Bonus", 55, annY + 46);
-
-      // Annexure B Section
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(15, 23, 42);
-      doc.text("ANNEXURE B: INFORMATION SECURITY & CODE OF CONDUCT", 45, annY + 75);
-
-      doc.setFontSize(8.5);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(71, 85, 105);
-      doc.text("• All sales outreach must comply with anti-spam laws (CAN-SPAM / GDPR / IT Act 2000).", 55, annY + 93);
-      doc.text("• Misrepresentation of company capabilities or unauthorized pricing discounts is prohibited.", 55, annY + 107);
-
-      addFooter(10);
+        doc.text(`GROWX LABS TECH PVT. LTD. • Page ${i} of ${totalPages}`, width - 45, height - 30, { align: "right" });
+      }
 
       const dataUri = doc.output("datauristring");
       const base64 = dataUri.split(",")[1];
       return base64 || null;
     } catch (err) {
-      console.error("10-Page Corporate PDF generation error:", err);
+      console.error("Continuous Legal PDF generation error:", err);
       return null;
     }
   };
