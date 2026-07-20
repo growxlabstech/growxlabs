@@ -78,3 +78,21 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("career_applications")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching career applications:", error);
+      return NextResponse.json({ applications: [] });
+    }
+
+    return NextResponse.json({ applications: data || [] });
+  } catch (err: any) {
+    return NextResponse.json({ applications: [] });
+  }
+}

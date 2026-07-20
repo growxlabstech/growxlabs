@@ -58,13 +58,33 @@ export default function AdminEmployeeOnboardingPage() {
   const fetchEmployees = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/team?t=${Date.now()}`);
-      const data = await res.json();
-      const teamList = data.team || [];
-      
+      const [teamRes, careerRes] = await Promise.all([
+        fetch(`/api/admin/team?t=${Date.now()}`),
+        fetch(`/api/careers?t=${Date.now()}`)
+      ]);
+      const teamData = await teamRes.json();
+      const careerData = await careerRes.json();
+
+      const teamList = teamData.team || [];
+      const careerList = careerData.applications || [];
+
       const agents = teamList.filter((m: any) => m.role === "crm_agent" || m.role === "agent");
+
+      // Merge candidate applications from careers portal
+      careerList.forEach((applicant: any) => {
+        if (!agents.find((a: any) => a.email?.toLowerCase() === applicant.email?.toLowerCase())) {
+          agents.push({
+            id: applicant.id || `applicant-${applicant.email}`,
+            name: applicant.name,
+            email: applicant.email,
+            phone: applicant.phone || "",
+            role: applicant.role || "Job Applicant",
+            accepted_terms: false
+          });
+        }
+      });
       
-      // Add Akhilesh to team list if not present
+      // Ensure Akhilesh exists in roster
       if (!agents.find((a: any) => a.email === "akhilesh@growxlabs.tech")) {
         agents.unshift({
           id: "akhilesh-sdr-001",
