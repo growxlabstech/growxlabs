@@ -333,6 +333,8 @@ export default function AdminTeamPage() {
   };
 
   const totalAgents = team.length;
+  const activeAgentsCount = team.filter((m) => m.is_active).length;
+  const activePercent = totalAgents > 0 ? Math.round((activeAgentsCount / totalAgents) * 100) : 100;
   const activeSessions = team.reduce(
     (acc, m) => acc + (m.sessions?.filter((s: any) => !s.logout_at).length || 0),
     0
@@ -342,13 +344,16 @@ export default function AdminTeamPage() {
   return (
     <div className="space-y-6 sm:space-y-10 lg:space-y-12">
       <Reveal y={-20}>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold tracking-tight text-neutral-900">Team Management</h1>
-            <p className="text-neutral-500 text-sm">Manage CRM agents, view session logs, and monitor activity.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">Team Management</h1>
+            <p className="text-neutral-500 text-xs sm:text-sm">Manage CRM agents, view session logs, and monitor activity.</p>
           </div>
-          <Button onClick={() => setShowAddModal(true)} className="bg-[#0075de] hover:bg-[#005bab] text-white font-bold tracking-wider uppercase text-[10px] h-10 px-5 rounded-md shadow-sm">
-            <Plus className="w-4 h-4 mr-2" /> Add Agent
+          <Button 
+            onClick={() => setShowAddModal(true)} 
+            className="w-full sm:w-auto bg-[#0075de] hover:bg-[#005bab] text-white font-bold tracking-wider uppercase text-[10px] h-10 px-5 rounded-xl shadow-sm whitespace-nowrap shrink-0 active:scale-95 cursor-pointer"
+          >
+            <Plus className="w-4 h-4 mr-2 shrink-0" /> Add Agent
           </Button>
         </div>
       </Reveal>
@@ -368,7 +373,7 @@ export default function AdminTeamPage() {
               <span className="text-3xl font-bold text-neutral-900 tracking-tight leading-none">
                 {loading ? <Loader2 className="w-5 h-5 animate-spin text-neutral-400" /> : totalAgents}
               </span>
-              <span className="text-[10px] font-bold text-[#0075de] uppercase tracking-widest">+100% active</span>
+              <span className="text-[10px] font-bold text-[#0075de] uppercase tracking-widest">{activePercent}% Active</span>
             </div>
           </div>
 
@@ -427,10 +432,10 @@ export default function AdminTeamPage() {
         <div className="bg-[#f6f5f4] border border-[#e6e6e6] p-6 sm:p-8 rounded-md relative overflow-hidden">
            <div className="flex justify-between items-center mb-6 border-b border-[#e6e6e6] pb-4">
              <h2 className="text-xs font-bold text-neutral-800 flex items-center gap-3 tracking-wider uppercase">
-                <Activity className="w-4 h-4 text-[#0075de] animate-pulse" />
+                <Activity className="w-4 h-4 text-[#0075de] animate-pulse shrink-0" />
                 Live Terminal Activity
              </h2>
-             <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200">
+             <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 shrink-0">
                <span className="w-1.5 h-1.5 rounded-full bg-[#0075de]" />
                <span className="text-[9px] font-bold text-emerald-600 uppercase tracking-wider">Console Active</span>
              </div>
@@ -477,7 +482,7 @@ export default function AdminTeamPage() {
           <div className="p-6 border-b border-[#e6e6e6] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#f6f5f4]/40">
             <h2 className="text-xs font-bold text-neutral-800 tracking-wider uppercase">CRM Agents ({team.length})</h2>
             <div className="relative w-full sm:w-auto">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 w-4 h-4 pointer-events-none" />
               <input 
                 type="text" 
                 placeholder="SEARCH AGENTS..." 
@@ -559,19 +564,19 @@ export default function AdminTeamPage() {
                  </div>
 
                  <div className="flex gap-2 mt-4">
-                    <Button onClick={() => setSelectedMember(member)} variant="outline" className="flex-1 bg-white border-[#e6e6e6] hover:bg-neutral-50 text-neutral-600 hover:text-neutral-800 text-[9px] font-bold uppercase tracking-wider h-9 rounded-md transition-all shadow-sm px-2">
-                       <Clock className="w-3 h-3 mr-1.5" /> Logs
+                    <Button onClick={() => setSelectedMember(member)} variant="outline" className="flex-1 bg-white border-[#e6e6e6] hover:bg-neutral-50 text-neutral-600 hover:text-neutral-800 text-[10px] font-bold uppercase tracking-wider h-9 rounded-xl transition-all shadow-sm px-2.5 whitespace-nowrap active:scale-95 cursor-pointer">
+                       <Clock className="w-3.5 h-3.5 mr-1.5 shrink-0 text-[#0075de]" /> <span className="truncate">Logs</span>
                     </Button>
-                    <Button onClick={() => { setEditPermissionsMember(member); setEditAllowedPaths(member.allowed_paths || []); }} variant="outline" className="flex-1 bg-white border-[#e6e6e6] hover:bg-neutral-50 text-neutral-600 hover:text-neutral-800 text-[9px] font-bold uppercase tracking-wider h-9 rounded-md transition-all shadow-sm px-2">
-                       <Key className="w-3 h-3 mr-1.5" /> Access
+                    <Button onClick={() => { setEditPermissionsMember(member); setEditAllowedPaths(member.allowed_paths || []); }} variant="outline" className="flex-1 bg-white border-[#e6e6e6] hover:bg-neutral-50 text-neutral-600 hover:text-neutral-800 text-[10px] font-bold uppercase tracking-wider h-9 rounded-xl transition-all shadow-sm px-2.5 whitespace-nowrap active:scale-95 cursor-pointer">
+                       <Key className="w-3.5 h-3.5 mr-1.5 shrink-0 text-[#0075de]" /> <span className="truncate">Access</span>
                     </Button>
                     <Button 
                       onClick={() => handleDeactivate(member.id, member.is_active)} 
                       variant="outline" 
-                      className={`px-3 bg-white border-[#e6e6e6] hover:bg-neutral-50 ${member.is_active ? 'text-neutral-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50' : 'text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50'} transition-all h-9 rounded-md shadow-sm`} 
+                      className={`px-3 bg-white border-[#e6e6e6] hover:bg-neutral-50 ${member.is_active ? 'text-neutral-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50' : 'text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50'} transition-all h-9 rounded-xl shadow-sm shrink-0 active:scale-95 cursor-pointer`} 
                       title={member.is_active ? "Deactivate" : "Activate"}
                     >
-                       {member.is_active ? <UserX className="w-3.5 h-3.5" /> : <Shield className="w-3.5 h-3.5" />}
+                       {member.is_active ? <UserX className="w-3.5 h-3.5 shrink-0" /> : <Shield className="w-3.5 h-3.5 shrink-0" />}
                     </Button>
                  </div>
               </div>
