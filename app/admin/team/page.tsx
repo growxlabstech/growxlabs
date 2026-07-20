@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
-import { Plus, Search, Shield, UserX, Key, Clock, Activity, Loader2, ShieldAlert, Users } from "lucide-react";
+import { Plus, Search, Shield, UserX, Key, Clock, Activity, Loader2, ShieldAlert, Users, RefreshCw } from "lucide-react";
 import { Reveal } from "@/components/marketing/Reveal";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
@@ -241,6 +241,10 @@ export default function AdminTeamPage() {
 
   useEffect(() => {
     fetchTeam();
+    const interval = setInterval(() => {
+      fetchTeam();
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const fetchTeam = async () => {
@@ -251,7 +255,6 @@ export default function AdminTeamPage() {
       setLogs(data.logs || []);
     } catch (err) {
       console.error(err);
-      toast.error("Failed to fetch team members");
     } finally {
       setLoading(false);
     }
@@ -430,25 +433,42 @@ export default function AdminTeamPage() {
       {/* ACTIVITY MONITOR */}
       <Reveal delay={0.1}>
         <div className="bg-[#f6f5f4] border border-[#e6e6e6] p-6 sm:p-8 rounded-md relative overflow-hidden">
-           <div className="flex justify-between items-center mb-6 border-b border-[#e6e6e6] pb-4">
+           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-[#e6e6e6] pb-4">
              <h2 className="text-xs font-bold text-neutral-800 flex items-center gap-3 tracking-wider uppercase">
                 <Activity className="w-4 h-4 text-[#0075de] animate-pulse shrink-0" />
                 Live Terminal Activity
              </h2>
-             <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 shrink-0">
-               <span className="w-1.5 h-1.5 rounded-full bg-[#0075de]" />
-               <span className="text-[9px] font-bold text-emerald-600 uppercase tracking-wider">Console Active</span>
+             <div className="flex items-center gap-3">
+               <button
+                 onClick={() => { fetchTeam(); toast.success("Refreshed live terminal logs"); }}
+                 className="p-1.5 bg-white border border-[#e6e6e6] hover:bg-neutral-100 rounded-md text-neutral-600 hover:text-neutral-900 transition-all cursor-pointer shadow-2xs"
+                 title="Refresh logs"
+               >
+                 <RefreshCw className="w-3.5 h-3.5" />
+               </button>
+               <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 shrink-0">
+                 <span className="w-1.5 h-1.5 rounded-full bg-[#0075de] animate-pulse" />
+                 <span className="text-[9px] font-bold text-emerald-600 uppercase tracking-wider">Live Sync (5s)</span>
+               </div>
              </div>
            </div>
            
-            <div className="space-y-3 h-40 overflow-y-auto custom-scrollbar pr-2 font-mono text-[12px] leading-relaxed">
+            <div className="space-y-3 h-48 overflow-y-auto custom-scrollbar pr-2 font-mono text-[12px] leading-relaxed">
                {logs.length === 0 ? (
                   <div className="text-neutral-400 text-center py-10 uppercase tracking-widest text-[10px] font-bold">No terminal logs recorded yet</div>
                ) : (
                  logs.map((log: any) => {
-                   const timeStr = log.created_at 
-                     ? new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) 
-                     : "--:--:--";
+                   let dateStr = "YYYY-MM-DD --:--:--";
+                   if (log.created_at) {
+                     const dateObj = new Date(log.created_at);
+                     const yyyy = dateObj.getFullYear();
+                     const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+                     const dd = String(dateObj.getDate()).padStart(2, '0');
+                     const hh = String(dateObj.getHours()).padStart(2, '0');
+                     const min = String(dateObj.getMinutes()).padStart(2, '0');
+                     const ss = String(dateObj.getSeconds()).padStart(2, '0');
+                     dateStr = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+                   }
                    
                     let badgeBg = "bg-[#0075de]/10 text-[#0075de] border border-[#0075de]/20";
                     if (log.activity_type === "SYNC") {
@@ -460,12 +480,12 @@ export default function AdminTeamPage() {
                     }
                    
                    return (
-                     <div key={log.id} className="flex items-start gap-4 p-2.5 rounded hover:bg-white/40 transition-colors border border-transparent hover:border-[#e6e6e6]/45">
-                        <span className="text-[10px] text-neutral-400 w-12 shrink-0">{timeStr}</span>
-                        <span className={`px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider shrink-0 ${badgeBg}`}>
+                     <div key={log.id} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-2.5 rounded hover:bg-white/60 transition-colors border border-transparent hover:border-[#e6e6e6]/60">
+                        <span className="text-[11px] font-bold text-neutral-500 shrink-0 font-mono tracking-tight">{dateStr}</span>
+                        <span className={`px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider shrink-0 w-fit ${badgeBg}`}>
                           {log.activity_type || "INFO"}
                         </span>
-                        <span className="text-neutral-700">
+                        <span className="text-neutral-800 font-medium text-xs break-all">
                           {log.notes}
                         </span>
                      </div>
