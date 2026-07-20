@@ -128,14 +128,17 @@ export default function AIPlatformPage() {
       const res = await fetch("/api/ai-platform/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: fullPrompt, model: selectedModel })
+        body: JSON.stringify({ message: fullPrompt, prompt: fullPrompt, model: selectedModel })
       });
       const data = await res.json();
-      if (res.ok) {
+      if (res.ok && (data.response || data.message?.message_text)) {
+        const replyText = data.response || data.message?.message_text;
         setChatMessages((prev) => [
           ...prev,
-          { sender: "GrowXLabs Copilot", text: data.response, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+          { sender: "GrowXLabs Copilot", text: replyText, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
         ]);
+      } else {
+        toast.error(data.error || "Failed to communicate with AI Copilot.");
       }
     } catch (e) {
       toast.error("Failed to communicate with AI Copilot.");
