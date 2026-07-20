@@ -1,61 +1,57 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Loader2, User, Mail, RefreshCw, Send, Eye, Edit3, CheckCircle2, AlertCircle, Phone, Award, ShieldCheck, FileText, Printer } from "lucide-react";
-import { Reveal } from "@/components/marketing/Reveal";
-import { AnimatePresence, motion } from "framer-motion";
-import { Button } from "@/components/ui/Button";
+import React, { useState, useEffect } from "react";
+import { 
+  ChevronRight, FileText, CheckCircle2, ShieldCheck, Mail, Send, 
+  Printer, Sparkles, User, Calendar, Award, Lock, ChevronDown, 
+  ArrowRight, Download, Check, AlertCircle, RefreshCw, X, Building2, Phone, Briefcase, Clock
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface OnboardingState {
-  offerSent: boolean;
-  credentialsCreated: boolean;
-  day1Checked: boolean;
-  day2Checked: boolean;
-  day3Checked: boolean;
-  day4Checked: boolean;
-  day5Checked: boolean;
-}
-
-export default function AdminEmployeeOnboardingPage() {
-  const [employees, setEmployees] = useState<any[]>([]);
+export default function DedicatedOfferLetterStudioPage() {
+  // Candidate Selection & Data State
+  const [candidates, setCandidates] = useState<any[]>([]);
+  const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Onboarding Custom Progress states stored locally
-  const [onboardingData, setOnboardingData] = useState<Record<string, OnboardingState>>({});
-
-  // Modal & Template States
-  const [showEmailModal, setShowEmailModal] = useState(false);
-  const [selectedEmp, setSelectedEmp] = useState<any | null>(null);
-  const [activeTab, setActiveTab] = useState<"preview" | "edit">("preview");
+  // Form & Contract Details
+  const [roleTitle, setRoleTitle] = useState("Sales Development Representative (SDR)");
+  const [department, setDepartment] = useState("Sales & Business Development");
+  const [joiningDate, setJoiningDate] = useState("20 July 2026");
+  const [offerDate, setOfferDate] = useState("20 July 2026");
+  const [refNumber, setRefNumber] = useState(`GXL/HR/OFFER/SDR/${new Date().getFullYear()}/001`);
+  const [commissionRate, setCommissionRate] = useState("10% to 15%");
+  const [meetingBonus, setMeetingBonus] = useState("₹1,000");
+  const [employmentType, setEmploymentType] = useState("Independent Contractor / Performance-Based");
   
-  // Candidate, Sender & BCC Details
-  const [candidateName, setCandidateName] = useState("Akhilesh");
-  const [candidateEmail, setCandidateEmail] = useState("akhilesh@growxlabs.tech");
+  // Sender Credentials (STRICT)
   const [senderName, setSenderName] = useState("Sai Varshith");
   const [senderEmail, setSenderEmail] = useState("sai@growxlabs.tech");
   const [bccEmail, setBccEmail] = useState("saivarshith8284@gmail.com");
-  const [emailSubject, setEmailSubject] = useState("Formal Employment Offer: Sales Development Representative (SDR) - GrowX Labs Tech Pvt. Ltd.");
 
-  // Plain English Offer Terms
-  const [roleTitle, setRoleTitle] = useState("Sales Development Representative (SDR)");
-  const [incentiveValue, setIncentiveValue] = useState("₹1,000");
-  const [commissionValue, setCommissionValue] = useState("10% to 15%");
-  const [durationValue, setDurationValue] = useState("Independent Contractor / Performance-Based");
-  const [offerDate, setOfferDate] = useState("20 July 2026");
-  const [joiningDate, setJoiningDate] = useState("20 July 2026");
-  const [weeklyMeetingsTarget, setWeeklyMeetingsTarget] = useState("5");
-  const [monthlySqoTarget, setMonthlySqoTarget] = useState("3");
-  const [refNumber, setRefNumber] = useState(`GXL/HR/OFFER/SDR/${new Date().getFullYear()}/001`);
-  
-  // Progress & Validation States
+  // Email Drawer & Collapsible State
+  const [showEmailDrawer, setShowEmailDrawer] = useState(false);
   const [emailSending, setEmailSending] = useState(false);
+  const [expandedAnnexure, setExpandedAnnexure] = useState<string | null>("annexure-a");
+
+  // Pre-flight Hiring Checklist (6/6)
+  const [checklist, setChecklist] = useState({
+    candidateVerified: true,
+    emailVerified: true,
+    compReviewed: true,
+    ndaAttached: true,
+    commissionAttached: true,
+    founderApproved: true,
+  });
+
+  const checklistCount = Object.values(checklist).filter(Boolean).length;
 
   useEffect(() => {
-    fetchEmployees();
+    fetchCandidates();
   }, []);
 
-  const fetchEmployees = async () => {
+  const fetchCandidates = async () => {
     setLoading(true);
     try {
       const [teamRes, careerRes] = await Promise.all([
@@ -68,40 +64,44 @@ export default function AdminEmployeeOnboardingPage() {
       const teamList = teamData.team || [];
       const careerList = careerData.applications || [];
 
-      const agents = teamList.filter((m: any) => m.role === "crm_agent" || m.role === "agent");
+      const list = teamList
+        .filter((m: any) => m.role === "crm_agent" || m.role === "agent")
+        .map((m: any) => ({
+          id: m.id,
+          name: m.name || "Lakshmi Akhilesh P",
+          email: m.email || "akhilesh@growxlabs.tech",
+          phone: m.phone || "+91 98765 43210",
+          role: "Sales Development Representative (SDR)",
+          status: "Verified"
+        }));
 
-      // Merge candidate applications from careers portal
-      careerList.forEach((applicant: any) => {
-        if (!agents.find((a: any) => a.email?.toLowerCase() === applicant.email?.toLowerCase())) {
-          agents.push({
-            id: applicant.id || `applicant-${applicant.email}`,
-            name: applicant.name,
-            email: applicant.email,
-            phone: applicant.phone || "",
-            role: applicant.role || "Job Applicant",
-            accepted_terms: false
+      careerList.forEach((app: any) => {
+        if (!list.find((c: any) => c.email?.toLowerCase() === app.email?.toLowerCase())) {
+          list.push({
+            id: app.id || `app-${app.email}`,
+            name: app.name,
+            email: app.email,
+            phone: app.phone || "+91 98765 43210",
+            role: app.role || "Job Applicant",
+            status: "Applicant"
           });
         }
       });
-      
-      // Ensure Akhilesh exists in roster
-      if (!agents.find((a: any) => a.email === "akhilesh@growxlabs.tech")) {
-        agents.unshift({
+
+      // Default Akhilesh
+      if (!list.find((c: any) => c.email === "akhilesh@growxlabs.tech")) {
+        list.unshift({
           id: "akhilesh-sdr-001",
           name: "Lakshmi Akhilesh P",
           email: "akhilesh@growxlabs.tech",
           phone: "+91 98765 43210",
-          role: "crm_agent",
-          accepted_terms: false
+          role: "Sales Development Representative (SDR)",
+          status: "Verified"
         });
       }
 
-      setEmployees(agents);
-
-      const saved = localStorage.getItem("growx_employee_onboarding_states");
-      if (saved) {
-        setOnboardingData(JSON.parse(saved));
-      }
+      setCandidates(list);
+      setSelectedCandidate(list[0]);
     } catch (e) {
       console.error(e);
     } finally {
@@ -109,579 +109,520 @@ export default function AdminEmployeeOnboardingPage() {
     }
   };
 
-  const getOnboardingState = (id: string): OnboardingState => {
-    return onboardingData[id] || {
-      offerSent: false,
-      credentialsCreated: false,
-      day1Checked: false,
-      day2Checked: false,
-      day3Checked: false,
-      day4Checked: false,
-      day5Checked: false
-    };
-  };
-
-  const updateOnboardingState = (id: string, updates: Partial<OnboardingState>) => {
-    const currentState = getOnboardingState(id);
-    const updatedState = { ...currentState, ...updates };
-    const newData = { ...onboardingData, [id]: updatedState };
-    setOnboardingData(newData);
-    localStorage.setItem("growx_employee_onboarding_states", JSON.stringify(newData));
-  };
-
-  const calculateProgress = (state: OnboardingState) => {
-    let checkedCount = 0;
-    if (state.day1Checked) checkedCount += 20;
-    if (state.day2Checked) checkedCount += 20;
-    if (state.day3Checked) checkedCount += 20;
-    if (state.day4Checked) checkedCount += 20;
-    if (state.day5Checked) checkedCount += 20;
-    return checkedCount;
-  };
-
-  // Validation Check
-  const getValidationErrors = () => {
-    const errors: string[] = [];
-    if (!candidateName.trim()) errors.push("Candidate Name is required.");
-    if (!candidateEmail.trim() || !candidateEmail.includes("@")) errors.push("Valid Candidate Email is required.");
-    if (senderEmail.trim().toLowerCase() !== "sai@growxlabs.tech") errors.push("Sender Email MUST be sai@growxlabs.tech.");
-    if (!joiningDate.trim()) errors.push("Joining Date is required.");
-    if (!roleTitle.trim()) errors.push("Role Title is required.");
-    return errors;
-  };
-
-  const validationErrors = getValidationErrors();
-  const isValid = validationErrors.length === 0;
-
-  // Clean, Plain-English, Corporate HTML Offer Letter
-  const generateHTMLBody = (name: string, email: string) => {
-    return `
-      <div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 780px; margin: 0 auto; background-color: #ffffff; color: #0f172a; line-height: 1.6; padding: 40px; border: 1px solid #e2e8f0; border-radius: 8px;">
-        
-        <!-- Company Header -->
-        <table style="width: 100%; border-bottom: 3px solid #0075de; padding-bottom: 16px; margin-bottom: 24px;">
-          <tr>
-            <td>
-              <h1 style="font-size: 22px; font-weight: 900; color: #0075de; margin: 0; text-transform: uppercase;">
-                GROWX LABS TECH PVT. LTD.
-              </h1>
-              <p style="font-size: 11px; font-weight: 700; color: #1e3a8a; margin: 3px 0 0 0; text-transform: uppercase;">
-                AI-Native Product Studio &amp; Enterprise AI Solutions
-              </p>
-              <p style="font-size: 10px; color: #64748b; margin: 2px 0 0 0;">
-                Visakhapatnam, Andhra Pradesh, India | https://growxlabs.tech
-              </p>
-            </td>
-            <td style="text-align: right; vertical-align: middle;">
-              <div style="background-color: #0f172a; color: #ffffff; padding: 6px 12px; border-radius: 6px; font-size: 10px; font-weight: 800;">
-                JOB OFFER CONTRACT
-              </div>
-            </td>
-          </tr>
-        </table>
-
-        <!-- Document Reference -->
-        <table style="width: 100%; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 14px; margin-bottom: 24px; font-size: 11px; color: #334155;">
-          <tr>
-            <td><strong>REF NO:</strong> ${refNumber}</td>
-            <td><strong>OFFER DATE:</strong> ${offerDate}</td>
-            <td style="text-align: right;"><strong>CONFIDENTIAL</strong></td>
-          </tr>
-        </table>
-
-        <!-- Greeting -->
-        <h2 style="font-size: 16px; font-weight: 800; color: #0f172a; margin: 0 0 16px 0;">
-          OFFER OF APPOINTMENT: ${roleTitle}
-        </h2>
-
-        <p style="font-size: 13px; color: #0f172a; margin-bottom: 16px;">
-          Dear <strong>${name}</strong> (${email}),
-        </p>
-
-        <p style="font-size: 12px; color: #334155; margin-bottom: 20px;">
-          We are happy to offer you the position of <strong>${roleTitle}</strong> at <strong>GrowX Labs Tech Pvt. Ltd.</strong> We were impressed by your background and believe you will be a valuable addition to our team.
-        </p>
-
-        <!-- Terms Summary Table -->
-        <h3 style="font-size: 12px; font-weight: 800; color: #0075de; text-transform: uppercase; margin: 20px 0 8px 0;">
-          01. Key Engagement Details
-        </h3>
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11px;">
-          <tr style="background-color: #f8fafc;">
-            <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-weight: 700; width: 35%;">Job Title</td>
-            <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-weight: 700; color: #0f172a;">${roleTitle}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-weight: 700;">Joining Date</td>
-            <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-weight: 800; color: #0075de;">${joiningDate}</td>
-          </tr>
-          <tr style="background-color: #f8fafc;">
-            <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-weight: 700;">Engagement Type</td>
-            <td style="padding: 8px 12px; border: 1px solid #cbd5e1;">${durationValue}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-weight: 700;">Work Mode</td>
-            <td style="padding: 8px 12px; border: 1px solid #cbd5e1;">Remote (Working hours align with IST)</td>
-          </tr>
-        </table>
-
-        <!-- Compensation Details -->
-        <h3 style="font-size: 12px; font-weight: 800; color: #0075de; text-transform: uppercase; margin: 20px 0 8px 0;">
-          02. Pay &amp; Commission Structure
-        </h3>
-        <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 14px; margin-bottom: 20px; font-size: 11px; color: #1e293b;">
-          <p style="margin: 0 0 8px 0; font-weight: 700;">Performance-Based Model:</p>
-          <ul style="margin: 0; padding-left: 18px; line-height: 1.7;">
-            <li><strong>Closed Revenue Bonus:</strong> You earn <strong>${commissionValue}</strong> commission on net contract revenue from deals you bring in.</li>
-            <li><strong>Discovery Call Incentive:</strong> You earn <strong>${incentiveValue}</strong> for every qualified discovery meeting scheduled and completed.</li>
-            <li><strong>Payment Schedule:</strong> Payments are transferred monthly to your bank account within 10 days after clients pay invoices.</li>
-          </ul>
-        </div>
-
-        <!-- Responsibilities & KPIs -->
-        <h3 style="font-size: 12px; font-weight: 800; color: #0075de; text-transform: uppercase; margin: 20px 0 8px 0;">
-          03. Responsibilities &amp; Target Goals
-        </h3>
-        <p style="font-size: 11px; color: #334155; margin-bottom: 10px;">
-          Your main duties include cold outreach, cold emails, LinkedIn messaging, lead qualification, and scheduling discovery calls for senior executives.
-        </p>
-
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11px;">
-          <thead>
-            <tr style="background-color: #0f172a; color: #ffffff;">
-              <th style="padding: 8px 12px; border: 1px solid #0f172a; text-align: left;">Daily Work</th>
-              <th style="padding: 8px 12px; border: 1px solid #0f172a; text-align: left;">Weekly Target</th>
-              <th style="padding: 8px 12px; border: 1px solid #0f172a; text-align: left;">Monthly Goal</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding: 8px 12px; border: 1px solid #cbd5e1;">40 Calls / 50 Emails / 20 LinkedIn</td>
-              <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-weight: 700; color: #0075de;">${weeklyMeetingsTarget} Booked Meetings</td>
-              <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-weight: 700; color: #10b981;">${monthlySqoTarget} Qualified Opportunities</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Simple Rules -->
-        <h3 style="font-size: 12px; font-weight: 800; color: #0075de; text-transform: uppercase; margin: 20px 0 8px 0;">
-          04. Confidentiality &amp; Company Property
-        </h3>
-        <p style="font-size: 11px; color: #334155; margin-bottom: 20px;">
-          You agree to keep all company leads, client lists, and internal materials confidential. All work produced during your engagement belongs to GrowX Labs Tech Pvt. Ltd. Either party can end this agreement with 14 days' written notice.
-        </p>
-
-        <!-- Acceptance Link -->
-        <div style="text-align: center; margin: 28px 0; background-color: #f8fafc; border: 1px border-dashed #cbd5e1; padding: 16px; border-radius: 8px;">
-          <p style="font-size: 12px; color: #0f172a; margin-bottom: 10px; font-weight: 600;">Click below to accept this offer and get your onboarding account credentials:</p>
-          <a href="https://growxlabs.tech/login" style="display: inline-block; background-color: #0075de; color: #ffffff; padding: 10px 24px; font-weight: 700; text-decoration: none; border-radius: 6px; font-size: 12px;">
-            ACCEPT OFFER &amp; START ONBOARDING
-          </a>
-        </div>
-
-        <!-- Signature Block -->
-        <div style="margin-top: 32px; border-top: 2px solid #0f172a; padding-top: 20px; font-size: 11px; color: #0f172a;">
-          <table style="width: 100%;">
-            <tr>
-              <td style="width: 50%; vertical-align: top;">
-                <strong>GrowX Labs Tech Pvt. Ltd.</strong><br/><br/>
-                <span style="font-weight: 800; color: #0075de;">${senderName}</span><br/>
-                <span style="font-size: 10px; color: #64748b;">Founder &amp; CEO</span><br/>
-                <span style="font-size: 10px; color: #64748b;">Email: ${senderEmail}</span>
-              </td>
-              <td style="width: 50%; vertical-align: top; text-align: right;">
-                <strong>Candidate Acceptance</strong><br/><br/>
-                <span style="font-weight: 800;">${name}</span><br/>
-                <span style="font-size: 10px; color: #64748b;">Date: ________________</span><br/>
-                <span style="font-size: 10px; color: #64748b;">Signature: ________________</span>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-      </div>
-    `;
-  };
-
-  const handleOpenEmailModal = (emp: any) => {
-    setSelectedEmp(emp);
-    setCandidateName(emp.name || "Akhilesh");
-    setCandidateEmail(emp.email || "akhilesh@growxlabs.tech");
-    setActiveTab("preview");
-    setShowEmailModal(true);
-  };
-
   const handlePrintPDF = () => {
     window.print();
   };
 
-  // Dispatch Offer Email from sai@growxlabs.tech with BCC copy to saivarshith8284@gmail.com
-  const handleSendOnboardingEmail = async () => {
-    if (!isValid) {
-      alert("Cannot send offer letter. Please complete all fields first.");
-      return;
-    }
+  const handleDispatchOffer = async () => {
+    if (!selectedCandidate) return;
 
     setEmailSending(true);
-    const htmlContent = generateHTMLBody(candidateName, candidateEmail);
 
     try {
       const res = await fetch("/api/send-email/dynamic", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          toEmail: candidateEmail,
+          toEmail: selectedCandidate.email,
           fromName: `${senderName} | GrowX Labs`,
-          fromEmail: senderEmail, // Sent from sai@growxlabs.tech
-          bccEmail: bccEmail,     // BCC copy to saivarshith8284@gmail.com
-          subject: emailSubject,
-          html: htmlContent,
-          body: `Job Offer: ${roleTitle}\n\nDear ${candidateName},\n\nPlease review your formal offer letter from GrowX Labs Tech Pvt. Ltd.`
+          fromEmail: senderEmail,
+          bccEmail: bccEmail,
+          subject: `Formal Employment Offer: ${roleTitle} — GrowX Labs Tech Pvt. Ltd.`,
+          html: generateEmailHTML(),
+          body: `Dear ${selectedCandidate.name},\n\nPlease find attached your official offer letter for the position of ${roleTitle} at GrowX Labs Tech Pvt. Ltd.`
         })
       });
 
       const data = await res.json();
-      if (!res.ok || data.error) {
-        throw new Error(data.error || "Failed to send email");
-      }
+      if (!res.ok || data.error) throw new Error(data.error || "Email delivery failed");
 
-      if (selectedEmp?.id) {
-        updateOnboardingState(selectedEmp.id, { offerSent: true });
-      }
-
-      alert(`🚀 Offer Letter successfully dispatched from ${senderEmail} to ${candidateEmail}! BCC copy delivered to ${bccEmail}.`);
-      setShowEmailModal(false);
+      alert(`🎉 Offer Letter successfully dispatched to ${selectedCandidate.name} (${selectedCandidate.email})! BCC copy sent to ${bccEmail}.`);
+      setShowEmailDrawer(false);
     } catch (e: any) {
-      console.error(e);
-      alert(`Email Delivery Error: ${e.message}`);
+      alert(`Error: ${e.message}`);
     } finally {
       setEmailSending(false);
     }
   };
 
+  const generateEmailHTML = () => {
+    const name = selectedCandidate?.name || "Akhilesh";
+    const email = selectedCandidate?.email || "akhilesh@growxlabs.tech";
+
+    return `
+      <div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 720px; margin: 0 auto; background-color: #ffffff; color: #111827; line-height: 1.6; padding: 40px; border: 1px solid #e5e7eb; border-radius: 12px;">
+        <div style="border-bottom: 2px solid #2563eb; padding-bottom: 16px; margin-bottom: 24px;">
+          <h1 style="font-size: 20px; font-weight: 800; color: #111827; margin: 0;">GROWX LABS TECH PVT. LTD.</h1>
+          <p style="font-size: 11px; color: #6b7280; margin: 4px 0 0 0; font-weight: 600; text-transform: uppercase;">AI-Native Product Studio & Enterprise AI Solutions</p>
+        </div>
+        <p style="font-size: 13px; color: #111827; margin-bottom: 16px;">Dear <strong>${name}</strong> (${email}),</p>
+        <p style="font-size: 12px; color: #374151; margin-bottom: 20px;">We are pleased to extend this formal offer of engagement for the position of <strong>${roleTitle}</strong> at GrowX Labs Tech Pvt. Ltd.</p>
+        <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 20px; font-size: 11px;">
+          <p style="margin: 0 0 8px 0; font-weight: 700; color: #111827;">Key Engagement Details:</p>
+          <ul style="margin: 0; padding-left: 18px; color: #4b5563;">
+            <li><strong>Role:</strong> ${roleTitle}</li>
+            <li><strong>Joining Date:</strong> ${joiningDate}</li>
+            <li><strong>Commission:</strong> ${commissionRate} Net Contract Value</li>
+            <li><strong>Discovery Meeting Bonus:</strong> ${meetingBonus} per qualified meeting</li>
+          </ul>
+        </div>
+        <p style="font-size: 11px; color: #6b7280;">Please review your complete contract materials attached or log in to your candidate portal at https://growxlabs.tech/login.</p>
+        <div style="margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 16px; font-size: 11px; color: #111827;">
+          <p style="margin: 0; font-weight: 800;">Sai Varshith</p>
+          <p style="margin: 2px 0 0 0; color: #6b7280;">Founder & CEO | GrowX Labs Tech Pvt. Ltd.</p>
+        </div>
+      </div>
+    `;
+  };
+
   if (loading) {
     return (
-      <div className="h-[80vh] flex items-center justify-center bg-[var(--card)]">
-        <Loader2 className="animate-spin text-[#0075de]" size={36} />
+      <div className="min-h-screen bg-[#F7F7F5] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-[#111827] border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs font-semibold text-[#6B7280]">Loading Offer Studio…</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto px-4 py-6 text-[var(--text-primary)]">
+    <div className="min-h-screen bg-[#F7F7F5] text-[#111827] font-sans antialiased pb-20">
       
-      {/* HEADER SECTION */}
-      <Reveal y={-10}>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-5 border-b border-[var(--border-subtle)]">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-[#0075de] text-white rounded-xl shadow-md">
-              <ShieldCheck size={24} />
-            </div>
-            <div className="space-y-1">
-              <h1 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight">SDR Onboarding &amp; Offer Studio</h1>
-              <p className="text-[var(--text-secondary)] text-xs font-medium">
-                Send formal SDR offer letters from <span className="font-bold text-[#0075de]">sai@growxlabs.tech</span> (BCC: <span className="font-bold text-[var(--text-primary)]">saivarshith8284@gmail.com</span>).
-              </p>
-            </div>
-          </div>
-          <button 
-            onClick={fetchEmployees}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[var(--surface-1)] border border-[var(--border-subtle)] hover:bg-[var(--surface-2)] text-[var(--text-primary)] text-xs font-bold rounded-lg transition-colors cursor-pointer shadow-sm"
-          >
-            <RefreshCw size={13} /> Refresh Roster
-          </button>
+      {/* ── BREADCRUMB NAV ── */}
+      <div className="max-w-[1400px] mx-auto px-6 pt-6 pb-2">
+        <div className="flex items-center gap-2 text-xs font-medium text-[#6B7280]">
+          <span className="hover:text-[#111827] cursor-pointer transition-colors">Dashboard</span>
+          <ChevronRight size={12} />
+          <span className="hover:text-[#111827] cursor-pointer transition-colors">Recruitment</span>
+          <ChevronRight size={12} />
+          <span className="text-[#111827] font-semibold">Offer Letter Studio</span>
         </div>
-      </Reveal>
-
-      {/* NEW HIRE ONBOARDING PIPELINE */}
-      <div className="grid gap-5">
-        {employees.length > 0 ? (
-          employees.map((emp, i) => {
-            const state = getOnboardingState(emp.id);
-            const progress = calculateProgress(state);
-            return (
-              <Reveal key={emp.id} delay={i * 0.05}>
-                <div className="p-6 border border-[var(--border-subtle)] bg-[var(--card)] rounded-2xl hover:shadow-lg transition-all duration-200 relative space-y-6">
-                  
-                  {/* Basic employee header */}
-                  <div className="grid md:grid-cols-4 gap-6 items-center">
-                    <div className="space-y-1">
-                      <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#0075de] flex items-center gap-1.5">
-                        <User size={12} /> SDR Candidate
-                      </p>
-                      <h3 className="font-extrabold text-[var(--text-primary)] text-base tracking-tight">{emp.name}</h3>
-                      <p className="text-xs text-[var(--text-secondary)] font-medium">{emp.email}</p>
-                      {emp.phone && <p className="text-[11px] text-[var(--text-muted)] font-medium flex items-center gap-1"><Phone size={10} /> {emp.phone}</p>}
-                    </div>
-
-                    {/* Offer & Credentials setup checklist */}
-                    <div className="space-y-2 text-left bg-[var(--surface-1)] p-3 rounded-xl border border-[var(--border-subtle)]">
-                      <p className="text-[10px] font-extrabold uppercase tracking-wider text-[var(--text-muted)]">Contract &amp; Status</p>
-                      
-                      {/* Offer letter status */}
-                      <div className="flex items-center gap-2 text-xs">
-                        <button
-                          onClick={() => updateOnboardingState(emp.id, { offerSent: !state.offerSent })}
-                          className={`w-4 h-4 rounded border flex items-center justify-center transition-colors cursor-pointer ${state.offerSent ? 'bg-[#0075de] border-[#0075de] text-white' : 'border-[var(--border-subtle)] bg-[var(--card)]'}`}
-                        >
-                          {state.offerSent && <span className="text-[10px] font-bold">✓</span>}
-                        </button>
-                        <span className={state.offerSent ? "text-[var(--text-primary)] font-bold" : "text-[var(--text-secondary)]"}>Offer Sent</span>
-                      </div>
-
-                      {/* Credentials status */}
-                      <div className="flex items-center gap-2 text-xs">
-                        <button
-                          onClick={() => updateOnboardingState(emp.id, { credentialsCreated: !state.credentialsCreated })}
-                          className={`w-4 h-4 rounded border flex items-center justify-center transition-colors cursor-pointer ${state.credentialsCreated ? 'bg-[#0075de] border-[#0075de] text-white' : 'border-[var(--border-subtle)] bg-[var(--card)]'}`}
-                        >
-                          {state.credentialsCreated && <span className="text-[10px] font-bold">✓</span>}
-                        </button>
-                        <span className={state.credentialsCreated ? "text-[var(--text-primary)] font-bold" : "text-[var(--text-secondary)]"}>Account Created</span>
-                      </div>
-                    </div>
-
-                    {/* Progress tracking */}
-                    <div className="space-y-2.5">
-                      <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[var(--text-muted)]">Ramp Progress</span>
-                        <span className="text-xs font-extrabold text-[#0075de]">{progress}%</span>
-                      </div>
-                      <div className="w-full bg-[var(--surface-2)] rounded-full h-2.5 overflow-hidden border border-[var(--border-subtle)]">
-                        <div 
-                          className="bg-[#0075de] h-full rounded-full transition-all duration-300" 
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                      <p className="text-[10px] text-[var(--text-secondary)] font-medium">
-                        {progress === 100 ? "🎉 Onboarding Complete" : "Training & setup in progress"}
-                      </p>
-                    </div>
-
-                    {/* Action button - Vibrant Blue with high contrast text */}
-                    <div className="flex flex-col gap-2 justify-center h-full">
-                      <button 
-                        onClick={() => handleOpenEmailModal(emp)}
-                        className="w-full bg-[#0075de] hover:bg-[#005bab] text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
-                      >
-                        <Mail size={14} /> Review &amp; Send Contract
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* 5-Day Onboarding Checklist */}
-                  <div className="pt-4 border-t border-[var(--border-subtle)]">
-                    <p className="text-[10px] font-extrabold uppercase tracking-wider text-[var(--text-muted)] mb-3">5-Day Structured Onboarding Ramp</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                      {[
-                        { key: "day1Checked" as const, label: "Day 1: Credentials" },
-                        { key: "day2Checked" as const, label: "Day 2: Prospect Lists" },
-                        { key: "day3Checked" as const, label: "Day 3: Call Scripts" },
-                        { key: "day4Checked" as const, label: "Day 4: Warm Dials" },
-                        { key: "day5Checked" as const, label: "Day 5: Full Launch" }
-                      ].map((day) => (
-                        <label 
-                          key={day.key}
-                          className={cn(
-                            "flex items-center gap-2 p-2.5 border rounded-xl cursor-pointer transition-all select-none text-xs",
-                            state[day.key] 
-                              ? 'bg-[#0075de]/10 border-[#0075de]/30 text-[#0075de] font-bold' 
-                              : 'border-[var(--border-subtle)] bg-[var(--surface-1)] text-[var(--text-primary)] hover:bg-[var(--surface-2)] font-medium'
-                          )}
-                        >
-                          <input 
-                            type="checkbox"
-                            checked={state[day.key]}
-                            onChange={() => updateOnboardingState(emp.id, { [day.key]: !state[day.key] })}
-                            className="rounded border-[var(--border-subtle)] bg-[var(--card)] text-[#0075de] focus:ring-0 w-3.5 h-3.5"
-                          />
-                          <span className="text-[11px] tracking-tight">{day.label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-              </Reveal>
-            );
-          })
-        ) : (
-          <Reveal>
-            <div className="h-64 flex flex-col items-center justify-center border border-[var(--border-subtle)] border-dashed rounded-xl bg-[var(--surface-1)]">
-              <AlertCircle className="text-[var(--text-muted)] mb-3" size={32} />
-              <p className="text-[var(--text-secondary)] text-sm font-semibold">No candidates found</p>
-            </div>
-          </Reveal>
-        )}
       </div>
 
-      {/* ── Offer Letter Preview & Send Modal ── */}
-      <AnimatePresence>
-        {showEmailModal && selectedEmp && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-slate-950/80 backdrop-blur-md"
-              onClick={() => setShowEmailModal(false)}
-            />
+      {/* ── TOP HEADER & ACTION BAR ── */}
+      <div className="max-w-[1400px] mx-auto px-6 py-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-[#E5E7EB] shadow-xs">
+          
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold text-[#111827] tracking-tight">Offer Letter Studio</h1>
+            <p className="text-xs text-[#6B7280]">
+              Review the legal agreement and performance structure before dispatching to candidate.
+            </p>
+          </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.98 }}
-              transition={{ type: "spring", damping: 28, stiffness: 340 }}
-              className="relative w-full max-w-5xl bg-white rounded-2xl shadow-2xl flex flex-col h-[92vh] max-h-[94vh] overflow-hidden border border-[#cbd5e1]"
+          {/* Metadata Chips Bar */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Candidate Selector */}
+            <div className="relative">
+              <select
+                value={selectedCandidate?.id}
+                onChange={(e) => {
+                  const found = candidates.find(c => c.id === e.target.value);
+                  if (found) setSelectedCandidate(found);
+                }}
+                className="bg-[#F7F7F5] border border-[#E5E7EB] text-[#111827] text-xs font-semibold rounded-lg px-3 py-2 focus:outline-none cursor-pointer pr-7 appearance-none"
+              >
+                {candidates.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name} ({c.email})</option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="absolute right-2.5 top-2.5 text-[#6B7280] pointer-events-none" />
+            </div>
+
+            <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold rounded-lg flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Verified Candidate
+            </span>
+
+            <span className="px-2.5 py-1 bg-slate-100 text-[#111827] border border-[#E5E7EB] text-[11px] font-medium rounded-lg">
+              Ref: <span className="font-mono font-bold">{refNumber}</span>
+            </span>
+
+            <span className="px-2.5 py-1 bg-slate-100 text-[#111827] border border-[#E5E7EB] text-[11px] font-medium rounded-lg">
+              Joining: <span className="font-bold">{joiningDate}</span>
+            </span>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={handlePrintPDF}
+              className="px-4 py-2 bg-[#F7F7F5] hover:bg-slate-200 text-[#111827] text-xs font-semibold rounded-xl border border-[#E5E7EB] transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              {/* Modal Top Bar */}
-              <div className="shrink-0 bg-[#0f172a] text-white border-b border-slate-800 px-6 py-4">
-                <div className="flex items-center justify-between flex-wrap gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#0075de] flex items-center justify-center text-white shadow-md">
-                      <Award size={20} />
-                    </div>
-                    <div>
-                      <h3 className="text-base font-black tracking-tight text-white flex items-center gap-2">
-                        Offer Letter Dispatch Studio
-                      </h3>
-                      <p className="text-xs text-slate-300 font-medium">
-                        From: <span className="font-extrabold text-[#60a5fa]">{senderEmail}</span> &nbsp;|&nbsp; To: <span className="font-extrabold text-white">{candidateEmail}</span>
-                      </p>
-                    </div>
-                  </div>
+              <Printer size={14} /> Preview PDF
+            </button>
+            <button
+              onClick={() => setShowEmailDrawer(true)}
+              className="px-5 py-2 bg-[#111827] hover:bg-black text-white text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+            >
+              <Send size={14} /> Send Offer Contract
+            </button>
+          </div>
+        </div>
+      </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={handlePrintPDF}
-                      className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 transition-colors border border-slate-700 cursor-pointer"
-                    >
-                      <Printer size={14} /> Print / Save PDF
-                    </button>
-                    <button
-                      onClick={() => setShowEmailModal(false)}
-                      className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer"
-                    >
-                      ✕
-                    </button>
-                  </div>
+      {/* ── SPLIT PAGE CONTAINER (30% LEFT / 70% RIGHT) ── */}
+      <div className="max-w-[1400px] mx-auto px-6 mt-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        {/* ═══ LEFT PANEL (30% = 4 COLS) ═══ */}
+        <div className="lg:col-span-4 space-y-5">
+          
+          {/* Candidate Profile Card */}
+          <div className="bg-white border border-[#E5E7EB] rounded-2xl p-5 space-y-4 shadow-xs">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-[#111827] text-white flex items-center justify-center text-base font-bold shadow-sm">
+                {selectedCandidate?.name ? selectedCandidate.name.charAt(0) : "A"}
+              </div>
+              <div className="space-y-0.5">
+                <h3 className="font-bold text-sm text-[#111827]">{selectedCandidate?.name}</h3>
+                <p className="text-xs text-[#6B7280] font-medium">{roleTitle}</p>
+                <span className="inline-block text-[10px] font-bold text-[#2563EB] bg-[#2563EB]/10 px-2 py-0.5 rounded">
+                  {department}
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-[#E5E7EB] space-y-2.5 text-xs text-[#4B5563]">
+              <div className="flex items-center justify-between">
+                <span className="text-[#6B7280] font-medium">Email:</span>
+                <span className="font-semibold text-[#111827] text-[11px] truncate max-w-[170px]">{selectedCandidate?.email}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#6B7280] font-medium">Phone:</span>
+                <span className="font-semibold text-[#111827]">{selectedCandidate?.phone}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#6B7280] font-medium">Joining Date:</span>
+                <span className="font-semibold text-emerald-600">{joiningDate}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#6B7280] font-medium">Engagement:</span>
+                <span className="font-semibold text-[#111827]">Commission Contractor</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Hiring Pre-Flight Checklist */}
+          <div className="bg-white border border-[#E5E7EB] rounded-2xl p-5 space-y-4 shadow-xs">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Hiring Checklist</h4>
+              <span className="text-xs font-extrabold text-[#2563EB] bg-[#2563EB]/10 px-2.5 py-0.5 rounded-full">
+                {checklistCount}/6 Done
+              </span>
+            </div>
+
+            {/* Live Progress Bar */}
+            <div className="w-full bg-[#F7F7F5] h-2 rounded-full overflow-hidden border border-[#E5E7EB]">
+              <div 
+                className="bg-[#2563EB] h-full rounded-full transition-all duration-300"
+                style={{ width: `${(checklistCount / 6) * 100}%` }}
+              />
+            </div>
+
+            <div className="space-y-2 text-xs">
+              {[
+                { key: "candidateVerified" as const, label: "Candidate Identity Verified" },
+                { key: "emailVerified" as const, label: "Work Email Verified" },
+                { key: "compReviewed" as const, label: "Commission Model Reviewed" },
+                { key: "ndaAttached" as const, label: "12-Month NDA Attached" },
+                { key: "commissionAttached" as const, label: "Annexure A Included" },
+                { key: "founderApproved" as const, label: "Founder Signoff Completed" },
+              ].map((item) => (
+                <label 
+                  key={item.key} 
+                  className="flex items-center gap-2.5 p-2 hover:bg-[#F7F7F5] rounded-lg cursor-pointer transition-colors select-none"
+                >
+                  <input
+                    type="checkbox"
+                    checked={checklist[item.key]}
+                    onChange={() => setChecklist(prev => ({ ...prev, [item.key]: !prev[item.key] }))}
+                    className="rounded border-[#E5E7EB] text-[#2563EB] focus:ring-0 w-3.5 h-3.5"
+                  />
+                  <span className={checklist[item.key] ? "text-[#111827] font-semibold" : "text-[#6B7280]"}>
+                    {item.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Activity Log */}
+          <div className="bg-white border border-[#E5E7EB] rounded-2xl p-5 space-y-3 shadow-xs">
+            <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Document Activity</h4>
+            <div className="space-y-3 text-xs text-[#4B5563]">
+              <div className="flex gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                <div>
+                  <p className="font-semibold text-[#111827]">Document Draft Created</p>
+                  <p className="text-[10px] text-[#6B7280]">By Sai Varshith • Today 11:45 AM</p>
                 </div>
+              </div>
+              <div className="flex gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0" />
+                <div>
+                  <p className="font-semibold text-[#111827]">Sender &amp; BCC Verified</p>
+                  <p className="text-[10px] text-[#6B7280]">sai@growxlabs.tech • saivarshith8284@gmail.com</p>
+                </div>
+              </div>
+              <div className="flex gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 shrink-0" />
+                <div>
+                  <p className="font-semibold text-[#111827]">Legal Clauses Validated</p>
+                  <p className="text-[10px] text-[#6B7280]">14 Sections + 3 Annexures ready</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                {/* Tab Switcher */}
-                <div className="flex items-center gap-3 mt-4">
-                  <button
-                    onClick={() => setActiveTab("preview")}
-                    className={cn(
-                      "px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider rounded-lg transition-all flex items-center gap-1.5 cursor-pointer",
-                      activeTab === "preview"
-                        ? "bg-[#0075de] text-white shadow"
-                        : "text-slate-400 hover:text-white hover:bg-slate-800"
-                    )}
-                  >
-                    <Eye size={13} /> Live Document Preview
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("edit")}
-                    className={cn(
-                      "px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider rounded-lg transition-all flex items-center gap-1.5 cursor-pointer",
-                      activeTab === "edit"
-                        ? "bg-[#0075de] text-white shadow"
-                        : "text-slate-400 hover:text-white hover:bg-slate-800"
-                    )}
-                  >
-                    <Edit3 size={13} /> Edit Email &amp; Candidate Info
-                  </button>
+        </div>
+
+        {/* ═══ RIGHT PANEL (70% = 8 COLS) — NOTION-STYLE DOCUMENT ═══ */}
+        <div className="lg:col-span-8 flex justify-center">
+          <div className="w-full max-w-[840px] bg-white border border-[#E5E7EB] rounded-2xl shadow-sm p-8 sm:p-12 space-y-8">
+            
+            {/* Notion Header */}
+            <div className="border-b border-[#E5E7EB] pb-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h2 className="text-xl font-black text-[#111827] tracking-tight">GROWX LABS TECH PVT. LTD.</h2>
+                  <p className="text-xs font-semibold text-[#2563EB] uppercase tracking-wider mt-0.5">
+                    AI-Native Product Studio &amp; Enterprise AI Solutions
+                  </p>
+                  <p className="text-[11px] text-[#6B7280] mt-1">
+                    Visakhapatnam, Andhra Pradesh, India • https://growxlabs.tech
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 bg-[#111827] text-white rounded-md">
+                    CONFIDENTIAL CONTRACT
+                  </span>
                 </div>
               </div>
 
-              {/* Viewport */}
-              <div className="flex-1 min-h-0 overflow-y-auto bg-[#e2e8f0]/40">
-                {activeTab === "preview" ? (
-                  <div className="p-6 flex justify-center">
-                    <div className="w-full max-w-[780px] shadow-2xl rounded-lg overflow-hidden border border-[#cbd5e1] bg-white">
-                      <div dangerouslySetInnerHTML={{ __html: generateHTMLBody(candidateName, candidateEmail) }} />
-                    </div>
-                  </div>
-                ) : (
-                  /* EDIT RECIPIENT EMAIL TAB */
-                  <div className="p-6 sm:p-8 space-y-6 max-w-2xl mx-auto bg-white rounded-2xl shadow border border-[#cbd5e1] my-6">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-[#0075de] flex items-center gap-1.5">
-                      <Mail size={14} /> Candidate Email Settings
-                    </h4>
+              <div className="grid grid-cols-3 gap-2 bg-[#F7F7F5] border border-[#E5E7EB] rounded-xl p-3 text-xs text-[#374151]">
+                <div><span className="text-[#6B7280]">REF:</span> <strong className="font-mono text-[#111827]">{refNumber}</strong></div>
+                <div><span className="text-[#6B7280]">OFFER DATE:</span> <strong className="text-[#111827]">{offerDate}</strong></div>
+                <div className="text-right"><span className="text-[#6B7280]">JOINING:</span> <strong className="text-[#2563EB]">{joiningDate}</strong></div>
+              </div>
+            </div>
 
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-[10px] font-bold uppercase text-[#64748b]">Candidate Name</label>
-                        <input
-                          type="text"
-                          value={candidateName}
-                          onChange={(e) => setCandidateName(e.target.value)}
-                          className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-lg px-3.5 py-2.5 text-xs font-bold text-[#0f172a] focus:outline-none focus:border-[#0075de]"
-                        />
-                      </div>
+            {/* Letter Greeting */}
+            <div className="space-y-3">
+              <h3 className="text-lg font-bold text-[#111827]">
+                Offer of Engagement: {roleTitle}
+              </h3>
+              <p className="text-xs text-[#374151] leading-relaxed">
+                Dear <strong>{selectedCandidate?.name || "Akhilesh"}</strong>,
+              </p>
+              <p className="text-xs text-[#374151] leading-relaxed">
+                On behalf of <strong>GrowX Labs Tech Pvt. Ltd.</strong>, we are pleased to offer you the position of <strong>{roleTitle}</strong>. We were thoroughly impressed by your sales drive and execution background during our discussions. This document sets out the core terms of your engagement with our team.
+              </p>
+            </div>
 
-                      <div>
-                        <label className="text-[10px] font-bold uppercase text-[#64748b]">Recipient Email Address</label>
-                        <input
-                          type="email"
-                          value={candidateEmail}
-                          onChange={(e) => setCandidateEmail(e.target.value)}
-                          className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-lg px-3.5 py-2.5 text-xs font-bold text-[#0f172a] focus:outline-none focus:border-[#0075de]"
-                        />
-                      </div>
+            {/* 01 Appointment */}
+            <div className="space-y-2 pt-2 border-t border-[#E5E7EB]">
+              <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">01. Appointment &amp; Engagement Model</h4>
+              <p className="text-xs text-[#4B5563] leading-relaxed">
+                You will serve as an <strong>{employmentType}</strong>. Your engagement commences on <strong>{joiningDate}</strong> with an initial 90-day performance review window. Work is fully remote, adhering to Indian Standard Time (IST) operational hours.
+              </p>
+            </div>
 
-                      <div>
-                        <label className="text-[10px] font-bold uppercase text-[#64748b]">BCC Copy Delivered To</label>
-                        <input
-                          type="email"
-                          value={bccEmail}
-                          onChange={(e) => setBccEmail(e.target.value)}
-                          className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-lg px-3.5 py-2.5 text-xs font-bold text-[#0075de] focus:outline-none focus:border-[#0075de]"
-                        />
-                      </div>
-                    </div>
+            {/* 02 Compensation (Stripe Settings Style Cards) */}
+            <div className="space-y-3 pt-2 border-t border-[#E5E7EB]">
+              <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">02. Pay &amp; Remuneration Structure</h4>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="bg-[#F7F7F5] border border-[#E5E7EB] rounded-xl p-4 space-y-1">
+                  <p className="text-[10px] font-bold uppercase text-[#6B7280]">Revenue Commission</p>
+                  <p className="text-base font-extrabold text-[#2563EB]">{commissionRate}</p>
+                  <p className="text-[11px] text-[#4B5563]">Paid on net contract revenue from converted partner deals.</p>
+                </div>
+
+                <div className="bg-[#F7F7F5] border border-[#E5E7EB] rounded-xl p-4 space-y-1">
+                  <p className="text-[10px] font-bold uppercase text-[#6B7280]">Discovery Meeting Incentive</p>
+                  <p className="text-base font-extrabold text-emerald-600">{meetingBonus}</p>
+                  <p className="text-[11px] text-[#4B5563]">Earned per qualified BANT discovery meeting conducted.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 03 & 04 Responsibilities & KPIs Grid */}
+            <div className="space-y-3 pt-2 border-t border-[#E5E7EB]">
+              <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">03 &amp; 04. Responsibilities &amp; Target Benchmarks</h4>
+              <p className="text-xs text-[#4B5563]">
+                Your primary focus is outbound prospecting, qualified outreach, cold email sequencing, and scheduling discovery calls.
+              </p>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-white border border-[#E5E7EB] rounded-xl p-3.5 text-center space-y-1">
+                  <p className="text-[10px] font-bold uppercase text-[#6B7280]">Daily Activity</p>
+                  <p className="text-xs font-bold text-[#111827]">40 Dials / 50 Emails</p>
+                </div>
+                <div className="bg-white border border-[#E5E7EB] rounded-xl p-3.5 text-center space-y-1">
+                  <p className="text-[10px] font-bold uppercase text-[#6B7280]">Weekly Target</p>
+                  <p className="text-xs font-extrabold text-[#2563EB]">5 Meetings Booked</p>
+                </div>
+                <div className="bg-white border border-[#E5E7EB] rounded-xl p-3.5 text-center space-y-1">
+                  <p className="text-[10px] font-bold uppercase text-[#6B7280]">Monthly Goal</p>
+                  <p className="text-xs font-extrabold text-emerald-600">3 Qualified Deals</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 05–13 Legal Clauses Summary */}
+            <div className="space-y-2 pt-2 border-t border-[#E5E7EB] text-xs text-[#4B5563] leading-relaxed">
+              <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">05–13. Legal Protections &amp; Terms</h4>
+              <p><strong>05 Confidentiality:</strong> You agree to hold all company lead lists, pricing, and client data strictly confidential.</p>
+              <p><strong>06 Intellectual Property:</strong> All materials, workflows, and sales playbooks created belong exclusively to GrowX Labs Tech Pvt. Ltd.</p>
+              <p><strong>07 Non-Solicitation:</strong> 12-month restriction on soliciting company clients or team members post-termination.</p>
+              <p><strong>08 Termination:</strong> Either party may terminate with 14 days' written notice.</p>
+              <p><strong>09 Governing Law:</strong> Governed by laws of India, under exclusive jurisdiction of Visakhapatnam courts.</p>
+            </div>
+
+            {/* Annexures (Collapsible Notion-style) */}
+            <div className="pt-2 border-t border-[#E5E7EB] space-y-3">
+              <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Annexures</h4>
+
+              {/* Annexure A */}
+              <div className="border border-[#E5E7EB] rounded-xl overflow-hidden">
+                <button
+                  onClick={() => setExpandedAnnexure(expandedAnnexure === "annexure-a" ? null : "annexure-a")}
+                  className="w-full bg-[#F7F7F5] px-4 py-3 text-left font-bold text-xs text-[#111827] flex items-center justify-between cursor-pointer"
+                >
+                  <span>Annexure A: Commission Tiers &amp; Incentives</span>
+                  <ChevronDown size={14} className={cn("transition-transform", expandedAnnexure === "annexure-a" ? "rotate-180" : "")} />
+                </button>
+                {expandedAnnexure === "annexure-a" && (
+                  <div className="p-4 text-xs text-[#4B5563] space-y-2 bg-white border-t border-[#E5E7EB]">
+                    <p>• Base Quota (1–3 SQOs): 10% Net Revenue Commission</p>
+                    <p>• High Performer (4–6 SQOs): 12.5% Net Revenue Commission</p>
+                    <p>• President's Club (7+ SQOs): 15% Net Revenue Commission + ₹10,000 Milestone Bonus</p>
                   </div>
                 )}
               </div>
 
-              {/* Action Footer */}
-              <div className="shrink-0 border-t border-[#cbd5e1] bg-[#f8fafc] px-6 py-4 flex items-center justify-between">
-                <div className="text-xs font-bold text-[#334155] space-y-0.5">
-                  <p>📧 From: <span className="text-[#0075de] font-extrabold">{senderEmail}</span> &rarr; To: <span className="text-[#0f172a] font-extrabold">{candidateEmail}</span></p>
-                  <p className="text-[11px] text-emerald-600 font-semibold">📬 Automatic BCC Copy &rarr; <span className="font-extrabold">{bccEmail}</span></p>
+              {/* Annexure B */}
+              <div className="border border-[#E5E7EB] rounded-xl overflow-hidden">
+                <button
+                  onClick={() => setExpandedAnnexure(expandedAnnexure === "annexure-b" ? null : "annexure-b")}
+                  className="w-full bg-[#F7F7F5] px-4 py-3 text-left font-bold text-xs text-[#111827] flex items-center justify-between cursor-pointer"
+                >
+                  <span>Annexure B: Code of Conduct &amp; Ethical Sales</span>
+                  <ChevronDown size={14} className={cn("transition-transform", expandedAnnexure === "annexure-b" ? "rotate-180" : "")} />
+                </button>
+                {expandedAnnexure === "annexure-b" && (
+                  <div className="p-4 text-xs text-[#4B5563] space-y-2 bg-white border-t border-[#E5E7EB]">
+                    <p>Aggressive sales tactics or false pricing commitments are strictly prohibited.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Signature Block */}
+            <div className="pt-6 border-t-2 border-[#111827]">
+              <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider mb-4">14. Signatures &amp; Acceptance</h4>
+
+              <div className="grid grid-cols-2 gap-6 text-xs text-[#111827]">
+                <div className="bg-[#F7F7F5] border border-[#E5E7EB] rounded-xl p-4 space-y-1">
+                  <p className="font-bold uppercase text-[10px] text-[#6B7280]">For GrowX Labs Tech Pvt. Ltd.</p>
+                  <p className="font-extrabold text-[#2563EB] pt-2">{senderName}</p>
+                  <p className="text-[10px] text-[#6B7280]">Founder &amp; CEO</p>
+                  <p className="text-[10px] text-[#6B7280]">Email: {senderEmail}</p>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <Button
-                    onClick={() => setShowEmailModal(false)}
-                    variant="outline"
-                    className="border-[#cbd5e1] text-[#64748b] hover:bg-white text-xs font-bold h-10 rounded-xl px-5 cursor-pointer"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleSendOnboardingEmail}
-                    disabled={emailSending}
-                    className="bg-[#0075de] hover:bg-[#005bab] text-white text-xs font-extrabold px-6 h-10 rounded-xl flex items-center gap-2 shadow-lg transition-all cursor-pointer shadow-[#0075de]/25"
-                  >
-                    {emailSending ? (
-                      <>
-                        <Loader2 size={15} className="animate-spin" /> Dispatching Email…
-                      </>
-                    ) : (
-                      <>
-                        <Send size={15} /> Dispatch Offer (BCC to {bccEmail})
-                      </>
-                    )}
-                  </Button>
+                <div className="bg-[#F7F7F5] border border-[#E5E7EB] rounded-xl p-4 space-y-1">
+                  <p className="font-bold uppercase text-[10px] text-[#6B7280]">Candidate Acceptance</p>
+                  <p className="font-extrabold text-[#111827] pt-2">{selectedCandidate?.name || "Akhilesh"}</p>
+                  <p className="text-[10px] text-[#6B7280]">Date: ________________</p>
+                  <p className="text-[10px] text-[#6B7280]">Signature: ________________</p>
                 </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="pt-6 border-t border-[#E5E7EB] text-center text-[10px] text-[#6B7280]">
+              CONFIDENTIAL • Generated by GrowX Labs HR Platform • Page 1 of 1
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      {/* ── EMAIL PREVIEW DRAWER (SLIDE-OVER FROM RIGHT) ── */}
+      <AnimatePresence>
+        {showEmailDrawer && (
+          <div className="fixed inset-0 z-50 flex justify-end">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-slate-950/60 backdrop-blur-xs"
+              onClick={() => setShowEmailDrawer(false)}
+            />
+
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="relative w-full max-w-xl bg-white h-full shadow-2xl border-l border-[#E5E7EB] flex flex-col z-10"
+            >
+              {/* Drawer Header */}
+              <div className="p-6 border-b border-[#E5E7EB] flex items-center justify-between bg-[#F7F7F5]">
+                <div className="flex items-center gap-2">
+                  <Mail size={18} className="text-[#2563EB]" />
+                  <h3 className="font-bold text-sm text-[#111827]">Email Dispatch Preview</h3>
+                </div>
+                <button
+                  onClick={() => setShowEmailDrawer(false)}
+                  className="w-8 h-8 rounded-lg hover:bg-slate-200 flex items-center justify-center text-[#6B7280] hover:text-[#111827] transition-colors cursor-pointer"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Drawer Content */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-5 text-xs text-[#374151]">
+                <div className="bg-[#F7F7F5] border border-[#E5E7EB] rounded-xl p-4 space-y-2">
+                  <div><span className="text-[#6B7280] font-medium">From:</span> <strong className="text-[#111827]">{senderName} &lt;{senderEmail}&gt;</strong></div>
+                  <div><span className="text-[#6B7280] font-medium">To:</span> <strong className="text-[#2563EB]">{selectedCandidate?.email}</strong></div>
+                  <div><span className="text-[#6B7280] font-medium">BCC Copy:</span> <strong className="text-[#111827]">{bccEmail}</strong></div>
+                  <div><span className="text-[#6B7280] font-medium">Subject:</span> <strong className="text-[#111827]">Formal Employment Offer: {roleTitle} — GrowX Labs</strong></div>
+                </div>
+
+                <div className="border border-[#E5E7EB] rounded-xl p-4 bg-white shadow-xs space-y-3">
+                  <p className="font-semibold text-[#111827]">Dear {selectedCandidate?.name},</p>
+                  <p>We are pleased to extend this formal offer of engagement for the position of <strong>{roleTitle}</strong> at GrowX Labs Tech Pvt. Ltd.</p>
+                  <div className="p-3 bg-[#F7F7F5] rounded-lg border border-[#E5E7EB] text-[11px] font-mono text-[#111827]">
+                    📎 Attachment: Offer_Contract_${selectedCandidate?.name?.replace(/\s+/g, '_')}.pdf
+                  </div>
+                  <p>Please review your complete contract and click below to sign and start onboarding.</p>
+                </div>
+              </div>
+
+              {/* Drawer Footer Actions */}
+              <div className="p-6 border-t border-[#E5E7EB] bg-[#F7F7F5] flex items-center justify-between">
+                <button
+                  onClick={() => setShowEmailDrawer(false)}
+                  className="px-4 py-2 text-xs font-semibold text-[#6B7280] hover:text-[#111827] cursor-pointer"
+                >
+                  Back to Studio
+                </button>
+                <button
+                  onClick={handleDispatchOffer}
+                  disabled={emailSending}
+                  className="px-6 py-2.5 bg-[#2563EB] hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  {emailSending ? "Dispatching Email…" : "Confirm & Send Offer"}
+                </button>
               </div>
 
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }
