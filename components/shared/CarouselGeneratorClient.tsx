@@ -1838,13 +1838,13 @@ export function CarouselGeneratorClient() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Category Tag</label>
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Category Tag (e.g. AI NEWS, GROWX INSIGHTS)</label>
                       <input
                         type="text"
-                        value={activeSlide.categoryTag || "GROWX INSIGHTS"}
+                        value={activeSlide.categoryTag !== undefined ? activeSlide.categoryTag : "GROWX INSIGHTS"}
                         onChange={(e) => updateActiveSlide({ categoryTag: e.target.value })}
                         placeholder="e.g. GROWX INSIGHTS or AI NEWS"
-                        className="w-full h-10 bg-neutral-800 border border-neutral-700 rounded-lg px-3 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#0075de]"
+                        className="w-full h-10 bg-white border border-neutral-300 rounded-lg px-3 text-xs text-neutral-900 font-bold placeholder-neutral-400 focus:outline-none focus:border-[#0075de]"
                       />
                     </div>
 
@@ -2448,7 +2448,7 @@ export function CarouselGeneratorClient() {
                         className="text-[10px] font-extrabold uppercase tracking-widest text-[#888888] font-sans"
                         style={{ fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px` }}
                       >
-                        {activeSlide.categoryTag || "GROWX INSIGHTS"}
+                        {activeSlide.categoryTag !== undefined ? activeSlide.categoryTag : "GROWX INSIGHTS"}
                       </div>
                       <div 
                         className="font-black text-black leading-tight font-sans tracking-tight"
@@ -2947,7 +2947,7 @@ export function CarouselGeneratorClient() {
                       {theme === "ainews" ? (
                         <div style={{ width: "100%", textAlign: "left", display: "flex", flexDirection: "column", gap: `${Math.round(16 * scaleMultiplier)}px` }}>
                           <div style={{ fontSize: `${Math.round(18 * scaleMultiplier)}px`, fontWeight: 800, textTransform: "uppercase", letterSpacing: "2px", color: "#888888", fontFamily: "'Inter', sans-serif" }}>
-                            {slide.categoryTag || "GROWX INSIGHTS"}
+                            {slide.categoryTag !== undefined ? slide.categoryTag : "GROWX INSIGHTS"}
                           </div>
                           <h1 style={{ fontSize: `${Math.round(44 * scaleMultiplier)}px`, fontWeight: 900, color: "#000000", lineHeight: 1.08, letterSpacing: "-1px", fontFamily: "'Inter', sans-serif", margin: 0 }}>
                             {slide.title}
