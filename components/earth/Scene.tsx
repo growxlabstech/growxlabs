@@ -9,9 +9,9 @@ import { ShootingStars } from './ShootingStars';
 function DeepSpaceCameraRig() {
   useFrame(({ camera, clock }) => {
     const time = clock.getElapsedTime();
-    // Ultra-subtle floating movement (5-10px max drift for Interstellar/Apple Vision Pro feel)
-    camera.position.x = Math.sin(time * 0.12) * 0.15;
-    camera.position.y = Math.cos(time * 0.09) * 0.12;
+    // Ultra-subtle floating camera drift (Apple Vision Pro / Interstellar cinematic feel)
+    camera.position.x = Math.sin(time * 0.08) * 0.12;
+    camera.position.y = Math.cos(time * 0.06) * 0.10;
     camera.lookAt(0, 0, -50);
   });
   return null;
@@ -23,7 +23,7 @@ export function DeepSpaceScene() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full min-h-[500px] sm:min-h-[600px] md:min-h-[700px] select-none bg-[#000000]"
+      className="relative w-full h-full min-h-[480px] sm:min-h-[580px] md:min-h-[660px] select-none bg-[#000000]"
     >
       <Canvas
         camera={{ position: [0, 0, 10], fov: 45 }}
@@ -42,7 +42,7 @@ export function DeepSpaceScene() {
         <DeepSpaceCameraRig />
 
         <Suspense fallback={null}>
-          <DeepSpaceStars count={35000} />
+          <DeepSpaceStars />
           <ShootingStars />
         </Suspense>
       </Canvas>
