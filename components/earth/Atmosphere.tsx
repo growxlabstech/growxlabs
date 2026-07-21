@@ -20,7 +20,7 @@ export const Atmosphere: React.FC<AtmosphereProps> = ({
       uniforms: {
         color: { value: new THREE.Color(color) },
         coefficient: { value: 0.75 },
-        power: { value: 4.2 }, // Subtle soft blue rim, no thick glow
+        power: { value: 4.2 }, // Subtle soft blue rim
       },
       blending: THREE.AdditiveBlending,
       side: THREE.BackSide,
@@ -31,7 +31,8 @@ export const Atmosphere: React.FC<AtmosphereProps> = ({
 
   return (
     <mesh>
-      <sphereGeometry args={[radius, 64, 64]} />
+      {/* 128x128 segments */}
+      <sphereGeometry args={[radius, 128, 128]} />
       <primitive object={atmosphereMaterial} attach="material" />
     </mesh>
   );

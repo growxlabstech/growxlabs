@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as THREE from 'three';
-import { useTexture } from '@react-three/drei';
+import { useLoader } from '@react-three/fiber';
 
 interface CloudsProps {
   radius?: number;
@@ -10,20 +10,27 @@ interface CloudsProps {
 }
 
 export const Clouds: React.FC<CloudsProps> = ({
-  radius = 2.02, // Exact 1.01x scale (Earth radius = 2.0)
+  radius = 2.02, // Scale 1.01x (Earth radius = 2.0)
   cloudsRef,
 }) => {
-  // Load transparent PNG cloud texture
-  const cloudsMap = useTexture('/textures/earth_clouds.png');
+  // Load transparent PNG cloud texture via TextureLoader
+  const cloudsMap = useLoader(THREE.TextureLoader, '/textures/earth_clouds.png');
 
-  if (cloudsMap) {
-    cloudsMap.anisotropy = 16;
-    cloudsMap.colorSpace = THREE.SRGBColorSpace;
-  }
+  useMemo(() => {
+    if (cloudsMap) {
+      cloudsMap.wrapS = THREE.RepeatWrapping;
+      cloudsMap.wrapT = THREE.ClampToEdgeWrapping;
+      cloudsMap.repeat.set(1, 1);
+      cloudsMap.colorSpace = THREE.SRGBColorSpace;
+      cloudsMap.anisotropy = 16;
+      cloudsMap.needsUpdate = true;
+    }
+  }, [cloudsMap]);
 
   return (
     <mesh ref={cloudsRef}>
-      <sphereGeometry args={[radius, 64, 64]} />
+      {/* 128x128 segments */}
+      <sphereGeometry args={[radius, 128, 128]} />
       <meshStandardMaterial
         map={cloudsMap}
         transparent

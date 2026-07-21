@@ -17,8 +17,8 @@ function CameraRig() {
   useFrame(({ camera, clock }) => {
     const time = clock.getElapsedTime();
     // Very subtle floating movement
-    camera.position.x = Math.sin(time * 0.1) * 0.08;
-    camera.position.y = Math.cos(time * 0.15) * 0.05;
+    camera.position.x = Math.sin(time * 0.08) * 0.06;
+    camera.position.y = Math.cos(time * 0.12) * 0.04;
     camera.lookAt(0, 0, 0);
   });
   return null;
@@ -29,17 +29,16 @@ function GlobeContent() {
 
   return (
     <group ref={earthGroupRef} {...bindInteractions}>
-
-      {/* Sphere 1: Earth Body (radius = 2.0) */}
+      {/* Sphere 1: Earth Body (radius = 2.0, 128x128 segments) */}
       <Earth radius={2.0} />
 
-      {/* Sphere 2: Clouds (scale 1.01x, radius = 2.02) */}
+      {/* Sphere 2: Clouds (scale 1.01x, radius = 2.02, 128x128 segments) */}
       <Clouds radius={2.02} cloudsRef={cloudsRef} />
 
-      {/* Sphere 3: Atmosphere (scale 1.02x, radius = 2.04) */}
+      {/* Sphere 3: Atmosphere (scale 1.02x, radius = 2.04, 128x128 segments) */}
       <Atmosphere radius={2.04} />
 
-      {/* Orbit Rings & Particles */}
+      {/* Orbit Rings & Floating Particles */}
       <OrbitRings ringsRef={ringsRef} />
     </group>
   );
@@ -54,7 +53,7 @@ export function EarthScene() {
       className="relative w-full h-full min-h-[480px] md:min-h-[620px] select-none"
     >
       <Canvas
-        camera={{ position: [0, 0, 5.8], fov: 35 }} // FOV 35 so Earth fills ~70% of container
+        camera={{ position: [0, 0, 5.7], fov: 35 }} // FOV 35 so Earth fills ~70% of container
         gl={{
           antialias: true,
           alpha: true,
