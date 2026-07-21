@@ -8,9 +8,11 @@ interface EarthProps {
   radius?: number;
 }
 
-export const Earth: React.FC<EarthProps> = ({ radius = 2 }) => {
-  // Load ONLY official NASA Blue Marble Day map
+export const Earth: React.FC<EarthProps> = ({ radius = 1.75 }) => {
+  // Load official NASA Earth textures
   const dayTexture = useTexture('/textures/earth_daymap.jpg');
+  const normalTexture = useTexture('/textures/earth_normal.jpg');
+  const specularTexture = useTexture('/textures/earth_specular.jpg');
 
   useLayoutEffect(() => {
     if (dayTexture) {
@@ -19,9 +21,20 @@ export const Earth: React.FC<EarthProps> = ({ radius = 2 }) => {
       dayTexture.wrapT = THREE.ClampToEdgeWrapping;
       dayTexture.repeat.set(1, 1);
       dayTexture.needsUpdate = true;
-      console.log('NASA dayTexture loaded successfully:', dayTexture);
     }
-  }, [dayTexture]);
+    if (normalTexture) {
+      normalTexture.wrapS = THREE.RepeatWrapping;
+      normalTexture.wrapT = THREE.ClampToEdgeWrapping;
+      normalTexture.repeat.set(1, 1);
+      normalTexture.needsUpdate = true;
+    }
+    if (specularTexture) {
+      specularTexture.wrapS = THREE.RepeatWrapping;
+      specularTexture.wrapT = THREE.ClampToEdgeWrapping;
+      specularTexture.repeat.set(1, 1);
+      specularTexture.needsUpdate = true;
+    }
+  }, [dayTexture, normalTexture, specularTexture]);
 
   return (
     <mesh castShadow receiveShadow>
@@ -29,6 +42,8 @@ export const Earth: React.FC<EarthProps> = ({ radius = 2 }) => {
       <sphereGeometry args={[radius, 128, 128]} />
       <meshStandardMaterial
         map={dayTexture}
+        normalMap={normalTexture}
+        roughnessMap={specularTexture}
         metalness={0}
         roughness={1}
       />

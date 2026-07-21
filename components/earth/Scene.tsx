@@ -5,27 +5,45 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { Earth } from './Earth';
+import { NightLights } from './NightLights';
+import { Atmosphere } from './Atmosphere';
+import { Clouds } from './Clouds';
+import { Stars } from './Stars';
+import { OrbitRings } from './OrbitRings';
+import { Particles } from './Particles';
 import { useEarthRotation } from '@/hooks/useEarthRotation';
 import { EARTH_COLORS } from '@/lib/three';
 
 function CameraRig() {
   useFrame(({ camera, clock }) => {
     const time = clock.getElapsedTime();
-    // Very subtle floating movement
-    camera.position.x = Math.sin(time * 0.08) * 0.06;
-    camera.position.y = Math.cos(time * 0.12) * 0.04;
-    camera.lookAt(0, 0, 0);
+    // Very subtle floating movement for camera
+    camera.position.x = Math.sin(time * 0.08) * 0.04;
+    camera.position.y = 0.2 + Math.cos(time * 0.1) * 0.03;
+    camera.lookAt(0, -0.2, 0);
   });
   return null;
 }
 
 function GlobeContent() {
-  const { earthGroupRef, bindInteractions } = useEarthRotation();
+  const { earthGroupRef, cloudsRef, ringsRef, bindInteractions } = useEarthRotation();
 
   return (
-    <group ref={earthGroupRef} {...bindInteractions}>
-      {/* Isolated NASA Blue Marble Day Texture (Atmosphere, Clouds & Night Lights disabled for verification) */}
-      <Earth radius={2.0} />
+    <group ref={earthGroupRef} position={[0, -0.35, 0]} {...bindInteractions}>
+      {/* 1. Earth Body (Scaled down by ~20% to radius 1.75, showing upper 65-70% of globe) */}
+      <Earth radius={1.75} />
+
+      {/* 2. Night Lights Overlay (Warm City Lights) */}
+      <NightLights radius={1.751} />
+
+      {/* 3. Subtle Cloud Layer (Scale 1.01x) */}
+      <Clouds radius={1.767} cloudsRef={cloudsRef} />
+
+      {/* 4. Ultra-thin Fresnel Atmosphere Rim (70% reduced intensity) */}
+      <Atmosphere radius={1.78} />
+
+      {/* 5. Minimal Orbit Rings (< 3% opacity) */}
+      <OrbitRings ringsRef={ringsRef} />
     </group>
   );
 }
@@ -36,10 +54,10 @@ export function EarthScene() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full min-h-[480px] md:min-h-[620px] select-none bg-[#000000]"
+      className="relative w-full h-full min-h-[580px] sm:min-h-[640px] md:min-h-[720px] select-none bg-[#050505]"
     >
       <Canvas
-        camera={{ position: [0, 0, 5.7], fov: 35 }} // FOV 35 so Earth fills ~70% of container
+        camera={{ position: [0, 0.2, 5.6], fov: 34 }} // FOV 34: Earth occupies 55-60% width
         gl={{
           antialias: true,
           alpha: true,
@@ -48,7 +66,7 @@ export function EarthScene() {
           toneMappingExposure: 1.0,
           outputColorSpace: THREE.SRGBColorSpace,
         }}
-        className="w-full h-full bg-[#000000]"
+        className="w-full h-full bg-[#050505]"
       >
         <color attach="background" args={[EARTH_COLORS.background]} />
 
@@ -64,12 +82,14 @@ export function EarthScene() {
 
         <Suspense fallback={null}>
           <GlobeContent />
+          <Stars count={1200} />
+          <Particles count={100} />
         </Suspense>
 
         <OrbitControls
           enableZoom={false}
           enablePan={false}
-          rotateSpeed={0.5}
+          rotateSpeed={0.4}
           dampingFactor={0.05}
           enableDamping
           maxPolarAngle={Math.PI * 0.75}

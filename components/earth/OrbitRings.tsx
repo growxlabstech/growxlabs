@@ -11,35 +11,24 @@ interface OrbitRingsProps {
 export const OrbitRings: React.FC<OrbitRingsProps> = ({ ringsRef }) => {
   return (
     <group ref={ringsRef}>
-      {/* Primary Equatorial Orbit Ring */}
+      {/* Primary Equatorial Orbit Ring - Barely visible (< 3% opacity) */}
       <mesh rotation={[Math.PI / 2.3, 0.2, 0]}>
-        <ringGeometry args={[2.8, 2.815, 128]} />
+        <ringGeometry args={[2.7, 2.71, 128]} />
         <meshBasicMaterial
           color={EARTH_COLORS.atmosphere}
           transparent
-          opacity={0.07}
+          opacity={0.025}
           side={THREE.DoubleSide}
         />
       </mesh>
 
       {/* Secondary Tilted Polar Orbit Ring */}
       <mesh rotation={[Math.PI / 6, Math.PI / 4, 0.4]}>
-        <ringGeometry args={[3.2, 3.212, 128]} />
+        <ringGeometry args={[3.1, 3.108, 128]} />
         <meshBasicMaterial
           color={EARTH_COLORS.atmosphere}
           transparent
-          opacity={0.05}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-
-      {/* Outer Subtle Orbit Ring */}
-      <mesh rotation={[-Math.PI / 3, -0.3, 0.2]}>
-        <ringGeometry args={[3.7, 3.71, 128]} />
-        <meshBasicMaterial
-          color={EARTH_COLORS.atmosphere}
-          transparent
-          opacity={0.04}
+          opacity={0.018}
           side={THREE.DoubleSide}
         />
       </mesh>
