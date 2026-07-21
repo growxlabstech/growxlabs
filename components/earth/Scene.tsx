@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { Earth } from './Earth';
+import { NightLights } from './NightLights';
 import { Atmosphere } from './Atmosphere';
 import { Clouds } from './Clouds';
 import { Stars } from './Stars';
@@ -29,16 +30,19 @@ function GlobeContent() {
 
   return (
     <group ref={earthGroupRef} {...bindInteractions}>
-      {/* Sphere 1: Earth Body (radius = 2.0, 128x128 segments) */}
+      {/* 1. Earth Body (NASA Blue Marble Day Map, Normal, Specular) */}
       <Earth radius={2.0} />
 
-      {/* Sphere 2: Clouds (scale 1.01x, radius = 2.02, 128x128 segments) */}
+      {/* 2. Night Lights (Warm Yellow City Lights) */}
+      <NightLights radius={2.002} />
+
+      {/* 3. Clouds Layer (Scale 1.01x, 35% opacity) */}
       <Clouds radius={2.02} cloudsRef={cloudsRef} />
 
-      {/* Sphere 3: Atmosphere (scale 1.02x, radius = 2.04, 128x128 segments) */}
+      {/* 4. Atmosphere Layer (Scale 1.02x, Soft Blue Fresnel) */}
       <Atmosphere radius={2.04} />
 
-      {/* Orbit Rings & Floating Particles */}
+      {/* Orbit Rings & Space Particles */}
       <OrbitRings ringsRef={ringsRef} />
     </group>
   );
@@ -50,7 +54,7 @@ export function EarthScene() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full min-h-[480px] md:min-h-[620px] select-none"
+      className="relative w-full h-full min-h-[480px] md:min-h-[620px] select-none bg-[#000000]"
     >
       <Canvas
         camera={{ position: [0, 0, 5.7], fov: 35 }} // FOV 35 so Earth fills ~70% of container
@@ -66,11 +70,11 @@ export function EarthScene() {
       >
         <color attach="background" args={[EARTH_COLORS.background]} />
 
-        {/* Lighting: AmbientLight 0.15 + DirectionalLight 2.0 at (5, 3, 5) */}
-        <ambientLight intensity={0.15} />
+        {/* Lighting: AmbientLight 0.25 + DirectionalLight 2.2 at (5, 3, 5) */}
+        <ambientLight intensity={0.25} />
         <directionalLight
           position={[5, 3, 5]}
-          intensity={2.0}
+          intensity={2.2}
           color="#ffffff"
         />
 
