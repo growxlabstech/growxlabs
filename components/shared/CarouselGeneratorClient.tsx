@@ -1200,20 +1200,19 @@ export function CarouselGeneratorClient() {
       const isPreview = scale < 0.8;
       return (
         <div 
-          className="w-full bg-[#050505] rounded-2xl border border-neutral-800 text-white my-1 flex flex-col justify-center items-center overflow-hidden shrink-0 p-2"
+          className="w-full bg-[#050505] rounded-2xl text-white my-1 flex flex-col justify-center items-center overflow-hidden shrink-0"
           style={{
-            borderRadius: `${Math.round(14 * scale)}px`,
-            padding: `${Math.round(8 * scale)}px`,
+            borderRadius: `${Math.round(18 * scale)}px`,
             margin: `${Math.round(6 * scale)}px 0`
           }}
         >
           <img 
             src={slide.customImage} 
             alt={slide.title || "Slide Image"}
-            className="w-full h-auto object-contain rounded-lg border border-neutral-800"
+            className="w-full h-auto object-contain block"
             style={{ 
-              maxHeight: isPreview ? "130px" : `${Math.round(280 * scale)}px`, 
-              borderRadius: `${Math.round(8 * scale)}px` 
+              maxHeight: isPreview ? "130px" : `${Math.round(280 * scale)}px`,
+              borderRadius: `${Math.round(18 * scale)}px`
             }}
           />
         </div>
