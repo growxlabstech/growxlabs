@@ -69,49 +69,101 @@ interface Slide {
   svgCode?: string;
   imageLayout?: "split-right" | "split-left" | "centered";
   customImage?: string;
+  categoryTag?: string;
+  visualMediaCardTitle?: string;
+  visualMediaCardSub?: string;
+  visualMediaCardChartType?: "logo" | "leaderboard" | "cost" | "architecture" | "roofline" | "none";
 }
 
-const DEFAULT_SLIDES: Slide[] = [
+const KIMI_K3_PRESET_SLIDES: Slide[] = [
   {
-    title: "5 AI Secrets to Scale Your Software Company",
-    subtitle: "How to automate user acquisition and system delivery in 2026",
+    title: "Moonshot built the world's largest open model",
+    subtitle: "Kimi K3 is a 2.8 trillion parameter Mixture-of-Experts model, the largest open-weight AI system ever released. It runs a 1M token context, handles text and images, and lands close to the Western frontier.",
     bullets: [],
-    layout: "title-only"
+    layout: "title-only",
+    categoryTag: "AI NEWS",
+    visualMediaCardTitle: "Moonshot AI | Kimi K3",
+    visualMediaCardChartType: "logo"
   },
   {
-    title: "1. Automate Lead Scraping",
-    subtitle: "Stop spending hours searching for tech buyers manually.",
-    bullets: [
-      "Use AI agents to identify high-intent target profiles",
-      "Draft hyper-personalized product demos instantly",
-      "Increase developer pipeline velocity by 3x"
-    ],
-    layout: "bullets"
-  },
-  {
-    title: "2. Intelligent CRM Syncing",
-    subtitle: "Keep all deployment logs and customer notes updated automatically.",
-    bullets: [
-      "Connect support chats to GPT root-cause analysis",
-      "Auto-fill software contract terms and deal stages",
-      "Notify your DevOps team instantly via Slack alerts"
-    ],
-    layout: "bullets"
-  },
-  {
-    title: "3. 'Systems over human sweat' is the new business mantra.",
-    subtitle: "AI allows small software companies to operate with the capacity of massive enterprise teams.",
+    title: "Kimi K3: Open Frontier Intelligence",
+    subtitle: "Maxed out on thinking effort, Kimi K3 places third on the GDPval agent board, behind Fable 5 and GPT 5.6 Sol but ahead of Opus 4.8, GLM 5.2 and GPT 5.5.\n\nOn AA Briefcase it climbs to second, trailing only Anthropic's Fable 5.",
     bullets: [],
-    layout: "quote",
-    quoteAuthor: "GrowXLabs DevOps Team"
+    layout: "title-only",
+    categoryTag: "AI NEWS",
+    visualMediaCardChartType: "leaderboard"
   },
   {
-    title: "Ready to Scale Your Product?",
-    subtitle: "Let our AI engineers build custom production pipelines and backend systems.",
+    title: "Frontier scores, a fraction of the cost",
+    subtitle: "On BrowseComp, Kimi K3 reaches roughly 91% at about $2 per task. The closed models it matches, from Claude and GPT, cost several times more to hit the same scores.\n\nRunning cheap is the whole promise of open weights.",
     bullets: [],
-    layout: "cta"
+    layout: "title-only",
+    categoryTag: "AI NEWS",
+    visualMediaCardChartType: "cost"
+  },
+  {
+    title: "Architecture",
+    subtitle: "Kimi K3 runs a Mixture-of-Experts design with 896 experts, only 16 active per request. New Kimi Delta Attention and Attention Residuals lift scaling efficiency about 2.5 times over Kimi K2.\n\nOn the AttnRes GPU kernel it edged out Fable 5, a 59.7% speedup versus 57.1% over the Triton baseline.",
+    bullets: [],
+    layout: "title-only",
+    categoryTag: "AI NEWS",
+    visualMediaCardChartType: "architecture"
+  },
+  {
+    title: "The gap keeps closing",
+    subtitle: "Kimi K3 arrived a month after the US pulled Anthropic's Fable and Mythos models. Moonshot is now raising at a reported $31.5 billion valuation.\n\nThe catch: at 2.8 trillion parameters, hosting it yourself needs hundreds of thousands of dollars of hardware.",
+    bullets: [],
+    layout: "title-only",
+    categoryTag: "AI NEWS",
+    visualMediaCardChartType: "roofline"
   }
 ];
+
+const GROWX_LABS_PRESET_SLIDES: Slide[] = [
+  {
+    title: "5 AI Systems to Scale Your Business in 2026",
+    subtitle: "GrowXLabs automated engineering pipeline eliminates manual overhead. Here is how top tech companies deploy AI agents to handle lead scraping, contract processing, and client onboarding.",
+    bullets: [],
+    layout: "title-only",
+    categoryTag: "GROWX INSIGHTS",
+    visualMediaCardTitle: "GrowXLabs | Enterprise Operating System",
+    visualMediaCardChartType: "logo"
+  },
+  {
+    title: "Autonomous Lead Scraping & Enrichment",
+    subtitle: "Our CRM agents continuously scan B2B buyers, score intent metrics, and enrich target profiles automatically without human intervention.",
+    bullets: [],
+    layout: "title-only",
+    categoryTag: "GROWX INSIGHTS",
+    visualMediaCardChartType: "leaderboard"
+  },
+  {
+    title: "10x Revenue Velocity at 1/5th the Cost",
+    subtitle: "Replacing manual sales reps with custom AI workflows delivers 90%+ score efficiency at a fraction of traditional operational expenses.",
+    bullets: [],
+    layout: "title-only",
+    categoryTag: "GROWX INSIGHTS",
+    visualMediaCardChartType: "cost"
+  },
+  {
+    title: "Multi-Agent System Architecture",
+    subtitle: "GrowXLabs orchestrates specialized subagents (Research, Security, Sales, DevOps) with shared memory buffers and real-time execution kernels.",
+    bullets: [],
+    layout: "title-only",
+    categoryTag: "GROWX INSIGHTS",
+    visualMediaCardChartType: "architecture"
+  },
+  {
+    title: "Deploy Production AI Today",
+    subtitle: "Ready to scale your software product? Let our AI engineers build custom enterprise pipelines tailored to your business goals.",
+    bullets: [],
+    layout: "title-only",
+    categoryTag: "GROWX INSIGHTS",
+    visualMediaCardChartType: "roofline"
+  }
+];
+
+const DEFAULT_SLIDES: Slide[] = GROWX_LABS_PRESET_SLIDES;
 
 function parsePartialSlides(partialJson: string): { themeSuggestion?: string; slides: any[] } {
   let themeSuggestion: string | undefined = undefined;
@@ -195,20 +247,36 @@ export function CarouselGeneratorClient() {
   const [activeIndex, setActiveIndex] = useState(0);
   
   // Customization settings
-  const [theme, setTheme] = useState<"cyberpunk" | "cream" | "sunset" | "terminal" | "glass" | "emerald" | "minimal" | "gold">("cyberpunk");
+  const [theme, setTheme] = useState<"cyberpunk" | "cream" | "sunset" | "terminal" | "glass" | "emerald" | "minimal" | "gold" | "ainews">("ainews");
   const [bgPattern, setBgPattern] = useState<"none" | "grid" | "dots" | "glow" | "isometric" | "waves" | "hexagons">("none");
-  const [brandName, setBrandName] = useState("GrowXLabs");
-  const [instagramHandle, setInstagramHandle] = useState("@growxlabs.tech");
-  const [showHandle, setShowHandle] = useState(true);
+  const [brandName, setBrandName] = useState("360Labs");
+  const [instagramHandle, setInstagramHandle] = useState("@360labs.ai");
+  const [showHandle, setShowHandle] = useState(false);
   const [showPageNumber, setShowPageNumber] = useState(true);
   const [showProgressBar, setShowProgressBar] = useState(true);
   const [activeTab, setActiveTab] = useState<"ai" | "edit" | "design">("ai");
   const [refinementPrompt, setRefinementPrompt] = useState("");
   const [isRefining, setIsRefining] = useState(false);
   const [streamBuffer, setStreamBuffer] = useState("");
-  const [aspectRatio, setAspectRatio] = useState<"3:4" | "4:5" | "1:1" | "1.91:1">("1:1");
+  const [aspectRatio, setAspectRatio] = useState<"3:4" | "4:5" | "1:1" | "1.91:1">("4:5");
   const [visualMode, setVisualMode] = useState<"svg" | "image">("image");
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+
+  const loadGrowXLabsPreset = (presetType: "insights" | "kimi" = "insights") => {
+    if (presetType === "kimi") {
+      setSlides(KIMI_K3_PRESET_SLIDES);
+    } else {
+      setSlides(GROWX_LABS_PRESET_SLIDES);
+    }
+    setTheme("ainews");
+    setAspectRatio("4:5");
+    setBrandName("GrowXLabs");
+    setInstagramHandle("@growxlabs.tech");
+    setShowHandle(false);
+    setShowPageNumber(true);
+    setActiveIndex(0);
+    toast.success("Loaded GrowXLabs Editorial Carousel Preset!");
+  };
 
   // Dynamic responsive scaling states & ref
   const previewRef = useRef<HTMLDivElement>(null);
@@ -854,6 +922,40 @@ export function CarouselGeneratorClient() {
             progressBarContainer: "height: 6px; width: 100%; background: rgba(255,255,255,0.03); position: absolute; bottom: 0; left: 0;",
             progressBarFill: "height: 100%; background: linear-gradient(90deg, #d4af37, #f59e0b);"
           };
+        case "ainews":
+          return {
+            wrapperBg: "#ffffff",
+            wrapperImage: "none",
+            brandColor: "#000000",
+            accentColor: "#888888",
+            titleColor: "#000000",
+            titleFont: "'Inter', sans-serif",
+            subtitleColor: "#111827",
+            subtitleFont: "'Inter', sans-serif",
+            bulletColor: "#111827",
+            bulletIconColor: "#000000",
+            quoteBorderColor: "#000000",
+            quoteTextColor: "#000000",
+            quoteAuthorColor: "#6b7280",
+            progressBarBg: "rgba(0,0,0,0.04)",
+            categoryTag: "AI NEWS",
+            categoryTagStyle: "font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #888888; margin-bottom: 14px;",
+            wrapper: "background: #ffffff; color: #000000; font-family: 'Inter', sans-serif; position: relative; border: 1px solid #e5e5e5;",
+            title: `color: #000000; font-family: 'Inter', sans-serif; font-size: ${slideLayout === "title-only" ? "56px" : "44px"}; font-weight: 900; line-height: 1.08; margin-bottom: 24px; letter-spacing: -0.03em;`,
+            subtitle: "color: #111827; font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 400; line-height: 1.5;",
+            bullets: "color: #111827; font-family: 'Inter', sans-serif; font-size: 22px; line-height: 1.6; text-align: left; list-style-type: none; margin-top: 24px;",
+            bulletItem: "margin-bottom: 14px; display: flex; align-items: flex-start; gap: 12px;",
+            bulletIcon: "color: #000000; margin-top: 2px;",
+            quoteBox: "border-left: 4px solid #000000; padding-left: 24px; text-align: left; margin: 30px 0;",
+            quoteText: "color: #000000; font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 12px;",
+            quoteAuthor: "color: #6b7280; font-size: 18px; font-weight: 600; text-transform: uppercase;",
+            header: "display: flex; align-items: center; justify-content: space-between; border-bottom: none; padding-bottom: 12px; width: 100%; box-sizing: border-box;",
+            footer: "width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #e5e7eb; padding-top: 18px; margin-top: auto;",
+            brandBracketStyle: "font-family: 'Fira Code', monospace; font-size: 20px; font-weight: 800; color: #000000; letter-spacing: 0.05em;",
+            slideCounterStyle: "font-family: 'Fira Code', monospace; font-size: 16px; font-weight: 500; color: #94a3b8; letter-spacing: 0.1em;",
+            progressBarContainer: "height: 4px; width: 100%; background: rgba(0,0,0,0.04); position: absolute; bottom: 0; left: 0;",
+            progressBarFill: "height: 100%; background: #000000;"
+          };
       }
     })();
 
@@ -998,6 +1100,8 @@ export function CarouselGeneratorClient() {
         return { bg: "#ffffff", border: "#e5e5e5", dots: ["#0a0a0a", "#404040"] };
       case "gold":
         return { bg: "#0a0907", border: "rgba(255,255,255,0.05)", dots: ["#d4af37", "#f59e0b"] };
+      case "ainews":
+        return { bg: "#ffffff", border: "#000000", dots: ["#000000", "#888888"] };
       default:
         return { bg: "#ffffff", border: "#e5e5e5", dots: ["#000000"] };
     }
@@ -1088,6 +1192,150 @@ export function CarouselGeneratorClient() {
       default:
         return null;
     }
+  };
+
+  const renderVisualMediaCard = (slide: Slide, scale = 1.0) => {
+    const chartType = slide.visualMediaCardChartType || "none";
+    if (chartType === "none" && !slide.visualMediaCardTitle) return null;
+
+    return (
+      <div 
+        className="w-full bg-[#050505] rounded-2xl p-4 border border-neutral-800 text-white my-3 flex flex-col justify-center items-center overflow-hidden shrink-0"
+        style={{
+          borderRadius: `${Math.round(18 * scale)}px`,
+          padding: `${Math.round(16 * scale)}px`,
+          margin: `${Math.round(12 * scale)}px 0`
+        }}
+      >
+        {chartType === "logo" && (
+          <div className="py-6 text-center w-full">
+            <span 
+              className="font-bold text-white tracking-wide font-sans inline-block"
+              style={{ fontSize: `${Math.round(20 * scale)}px` }}
+            >
+              {slide.visualMediaCardTitle || "GrowXLabs | AI Copilot"}
+            </span>
+          </div>
+        )}
+
+        {chartType === "leaderboard" && (
+          <div className="w-full text-left font-sans space-y-2">
+            <div className="flex justify-between items-center border-b border-neutral-800 pb-1.5">
+              <span className="font-bold text-white text-[11px]" style={{ fontSize: `${Math.max(Math.round(11 * scale), 8)}px` }}>
+                General Agents
+              </span>
+              <span className="text-[9px] text-neutral-400" style={{ fontSize: `${Math.max(Math.round(9 * scale), 7)}px` }}>
+                All maxed out on thinking effort: max or xhigh.
+              </span>
+            </div>
+
+            <div className="text-[10px] font-bold text-neutral-300 pt-0.5" style={{ fontSize: `${Math.max(Math.round(10 * scale), 7.5)}px` }}>
+              GDPval-AA v2 Elo
+            </div>
+
+            <div className="space-y-1">
+              {[
+                { name: "Fable 5", score: "1760.0", width: "95%", highlight: false },
+                { name: "GPT-5.6 Sol", score: "1748.0", width: "92%", highlight: false },
+                { name: "Kimi K3", score: "1668.0", width: "84%", highlight: true },
+                { name: "Opus-4.8", score: "1600.0", width: "75%", highlight: false },
+                { name: "GLM-5.2", score: "1514.0", width: "65%", highlight: false },
+                { name: "GPT-5.5", score: "1494.0", width: "60%", highlight: false },
+              ].map((bar, bIdx) => (
+                <div key={bIdx} className="flex items-center gap-1.5 text-[9px]" style={{ fontSize: `${Math.max(Math.round(9 * scale), 7)}px` }}>
+                  <span className="w-16 shrink-0 font-medium truncate text-neutral-300">{bar.name}</span>
+                  <div className="flex-1 bg-neutral-900 rounded-full h-2.5 overflow-hidden p-0.5 border border-neutral-800 flex items-center">
+                    <div 
+                      className={`h-full rounded-full transition-all ${bar.highlight ? "bg-[#0075FF]" : "bg-neutral-600"}`}
+                      style={{ width: bar.width }}
+                    />
+                  </div>
+                  <span className={`w-10 text-right font-mono font-bold ${bar.highlight ? "text-[#0075FF]" : "text-neutral-400"}`}>
+                    {bar.score}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {chartType === "cost" && (
+          <div className="w-full text-left font-sans space-y-2">
+            <div className="flex justify-between items-center border-b border-neutral-800 pb-1">
+              <span className="font-bold text-white text-[11px]" style={{ fontSize: `${Math.max(Math.round(11 * scale), 8)}px` }}>
+                BrowseComp · Score vs Cost per Task
+              </span>
+            </div>
+            
+            <div className="relative h-24 w-full border-l border-b border-neutral-700 p-1 font-mono text-[8px] text-neutral-400">
+              <div className="absolute top-1 left-2 text-[#0075FF] font-bold">★ Kimi K3 ~91% @ $2</div>
+              <div className="absolute top-4 left-14 text-neutral-300">GPT-5.6 Sol</div>
+              <div className="absolute top-6 right-10 text-emerald-400">Claude Mythos 5</div>
+              <div className="absolute bottom-4 right-2 text-amber-400">Opus 4.8</div>
+              <div className="absolute bottom-2 left-20 text-rose-400">Sonnet 5</div>
+              
+              <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
+                <polyline 
+                  fill="none" 
+                  stroke="#0075FF" 
+                  strokeWidth="1.5" 
+                  points="20,15 60,30 120,35 180,45 220,55" 
+                />
+                <circle cx="20" cy="15" r="3" fill="#FF4D4D" />
+                <circle cx="60" cy="30" r="2.5" fill="#ffffff" />
+                <circle cx="120" cy="35" r="2.5" fill="#10B981" />
+                <circle cx="180" cy="45" r="2.5" fill="#F59E0B" />
+                <circle cx="220" cy="55" r="2.5" fill="#EF4444" />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {chartType === "architecture" && (
+          <div className="w-full text-left font-sans space-y-1.5">
+            <div className="flex justify-between items-center border-b border-neutral-800 pb-1">
+              <span className="font-bold text-white text-[10px]" style={{ fontSize: `${Math.max(Math.round(10 * scale), 7.5)}px` }}>
+                Speedup vs FLA Triton Baseline (%)
+              </span>
+              <span className="text-[8px] text-emerald-400 font-bold" style={{ fontSize: `${Math.max(Math.round(8 * scale), 6.5)}px` }}>
+                AttnRes GPU Kernel
+              </span>
+            </div>
+
+            <div className="relative h-24 w-full border-l border-b border-neutral-700 p-1 font-mono text-[8px]">
+              <div className="space-y-0.5 text-right text-[8px] pr-1">
+                <span className="text-[#FF4D4D] font-bold block">● Kimi K3 +59.7%</span>
+                <span className="text-blue-400 block">● Claude Fable 5 +57.1%</span>
+                <span className="text-emerald-400 block">● GPT 5.5 +30.8%</span>
+              </div>
+              
+              <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
+                <path d="M 10 80 Q 40 65, 70 30 T 140 15 L 220 10" fill="none" stroke="#FF4D4D" strokeWidth="2" />
+                <path d="M 10 80 Q 50 70, 90 38 T 170 20 L 220 16" fill="none" stroke="#60A5FA" strokeWidth="1" strokeDasharray="2 2" />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {chartType === "roofline" && (
+          <div className="w-full text-left font-sans space-y-1.5">
+            <div className="flex justify-between items-center border-b border-neutral-800 pb-1">
+              <span className="font-bold text-white text-[10px]" style={{ fontSize: `${Math.max(Math.round(10 * scale), 7.5)}px` }}>
+                MiniTriton CUDA-core roofline — NVIDIA L20
+              </span>
+            </div>
+
+            <div className="relative h-24 w-full border-l border-b border-neutral-700 p-1 font-mono text-[8px] text-neutral-400">
+              <div className="absolute top-1 right-2 text-emerald-400 font-bold">Peak FP32 Performance</div>
+              <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
+                <polyline fill="none" stroke="#ffffff" strokeWidth="1" points="10,80 90,20 220,20" />
+                <polyline fill="none" stroke="#FF4D4D" strokeWidth="1.5" points="15,75 60,50 110,30 160,25" />
+              </svg>
+            </div>
+          </div>
+        )}
+      </div>
+    );
   };
 
   const renderImageOrSvgMarkup = (slide: Slide, className: string, style: React.CSSProperties = {}, svgHeight = "400px") => {
@@ -1453,17 +1701,46 @@ export function CarouselGeneratorClient() {
               className="w-full h-14 bg-[#0075de] hover:bg-[#0075de]/95 text-white font-bold rounded-2xl shadow-sm flex items-center justify-center gap-2 group transition-all"
             >
               {isGenerating ? (
-                <>
-                  <RefreshCw className="animate-spin" size={16} />
-                  GENERATING SLIDES...
-                </>
+                <RefreshCw className="animate-spin" size={16} />
               ) : (
-                <>
-                  <BotIcon size={16} />
-                  GENERATE WITH GEMINI 2.5 FLASH
-                </>
+                <Sparkles size={16} />
               )}
+              {isGenerating ? "Planning Slides with Gemini..." : "GENERATE AI CAROUSEL SLIDES"}
             </Button>
+
+            {/* Quick GrowXLabs Daily Post Presets */}
+            <div className="pt-2 border-t border-neutral-200 space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">
+                ⚡ 1-Click GrowXLabs Daily Post Presets
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => loadGrowXLabsPreset("insights")}
+                  className="p-3.5 bg-neutral-900 text-white rounded-xl text-left hover:bg-black transition-all flex flex-col gap-1 cursor-pointer border border-neutral-800 shadow-sm"
+                >
+                  <span className="text-xs font-bold flex items-center gap-1.5 text-white">
+                    🚀 GrowXLabs AI Insights Post
+                  </span>
+                  <span className="text-[10px] text-neutral-400">
+                    5 Editorial Slides: OS, Lead Scraping, ROI & Architecture
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => loadGrowXLabsPreset("kimi")}
+                  className="p-3.5 bg-neutral-100 text-neutral-900 rounded-xl text-left hover:bg-neutral-200 transition-all flex flex-col gap-1 cursor-pointer border border-neutral-300 shadow-2xs"
+                >
+                  <span className="text-xs font-bold flex items-center gap-1.5 text-neutral-900">
+                    📰 AI News & Model Benchmark Post
+                  </span>
+                  <span className="text-[10px] text-neutral-500">
+                    5 Editorial Slides: Open Weights, ELO Leaderboards, Cost Charts
+                  </span>
+                </button>
+              </div>
+            </div>
 
             {renderStreamingWidget("generation")}
           </div>
@@ -2046,158 +2323,274 @@ export function CarouselGeneratorClient() {
                   paddingBottom: `${Math.round(16 * scaleMultiplier)}px`
                 }}
               >
-                {activeSlide.layout === "title-only" && (
-                  <div className="w-full">
-                    <div style={{
-                      color: styles.titleColor,
-                      fontFamily: styles.titleFont,
-                      fontSize: `${Math.round(24 * scaleMultiplier)}px`,
-                      fontWeight: 900,
-                      lineHeight: 1.15,
-                      marginBottom: `${Math.round(12 * scaleMultiplier)}px`,
-                      textTransform: theme === "cyberpunk" || theme === "sunset" ? "uppercase" : "none",
-                      fontStyle: theme === "cyberpunk" ? "italic" : "normal",
-                      textAlign: "center"
-                    }}>
+                {theme === "ainews" ? (
+                  <div className="w-full flex flex-col justify-start items-start text-left space-y-1.5 h-full">
+                    <div 
+                      className="text-[10px] font-extrabold uppercase tracking-widest text-[#888888] font-sans"
+                      style={{ fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px` }}
+                    >
+                      {activeSlide.categoryTag || "GROWX INSIGHTS"}
+                    </div>
+                    <div 
+                      className="font-black text-black leading-tight font-sans tracking-tight"
+                      style={{ fontSize: `${Math.round(18 * scaleMultiplier)}px` }}
+                    >
                       {activeSlide.title}
                     </div>
-                    <div style={{
-                      color: styles.subtitleColor,
-                      fontFamily: styles.subtitleFont,
-                      fontSize: `${Math.max(Math.round(13 * scaleMultiplier), 9)}px`,
-                      lineHeight: 1.4,
-                      opacity: 0.9,
-                      textAlign: "center"
-                    }}>
+                    {renderVisualMediaCard(activeSlide, liveScaleMultiplier)}
+                    <div 
+                      className="text-neutral-800 text-[11px] leading-relaxed font-sans whitespace-pre-line font-normal"
+                      style={{ fontSize: `${Math.max(Math.round(11 * scaleMultiplier), 8.5)}px` }}
+                    >
                       {activeSlide.subtitle}
                     </div>
                   </div>
-                )}
-
-                {activeSlide.layout === "bullets" && (
-                  <div className="w-full text-left">
-                    {activeSlide.imageEnabled ? (
-                      activeSlide.imageLayout === "centered" ? (
-                        <div 
-                          className="w-full"
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: `${Math.round(10 * scaleMultiplier)}px`
-                          }}
-                        >
-                          <div style={{ 
-                            color: styles.titleColor, 
-                            fontFamily: styles.titleFont, 
-                            fontSize: `${Math.round(16 * scaleMultiplier)}px`, 
-                            fontWeight: 800, 
-                            lineHeight: 1.2 
-                          }}>
-                            {activeSlide.title}
-                          </div>
-                          {renderImageElement("rounded-lg border border-white/10 w-full object-cover", 100)}
-                          <ul style={{ display: "flex", flexDirection: "column", gap: `${Math.round(4 * scaleMultiplier)}px` }}>
-                            {activeSlide.bullets.map((bullet, index) => (
-                              <li 
-                                key={index} 
-                                className="flex items-start font-semibold" 
-                                style={{ 
-                                  color: styles.bulletColor, 
-                                  fontFamily: styles.subtitleFont,
-                                  fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px`,
-                                  gap: `${Math.round(6 * scaleMultiplier)}px`
-                                }}
-                              >
-                                <span style={{ color: styles.bulletIconColor }}>✔</span>
-                                <span>{bullet}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : (
-                        <div 
-                          className="grid grid-cols-12 items-center w-full"
-                          style={{ gap: `${Math.round(16 * scaleMultiplier)}px` }}
-                        >
-                          <div className={activeSlide.imageLayout === "split-left" ? "col-span-5" : "col-span-7"}>
-                            {activeSlide.imageLayout === "split-left" ? (
-                              renderImageElement("rounded-lg border border-white/10 w-full object-cover aspect-square", 130)
-                            ) : (
-                              <div style={{ display: "flex", flexDirection: "column", gap: `${Math.round(8 * scaleMultiplier)}px` }}>
-                                <div style={{ 
-                                  color: styles.titleColor, 
-                                  fontFamily: styles.titleFont, 
-                                  fontSize: `${Math.round(15 * scaleMultiplier)}px`, 
-                                  fontWeight: 800, 
-                                  lineHeight: 1.2 
-                                }}>
-                                  {activeSlide.title}
-                                </div>
-                                <ul style={{ display: "flex", flexDirection: "column", gap: `${Math.round(4 * scaleMultiplier)}px` }}>
-                                  {activeSlide.bullets.map((bullet, index) => (
-                                    <li 
-                                      key={index} 
-                                      className="flex items-start font-semibold" 
-                                      style={{ 
-                                        color: styles.bulletColor, 
-                                        fontFamily: styles.subtitleFont,
-                                        fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px`,
-                                        gap: `${Math.round(6 * scaleMultiplier)}px`
-                                      }}
-                                    >
-                                      <span style={{ color: styles.bulletIconColor }}>✔</span>
-                                      <span>{bullet}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                          </div>
-                          <div className={activeSlide.imageLayout === "split-left" ? "col-span-7" : "col-span-5"}>
-                            {activeSlide.imageLayout === "split-left" ? (
-                              <div style={{ display: "flex", flexDirection: "column", gap: `${Math.round(8 * scaleMultiplier)}px` }}>
-                                <div style={{ 
-                                  color: styles.titleColor, 
-                                  fontFamily: styles.titleFont, 
-                                  fontSize: `${Math.round(15 * scaleMultiplier)}px`, 
-                                  fontWeight: 800, 
-                                  lineHeight: 1.2 
-                                }}>
-                                  {activeSlide.title}
-                                </div>
-                                <ul style={{ display: "flex", flexDirection: "column", gap: `${Math.round(4 * scaleMultiplier)}px` }}>
-                                  {activeSlide.bullets.map((bullet, index) => (
-                                    <li 
-                                      key={index} 
-                                      className="flex items-start font-semibold" 
-                                      style={{ 
-                                        color: styles.bulletColor, 
-                                        fontFamily: styles.subtitleFont,
-                                        fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px`,
-                                        gap: `${Math.round(6 * scaleMultiplier)}px`
-                                      }}
-                                    >
-                                      <span style={{ color: styles.bulletIconColor }}>✔</span>
-                                      <span>{bullet}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ) : (
-                              renderImageElement("rounded-lg border border-white/10 w-full object-cover aspect-square", 130)
-                            )}
-                          </div>
-                        </div>
-                      )
-                    ) : (
-                      <>
+                ) : (
+                  <>
+                    {activeSlide.layout === "title-only" && (
+                      <div className="w-full">
                         <div style={{
                           color: styles.titleColor,
                           fontFamily: styles.titleFont,
-                          fontSize: `${Math.round(18 * scaleMultiplier)}px`,
-                          fontWeight: 800,
-                          lineHeight: 1.2,
-                          marginBottom: `${Math.round(8 * scaleMultiplier)}px`
+                          fontSize: `${Math.round(24 * scaleMultiplier)}px`,
+                          fontWeight: 900,
+                          lineHeight: 1.15,
+                          marginBottom: `${Math.round(12 * scaleMultiplier)}px`,
+                          textTransform: theme === "cyberpunk" || theme === "sunset" ? "uppercase" : "none",
+                          fontStyle: theme === "cyberpunk" ? "italic" : "normal",
+                          textAlign: "center"
+                        }}>
+                          {activeSlide.title}
+                        </div>
+                        <div style={{
+                          color: styles.subtitleColor,
+                          fontFamily: styles.subtitleFont,
+                          fontSize: `${Math.max(Math.round(13 * scaleMultiplier), 9)}px`,
+                          lineHeight: 1.4,
+                          opacity: 0.9,
+                          textAlign: "center"
+                        }}>
+                          {activeSlide.subtitle}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeSlide.layout === "bullets" && (
+                      <div className="w-full text-left">
+                        {activeSlide.imageEnabled ? (
+                          activeSlide.imageLayout === "centered" ? (
+                            <div 
+                              className="w-full"
+                              style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: `${Math.round(10 * scaleMultiplier)}px`
+                              }}
+                            >
+                              <div style={{ 
+                                color: styles.titleColor, 
+                                fontFamily: styles.titleFont, 
+                                fontSize: `${Math.round(16 * scaleMultiplier)}px`, 
+                                fontWeight: 800, 
+                                lineHeight: 1.2 
+                              }}>
+                                {activeSlide.title}
+                              </div>
+                              {renderImageElement("rounded-lg border border-white/10 w-full object-cover", 100)}
+                              <ul style={{ display: "flex", flexDirection: "column", gap: `${Math.round(4 * scaleMultiplier)}px` }}>
+                                {activeSlide.bullets.map((bullet, index) => (
+                                  <li 
+                                    key={index} 
+                                    className="flex items-start font-semibold" 
+                                    style={{ 
+                                      color: styles.bulletColor, 
+                                      fontFamily: styles.subtitleFont,
+                                      fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px`,
+                                      gap: `${Math.round(6 * scaleMultiplier)}px`
+                                    }}
+                                  >
+                                    <span style={{ color: styles.bulletIconColor }}>✔</span>
+                                    <span>{bullet}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : (
+                            <div 
+                              className="grid grid-cols-12 items-center w-full"
+                              style={{ gap: `${Math.round(16 * scaleMultiplier)}px` }}
+                            >
+                              <div className={activeSlide.imageLayout === "split-left" ? "col-span-5" : "col-span-7"}>
+                                {activeSlide.imageLayout === "split-left" ? (
+                                  renderImageElement("rounded-lg border border-white/10 w-full object-cover aspect-square", 130)
+                                ) : (
+                                  <div style={{ display: "flex", flexDirection: "column", gap: `${Math.round(8 * scaleMultiplier)}px` }}>
+                                    <div style={{ 
+                                      color: styles.titleColor, 
+                                      fontFamily: styles.titleFont, 
+                                      fontSize: `${Math.round(15 * scaleMultiplier)}px`, 
+                                      fontWeight: 800, 
+                                      lineHeight: 1.2 
+                                    }}>
+                                      {activeSlide.title}
+                                    </div>
+                                    <ul style={{ display: "flex", flexDirection: "column", gap: `${Math.round(4 * scaleMultiplier)}px` }}>
+                                      {activeSlide.bullets.map((bullet, index) => (
+                                        <li 
+                                          key={index} 
+                                          className="flex items-start font-semibold" 
+                                          style={{ 
+                                            color: styles.bulletColor, 
+                                            fontFamily: styles.subtitleFont,
+                                            fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px`,
+                                            gap: `${Math.round(6 * scaleMultiplier)}px`
+                                          }}
+                                        >
+                                          <span style={{ color: styles.bulletIconColor }}>✔</span>
+                                          <span>{bullet}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                              <div className={activeSlide.imageLayout === "split-left" ? "col-span-7" : "col-span-5"}>
+                                {activeSlide.imageLayout === "split-left" ? (
+                                  <div style={{ display: "flex", flexDirection: "column", gap: `${Math.round(8 * scaleMultiplier)}px` }}>
+                                    <div style={{ 
+                                      color: styles.titleColor, 
+                                      fontFamily: styles.titleFont, 
+                                      fontSize: `${Math.round(15 * scaleMultiplier)}px`, 
+                                      fontWeight: 800, 
+                                      lineHeight: 1.2 
+                                    }}>
+                                      {activeSlide.title}
+                                    </div>
+                                    <ul style={{ display: "flex", flexDirection: "column", gap: `${Math.round(4 * scaleMultiplier)}px` }}>
+                                      {activeSlide.bullets.map((bullet, index) => (
+                                        <li 
+                                          key={index} 
+                                          className="flex items-start font-semibold" 
+                                          style={{ 
+                                            color: styles.bulletColor, 
+                                            fontFamily: styles.subtitleFont,
+                                            fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px`,
+                                            gap: `${Math.round(6 * scaleMultiplier)}px`
+                                          }}
+                                        >
+                                          <span style={{ color: styles.bulletIconColor }}>✔</span>
+                                          <span>{bullet}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                ) : (
+                                  renderImageElement("rounded-lg border border-white/10 w-full object-cover aspect-square", 130)
+                                )}
+                              </div>
+                            </div>
+                          )
+                        ) : (
+                          <>
+                            <div style={{
+                              color: styles.titleColor,
+                              fontFamily: styles.titleFont,
+                              fontSize: `${Math.round(18 * scaleMultiplier)}px`,
+                              fontWeight: 800,
+                              lineHeight: 1.2,
+                              marginBottom: `${Math.round(8 * scaleMultiplier)}px`
+                            }}>
+                              {activeSlide.title}
+                            </div>
+                            <div style={{
+                              color: styles.subtitleColor,
+                              fontFamily: styles.subtitleFont,
+                              fontSize: `${Math.max(Math.round(12 * scaleMultiplier), 9)}px`,
+                              opacity: 0.8,
+                              marginBottom: `${Math.round(12 * scaleMultiplier)}px`
+                            }}>
+                              {activeSlide.subtitle}
+                            </div>
+                            <ul style={{ display: "flex", flexDirection: "column", gap: `${Math.round(6 * scaleMultiplier)}px` }}>
+                              {activeSlide.bullets.map((bullet, index) => (
+                                <li 
+                                  key={index} 
+                                  className="flex items-start font-semibold" 
+                                  style={{ 
+                                    color: styles.bulletColor, 
+                                    fontFamily: styles.subtitleFont,
+                                    fontSize: `${Math.max(Math.round(11 * scaleMultiplier), 8.5)}px`,
+                                    gap: `${Math.round(8 * scaleMultiplier)}px`
+                                  }}
+                                >
+                                  <span style={{ color: styles.bulletIconColor }}>✔</span>
+                                  <span>{bullet}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {activeSlide.layout === "quote" && (
+                      <div 
+                        className="w-full text-left" 
+                        style={{ 
+                          borderLeftWidth: `${Math.max(Math.round(4 * scaleMultiplier), 2)}px`,
+                          borderLeftStyle: "solid",
+                          borderColor: styles.quoteBorderColor,
+                          paddingLeft: `${Math.round(16 * scaleMultiplier)}px`
+                        }}
+                      >
+                        <div style={{
+                          fontSize: `${Math.max(Math.round(14 * scaleMultiplier), 9.5)}px`,
+                          fontStyle: "italic",
+                          fontWeight: 700,
+                          lineHeight: 1.4,
+                          marginBottom: `${Math.round(6 * scaleMultiplier)}px`,
+                          color: styles.quoteTextColor,
+                          fontFamily: theme === "cream" ? "'Playfair Display', serif" : styles.titleFont
+                        }}>
+                          "{activeSlide.subtitle}"
+                        </div>
+                        <div style={{ 
+                          fontSize: `${Math.max(Math.round(9 * scaleMultiplier), 8)}px`, 
+                          fontFamily: styles.subtitleFont,
+                          fontWeight: 900, 
+                          textTransform: "uppercase", 
+                          letterSpacing: "1px", 
+                          color: styles.quoteAuthorColor 
+                        }}>
+                          — {activeSlide.quoteAuthor || "Quote Author"}
+                        </div>
+                      </div>
+                    )}
+
+                    {activeSlide.layout === "cta" && (
+                      <div 
+                        className="w-full text-center"
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: `${Math.round(12 * scaleMultiplier)}px`
+                        }}
+                      >
+                        <div 
+                          className="rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-primary animate-pulse"
+                          style={{
+                            height: `${Math.round(40 * scaleMultiplier)}px`,
+                            width: `${Math.round(40 * scaleMultiplier)}px`
+                          }}
+                        >
+                          <InstagramIcon size={Math.round(18 * scaleMultiplier)} style={{ color: styles.brandColor }} />
+                        </div>
+                        <div style={{
+                          color: styles.titleColor,
+                          fontFamily: styles.titleFont,
+                          fontSize: `${Math.round(20 * scaleMultiplier)}px`,
+                          fontWeight: 900,
+                          lineHeight: 1.2
                         }}>
                           {activeSlide.title}
                         </div>
@@ -2205,118 +2598,28 @@ export function CarouselGeneratorClient() {
                           color: styles.subtitleColor,
                           fontFamily: styles.subtitleFont,
                           fontSize: `${Math.max(Math.round(12 * scaleMultiplier), 9)}px`,
-                          opacity: 0.8,
-                          marginBottom: `${Math.round(12 * scaleMultiplier)}px`
+                          opacity: 0.8
                         }}>
                           {activeSlide.subtitle}
                         </div>
-                        <ul style={{ display: "flex", flexDirection: "column", gap: `${Math.round(6 * scaleMultiplier)}px` }}>
-                          {activeSlide.bullets.map((bullet, index) => (
-                            <li 
-                              key={index} 
-                              className="flex items-start font-semibold" 
-                              style={{ 
-                                color: styles.bulletColor, 
-                                fontFamily: styles.subtitleFont,
-                                fontSize: `${Math.max(Math.round(11 * scaleMultiplier), 8.5)}px`,
-                                gap: `${Math.round(8 * scaleMultiplier)}px`
-                              }}
-                            >
-                              <span style={{ color: styles.bulletIconColor }}>✔</span>
-                              <span>{bullet}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    )}
-                  </div>
-                )}
-
-                {activeSlide.layout === "quote" && (
-                  <div 
-                    className="w-full text-left" 
-                    style={{ 
-                      borderLeftWidth: `${Math.max(Math.round(4 * scaleMultiplier), 2)}px`,
-                      borderLeftStyle: "solid",
-                      borderColor: styles.quoteBorderColor,
-                      paddingLeft: `${Math.round(16 * scaleMultiplier)}px`
-                    }}
-                  >
-                    <div style={{
-                      fontSize: `${Math.max(Math.round(14 * scaleMultiplier), 9.5)}px`,
-                      fontStyle: "italic",
-                      fontWeight: 700,
-                      lineHeight: 1.4,
-                      marginBottom: `${Math.round(6 * scaleMultiplier)}px`,
-                      color: styles.quoteTextColor,
-                      fontFamily: theme === "cream" ? "'Playfair Display', serif" : styles.titleFont
-                    }}>
-                      "{activeSlide.subtitle}"
-                    </div>
-                    <div style={{ 
-                      fontSize: `${Math.max(Math.round(9 * scaleMultiplier), 8)}px`, 
-                      fontFamily: styles.subtitleFont,
-                      fontWeight: 900, 
-                      textTransform: "uppercase", 
-                      letterSpacing: "1px", 
-                      color: styles.quoteAuthorColor 
-                    }}>
-                      — {activeSlide.quoteAuthor || "Quote Author"}
-                    </div>
-                  </div>
-                )}
-
-                {activeSlide.layout === "cta" && (
-                  <div 
-                    className="w-full text-center"
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: `${Math.round(12 * scaleMultiplier)}px`
-                    }}
-                  >
-                    <div 
-                      className="rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-primary animate-pulse"
-                      style={{
-                        height: `${Math.round(40 * scaleMultiplier)}px`,
-                        width: `${Math.round(40 * scaleMultiplier)}px`
-                      }}
-                    >
-                      <InstagramIcon size={Math.round(18 * scaleMultiplier)} style={{ color: styles.brandColor }} />
-                    </div>
-                    <div style={{
-                      color: styles.titleColor,
-                      fontFamily: styles.titleFont,
-                      fontSize: `${Math.round(20 * scaleMultiplier)}px`,
-                      fontWeight: 900,
-                      lineHeight: 1.2
-                    }}>
-                      {activeSlide.title}
-                    </div>
-                    <div style={{
-                      color: styles.subtitleColor,
-                      fontFamily: styles.subtitleFont,
-                      fontSize: `${Math.max(Math.round(12 * scaleMultiplier), 9)}px`,
-                      opacity: 0.8
-                    }}>
-                      {activeSlide.subtitle}
-                    </div>
-                    <div>
-                      <div 
-                        className="font-black tracking-widest inline-block uppercase"
-                        style={{ 
-                          background: styles.accentColor,
-                          color: theme === "cream" ? "#ffffff" : "#000000",
-                          fontFamily: styles.subtitleFont,
-                          padding: `${Math.round(6 * scaleMultiplier)}px ${Math.round(16 * scaleMultiplier)}px`,
-                          fontSize: `${Math.max(Math.round(9 * scaleMultiplier), 8)}px`,
-                          borderRadius: `${Math.round(8 * scaleMultiplier)}px`
-                        }}
-                      >
-                        SWIPE LEFT TO FOLLOW
+                        <div>
+                          <div 
+                            className="font-black tracking-widest inline-block uppercase"
+                            style={{ 
+                              background: styles.accentColor,
+                              color: theme === "cream" ? "#ffffff" : "#000000",
+                              fontFamily: styles.subtitleFont,
+                              padding: `${Math.round(6 * scaleMultiplier)}px ${Math.round(16 * scaleMultiplier)}px`,
+                              fontSize: `${Math.max(Math.round(9 * scaleMultiplier), 8)}px`,
+                              borderRadius: `${Math.round(8 * scaleMultiplier)}px`
+                            }}
+                          >
+                            SWIPE LEFT TO FOLLOW
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    )}
+                  </>
                 )}
               </div>
 
@@ -2324,26 +2627,37 @@ export function CarouselGeneratorClient() {
               <div 
                 className="w-full flex items-center justify-between border-t" 
                 style={{ 
-                  borderColor: "rgba(255,255,255,0.06)",
+                  borderColor: theme === "ainews" ? "#e5e7eb" : "rgba(255,255,255,0.06)",
                   paddingTop: `${Math.round(8 * scaleMultiplier)}px`
                 }}
               >
-                <span 
-                  className="font-black tracking-widest opacity-50 uppercase" 
-                  style={{ 
-                    color: styles.brandColor, 
-                    fontFamily: styles.subtitleFont,
-                    fontSize: `${Math.max(Math.round(9 * scaleMultiplier), 8)}px`
-                  }}
-                >
-                  {activeSlide.layout === "cta" ? "SAVE THIS POST" : "SWIPE LEFT ➔"}
-                </span>
-                {showPageNumber && (
+                {theme === "ainews" ? (
                   <span 
-                    className="font-black italic opacity-60" 
+                    className="font-mono font-bold text-black tracking-wider" 
+                    style={{ 
+                      fontSize: `${Math.max(Math.round(12 * scaleMultiplier), 9)}px`
+                    }}
+                  >
+                    [{brandName}]
+                  </span>
+                ) : (
+                  <span 
+                    className="font-black tracking-widest opacity-50 uppercase" 
                     style={{ 
                       color: styles.brandColor, 
                       fontFamily: styles.subtitleFont,
+                      fontSize: `${Math.max(Math.round(9 * scaleMultiplier), 8)}px`
+                    }}
+                  >
+                    {activeSlide.layout === "cta" ? "SAVE THIS POST" : "SWIPE LEFT ➔"}
+                  </span>
+                )}
+                {showPageNumber && (
+                  <span 
+                    className={theme === "ainews" ? "font-mono text-neutral-400 font-medium" : "font-black italic opacity-60"}
+                    style={{ 
+                      color: theme === "ainews" ? "#94a3b8" : styles.brandColor, 
+                      fontFamily: theme === "ainews" ? "'Fira Code', monospace" : styles.subtitleFont,
                       fontSize: `${Math.max(Math.round(12 * scaleMultiplier), 9)}px`
                     }}
                   >
@@ -2506,147 +2820,170 @@ export function CarouselGeneratorClient() {
                     {/* Dynamic layouts */}
                     <div style={{ width: "100%", zIndex: 10, flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                       
-                      {slide.layout === "title-only" && (
-                        <div style={{ width: "100%" }}>
-                          <h1 className="slide-title">{slide.title}</h1>
-                          <p className="slide-subtitle">{slide.subtitle}</p>
+                      {theme === "ainews" ? (
+                        <div style={{ width: "100%", textAlign: "left", display: "flex", flexDirection: "column", gap: `${Math.round(16 * scaleMultiplier)}px` }}>
+                          <div style={{ fontSize: `${Math.round(18 * scaleMultiplier)}px`, fontWeight: 800, textTransform: "uppercase", letterSpacing: "2px", color: "#888888", fontFamily: "'Inter', sans-serif" }}>
+                            {slide.categoryTag || "GROWX INSIGHTS"}
+                          </div>
+                          <h1 style={{ fontSize: `${Math.round(44 * scaleMultiplier)}px`, fontWeight: 900, color: "#000000", lineHeight: 1.08, letterSpacing: "-1px", fontFamily: "'Inter', sans-serif", margin: 0 }}>
+                            {slide.title}
+                          </h1>
+                          {renderVisualMediaCard(slide, scaleMultiplier)}
+                          <p style={{ fontSize: `${Math.round(22 * scaleMultiplier)}px`, color: "#111827", lineHeight: 1.5, whiteSpace: "pre-line", fontFamily: "'Inter', sans-serif", margin: 0 }}>
+                            {slide.subtitle}
+                          </p>
                         </div>
-                      )}
- 
-                      {slide.layout === "bullets" && (
-                        slide.imageEnabled ? (
-                          slide.imageLayout === "centered" ? (
-                            <div style={{ display: "flex", flexDirection: "column", gap: `${Math.round(24 * scaleMultiplier)}px`, width: "100%" }}>
-                              <h2 className="slide-title" style={{ fontSize: `${Math.round(38 * scaleMultiplier)}px`, textAlign: "left", marginBottom: "0px" }}>
-                                {slide.title}
-                              </h2>
-                              {renderImageOrSvgMarkup(slide, "rounded-2xl border border-white/10", { width: "100%", height: `${Math.round(300 * scaleMultiplier)}px`, objectFit: "cover" }, `${Math.round(300 * scaleMultiplier)}px`)}
-                              <ul className="slide-bullets" style={{ marginTop: "0px" }}>
-                                {slide.bullets.map((bullet, bIdx) => (
-                                  <li key={bIdx} className="slide-bullet-item" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, display: "flex", gap: `${Math.round(15 * scaleMultiplier)}px`, alignItems: "flex-start", marginBottom: `${Math.round(12 * scaleMultiplier)}px` }}>
-                                    <span className="slide-bullet-icon" style={{ color: styles.bulletIconColor }}>✔</span>
-                                    <span>{bullet}</span>
-                                  </li>
-                                ))}
-                              </ul>
+                      ) : (
+                        <>
+                          {slide.layout === "title-only" && (
+                            <div style={{ width: "100%" }}>
+                              <h1 className="slide-title">{slide.title}</h1>
+                              <p className="slide-subtitle">{slide.subtitle}</p>
                             </div>
-                          ) : (
-                            <div style={{ display: "flex", gap: `${Math.round(30 * scaleMultiplier)}px`, alignItems: "center", width: "100%" }}>
-                              {slide.imageLayout === "split-left" ? (
-                                <>
-                                  <div style={{ width: "40%", flexShrink: 0 }}>
-                                    {renderImageOrSvgMarkup(slide, "rounded-2xl border border-white/10", { width: "100%", height: `${Math.round(420 * scaleMultiplier)}px`, objectFit: "cover" }, `${Math.round(420 * scaleMultiplier)}px`)}
-                                  </div>
-                                  <div style={{ width: "60%", flexGrow: 1 }}>
-                                    <h2 className="slide-title" style={{ fontSize: `${Math.round(36 * scaleMultiplier)}px`, textAlign: "left", marginBottom: `${Math.round(15 * scaleMultiplier)}px` }}>
-                                      {slide.title}
-                                    </h2>
-                                    <ul className="slide-bullets" style={{ marginTop: "0px" }}>
-                                      {slide.bullets.map((bullet, bIdx) => (
-                                        <li key={bIdx} className="slide-bullet-item" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, display: "flex", gap: `${Math.round(15 * scaleMultiplier)}px`, alignItems: "flex-start", marginBottom: `${Math.round(12 * scaleMultiplier)}px` }}>
-                                          <span className="slide-bullet-icon" style={{ color: styles.bulletIconColor }}>✔</span>
-                                          <span>{bullet}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                </>
+                          )}
+     
+                          {slide.layout === "bullets" && (
+                            slide.imageEnabled ? (
+                              slide.imageLayout === "centered" ? (
+                                <div style={{ display: "flex", flexDirection: "column", gap: `${Math.round(24 * scaleMultiplier)}px`, width: "100%" }}>
+                                  <h2 className="slide-title" style={{ fontSize: `${Math.round(38 * scaleMultiplier)}px`, textAlign: "left", marginBottom: "0px" }}>
+                                    {slide.title}
+                                  </h2>
+                                  {renderImageOrSvgMarkup(slide, "rounded-2xl border border-white/10", { width: "100%", height: `${Math.round(300 * scaleMultiplier)}px`, objectFit: "cover" }, `${Math.round(300 * scaleMultiplier)}px`)}
+                                  <ul className="slide-bullets" style={{ marginTop: "0px" }}>
+                                    {slide.bullets.map((bullet, bIdx) => (
+                                      <li key={bIdx} className="slide-bullet-item" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, display: "flex", gap: `${Math.round(15 * scaleMultiplier)}px`, alignItems: "flex-start", marginBottom: `${Math.round(12 * scaleMultiplier)}px` }}>
+                                        <span className="slide-bullet-icon" style={{ color: styles.bulletIconColor }}>✔</span>
+                                        <span>{bullet}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
                               ) : (
-                                <>
-                                  <div style={{ width: "60%", flexGrow: 1 }}>
-                                    <h2 className="slide-title" style={{ fontSize: `${Math.round(36 * scaleMultiplier)}px`, textAlign: "left", marginBottom: `${Math.round(15 * scaleMultiplier)}px` }}>
-                                      {slide.title}
-                                    </h2>
-                                    <ul className="slide-bullets" style={{ marginTop: "0px" }}>
-                                      {slide.bullets.map((bullet, bIdx) => (
-                                        <li key={bIdx} className="slide-bullet-item" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, display: "flex", gap: `${Math.round(15 * scaleMultiplier)}px`, alignItems: "flex-start", marginBottom: `${Math.round(12 * scaleMultiplier)}px` }}>
-                                          <span className="slide-bullet-icon" style={{ color: styles.bulletIconColor }}>✔</span>
-                                          <span>{bullet}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                  <div style={{ width: "40%", flexShrink: 0 }}>
-                                    {renderImageOrSvgMarkup(slide, "rounded-2xl border border-white/10", { width: "100%", height: `${Math.round(420 * scaleMultiplier)}px`, objectFit: "cover" }, `${Math.round(420 * scaleMultiplier)}px`)}
-                                  </div>
-                                </>
-                              )}
+                                <div style={{ display: "flex", gap: `${Math.round(30 * scaleMultiplier)}px`, alignItems: "center", width: "100%" }}>
+                                  {slide.imageLayout === "split-left" ? (
+                                    <>
+                                      <div style={{ width: "40%", flexShrink: 0 }}>
+                                        {renderImageOrSvgMarkup(slide, "rounded-2xl border border-white/10", { width: "100%", height: `${Math.round(420 * scaleMultiplier)}px`, objectFit: "cover" }, `${Math.round(420 * scaleMultiplier)}px`)}
+                                      </div>
+                                      <div style={{ width: "60%", flexGrow: 1 }}>
+                                        <h2 className="slide-title" style={{ fontSize: `${Math.round(36 * scaleMultiplier)}px`, textAlign: "left", marginBottom: `${Math.round(15 * scaleMultiplier)}px` }}>
+                                          {slide.title}
+                                        </h2>
+                                        <ul className="slide-bullets" style={{ marginTop: "0px" }}>
+                                          {slide.bullets.map((bullet, bIdx) => (
+                                            <li key={bIdx} className="slide-bullet-item" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, display: "flex", gap: `${Math.round(15 * scaleMultiplier)}px`, alignItems: "flex-start", marginBottom: `${Math.round(12 * scaleMultiplier)}px` }}>
+                                              <span className="slide-bullet-icon" style={{ color: styles.bulletIconColor }}>✔</span>
+                                              <span>{bullet}</span>
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div style={{ width: "60%", flexGrow: 1 }}>
+                                        <h2 className="slide-title" style={{ fontSize: `${Math.round(36 * scaleMultiplier)}px`, textAlign: "left", marginBottom: `${Math.round(15 * scaleMultiplier)}px` }}>
+                                          {slide.title}
+                                        </h2>
+                                        <ul className="slide-bullets" style={{ marginTop: "0px" }}>
+                                          {slide.bullets.map((bullet, bIdx) => (
+                                            <li key={bIdx} className="slide-bullet-item" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, display: "flex", gap: `${Math.round(15 * scaleMultiplier)}px`, alignItems: "flex-start", marginBottom: `${Math.round(12 * scaleMultiplier)}px` }}>
+                                              <span className="slide-bullet-icon" style={{ color: styles.bulletIconColor }}>✔</span>
+                                              <span>{bullet}</span>
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                      <div style={{ width: "40%", flexShrink: 0 }}>
+                                        {renderImageOrSvgMarkup(slide, "rounded-2xl border border-white/10", { width: "100%", height: `${Math.round(420 * scaleMultiplier)}px`, objectFit: "cover" }, `${Math.round(420 * scaleMultiplier)}px`)}
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              )
+                            ) : (
+                              <div style={{ width: "100%" }}>
+                                <h2 className="slide-title" style={{ fontSize: `${Math.round(42 * scaleMultiplier)}px`, textAlign: "left" }}>{slide.title}</h2>
+                                <p className="slide-subtitle" style={{ fontSize: `${Math.round(22 * scaleMultiplier)}px`, textAlign: "left", opacity: 0.8, marginBottom: `${Math.round(30 * scaleMultiplier)}px` }}>{slide.subtitle}</p>
+                                <ul className="slide-bullets">
+                                  {slide.bullets.map((bullet, bIdx) => (
+                                    <li key={bIdx} className="slide-bullet-item" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px` }}>
+                                      <span className="slide-bullet-icon">✔</span>
+                                      <span>{bullet}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )
+                          )}
+     
+                          {slide.layout === "quote" && (
+                            <div className="slide-quote-box">
+                              <p className="slide-quote-text" style={{ fontSize: `${Math.round(32 * scaleMultiplier)}px` }}>"{slide.subtitle}"</p>
+                              <p className="slide-quote-author" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px` }}>— {slide.quoteAuthor || "Quote Author"}</p>
                             </div>
-                          )
-                        ) : (
-                          <div style={{ width: "100%" }}>
-                            <h2 className="slide-title" style={{ fontSize: `${Math.round(42 * scaleMultiplier)}px`, textAlign: "left" }}>{slide.title}</h2>
-                            <p className="slide-subtitle" style={{ fontSize: `${Math.round(22 * scaleMultiplier)}px`, textAlign: "left", opacity: 0.8, marginBottom: `${Math.round(30 * scaleMultiplier)}px` }}>{slide.subtitle}</p>
-                            <ul className="slide-bullets">
-                              {slide.bullets.map((bullet, bIdx) => (
-                                <li key={bIdx} className="slide-bullet-item" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px` }}>
-                                  <span className="slide-bullet-icon">✔</span>
-                                  <span>{bullet}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )
+                          )}
+     
+                          {slide.layout === "cta" && (
+                            <div style={{ width: "100%", textAlign: "center" }}>
+                              <div 
+                                style={{ 
+                                  height: `${Math.round(64 * scaleMultiplier)}px`, 
+                                  width: `${Math.round(64 * scaleMultiplier)}px`, 
+                                  borderRadius: `${Math.round(20 * scaleMultiplier)}px`, 
+                                  background: "rgba(255,255,255,0.05)",
+                                  border: "1px solid rgba(255,255,255,0.1)",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  margin: `0 auto ${Math.round(30 * scaleMultiplier)}px auto`,
+                                  color: styles.brandColor
+                                }}
+                              >
+                                <svg width={Math.round(32 * scaleMultiplier)} height={Math.round(32 * scaleMultiplier)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                              </div>
+                              <h1 className="slide-title" style={{ fontSize: `${Math.round(52 * scaleMultiplier)}px` }}>{slide.title}</h1>
+                              <p className="slide-subtitle" style={{ fontSize: `${Math.round(22 * scaleMultiplier)}px`, marginBottom: `${Math.round(40 * scaleMultiplier)}px` }}>{slide.subtitle}</p>
+                              <div 
+                                style={{ 
+                                  display: "inline-block", 
+                                  padding: `${Math.round(16 * scaleMultiplier)}px ${Math.round(36 * scaleMultiplier)}px`, 
+                                  borderRadius: `${Math.round(16 * scaleMultiplier)}px`, 
+                                  background: styles.accentColor, 
+                                  color: theme === "cream" ? "#ffffff" : "#000000",
+                                  fontSize: `${Math.round(18 * scaleMultiplier)}px`, 
+                                  fontWeight: 900, 
+                                  letterSpacing: "2px", 
+                                  textTransform: "uppercase" 
+                                }}
+                              >
+                                SWIPE LEFT TO FOLLOW
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
- 
-                      {slide.layout === "quote" && (
-                        <div className="slide-quote-box">
-                          <p className="slide-quote-text" style={{ fontSize: `${Math.round(32 * scaleMultiplier)}px` }}>"{slide.subtitle}"</p>
-                          <p className="slide-quote-author" style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px` }}>— {slide.quoteAuthor || "Quote Author"}</p>
-                        </div>
-                      )}
- 
-                      {slide.layout === "cta" && (
-                        <div style={{ width: "100%", textAlign: "center" }}>
-                          <div 
-                            style={{ 
-                              height: `${Math.round(64 * scaleMultiplier)}px`, 
-                              width: `${Math.round(64 * scaleMultiplier)}px`, 
-                              borderRadius: `${Math.round(20 * scaleMultiplier)}px`, 
-                              background: "rgba(255,255,255,0.05)",
-                              border: "1px solid rgba(255,255,255,0.1)",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              margin: `0 auto ${Math.round(30 * scaleMultiplier)}px auto`,
-                              color: styles.brandColor
-                            }}
-                          >
-                            <svg width={Math.round(32 * scaleMultiplier)} height={Math.round(32 * scaleMultiplier)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                            </svg>
-                          </div>
-                          <h1 className="slide-title" style={{ fontSize: `${Math.round(52 * scaleMultiplier)}px` }}>{slide.title}</h1>
-                          <p className="slide-subtitle" style={{ fontSize: `${Math.round(22 * scaleMultiplier)}px`, marginBottom: `${Math.round(40 * scaleMultiplier)}px` }}>{slide.subtitle}</p>
-                          <div 
-                            style={{ 
-                              display: "inline-block", 
-                              padding: `${Math.round(16 * scaleMultiplier)}px ${Math.round(36 * scaleMultiplier)}px`, 
-                              borderRadius: `${Math.round(16 * scaleMultiplier)}px`, 
-                              background: styles.accentColor, 
-                              color: theme === "cream" ? "#ffffff" : "#000000",
-                              fontSize: `${Math.round(18 * scaleMultiplier)}px`, 
-                              fontWeight: 900, 
-                              letterSpacing: "2px", 
-                              textTransform: "uppercase" 
-                            }}
-                          >
-                            SWIPE LEFT TO FOLLOW
-                          </div>
-                        </div>
-                      )}
- 
+
                     </div>
  
                     {/* Footer brand / paging overlay */}
-                    <div className="slide-footer">
-                      <span style={{ fontSize: `${Math.round(16 * scaleMultiplier)}px`, fontWeight: 900, color: styles.brandColor, opacity: 0.6, letterSpacing: "1px" }}>
-                        {slide.layout === "cta" ? "SAVE THIS POST" : "SWIPE LEFT ➔"}
-                      </span>
+                    <div className="slide-footer" style={{ borderTop: theme === "ainews" ? "1px solid #e5e7eb" : "none", paddingTop: `${Math.round(18 * scaleMultiplier)}px` }}>
+                      {theme === "ainews" ? (
+                        <span style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, fontWeight: 800, fontFamily: "'Fira Code', monospace", color: "#000000" }}>
+                          [{brandName}]
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: `${Math.round(16 * scaleMultiplier)}px`, fontWeight: 900, color: styles.brandColor, opacity: 0.6, letterSpacing: "1px" }}>
+                          {slide.layout === "cta" ? "SAVE THIS POST" : "SWIPE LEFT ➔"}
+                        </span>
+                      )}
                       {showPageNumber && (
-                        <span style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, fontWeight: 900, fontStyle: "italic", color: styles.brandColor, opacity: 0.7 }}>
+                        <span style={{ fontSize: `${Math.round(20 * scaleMultiplier)}px`, fontWeight: theme === "ainews" ? 500 : 900, fontStyle: theme === "ainews" ? "normal" : "italic", color: theme === "ainews" ? "#94a3b8" : styles.brandColor, fontFamily: theme === "ainews" ? "'Fira Code', monospace" : styles.subtitleFont }}>
                           {String(sIdx + 1).padStart(2, '0')}/{String(slides.length).padStart(2, '0')}
                         </span>
                       )}
