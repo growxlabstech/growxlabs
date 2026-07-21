@@ -10,10 +10,11 @@ interface CloudsProps {
 }
 
 export const Clouds: React.FC<CloudsProps> = ({
-  radius = 2.025,
+  radius = 2.022,
   cloudsRef,
 }) => {
-  const cloudsMap = useTexture('/textures/earth_clouds.jpg');
+  // Load real atmospheric cloud texture
+  const cloudsMap = useTexture('/textures/earth_clouds_8k.png');
 
   if (cloudsMap) {
     cloudsMap.anisotropy = 16;
@@ -25,7 +26,7 @@ export const Clouds: React.FC<CloudsProps> = ({
       <meshStandardMaterial
         map={cloudsMap}
         transparent
-        opacity={0.35}
+        opacity={0.4}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
         roughness={1}

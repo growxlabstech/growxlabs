@@ -3,22 +3,22 @@
 import React, { useMemo } from 'react';
 import * as THREE from 'three';
 import { useTexture } from '@react-three/drei';
-import { EarthShader, EARTH_COLORS } from '@/lib/three';
+import { PhotorealisticEarthShader, EARTH_COLORS } from '@/lib/three';
 
 interface EarthProps {
   radius?: number;
 }
 
 export const Earth: React.FC<EarthProps> = ({ radius = 2 }) => {
-  // Load textures with fallback handling
+  // Load photorealistic NASA Blue Marble 8K texture maps
   const [dayMap, nightMap, normalMap, specularMap] = useTexture([
-    '/textures/earth_daymap.jpg',
-    '/textures/earth_nightlights.jpg',
-    '/textures/earth_normal.png',
-    '/textures/earth_specular.png',
+    '/textures/earth_day_8k.jpg',
+    '/textures/earth_night_8k.jpg',
+    '/textures/earth_normal_8k.jpg',
+    '/textures/earth_specular_8k.jpg',
   ]);
 
-  // Configure texture filters for crisp GPU rendering
+  // Configure texture filtering for high-DPI GPU rendering
   [dayMap, nightMap, normalMap, specularMap].forEach((tex) => {
     if (tex) {
       tex.anisotropy = 16;
@@ -27,18 +27,17 @@ export const Earth: React.FC<EarthProps> = ({ radius = 2 }) => {
     }
   });
 
-  // Custom Earth Shader Material for seamless Day/Night blending
+  // Photorealistic Earth Shader Material
   const shaderMaterial = useMemo(() => {
     return new THREE.ShaderMaterial({
-      vertexShader: EarthShader.vertexShader,
-      fragmentShader: EarthShader.fragmentShader,
+      vertexShader: PhotorealisticEarthShader.vertexShader,
+      fragmentShader: PhotorealisticEarthShader.fragmentShader,
       uniforms: {
-        dayTexture: { value: dayMap },
-        nightTexture: { value: nightMap },
+        dayMap: { value: dayMap },
+        nightMap: { value: nightMap },
         normalMap: { value: normalMap },
         specularMap: { value: specularMap },
-        sunPosition: { value: new THREE.Vector3(5, 3, 5) },
-        atmosphereColor: { value: new THREE.Color(EARTH_COLORS.atmosphere) },
+        sunPosition: { value: new THREE.Vector3(6, 3, 5) },
       },
       blending: THREE.NormalBlending,
     });

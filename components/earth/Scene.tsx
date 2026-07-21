@@ -17,9 +17,9 @@ function CameraRig() {
   useFrame(({ camera, clock }) => {
     const time = clock.getElapsedTime();
     // Subtle camera floating movement
-    camera.position.x = Math.sin(time * 0.15) * 0.15;
-    camera.position.y = 1.1 + Math.cos(time * 0.2) * 0.08;
-    camera.lookAt(0, -0.2, 0);
+    camera.position.x = Math.sin(time * 0.12) * 0.12;
+    camera.position.y = 1.05 + Math.cos(time * 0.18) * 0.06;
+    camera.lookAt(0, -0.15, 0);
   });
   return null;
 }
@@ -30,8 +30,8 @@ function GlobeContent() {
   return (
     <group ref={earthGroupRef} {...bindInteractions}>
       <Earth radius={2} />
-      <Clouds radius={2.025} cloudsRef={cloudsRef} />
-      <Atmosphere radius={2.06} />
+      <Clouds radius={2.022} cloudsRef={cloudsRef} />
+      <Atmosphere radius={2.055} />
       <OrbitRings ringsRef={ringsRef} />
     </group>
   );
@@ -46,23 +46,23 @@ export function EarthScene() {
       className="relative w-full h-full min-h-[480px] md:min-h-[620px] select-none"
     >
       <Canvas
-        camera={{ position: [0, 1.1, 5.2], fov: 45 }}
+        camera={{ position: [0, 1.05, 5.2], fov: 45 }}
         gl={{
           antialias: true,
           alpha: true,
           powerPreference: 'high-performance',
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.1,
+          toneMappingExposure: 1.15,
         }}
         className="w-full h-full bg-[#050505]"
       >
         <color attach="background" args={[EARTH_COLORS.background]} />
 
-        {/* Ambient & Sun Directional Lighting */}
-        <ambientLight intensity={0.25} />
+        {/* Photorealistic Sun & Ambient Lighting */}
+        <ambientLight intensity={0.3} />
         <directionalLight
-          position={[5, 3, 5]}
-          intensity={2.8}
+          position={[6, 3, 5]}
+          intensity={3.0}
           color="#ffffff"
         />
 
@@ -71,7 +71,7 @@ export function EarthScene() {
         <Suspense fallback={null}>
           <GlobeContent />
           <Stars count={2200} />
-          <Particles count={220} />
+          <Particles count={200} />
         </Suspense>
 
         <OrbitControls
