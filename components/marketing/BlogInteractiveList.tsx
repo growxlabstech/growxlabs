@@ -42,7 +42,7 @@ const getPostImage = (post: BlogPost): string => {
     "elon-musks-path-to-becoming-the-worlds-first-trillionaire": "/images/blog-elon-trillionaire.png",
     "chatgpt-gpt-5-6-preview-everything-you-need-to-know": "/images/blog-gpt56-preview.png",
     "skyroot-aerospace-vikram-1-orbital-launch": "/images/blog-skyroot-vikram1.png",
-    "kimi-k3-open-frontier-intelligence-model": "/images/kimi-k3-logo.png"
+    "kimi-k3-open-frontier-intelligence-model": "/images/blog-kimi-k3-woodcut.png"
   };
   return images[post.slug] || "/images/nvidia-vision-agentic-to-useful-ai.png";
 };
