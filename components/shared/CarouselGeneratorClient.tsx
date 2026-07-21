@@ -2424,7 +2424,7 @@ export function CarouselGeneratorClient() {
                 backgroundColor: styles.wrapperBg,
                 backgroundImage: styles.wrapperImage,
                 fontFamily: styles.titleFont,
-                padding: `${Math.round(24 * scaleMultiplier)}px`
+                padding: theme === "ainews" ? `${Math.round(14 * scaleMultiplier)}px ${Math.round(20 * scaleMultiplier)}px` : `${Math.round(24 * scaleMultiplier)}px`
               }}
             >
               {renderBgPatternMarkup()}
@@ -2948,7 +2948,9 @@ export function CarouselGeneratorClient() {
                       flexDirection: "column", 
                       justifyContent: "space-between", 
                       alignItems: "center", 
-                      padding: `${Math.round(80 * scaleMultiplier)}px 80px`,
+                      padding: theme === "ainews"
+                        ? `${Math.round(44 * scaleMultiplier)}px ${Math.round(64 * scaleMultiplier)}px ${Math.round(40 * scaleMultiplier)}px ${Math.round(64 * scaleMultiplier)}px`
+                        : `${Math.round(80 * scaleMultiplier)}px 80px`,
                       position: "relative"
                     }}
                   >
