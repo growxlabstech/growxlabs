@@ -38,16 +38,24 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
   // Blog posts database
   const featuredPost = {
-    slug: "chatgpt-gpt-5-6-preview-everything-you-need-to-know",
-    title: "ChatGPT GPT-5.6 Preview: Everything You Need to Know",
-    excerpt: "Artificial Intelligence is evolving faster than ever, and OpenAI has once again pushed the boundaries with the announcement of GPT-5.6 Preview. Explore the new tiered family of models (Sol, Terra, Luna) and discover its advanced reasoning, coding capabilities, and safety stack.",
-    category: "AI Industry / OpenAI / GPT-5.6",
-    date: "June 30, 2026",
-    readTime: "8 min read",
-    image: "/images/blog-gpt56-preview.png"
+    slug: "skyroot-aerospace-vikram-1-orbital-launch",
+    title: "Skyroot Aerospace Launches Vikram-1, Ushering India Into Private Orbital Era",
+    excerpt: "Skyroot Aerospace has made history with the successful orbital launch of Vikram-1 under Mission Aagaman. Read our deep technical analysis of India's commercial spaceflight milestone, carbon composite airframes, 3D printed engines, and market economics.",
+    category: "Space • India • Deep-Tech",
+    date: "July 21, 2026",
+    readTime: "14 min read",
+    image: "/images/blog-skyroot-vikram1.png"
   };
 
   const regularPosts = [
+    {
+      slug: "chatgpt-gpt-5-6-preview-everything-you-need-to-know",
+      title: "ChatGPT GPT-5.6 Preview: Everything You Need to Know",
+      excerpt: "Artificial Intelligence is evolving faster than ever, and OpenAI has once again pushed the boundaries with the announcement of GPT-5.6 Preview. Explore the new tiered family of models (Sol, Terra, Luna) and discover its advanced reasoning, coding capabilities, and safety stack.",
+      category: "AI Industry / OpenAI / GPT-5.6",
+      date: "June 30, 2026",
+      readTime: "8 min read"
+    },
     {
       slug: "claude-fable-5-mythos-5-banned-us-government",
       title: "Claude Fable 5 & Mythos 5 Banned: Timeline & Impact",
