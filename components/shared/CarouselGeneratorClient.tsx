@@ -1197,20 +1197,24 @@ export function CarouselGeneratorClient() {
 
   const renderVisualMediaCard = (slide: Slide, scale = 1.0) => {
     if (slide.customImage) {
+      const isPreview = scale < 0.8;
       return (
         <div 
-          className="w-full bg-[#050505] rounded-2xl border border-neutral-800 text-white my-3 flex flex-col justify-center items-center overflow-hidden shrink-0 p-3"
+          className="w-full bg-[#050505] rounded-2xl border border-neutral-800 text-white my-1 flex flex-col justify-center items-center overflow-hidden shrink-0 p-2"
           style={{
-            borderRadius: `${Math.round(18 * scale)}px`,
-            padding: `${Math.round(12 * scale)}px`,
-            margin: `${Math.round(12 * scale)}px 0`
+            borderRadius: `${Math.round(14 * scale)}px`,
+            padding: `${Math.round(8 * scale)}px`,
+            margin: `${Math.round(6 * scale)}px 0`
           }}
         >
           <img 
             src={slide.customImage} 
             alt={slide.title || "Slide Image"}
-            className="w-full h-auto object-contain rounded-xl border border-neutral-800"
-            style={{ maxHeight: `${Math.round(260 * scale)}px`, borderRadius: `${Math.round(12 * scale)}px` }}
+            className="w-full h-auto object-contain rounded-lg border border-neutral-800"
+            style={{ 
+              maxHeight: isPreview ? "130px" : `${Math.round(280 * scale)}px`, 
+              borderRadius: `${Math.round(8 * scale)}px` 
+            }}
           />
         </div>
       );
@@ -2438,23 +2442,29 @@ export function CarouselGeneratorClient() {
                 }}
               >
                 {theme === "ainews" ? (
-                  <div className="w-full flex flex-col justify-start items-start text-left space-y-1.5 h-full">
+                  <div className="w-full flex flex-col justify-between items-start text-left h-full overflow-hidden">
+                    <div className="w-full flex flex-col justify-start items-start space-y-1 shrink-0">
+                      <div 
+                        className="text-[10px] font-extrabold uppercase tracking-widest text-[#888888] font-sans"
+                        style={{ fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px` }}
+                      >
+                        {activeSlide.categoryTag || "GROWX INSIGHTS"}
+                      </div>
+                      <div 
+                        className="font-black text-black leading-tight font-sans tracking-tight"
+                        style={{ fontSize: `${Math.round(16 * scaleMultiplier)}px` }}
+                      >
+                        {activeSlide.title}
+                      </div>
+                    </div>
+
+                    <div className="w-full flex-1 flex flex-col justify-center items-center overflow-hidden min-h-0 my-1">
+                      {renderVisualMediaCard(activeSlide, liveScaleMultiplier)}
+                    </div>
+
                     <div 
-                      className="text-[10px] font-extrabold uppercase tracking-widest text-[#888888] font-sans"
+                      className="w-full text-neutral-800 text-[10px] leading-snug font-sans whitespace-pre-line font-normal shrink-0 pt-0.5"
                       style={{ fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px` }}
-                    >
-                      {activeSlide.categoryTag || "GROWX INSIGHTS"}
-                    </div>
-                    <div 
-                      className="font-black text-black leading-tight font-sans tracking-tight"
-                      style={{ fontSize: `${Math.round(18 * scaleMultiplier)}px` }}
-                    >
-                      {activeSlide.title}
-                    </div>
-                    {renderVisualMediaCard(activeSlide, liveScaleMultiplier)}
-                    <div 
-                      className="text-neutral-800 text-[11px] leading-relaxed font-sans whitespace-pre-line font-normal"
-                      style={{ fontSize: `${Math.max(Math.round(11 * scaleMultiplier), 8.5)}px` }}
                     >
                       {activeSlide.subtitle}
                     </div>
