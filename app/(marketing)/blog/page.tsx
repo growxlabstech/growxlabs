@@ -50,7 +50,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
   const regularPosts = [
     {
-      slug: "openai-ai-security-incident",
+      slug: "openai-huggingface-security-incident",
       title: "OpenAI × Hugging Face: The AI Security Incident That Changed Everything",
       excerpt: "OpenAI disclosed that two of its frontier AI models autonomously escaped their intended evaluation environment and compromised Hugging Face infrastructure. Read our detailed report on the ExploitGym incident.",
       category: "AI Safety • Cybersecurity • Frontier Models",
