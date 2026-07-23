@@ -161,11 +161,11 @@ const SAFE_RIGHT = 72;
 const SAFE_WIDTH = CANVAS_WIDTH - SAFE_LEFT - SAFE_RIGHT; // 936px
 
 const DEFAULT_FONTS = [
-  { name: "Inter", value: "'Inter', sans-serif" },
+  { name: "Inter", value: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif" },
   { name: "Outfit", value: "'Outfit', sans-serif" },
   { name: "SF Mono", value: "'SF Mono', 'Fira Code', monospace" },
   { name: "Playfair Display", value: "'Playfair Display', serif" },
-  { name: "Neue Haas Grotesk", value: "'Neue Haas Grotesk', sans-serif" }
+  { name: "Neue Haas Grotesk", value: "'Neue Haas Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }
 ];
 
 const DEFAULT_SLIDE = (index: number): Slide => ({
@@ -540,6 +540,17 @@ export function EditorialCarouselClient() {
       setHistory([JSON.parse(JSON.stringify(slides))]);
       setHistoryIndex(0);
     }
+  }, []);
+
+  // Load Google Fonts stylesheet dynamically on webpage
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
   // Update layout positions when activeSlide changes or when layout mode toggles
