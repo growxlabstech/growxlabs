@@ -23,7 +23,7 @@ export function DeepSpaceScene() {
   return (
     <div
       ref={containerRef}
-      className="w-full h-full select-none bg-[#000000]"
+      className="w-full h-full select-none bg-transparent"
     >
       <Canvas
         camera={{ position: [0, 0, 10], fov: 45 }}
@@ -35,9 +35,8 @@ export function DeepSpaceScene() {
           toneMappingExposure: 1.0,
           outputColorSpace: THREE.SRGBColorSpace,
         }}
-        className="w-full h-full bg-[#000000]"
+        className="w-full h-full bg-transparent"
       >
-        <color attach="background" args={['#000000']} />
 
         <DeepSpaceCameraRig />
 

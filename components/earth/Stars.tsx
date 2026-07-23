@@ -10,14 +10,21 @@ const StarVertexShader = `
   attribute float aTwinkle;
   attribute vec3 aColor;
 
+  uniform float uSpreadY;
+
   varying vec3 vColor;
   varying float vSize;
   varying float vTwinkle;
+  varying float vEdgeFade;
 
   void main() {
     vColor = aColor;
     vSize = aSize;
     vTwinkle = aTwinkle;
+
+    // Smoothly fade out stars as they approach Y boundaries (-1.0 or 1.0)
+    float normY = position.y / (uSpreadY * 0.5);
+    vEdgeFade = 1.0 - smoothstep(0.65, 0.95, abs(normY));
 
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
     gl_Position = projectionMatrix * mvPosition;
@@ -33,6 +40,7 @@ const StarFragmentShader = `
   varying vec3 vColor;
   varying float vSize;
   varying float vTwinkle;
+  varying float vEdgeFade;
 
   void main() {
     // Calculate distance from center of point sprite (0.5, 0.5)
@@ -54,7 +62,7 @@ const StarFragmentShader = `
     }
 
     vec3 finalColor = vColor * twinkle;
-    gl_FragColor = vec4(finalColor, alpha * 0.95);
+    gl_FragColor = vec4(finalColor, alpha * vEdgeFade);
   }
 `;
 
@@ -116,8 +124,9 @@ function StarFieldLayer({ count, minSize, maxSize, speed, spreadX, spreadY, spre
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
+      uSpreadY: { value: spreadY },
     }),
-    []
+    [spreadY]
   );
 
   useFrame(({ clock }, delta) => {
@@ -174,9 +183,9 @@ function StarFieldLayer({ count, minSize, maxSize, speed, spreadX, spreadY, spre
 export function DeepSpaceStars() {
   return (
     <group>
-      {/* Layer 1: 25,000 tiny distant background stars (0.3px–0.8px, slow speed) */}
+      {/* Layer 1: 12,000 tiny distant background stars (0.3px–0.8px, slow speed) */}
       <StarFieldLayer
-        count={25000}
+        count={12000}
         minSize={0.35}
         maxSize={0.85}
         speed={0.035}
@@ -185,9 +194,9 @@ export function DeepSpaceStars() {
         spreadZ={420}
       />
 
-      {/* Layer 2: 5,000 medium stars (1.0px–2.0px, medium speed, subtle twinkle) */}
+      {/* Layer 2: 2,500 medium stars (1.0px–2.0px, medium speed, subtle twinkle) */}
       <StarFieldLayer
-        count={5000}
+        count={2500}
         minSize={0.9}
         maxSize={1.9}
         speed={0.09}
@@ -196,9 +205,9 @@ export function DeepSpaceStars() {
         spreadZ={340}
       />
 
-      {/* Layer 3: 300 larger foreground glowing stars (2.0px–4.0px, faster parallax) */}
+      {/* Layer 3: 150 larger foreground glowing stars (2.0px–4.0px, faster parallax) */}
       <StarFieldLayer
-        count={300}
+        count={150}
         minSize={2.0}
         maxSize={3.8}
         speed={0.20}

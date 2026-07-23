@@ -24,7 +24,7 @@ export function AstroChatCTA() {
   };
 
   return (
-    <section className="relative w-full min-h-[480px] sm:min-h-[580px] md:min-h-[660px] flex flex-col items-center justify-center px-4 sm:px-6 py-20 select-none bg-[#000000] overflow-hidden">
+    <section className="relative w-full min-h-[480px] sm:min-h-[580px] md:min-h-[660px] flex flex-col items-center justify-center px-4 sm:px-6 py-20 select-none bg-transparent overflow-hidden">
       {/* 1. Cinematic Deep Space Particle Starfield (Background Hero Scene) */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
         <DeepSpaceScene />
