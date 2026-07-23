@@ -213,7 +213,7 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
   },
   featuredImage: {
     mediaUrl: "",
-    objectFit: "cover",
+    objectFit: "contain",
     brightness: 100,
     contrast: 100,
     borderRadius: 22,
