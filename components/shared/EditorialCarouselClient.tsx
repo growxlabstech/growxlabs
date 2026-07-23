@@ -16,7 +16,7 @@ import {
   Type, 
   LayoutGrid, 
   Upload, 
-  Layers, 
+  Layers as LayersIcon, 
   Lock, 
   Unlock, 
   Eye, 
@@ -29,14 +29,21 @@ import {
   AlignCenter, 
   AlignRight,
   FileText,
-  MousePointer,
-  RotateCw,
   FolderOpen,
   Image as ImageIcon,
   CheckSquare,
   Quote as QuoteIcon,
   Play,
-  Scissors
+  Share2,
+  ChevronDown,
+  RotateCcw,
+  Undo,
+  Redo,
+  Sliders,
+  Sparkles,
+  Smartphone,
+  Eye as ViewIcon,
+  MousePointer
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -396,10 +403,11 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
 // TEMPLATE PRESETS
 // ==========================================
 
-const TEMPLATE_PRESETS: { id: string; name: string; setup: (slide: Slide) => Slide }[] = [
+const TEMPLATE_PRESETS = [
   {
     id: "ai-news",
-    name: "AI News",
+    name: "AI News Feed",
+    category: "News",
     setup: (slide: Slide): Slide => ({
       ...slide,
       category: { ...slide.category, text: "AI NEWS", visible: true },
@@ -415,10 +423,11 @@ const TEMPLATE_PRESETS: { id: string; name: string; setup: (slide: Slide) => Sli
   },
   {
     id: "research",
-    name: "Research Report",
+    name: "Research Insights",
+    category: "Academic",
     setup: (slide: Slide): Slide => ({
       ...slide,
-      category: { ...slide.category, text: "RESEARCH", visible: true },
+      category: { ...slide.category, text: "RESEARCH STUDY", visible: true },
       headline: { ...slide.headline, text: "Decentralized Training Runs Over Heterogeneous Networks", visible: true },
       featuredImage: { ...slide.featuredImage, visible: false },
       body: { ...slide.body, text: "Our empirical study shows decentralized networks can achieve up to 84% baseline efficiency under model compression pipelines.", visible: true },
@@ -429,10 +438,11 @@ const TEMPLATE_PRESETS: { id: string; name: string; setup: (slide: Slide) => Sli
   },
   {
     id: "services",
-    name: "Our Services",
+    name: "Product & Services",
+    category: "Marketing",
     setup: (slide: Slide): Slide => ({
       ...slide,
-      category: { ...slide.category, text: "SERVICES", visible: true },
+      category: { ...slide.category, text: "CORE SERVICES", visible: true },
       headline: { ...slide.headline, text: "End-to-End AI Engineering & Agent Orchestration", visible: true },
       featuredImage: { ...slide.featuredImage, visible: true, height: 350 },
       body: { ...slide.body, text: "We configure multi-agent networks, clean pipeline nodes, and build high-performance search infrastructures tailored to your CRM workflow.", visible: true },
@@ -442,124 +452,18 @@ const TEMPLATE_PRESETS: { id: string; name: string; setup: (slide: Slide) => Sli
     })
   },
   {
-    id: "product-launch",
-    name: "Product Launch",
-    setup: (slide: Slide): Slide => ({
-      ...slide,
-      category: { ...slide.category, text: "PRODUCT LAUNCH", visible: true },
-      headline: { ...slide.headline, text: "Introducing AstroChat v2: Native Multi-Agent Hub", visible: true },
-      featuredImage: { ...slide.featuredImage, visible: true },
-      body: { ...slide.body, text: "AstroChat integrates directly with BigQuery, features real-time vector caching, and handles user queries at 4x speed.", visible: true },
-      bullets: { ...slide.bullets, visible: false },
-      quote: { ...slide.quote, visible: false },
-      cta: { ...slide.cta, visible: true }
-    })
-  },
-  {
-    id: "case-study",
-    name: "Case Study",
-    setup: (slide: Slide): Slide => ({
-      ...slide,
-      category: { ...slide.category, text: "CASE STUDY", visible: true },
-      headline: { ...slide.headline, text: "How Lightyear scaled pipeline speeds by 400%", visible: true },
-      featuredImage: { ...slide.featuredImage, visible: false },
-      body: { ...slide.body, text: "By deploying autonomous crawlers for leads management, the product studio saved 30+ hours of engineering capacity per week.", visible: true },
-      quote: { ...slide.quote, visible: true, text: "GrowXLabs changed how we approach pipeline velocity and internal tooling.", author: "Lightyear Leadership" },
-      bullets: { ...slide.bullets, visible: false }
-    })
-  },
-  {
-    id: "timeline",
-    name: "Project Timeline",
-    setup: (slide: Slide): Slide => ({
-      ...slide,
-      category: { ...slide.category, text: "PROJECT TIMELINE", visible: true },
-      headline: { ...slide.headline, text: "Roadmap to AI-Native Operations", visible: true },
-      featuredImage: { ...slide.featuredImage, visible: false },
-      body: { ...slide.body, text: "Here is the standard 3-phase rollout pipeline for team workspaces:", visible: true },
-      bullets: { ...slide.bullets, visible: true, items: ["Phase 1: Ingestion & Vector Caching", "Phase 2: Agent Tooling & CRM Sync", "Phase 3: Automated Outbox Campaign Scheduling"] },
-      quote: { ...slide.quote, visible: false }
-    })
-  },
-  {
-    id: "comparison",
-    name: "Side Comparison",
-    setup: (slide: Slide): Slide => ({
-      ...slide,
-      category: { ...slide.category, text: "COMPARISON", visible: true },
-      headline: { ...slide.headline, text: "Decentralized vs Centralized Agent Hubs", visible: true },
-      featuredImage: { ...slide.featuredImage, visible: false },
-      body: { ...slide.body, text: "Decentralized hubs utilize local processing nodes which prevent outages, reduce token costs by 60%, and keep customer data in private containers.", visible: true },
-      bullets: { ...slide.bullets, visible: true, items: ["Decentralized: Localized, fast, cost-effective", "Centralized: High coordination latency, centralized risk"] },
-      quote: { ...slide.quote, visible: false }
-    })
-  },
-  {
-    id: "statistics",
-    name: "Key Statistics",
-    setup: (slide: Slide): Slide => ({
-      ...slide,
-      category: { ...slide.category, text: "PERFORMANCE STATS", visible: true },
-      headline: { ...slide.headline, text: "+59.7% Speedup vs Baseline Triton Kernels", visible: true },
-      featuredImage: { ...slide.featuredImage, visible: true },
-      body: { ...slide.body, text: "This graphic shows the AttnRes GPU Kernel speedup benchmark across varying token limits.", visible: true },
-      bullets: { ...slide.bullets, visible: false },
-      quote: { ...slide.quote, visible: false },
-      cta: { ...slide.cta, visible: false }
-    })
-  },
-  {
     id: "quote",
-    name: "Pull Quote",
+    name: "Editorial Quote",
+    category: "Social",
     setup: (slide: Slide): Slide => ({
       ...slide,
       category: { ...slide.category, text: "EDITORIAL QUOTE", visible: true },
-      headline: { ...slide.headline, text: "What our engineers say about agent pipelines:", visible: true },
+      headline: { ...slide.headline, text: "What our team says about pipeline safety:", visible: true },
       featuredImage: { ...slide.featuredImage, visible: false },
       body: { ...slide.body, visible: false },
       bullets: { ...slide.bullets, visible: false },
       quote: { ...slide.quote, visible: true },
       cta: { ...slide.cta, visible: false }
-    })
-  },
-  {
-    id: "hiring",
-    name: "We Are Hiring",
-    setup: (slide: Slide): Slide => ({
-      ...slide,
-      category: { ...slide.category, text: "GROWX CAREERS", visible: true },
-      headline: { ...slide.headline, text: "Join our team as an AI Security Engineer", visible: true },
-      featuredImage: { ...slide.featuredImage, visible: true },
-      body: { ...slide.body, text: "We are seeking engineers to audit agent permissions, optimize model safety guardrails, and harden double-entry ledgers.", visible: true },
-      bullets: { ...slide.bullets, visible: false },
-      quote: { ...slide.quote, visible: false },
-      cta: { ...slide.cta, visible: true, text: "Apply on Careers Portal" }
-    })
-  },
-  {
-    id: "tutorial",
-    name: "Step Tutorial",
-    setup: (slide: Slide): Slide => ({
-      ...slide,
-      category: { ...slide.category, text: "TUTORIALS", visible: true },
-      headline: { ...slide.headline, text: "How to audit token usage in 3 steps", visible: true },
-      featuredImage: { ...slide.featuredImage, visible: false },
-      body: { ...slide.body, text: "Follow these steps to configure real-time token tracking alerts:", visible: true },
-      bullets: { ...slide.bullets, visible: true, items: ["1. Connect your model client via telemetry hooks", "2. Map usage objects to double-entry ledger database", "3. Set trigger thresholds inside workflows engine"] },
-      quote: { ...slide.quote, visible: false }
-    })
-  },
-  {
-    id: "announcement",
-    name: "Announcement",
-    setup: (slide: Slide): Slide => ({
-      ...slide,
-      category: { ...slide.category, text: "ANNOUNCEMENT", visible: true },
-      headline: { ...slide.headline, text: "GrowXLabs raises seed round from top VC firms", visible: true },
-      featuredImage: { ...slide.featuredImage, visible: true },
-      body: { ...slide.body, text: "We are building the future of automated enterprise systems and CRM sales copilots. Let's make AI-native pipelines accessible to everyone.", visible: true },
-      bullets: { ...slide.bullets, visible: false },
-      quote: { ...slide.quote, visible: false }
     })
   }
 ];
@@ -570,93 +474,104 @@ export function EditorialCarouselClient() {
   const [selectedElement, setSelectedElement] = useState<ElementKey | null>(null);
   const [editorMode, setEditorMode] = useState<"fixed" | "free">("fixed");
   
-  // Viewport Settings
-  const [zoomScale, setZoomScale] = useState(0.4);
+  // Viewport Control
+  const [zoomScale, setZoomScale] = useState(0.48);
   const [showGrid, setShowGrid] = useState(true);
   const [showSafeArea, setShowSafeArea] = useState(true);
   const [showGuides, setShowGuides] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Active property tab
-  const [activeTab, setActiveTab] = useState<"style" | "content" | "export">("content");
+  // Left panel collapse settings
+  const [leftTab, setLeftTab] = useState<"slides" | "templates" | "brand">("slides");
+  
+  // App states
+  const [projectName, setProjectName] = useState("GrowXLabs Editorial Post");
+  const [isEditingProjectName, setIsEditingProjectName] = useState(false);
+  const [history, setHistory] = useState<Slide[][]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
-  // Drag-and-Drop / Resize Tracking
+  // Canvas interaction refs
   const canvasRef = useRef<HTMLDivElement>(null);
   const dragStartRef = useRef<{ startX: number; startY: number; elemX: number; elemY: number } | null>(null);
   const resizeStartRef = useRef<{ startX: number; startY: number; elemW: number; elemH: number } | null>(null);
 
   const activeSlide = slides[activeIndex] || DEFAULT_SLIDE(0);
 
-  // Auto-fit responsive scale of editor canvas on window size changes
+  // Push new state to history stack
+  const saveHistory = (newSlides: Slide[]) => {
+    const nextHistory = history.slice(0, historyIndex + 1);
+    setHistory([...nextHistory, JSON.parse(JSON.stringify(newSlides))]);
+    setHistoryIndex(nextHistory.length);
+  };
+
+  const handleUndo = () => {
+    if (historyIndex > 0) {
+      setHistoryIndex(prev => prev - 1);
+      setSlides(JSON.parse(JSON.stringify(history[historyIndex - 1])));
+      toast.success("Undo successful");
+    }
+  };
+
+  const handleRedo = () => {
+    if (historyIndex < history.length - 1) {
+      setHistoryIndex(prev => prev + 1);
+      setSlides(JSON.parse(JSON.stringify(history[historyIndex + 1])));
+      toast.success("Redo successful");
+    }
+  };
+
+  // Initialize history
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setZoomScale(0.22);
-      } else if (window.innerWidth < 1200) {
-        setZoomScale(0.32);
-      } else {
-        setZoomScale(0.48);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    if (history.length === 0) {
+      setHistory([JSON.parse(JSON.stringify(slides))]);
+      setHistoryIndex(0);
+    }
   }, []);
 
-  // Update layout positions when activeSlide changes or when layout mode toggles (Fixed Layout rules)
+  // Update layout positions when activeSlide changes or when layout mode toggles
   useEffect(() => {
     if (editorMode === "fixed") {
       const updated = { ...activeSlide };
       
       // Strict Grid Offsets
-      // Category: Y = 60
       updated.category.x = SAFE_LEFT;
       updated.category.y = SAFE_TOP;
       updated.category.width = SAFE_WIDTH;
 
-      // Headline: Category bottom + 20px
       updated.headline.x = SAFE_LEFT;
       updated.headline.y = SAFE_TOP + updated.category.height + 20;
       updated.headline.width = SAFE_WIDTH;
 
-      // Image: Fixed Y position at 292px, Width = 936px, Height = 470px
       updated.featuredImage.x = SAFE_LEFT;
       updated.featuredImage.y = 292;
       updated.featuredImage.width = SAFE_WIDTH;
       updated.featuredImage.height = 470;
 
-      // Body: Image bottom + 40px
       updated.body.x = SAFE_LEFT;
-      updated.body.y = updated.featuredImage.y + updated.featuredImage.height + 40; // 802px
+      updated.body.y = updated.featuredImage.y + updated.featuredImage.height + 40;
       updated.body.width = SAFE_WIDTH;
 
-      // Quote inherits same body position if active
       updated.quote.x = SAFE_LEFT;
       updated.quote.y = updated.featuredImage.y + updated.featuredImage.height + 40;
       updated.quote.width = SAFE_WIDTH;
 
-      // Bullets start below body or quote
       updated.bullets.x = SAFE_LEFT;
       updated.bullets.y = updated.body.y + (updated.body.visible ? updated.body.height + 20 : 0);
       updated.bullets.width = SAFE_WIDTH;
 
-      // CTA Button
       updated.cta.x = SAFE_LEFT;
       updated.cta.y = updated.bullets.y + (updated.bullets.visible ? updated.bullets.height + 20 : 40);
 
-      // Logo
       updated.logo.x = SAFE_LEFT;
       updated.logo.y = SAFE_TOP;
 
-      // Divider
       updated.divider.x = SAFE_LEFT;
       updated.divider.y = 275;
       updated.divider.width = SAFE_WIDTH;
 
-      // Author
       updated.author.x = SAFE_LEFT;
       updated.author.y = 770;
 
-      // Save back to state
       setSlides(prev => prev.map((s, i) => i === activeIndex ? updated : s));
     }
   }, [
@@ -679,7 +594,7 @@ export function EditorialCarouselClient() {
   // ==========================================
 
   const updateSlideElement = (key: ElementKey, updates: any) => {
-    setSlides(prev => prev.map((s, idx) => {
+    const newSlides = slides.map((s, idx) => {
       if (idx !== activeIndex) return s;
       return {
         ...s,
@@ -688,11 +603,13 @@ export function EditorialCarouselClient() {
           ...updates
         }
       };
-    }));
+    });
+    setSlides(newSlides);
+    saveHistory(newSlides);
   };
 
   const updateSlideFooter = (updates: Partial<Slide["footer"]>) => {
-    setSlides(prev => prev.map((s, idx) => {
+    const newSlides = slides.map((s, idx) => {
       if (idx !== activeIndex) return s;
       return {
         ...s,
@@ -701,45 +618,48 @@ export function EditorialCarouselClient() {
           ...updates
         }
       };
-    }));
+    });
+    setSlides(newSlides);
+    saveHistory(newSlides);
   };
 
-  // Add Slide
   const addSlide = () => {
-    setSlides(prev => [...prev, DEFAULT_SLIDE(prev.length)]);
-    setActiveIndex(prev => prev + 1);
+    const newSlides = [...slides, DEFAULT_SLIDE(slides.length)];
+    setSlides(newSlides);
+    setActiveIndex(newSlides.length - 1);
+    saveHistory(newSlides);
     toast.success("Added new slide");
   };
 
-  // Duplicate Slide
   const duplicateSlide = (idx: number) => {
     const clone = JSON.parse(JSON.stringify(slides[idx]));
     clone.id = `slide-${Date.now()}-${Math.random()}`;
-    setSlides(prev => {
-      const copy = [...prev];
-      copy.splice(idx + 1, 0, clone);
-      return copy;
-    });
+    const newSlides = [...slides];
+    newSlides.splice(idx + 1, 0, clone);
+    setSlides(newSlides);
     setActiveIndex(idx + 1);
+    saveHistory(newSlides);
     toast.success("Duplicated slide");
   };
 
-  // Delete Slide
   const deleteSlide = (idx: number) => {
     if (slides.length <= 1) {
       toast.error("Cannot delete the only remaining slide.");
       return;
     }
-    setSlides(prev => prev.filter((_, i) => i !== idx));
-    setActiveIndex(prev => Math.max(0, prev - 1));
+    const newSlides = slides.filter((_, i) => i !== idx);
+    setSlides(newSlides);
+    setActiveIndex(Math.max(0, idx - 1));
+    saveHistory(newSlides);
     toast.success("Deleted slide");
   };
 
-  // Preset Layout Selector
   const applyPreset = (presetId: string) => {
     const preset = TEMPLATE_PRESETS.find(p => p.id === presetId);
     if (!preset) return;
-    setSlides(prev => prev.map((s, i) => i === activeIndex ? preset.setup(s) : s));
+    const newSlides = slides.map((s, i) => i === activeIndex ? preset.setup(s) : s);
+    setSlides(newSlides);
+    saveHistory(newSlides);
     toast.success(`Applied ${preset.name} template layout`);
   };
 
@@ -748,10 +668,10 @@ export function EditorialCarouselClient() {
   // ==========================================
 
   const handleElementMouseDown = (e: React.MouseEvent, key: ElementKey) => {
-    if (e.button !== 0) return; // Left click only
+    if (e.button !== 0) return;
     setSelectedElement(key);
     
-    if (editorMode === "fixed") return; // Position locked in Fixed Mode
+    if (editorMode === "fixed") return;
     
     const elem = activeSlide[key];
     if (elem.locked) return;
@@ -778,7 +698,6 @@ export function EditorialCarouselClient() {
     let newX = Math.round(dragStartRef.current.elemX + dx);
     let newY = Math.round(dragStartRef.current.elemY + dy);
 
-    // Guide Snapping
     if (showGuides) {
       if (Math.abs(newX - SAFE_LEFT) < 10) newX = SAFE_LEFT;
       if (Math.abs((newX + activeSlide[selectedElement].width) - (CANVAS_WIDTH - SAFE_RIGHT)) < 10) {
@@ -795,7 +714,6 @@ export function EditorialCarouselClient() {
     document.removeEventListener("mouseup", handleElementMouseUp);
   };
 
-  // Resizing Handle drag handler
   const handleResizeMouseDown = (e: React.MouseEvent, key: ElementKey) => {
     if (e.button !== 0) return;
     e.stopPropagation();
@@ -836,7 +754,7 @@ export function EditorialCarouselClient() {
   };
 
   // ==========================================
-  // EXPORT ENGINE (SVG, PNG, JPEG, PDF)
+  // EXPORT ENGINE
   // ==========================================
 
   const buildSvgString = (slide: Slide, index: number) => {
@@ -1170,7 +1088,7 @@ export function EditorialCarouselClient() {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `${activeSlide.footer.brandName.toLowerCase()}-slide-${idx + 1}.svg`;
+      link.download = `${projectName.toLowerCase().replace(/\s+/g, "-")}-slide-${idx + 1}.svg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -1187,7 +1105,7 @@ export function EditorialCarouselClient() {
       const dataUrl = await convertSvgToRaster(svgStr, type);
       const link = document.createElement("a");
       link.href = dataUrl;
-      link.download = `${activeSlide.footer.brandName.toLowerCase()}-slide-${idx + 1}.${type}`;
+      link.download = `${projectName.toLowerCase().replace(/\s+/g, "-")}-slide-${idx + 1}.${type}`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -1213,7 +1131,7 @@ export function EditorialCarouselClient() {
         doc.addImage(dataUrl, "PNG", 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       }
 
-      doc.save(`${activeSlide.footer.brandName.toLowerCase()}-carousel.pdf`);
+      doc.save(`${projectName.toLowerCase().replace(/\s+/g, "-")}-carousel.pdf`);
       toast.success("Exported full carousel as PDF!");
     } catch (e) {
       toast.error("Failed to export PDF file");
@@ -1238,7 +1156,6 @@ export function EditorialCarouselClient() {
     const isSelected = selectedElement === key;
     const scaleFactor = zoomScale;
 
-    // Element styling wrapper
     const containerStyle: React.CSSProperties = {
       position: "absolute",
       left: `${elem.x * scaleFactor}px`,
@@ -1247,7 +1164,7 @@ export function EditorialCarouselClient() {
       height: `${elem.height * scaleFactor}px`,
       opacity: elem.opacity,
       transform: `rotate(${elem.rotation}deg)`,
-      cursor: editorMode === "free" && !elem.locked ? "move" : "pointer",
+      cursor: editorMode === "free" && !elem.locked ? "move" : "default",
       boxSizing: "border-box",
       userSelect: "none",
       zIndex: elem.zIndex || 1
@@ -1257,25 +1174,23 @@ export function EditorialCarouselClient() {
       <div 
         style={containerStyle}
         onMouseDown={(e) => handleElementMouseDown(e, key)}
-        className={`group relative ${isSelected ? "ring-2 ring-[#0075de] ring-offset-2" : "hover:outline hover:outline-dashed hover:outline-neutral-400"}`}
+        className={`group relative ${isSelected ? "ring-1.5 ring-neutral-900 ring-offset-1" : "hover:outline hover:outline-dashed hover:outline-neutral-300"}`}
       >
         {children}
         
-        {/* Resize Handle overlay */}
+        {/* Bounding Resize handle */}
         {isSelected && editorMode === "free" && !elem.locked && (
           <div 
             onMouseDown={(e) => handleResizeMouseDown(e, key)}
-            className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-white border border-[#0075de] rounded-full translate-x-1 translate-y-1 cursor-se-resize z-50 flex items-center justify-center shadow"
-          >
-            <div className="w-1.5 h-1.5 bg-[#0075de] rounded-full" />
-          </div>
+            className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-white border border-neutral-900 rounded-full translate-x-1 translate-y-1 cursor-se-resize z-50 shadow-sm"
+          />
         )}
 
-        {/* Lock Overlay */}
+        {/* Locked status */}
         {elem.locked && isSelected && (
-          <div className="absolute top-1 right-1 bg-white/90 border border-neutral-200 rounded p-1 shadow-sm flex items-center gap-0.5 z-50">
-            <Lock size={10} className="text-neutral-500" />
-            <span className="text-[7px] font-bold text-neutral-500 uppercase tracking-widest">Locked</span>
+          <div className="absolute top-1 right-1 bg-white/95 border border-neutral-200 rounded px-1 py-0.5 shadow-sm flex items-center gap-0.5 z-50">
+            <Lock size={8} className="text-neutral-500" />
+            <span className="text-[6px] font-bold text-neutral-500 uppercase tracking-widest">Locked</span>
           </div>
         )}
       </div>
@@ -1283,172 +1198,339 @@ export function EditorialCarouselClient() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[calc(100vh-200px)]">
+    <div className={`w-full min-h-screen flex flex-col bg-[#F5F5F7] text-neutral-900 font-sans transition-colors duration-200 ${darkMode ? "dark bg-neutral-950 text-white" : ""}`}>
       
       {/* ==========================================
-          LEFT PANEL: SLIDE DECK BAR
+          TOP BAR (Figma/Canva inspired)
           ========================================== */}
-      <div className="lg:col-span-2 flex flex-col space-y-4">
-        <div className="panel-card space-y-4">
-          <div className="flex justify-between items-center pb-2 border-b border-neutral-100">
-            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">Slides Deck</span>
-            <span className="text-[10px] font-bold bg-neutral-100 text-neutral-700 px-2 py-0.5 rounded-full">
-              {slides.length} slides
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-2.5 max-h-[360px] lg:max-h-[460px] overflow-y-auto custom-scrollbar pr-1">
-            {slides.map((slide, sIdx) => (
-              <div 
-                key={slide.id}
-                onClick={() => {
-                  setActiveIndex(sIdx);
-                  setSelectedElement(null);
-                }}
-                className={`relative flex items-center justify-between p-3 rounded-xl cursor-pointer border transition-all ${
-                  activeIndex === sIdx 
-                    ? "bg-[#0075de]/5 border-[#0075de] shadow-sm shadow-[#0075de]/10" 
-                    : "bg-white border-neutral-200 hover:bg-neutral-50"
-                }`}
+      <header className="h-14 border-b border-neutral-200/60 bg-white/90 backdrop-blur-md px-6 flex items-center justify-between shrink-0 z-50 dark:bg-neutral-900/90 dark:border-neutral-800">
+        
+        {/* Left: Project title & status */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">✨</span>
+            {isEditingProjectName ? (
+              <input
+                type="text"
+                value={projectName}
+                onBlur={() => setIsEditingProjectName(false)}
+                onChange={(e) => setProjectName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && setIsEditingProjectName(false)}
+                autoFocus
+                className="bg-transparent border-b border-neutral-900 text-sm font-bold focus:outline-none dark:border-white"
+              />
+            ) : (
+              <h1 
+                onDoubleClick={() => setIsEditingProjectName(true)}
+                className="text-sm font-bold text-neutral-900 hover:bg-neutral-100 px-2 py-1 rounded cursor-pointer transition-all dark:text-white dark:hover:bg-neutral-800"
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <span className="text-xs font-mono font-bold text-neutral-400">
-                    {String(sIdx + 1).padStart(2, "0")}
-                  </span>
-                  <div className="flex flex-col text-left min-w-0">
-                    <span className="text-xs font-bold text-neutral-900 truncate w-24">
-                      {slide.headline.text ? stripHtmlTags(slide.headline.text) : "Empty Slide"}
-                    </span>
-                    <span className="text-[9px] text-neutral-500 font-medium uppercase tracking-wider">
-                      {slide.category.text || "No tag"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5">
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      duplicateSlide(sIdx);
-                    }}
-                    className="p-1 hover:bg-neutral-100 rounded text-neutral-500"
-                    title="Duplicate"
-                  >
-                    <Copy size={11} />
-                  </button>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteSlide(sIdx);
-                    }}
-                    className="p-1 hover:bg-red-50 hover:text-red-600 rounded text-neutral-500"
-                    title="Delete"
-                  >
-                    <Trash2 size={11} />
-                  </button>
-                </div>
-              </div>
-            ))}
+                {projectName}
+              </h1>
+            )}
           </div>
+          <div className="h-4 w-px bg-neutral-200 dark:bg-neutral-800" />
+          <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Auto Saved
+          </span>
+        </div>
 
+        {/* Center: Main App Controls */}
+        <div className="flex items-center gap-1.5">
           <button 
-            onClick={addSlide}
-            className="w-full py-2.5 rounded-xl border border-dashed border-neutral-300 text-neutral-600 hover:bg-neutral-50 flex items-center justify-center gap-1.5 text-xs font-bold transition-all"
+            onClick={handleUndo} 
+            disabled={historyIndex <= 0}
+            className="p-2 hover:bg-neutral-100 rounded-xl transition-all disabled:opacity-30 dark:hover:bg-neutral-800"
+            title="Undo"
           >
-            <Plus size={14} /> Add New Slide
+            <Undo size={14} />
+          </button>
+          <button 
+            onClick={handleRedo} 
+            disabled={historyIndex >= history.length - 1}
+            className="p-2 hover:bg-neutral-100 rounded-xl transition-all disabled:opacity-30 dark:hover:bg-neutral-800"
+            title="Redo"
+          >
+            <Redo size={14} />
+          </button>
+          <div className="h-4 w-px bg-neutral-200 mx-2 dark:bg-neutral-800" />
+          
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="p-2 hover:bg-neutral-100 rounded-xl transition-all dark:hover:bg-neutral-800"
+            title="Toggle Dark Mode"
+          >
+            {darkMode ? "☀️" : "🌙"}
           </button>
         </div>
 
-        {/* Layout Presets selector */}
-        <div className="panel-card space-y-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block pb-2 border-b border-neutral-100">Templates</span>
-          <div className="grid grid-cols-2 gap-2 max-h-[220px] overflow-y-auto pr-1">
-            {TEMPLATE_PRESETS.map(preset => (
-              <button 
-                key={preset.id}
-                onClick={() => applyPreset(preset.id)}
-                className="py-2 px-1 border border-neutral-200 hover:border-neutral-900 rounded-lg text-[9px] font-bold text-neutral-700 bg-white hover:bg-neutral-50 text-center truncate transition-all"
-                title={preset.name}
+        {/* Right: Actions */}
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              toast.success("Project URL copied to clipboard!");
+            }}
+            className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border-none dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
+          >
+            <Share2 size={12} /> Share
+          </button>
+
+          <button 
+            onClick={handleDownloadPdf}
+            className="px-4 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border-none dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-100"
+          >
+            <FileText size={12} /> Export PDF
+          </button>
+        </div>
+
+      </header>
+
+      {/* ==========================================
+          MAIN THREE-COLUMN WORKSPACE
+          ========================================== */}
+      <div className="flex flex-1 overflow-hidden">
+        
+        {/* ------------------------------------------
+            LEFT SIDEBAR (300px)
+            ------------------------------------------ */}
+        <aside className="w-[300px] border-r border-neutral-200/60 bg-white flex flex-col overflow-y-auto px-4 py-6 space-y-6 shrink-0 z-10 dark:bg-neutral-900 dark:border-neutral-800">
+          
+          {/* Logo & Section Selector */}
+          <div className="flex bg-neutral-100 p-1 rounded-xl dark:bg-neutral-800">
+            {[
+              { id: "slides", label: "Slides", icon: <LayersIcon size={12} /> },
+              { id: "templates", label: "Presets", icon: <LayoutGrid size={12} /> },
+              { id: "brand", label: "Brand Kit", icon: <Palette size={12} /> }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setLeftTab(tab.id as any)}
+                className={`flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1 transition-all ${
+                  leftTab === tab.id 
+                    ? "bg-white text-black shadow-sm dark:bg-neutral-700 dark:text-white" 
+                    : "text-neutral-500 hover:text-neutral-900 dark:hover:text-white"
+                }`}
               >
-                {preset.name}
+                {tab.icon} {tab.label}
               </button>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* ==========================================
-          CENTER PANEL: CANVAS STAGE
-          ========================================== */}
-      <div className="lg:col-span-6 flex flex-col items-center">
-        
-        {/* Canvas Toolbar Controls */}
-        <div className="flex flex-wrap items-center justify-between w-full max-w-[540px] mb-4 gap-3 bg-white border border-neutral-200 px-4 py-2.5 rounded-2xl shadow-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono">Layout:</span>
-            <div className="flex bg-neutral-100 p-0.5 rounded-lg border border-neutral-200">
+          {/* Slides List view */}
+          {leftTab === "slides" && (
+            <div className="space-y-4">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block pb-1 border-b">Slide Deck</span>
+              
+              <div className="flex flex-col gap-3">
+                {slides.map((slide, sIdx) => (
+                  <div 
+                    key={slide.id}
+                    onClick={() => {
+                      setActiveIndex(sIdx);
+                      setSelectedElement(null);
+                    }}
+                    className={`relative p-3.5 rounded-2xl cursor-pointer border transition-all ${
+                      activeIndex === sIdx 
+                        ? "bg-neutral-50 border-neutral-900 shadow-sm dark:bg-neutral-800 dark:border-white" 
+                        : "bg-white border-neutral-200/60 hover:bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-800 dark:hover:bg-neutral-800"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-mono font-bold bg-neutral-100 px-2 py-0.5 rounded-full dark:bg-neutral-800 text-neutral-500">
+                        Slide {sIdx + 1}
+                      </span>
+                      <div className="flex gap-1.5">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); duplicateSlide(sIdx); }}
+                          className="p-1 hover:bg-neutral-200 rounded text-neutral-500 dark:hover:bg-neutral-700"
+                          title="Duplicate"
+                        >
+                          <Copy size={11} />
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); deleteSlide(sIdx); }}
+                          className="p-1 hover:bg-red-50 hover:text-red-500 rounded text-neutral-500 dark:hover:bg-red-950"
+                          title="Delete"
+                        >
+                          <Trash2 size={11} />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <p className="text-xs font-bold text-neutral-800 line-clamp-2 dark:text-neutral-200">
+                      {slide.headline.text ? stripHtmlTags(slide.headline.text) : "Empty headline text"}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <button 
+                onClick={addSlide}
+                className="w-full py-2.5 rounded-xl border border-dashed border-neutral-300 text-neutral-600 hover:bg-neutral-50 flex items-center justify-center gap-1.5 text-xs font-bold transition-all dark:border-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-800"
+              >
+                <Plus size={14} /> Add Slide
+              </button>
+            </div>
+          )}
+
+          {/* Preset templates list cards */}
+          {leftTab === "templates" && (
+            <div className="space-y-4">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block pb-1 border-b">Templates</span>
+              <div className="flex flex-col gap-3.5">
+                {TEMPLATE_PRESETS.map(preset => (
+                  <div 
+                    key={preset.id}
+                    onClick={() => applyPreset(preset.id)}
+                    className="group border border-neutral-200/60 rounded-2xl p-4 bg-white hover:border-neutral-900 transition-all cursor-pointer dark:bg-neutral-900 dark:border-neutral-800 dark:hover:border-white"
+                  >
+                    <div className="h-20 bg-neutral-50 rounded-xl mb-3 flex items-center justify-center border text-[10px] text-neutral-400 font-bold dark:bg-neutral-800 dark:border-neutral-700">
+                      {preset.category} layout preview
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <h4 className="text-xs font-bold text-neutral-900 dark:text-white truncate w-32">{preset.name}</h4>
+                        <span className="text-[9px] text-neutral-400 font-semibold uppercase">{preset.category}</span>
+                      </div>
+                      <span className="text-[10px] font-bold text-neutral-500 opacity-0 group-hover:opacity-100 transition-all">
+                        Apply →
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Brand settings kit */}
+          {leftTab === "brand" && (
+            <div className="space-y-4">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block pb-1 border-b">Brand Settings</span>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Brand Name</span>
+                  <input
+                    type="text"
+                    value={activeSlide.footer.brandName}
+                    onChange={(e) => updateSlideFooter({ brandName: e.target.value })}
+                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                  />
+                </div>
+
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-xs font-bold text-neutral-600 dark:text-neutral-300">Show Divider</span>
+                  <input
+                    type="checkbox"
+                    checked={activeSlide.footer.dividerEnabled}
+                    onChange={(e) => updateSlideFooter({ dividerEnabled: e.target.checked })}
+                    className="h-4 w-4 text-neutral-900 dark:bg-neutral-800"
+                  />
+                </div>
+
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-xs font-bold text-neutral-600 dark:text-neutral-300">Show Page Numbers</span>
+                  <input
+                    type="checkbox"
+                    checked={activeSlide.footer.pageNumberEnabled}
+                    onChange={(e) => updateSlideFooter({ pageNumberEnabled: e.target.checked })}
+                    className="h-4 w-4 text-neutral-900 dark:bg-neutral-800"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Footer Text Color</span>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={activeSlide.footer.color}
+                      onChange={(e) => updateSlideFooter({ color: e.target.value })}
+                      className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                    />
+                    <input
+                      type="text"
+                      value={activeSlide.footer.color}
+                      onChange={(e) => updateSlideFooter({ color: e.target.value })}
+                      className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </aside>
+
+        {/* ------------------------------------------
+            CENTER VIEWPORT: FLOATING CANVAS
+            ------------------------------------------ */}
+        <main className="flex-1 bg-[#F5F5F7] overflow-auto flex items-center justify-center p-8 relative dark:bg-neutral-950">
+          
+          {/* Floating Viewport Toolbar */}
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-white/80 backdrop-blur-md px-3 py-1.5 border border-neutral-200/60 rounded-2xl shadow-sm z-30 dark:bg-neutral-900/80 dark:border-neutral-800">
+            <div className="flex bg-neutral-100 p-0.5 rounded-lg border border-neutral-200/40 dark:bg-neutral-800 dark:border-neutral-700">
               <button 
                 onClick={() => setEditorMode("fixed")}
-                className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all uppercase tracking-wider ${
-                  editorMode === "fixed" ? "bg-white text-black shadow-sm" : "text-neutral-500 hover:text-black"
+                className={`px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-wider transition-all ${
+                  editorMode === "fixed" ? "bg-white text-black shadow-sm dark:bg-neutral-700 dark:text-white" : "text-neutral-400"
                 }`}
               >
-                Fixed
+                Fixed Grid
               </button>
               <button 
                 onClick={() => setEditorMode("free")}
-                className={`px-3 py-1 rounded-md text-[10px] font-bold transition-all uppercase tracking-wider ${
-                  editorMode === "free" ? "bg-white text-black shadow-sm" : "text-neutral-500 hover:text-black"
+                className={`px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-wider transition-all ${
+                  editorMode === "free" ? "bg-white text-black shadow-sm dark:bg-neutral-700 dark:text-white" : "text-neutral-400"
                 }`}
               >
-                Free
+                Free Design
               </button>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2">
+            <div className="h-4 w-px bg-neutral-200 mx-2 dark:bg-neutral-800" />
+
             <button 
               onClick={() => setShowSafeArea(!showSafeArea)}
               className={`p-1.5 rounded-lg border transition-all ${
-                showSafeArea ? "bg-[#0075de]/10 border-[#0075de] text-[#0075de]" : "bg-white border-neutral-200 text-neutral-400 hover:text-neutral-900"
+                showSafeArea ? "bg-neutral-100 border-neutral-300 text-neutral-900" : "bg-transparent border-transparent text-neutral-400"
               }`}
-              title="Toggle Safe Area (Top 60, Bottom 70, Left 72, Right 72)"
+              title="Safe Area Grid (72px Left/Right, 60px Top, 70px Bottom)"
             >
-              <Maximize2 size={13} />
+              <Maximize2 size={12} />
             </button>
             <button 
               onClick={() => setShowGrid(!showGrid)}
               className={`p-1.5 rounded-lg border transition-all ${
-                showGrid ? "bg-[#0075de]/10 border-[#0075de] text-[#0075de]" : "bg-white border-neutral-200 text-neutral-400 hover:text-neutral-900"
+                showGrid ? "bg-neutral-100 border-neutral-300 text-neutral-900" : "bg-transparent border-transparent text-neutral-400"
               }`}
-              title="Toggle Grid Lines"
+              title="Toggle Grid overlay"
             >
-              <Grid size={13} />
+              <Grid size={12} />
             </button>
-            <div className="h-5 w-px bg-neutral-200 mx-1" />
+            
+            <div className="h-4 w-px bg-neutral-200 mx-2 dark:bg-neutral-800" />
+
             <button 
               onClick={() => setZoomScale(prev => Math.max(0.2, prev - 0.05))}
-              className="p-1 hover:bg-neutral-100 rounded text-neutral-500"
+              className="p-1 hover:bg-neutral-100 rounded text-neutral-400 hover:text-neutral-900 dark:hover:bg-neutral-800"
             >
-              <Minimize2 size={13} />
+              <Minimize2 size={12} />
             </button>
-            <span className="text-[10px] font-mono font-bold text-neutral-600">
+            <span className="text-[10px] font-mono font-bold text-neutral-500 w-10 text-center">
               {Math.round(zoomScale * 100)}%
             </span>
             <button 
               onClick={() => setZoomScale(prev => Math.min(1.2, prev + 0.05))}
-              className="p-1 hover:bg-neutral-100 rounded text-neutral-500"
+              className="p-1 hover:bg-neutral-100 rounded text-neutral-400 hover:text-neutral-900 dark:hover:bg-neutral-800"
             >
-              <Maximize2 size={13} />
+              <Maximize2 size={12} />
             </button>
           </div>
-        </div>
 
-        {/* Viewport Box container */}
-        <div className="w-full flex items-center justify-center overflow-auto p-4 bg-[#18181b] border border-neutral-800 rounded-[32px] min-h-[500px]">
+          {/* Floating Canvas Wrapper */}
           <div 
             ref={canvasRef}
-            className="bg-white shadow-2xl relative select-none overflow-hidden shrink-0 border border-neutral-700/50"
+            className="bg-white shadow-[0_24px_50px_-12px_rgba(0,0,0,0.08)] relative select-none overflow-hidden shrink-0 transition-transform rounded-[24px] dark:border dark:border-neutral-800"
             style={{
               width: `${CANVAS_WIDTH * zoomScale}px`,
               height: `${CANVAS_HEIGHT * zoomScale}px`,
@@ -1458,7 +1540,7 @@ export function EditorialCarouselClient() {
             {/* Safe Area guideline overlays */}
             {showSafeArea && (
               <div 
-                className="absolute border border-dashed border-[#0075de]/40 pointer-events-none z-40"
+                className="absolute border border-dashed border-[#000000]/15 pointer-events-none z-40"
                 style={{
                   top: `${SAFE_TOP * zoomScale}px`,
                   bottom: `${SAFE_BOTTOM * zoomScale}px`,
@@ -1468,10 +1550,10 @@ export function EditorialCarouselClient() {
               />
             )}
 
-            {/* Grid background overlay */}
+            {/* Grid overlay */}
             {showGrid && (
               <div 
-                className="absolute inset-0 pointer-events-none z-0 opacity-[0.05]"
+                className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]"
                 style={{
                   backgroundImage: "radial-gradient(#000000 1.5px, transparent 1.5px)",
                   backgroundSize: `${30 * zoomScale}px ${30 * zoomScale}px`
@@ -1479,15 +1561,15 @@ export function EditorialCarouselClient() {
               />
             )}
 
-            {/* Content Layers */}
-
+            {/* Elements list rendering */}
+            
             {/* Logo */}
             {renderCanvasElement("logo", (
               <div className="w-full h-full">
                 {activeSlide.logo.logoUrl ? (
                   <img src={activeSlide.logo.logoUrl} className="w-full h-full object-contain" />
                 ) : (
-                  <div className="w-full h-full rounded-full bg-[#0075de] text-white font-bold flex items-center justify-center text-[10px]" style={{ fontSize: `${12 * zoomScale}px` }}>
+                  <div className="w-full h-full rounded-full bg-[#18181b] text-white font-bold flex items-center justify-center text-[10px]" style={{ fontSize: `${12 * zoomScale}px` }}>
                     GX
                   </div>
                 )}
@@ -1497,14 +1579,14 @@ export function EditorialCarouselClient() {
             {/* Divider */}
             {renderCanvasElement("divider", (
               <div 
-                className="w-full h-full"
+                className="w-full h-full animate-fade"
                 style={{
                   background: activeSlide.divider.color,
                   height: `${activeSlide.divider.thickness * zoomScale}px`
                 }}
               />
             ))}
-            
+
             {/* Category tag */}
             {renderCanvasElement("category", (
               <div 
@@ -1521,7 +1603,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* Headline */}
+            {/* Headline Title */}
             {renderCanvasElement("headline", (
               <div 
                 className="w-full h-full font-sans tracking-tight leading-tight"
@@ -1541,7 +1623,7 @@ export function EditorialCarouselClient() {
             {/* Featured Image */}
             {renderCanvasElement("featuredImage", (
               <div 
-                className="w-full h-full bg-[#050505] overflow-hidden"
+                className="w-full h-full bg-[#fafafa] overflow-hidden"
                 style={{
                   borderRadius: `${activeSlide.featuredImage.borderRadius * zoomScale}px`,
                   border: activeSlide.featuredImage.borderWidth > 0 
@@ -1552,7 +1634,7 @@ export function EditorialCarouselClient() {
                 {activeSlide.featuredImage.mediaUrl ? (
                   <img 
                     src={activeSlide.featuredImage.mediaUrl}
-                    alt="Featured Image Asset"
+                    alt="Featured Image Layout"
                     className="w-full h-full"
                     style={{
                       objectFit: activeSlide.featuredImage.objectFit,
@@ -1560,7 +1642,7 @@ export function EditorialCarouselClient() {
                     }}
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 text-white/50 bg-neutral-900 border border-neutral-800 rounded-2xl">
+                  <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 text-neutral-400 bg-neutral-50/50 border border-neutral-100 rounded-2xl">
                     <span className="font-extrabold uppercase tracking-wider text-[11px] mb-1" style={{ fontSize: `${12 * zoomScale}px` }}>
                       Featured Image Placeholder
                     </span>
@@ -1572,7 +1654,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* Body copy */}
+            {/* Body Copy text */}
             {renderCanvasElement("body", (
               <div 
                 className="w-full h-full font-sans whitespace-pre-line text-neutral-800"
@@ -1589,7 +1671,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* Bullets */}
+            {/* Bullets items */}
             {renderCanvasElement("bullets", (
               <div 
                 className="w-full h-full font-sans text-neutral-800"
@@ -1613,7 +1695,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* Quote Box */}
+            {/* Quote Box element */}
             {renderCanvasElement("quote", (
               <div 
                 className="w-full h-full font-sans"
@@ -1660,7 +1742,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* Author */}
+            {/* Author profile */}
             {renderCanvasElement("author", (
               <div className="w-full h-full flex items-center gap-2">
                 <div 
@@ -1670,7 +1752,7 @@ export function EditorialCarouselClient() {
                   {activeSlide.author.avatarUrl ? (
                     <img src={activeSlide.author.avatarUrl} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full bg-[#0075de]" />
+                    <div className="w-full h-full bg-[#18181b]" />
                   )}
                 </div>
                 <div className="flex flex-col text-left">
@@ -1684,7 +1766,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* Pinned Footer */}
+            {/* Footer Branding line */}
             <div 
               className="absolute w-full flex items-center justify-between border-t border-neutral-100 pointer-events-none"
               style={{
@@ -1709,598 +1791,506 @@ export function EditorialCarouselClient() {
             </div>
 
           </div>
-        </div>
-      </div>
+        </main>
 
-      {/* ==========================================
-          RIGHT PANEL: ELEMENT PROPERTIES
-          ========================================== */}
-      <div className="lg:col-span-4 flex flex-col space-y-4">
-        
-        {/* Element Selection & Tab Switchers */}
-        <div className="panel-card space-y-4">
-          <div className="flex justify-between items-center pb-2 border-b border-neutral-100">
-            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">Selected Layer</span>
-            {selectedElement ? (
-              <span className="text-[10px] font-bold bg-[#0075de]/10 text-[#0075de] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                {selectedElement}
-              </span>
-            ) : (
-              <span className="text-[10px] font-bold bg-neutral-100 text-neutral-500 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                None Selected
-              </span>
-            )}
-          </div>
-
-          <div className="grid grid-cols-3 gap-1 bg-neutral-100 p-1 rounded-xl">
-            {(["content", "style", "export"] as const).map(tab => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`py-2 px-1 text-center font-bold text-[10px] uppercase tracking-wider rounded-lg transition-all ${
-                  activeTab === tab ? "bg-white text-black shadow-sm" : "text-neutral-500 hover:text-black"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-
-          {activeTab === "content" && (
-            <div className="grid grid-cols-3 gap-1.5">
-              {[
-                { id: "category", label: "Category" },
-                { id: "headline", label: "Headline" },
-                { id: "featuredImage", label: "Image" },
-                { id: "body", label: "Body Copy" },
-                { id: "bullets", label: "Bullets" },
-                { id: "quote", label: "Quote" },
-                { id: "cta", label: "CTA" },
-                { id: "logo", label: "Logo" },
-                { id: "divider", label: "Divider" },
-                { id: "author", label: "Author" }
-              ].map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => setSelectedElement(item.id as ElementKey)}
-                  className={`py-2 px-1 border rounded-lg text-[9px] font-bold text-center transition-all ${
-                    selectedElement === item.id 
-                      ? "bg-[#0075de]/5 border-[#0075de] text-[#0075de]" 
-                      : "bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Tab 1: Content Fields editor */}
-        {activeTab === "content" && selectedElement && (
-          <div className="panel-card space-y-4">
-            <div className="flex justify-between items-center pb-2 border-b border-neutral-100">
-              <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">Edit content</span>
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => updateSlideElement(selectedElement, { visible: !activeSlide[selectedElement].visible })}
-                  className="p-1 hover:bg-neutral-100 rounded text-neutral-500"
-                  title="Toggle Visibility"
-                >
-                  {activeSlide[selectedElement].visible ? <Eye size={13} /> : <EyeOff size={13} className="text-red-500" />}
-                </button>
-                <button
-                  onClick={() => updateSlideElement(selectedElement, { locked: !activeSlide[selectedElement].locked })}
-                  className="p-1 hover:bg-neutral-100 rounded text-neutral-500"
-                  title="Toggle Lock (Free Mode)"
-                >
-                  {activeSlide[selectedElement].locked ? <Lock size={13} /> : <Unlock size={13} />}
-                </button>
+        {/* ------------------------------------------
+            RIGHT PANEL: THE INSPECTOR
+            ------------------------------------------ */}
+        <aside className="w-[360px] border-l border-neutral-200/60 bg-white flex flex-col overflow-y-auto px-6 py-6 space-y-6 shrink-0 z-10 dark:bg-neutral-900 dark:border-neutral-800">
+          
+          {/* Document configuration (rendered when nothing is selected) */}
+          {!selectedElement && (
+            <div className="space-y-6">
+              <div className="pb-3 border-b">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400">Document Settings</h3>
               </div>
-            </div>
 
-            {selectedElement === "category" && (
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Category Tag Text</label>
-                <input
-                  type="text"
-                  value={activeSlide.category.text}
-                  onChange={(e) => updateSlideElement("category", { text: e.target.value })}
-                  className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                />
-              </div>
-            )}
-
-            {selectedElement === "headline" && (
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Headline Text</label>
-                <textarea
-                  value={activeSlide.headline.text}
-                  rows={3}
-                  onChange={(e) => updateSlideElement("headline", { text: e.target.value })}
-                  className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none"
-                />
-              </div>
-            )}
-
-            {selectedElement === "featuredImage" && (
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Image Asset URL</label>
-                <input
-                  type="text"
-                  placeholder="https://example.com/image.jpg"
-                  value={activeSlide.featuredImage.mediaUrl}
-                  onChange={(e) => updateSlideElement("featuredImage", { mediaUrl: e.target.value })}
-                  className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                />
-              </div>
-            )}
-
-            {selectedElement === "body" && (
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Body Copy</label>
-                <textarea
-                  value={activeSlide.body.text}
-                  rows={4}
-                  onChange={(e) => updateSlideElement("body", { text: e.target.value })}
-                  className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none font-sans"
-                />
-              </div>
-            )}
-
-            {selectedElement === "bullets" && (
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">Bullet Items</label>
-                {activeSlide.bullets.items.map((bullet, idx) => (
-                  <div key={idx} className="flex gap-2">
-                    <input
-                      type="text"
-                      value={bullet}
-                      onChange={(e) => {
-                        const next = [...activeSlide.bullets.items];
-                        next[idx] = e.target.value;
-                        updateSlideElement("bullets", { items: next });
-                      }}
-                      className="flex-1 h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                    />
-                    <button
-                      onClick={() => {
-                        const next = activeSlide.bullets.items.filter((_, i) => i !== idx);
-                        updateSlideElement("bullets", { items: next });
-                      }}
-                      className="p-1 bg-red-50 text-red-500 hover:bg-red-100 rounded"
-                    >
-                      <Trash2 size={12} />
-                    </button>
-                  </div>
-                ))}
-                <button
-                  onClick={() => {
-                    updateSlideElement("bullets", { items: [...activeSlide.bullets.items, "New bullet point"] });
-                  }}
-                  className="w-full py-2 border border-dashed rounded-lg text-xs font-bold text-neutral-600 hover:bg-neutral-50"
-                >
-                  + Add Bullet Item
-                </button>
-              </div>
-            )}
-
-            {selectedElement === "quote" && (
-              <div className="space-y-3">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Quote Text</label>
-                  <textarea
-                    value={activeSlide.quote.text}
-                    rows={3}
-                    onChange={(e) => updateSlideElement("quote", { text: e.target.value })}
-                    className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Author</label>
-                  <input
-                    type="text"
-                    value={activeSlide.quote.author}
-                    onChange={(e) => updateSlideElement("quote", { author: e.target.value })}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-              </div>
-            )}
-
-            {selectedElement === "cta" && (
-              <div className="space-y-3">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Button Label</label>
-                  <input
-                    type="text"
-                    value={activeSlide.cta.text}
-                    onChange={(e) => updateSlideElement("cta", { text: e.target.value })}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Button Link</label>
-                  <input
-                    type="text"
-                    value={activeSlide.cta.link}
-                    onChange={(e) => updateSlideElement("cta", { link: e.target.value })}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-              </div>
-            )}
-
-            {selectedElement === "logo" && (
-              <div className="space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Brand Logo URL</label>
-                <input
-                  type="text"
-                  placeholder="https://example.com/logo.png"
-                  value={activeSlide.logo.logoUrl}
-                  onChange={(e) => updateSlideElement("logo", { logoUrl: e.target.value })}
-                  className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                />
-              </div>
-            )}
-
-            {selectedElement === "author" && (
-              <div className="space-y-3">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Author Name</label>
-                  <input
-                    type="text"
-                    value={activeSlide.author.name}
-                    onChange={(e) => updateSlideElement("author", { name: e.target.value })}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Avatar Photo URL</label>
-                  <input
-                    type="text"
-                    placeholder="https://example.com/avatar.jpg"
-                    value={activeSlide.author.avatarUrl}
-                    onChange={(e) => updateSlideElement("author", { avatarUrl: e.target.value })}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Tab 2: Style Panel (Color, Position, Fonts) */}
-        {activeTab === "style" && selectedElement && (
-          <div className="panel-card space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block border-b pb-2">Style Properties</span>
-
-            {/* Position Controls (Always available, but disabled in Fixed Mode) */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">X (px)</span>
-                <input
-                  type="number"
-                  disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
-                  value={activeSlide[selectedElement].x}
-                  onChange={(e) => updateSlideElement(selectedElement, { x: parseInt(e.target.value) || 0 })}
-                  className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-mono"
-                />
-              </div>
-              <div className="space-y-1">
-                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Y (px)</span>
-                <input
-                  type="number"
-                  disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
-                  value={activeSlide[selectedElement].y}
-                  onChange={(e) => updateSlideElement(selectedElement, { y: parseInt(e.target.value) || 0 })}
-                  className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-mono"
-                />
-              </div>
-              <div className="space-y-1">
-                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Width (px)</span>
-                <input
-                  type="number"
-                  disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
-                  value={activeSlide[selectedElement].width}
-                  onChange={(e) => updateSlideElement(selectedElement, { width: parseInt(e.target.value) || 0 })}
-                  className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-mono"
-                />
-              </div>
-              <div className="space-y-1">
-                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Height (px)</span>
-                <input
-                  type="number"
-                  disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
-                  value={activeSlide[selectedElement].height}
-                  onChange={(e) => updateSlideElement(selectedElement, { height: parseInt(e.target.value) || 0 })}
-                  className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-mono"
-                />
-              </div>
-            </div>
-
-            {/* Rotation and Opacity */}
-            <div className="grid grid-cols-2 gap-3 border-t pt-3">
-              <div className="space-y-1">
-                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Rotation (deg)</span>
-                <input
-                  type="number"
-                  disabled={activeSlide[selectedElement].locked}
-                  value={activeSlide[selectedElement].rotation}
-                  onChange={(e) => updateSlideElement(selectedElement, { rotation: parseInt(e.target.value) || 0 })}
-                  className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
-                />
-              </div>
-              <div className="space-y-1">
-                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Opacity (0-1)</span>
-                <input
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="1"
-                  value={activeSlide[selectedElement].opacity}
-                  onChange={(e) => updateSlideElement(selectedElement, { opacity: parseFloat(e.target.value) || 1 })}
-                  className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
-                />
-              </div>
-            </div>
-
-            {/* Image specific styles */}
-            {selectedElement === "featuredImage" && (
-              <div className="space-y-3.5 border-t pt-3">
-                <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3.5">
                   <div className="space-y-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Fit Mode</span>
-                    <select
-                      value={activeSlide.featuredImage.objectFit}
-                      onChange={(e) => updateSlideElement("featuredImage", { objectFit: e.target.value as any })}
-                      className="w-full h-9 px-2 bg-white border border-neutral-200 rounded-lg text-xs"
-                    >
-                      <option value="cover">Cover</option>
-                      <option value="contain">Contain</option>
-                      <option value="fill">Fill</option>
-                    </select>
+                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Width</span>
+                    <div className="h-9 px-3 bg-neutral-50 rounded-lg flex items-center justify-between text-xs font-mono dark:bg-neutral-800">
+                      <span>1080</span>
+                      <span className="text-neutral-400">px</span>
+                    </div>
                   </div>
                   <div className="space-y-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Radius (px)</span>
-                    <input
-                      type="number"
-                      value={activeSlide.featuredImage.borderRadius}
-                      onChange={(e) => updateSlideElement("featuredImage", { borderRadius: parseInt(e.target.value) || 0 })}
-                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Brightness (%)</span>
-                    <input
-                      type="number"
-                      value={activeSlide.featuredImage.brightness}
-                      onChange={(e) => updateSlideElement("featuredImage", { brightness: parseInt(e.target.value) || 100 })}
-                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Contrast (%)</span>
-                    <input
-                      type="number"
-                      value={activeSlide.featuredImage.contrast}
-                      onChange={(e) => updateSlideElement("featuredImage", { contrast: parseInt(e.target.value) || 100 })}
-                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between py-1">
-                  <span className="text-xs font-bold text-neutral-600">Shadow Overlay</span>
-                  <input
-                    type="checkbox"
-                    checked={!!activeSlide.featuredImage.shadowEnabled}
-                    onChange={(e) => updateSlideElement("featuredImage", { shadowEnabled: e.target.checked })}
-                    className="h-4 w-4 text-[#0075de]"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Typography controls */}
-            {selectedElement !== "featuredImage" && selectedElement !== "divider" && (
-              <div className="space-y-4 border-t pt-3">
-                <div className="space-y-1">
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Font Family</span>
-                  <select
-                    value={activeSlide[selectedElement].fontFamily}
-                    onChange={(e) => updateSlideElement(selectedElement, { fontFamily: e.target.value })}
-                    className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  >
-                    {DEFAULT_FONTS.map(f => (
-                      <option key={f.value} value={f.value}>{f.name}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Size (px)</span>
-                    <input
-                      type="number"
-                      value={activeSlide[selectedElement].fontSize}
-                      onChange={(e) => updateSlideElement(selectedElement, { fontSize: parseInt(e.target.value) || 12 })}
-                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Weight</span>
-                    <select
-                      value={activeSlide[selectedElement].fontWeight}
-                      onChange={(e) => updateSlideElement(selectedElement, { fontWeight: e.target.value })}
-                      className="w-full h-9 px-2 bg-white border border-neutral-200 rounded-lg text-xs"
-                    >
-                      <option value="400">Regular (400)</option>
-                      <option value="500">Medium (500)</option>
-                      <option value="600">Semibold (600)</option>
-                      <option value="700">Bold (700)</option>
-                      <option value="800">Extrabold (800)</option>
-                      <option value="900">Black (900)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Line Height</span>
-                    <input
-                      type="number"
-                      step="0.05"
-                      value={activeSlide[selectedElement].lineHeight}
-                      onChange={(e) => updateSlideElement(selectedElement, { lineHeight: parseFloat(e.target.value) || 1.2 })}
-                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Color</span>
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        value={activeSlide[selectedElement].color}
-                        onChange={(e) => updateSlideElement(selectedElement, { color: e.target.value })}
-                        className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
-                      />
-                      <input
-                        type="text"
-                        value={activeSlide[selectedElement].color}
-                        onChange={(e) => updateSlideElement(selectedElement, { color: e.target.value })}
-                        className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono"
-                      />
+                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">Height</span>
+                    <div className="h-9 px-3 bg-neutral-50 rounded-lg flex items-center justify-between text-xs font-mono dark:bg-neutral-800">
+                      <span>1350</span>
+                      <span className="text-neutral-400">px</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Text Align</span>
-                  <div className="flex bg-neutral-100 p-0.5 rounded-lg border border-neutral-200">
+                <div className="space-y-2 pt-2">
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block pb-1 border-b">Safe Margins</span>
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="flex justify-between items-center py-1">
+                      <span className="text-neutral-500 font-medium">Top Margin</span>
+                      <span className="font-bold text-neutral-900 dark:text-white">60px</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1">
+                      <span className="text-neutral-500 font-medium">Bottom Margin</span>
+                      <span className="font-bold text-neutral-900 dark:text-white">70px</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1">
+                      <span className="text-neutral-500 font-medium">Left Margin</span>
+                      <span className="font-bold text-neutral-900 dark:text-white">72px</span>
+                    </div>
+                    <div className="flex justify-between items-center py-1">
+                      <span className="text-neutral-500 font-medium">Right Margin</span>
+                      <span className="font-bold text-neutral-900 dark:text-white">72px</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Layer Quick Selection Panel */}
+                <div className="space-y-2 pt-4 border-t">
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block pb-2">Active Layers</span>
+                  <div className="flex flex-col gap-1.5">
                     {[
-                      { align: "left", icon: <AlignLeft size={11} /> },
-                      { align: "center", icon: <AlignCenter size={11} /> },
-                      { align: "right", icon: <AlignRight size={11} /> }
-                    ].map(opt => (
-                      <button
-                        key={opt.align}
-                        onClick={() => updateSlideElement(selectedElement, { align: opt.align as any })}
-                        className={`p-1.5 rounded-md ${
-                          activeSlide[selectedElement].align === opt.align ? "bg-white text-black shadow-sm" : "text-neutral-500"
-                        }`}
+                      { id: "category", label: "Category Tag" },
+                      { id: "headline", label: "Headline Title" },
+                      { id: "featuredImage", label: "Featured Image" },
+                      { id: "body", label: "Body Text" },
+                      { id: "bullets", label: "Bullets list" },
+                      { id: "quote", label: "Quote Box" },
+                      { id: "cta", label: "CTA Button" },
+                      { id: "logo", label: "Logo Icon" },
+                      { id: "divider", label: "Divider Line" },
+                      { id: "author", label: "Author profile" }
+                    ].map(layer => (
+                      <div 
+                        key={layer.id} 
+                        onClick={() => setSelectedElement(layer.id as ElementKey)}
+                        className="flex justify-between items-center px-3 py-2 bg-neutral-50 hover:bg-neutral-100 rounded-xl cursor-pointer transition-all dark:bg-neutral-800/50 dark:hover:bg-neutral-800"
                       >
-                        {opt.icon}
-                      </button>
+                        <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200">{layer.label}</span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); updateSlideElement(layer.id as any, { visible: !activeSlide[layer.id as ElementKey].visible }); }}
+                            className="p-1 hover:bg-neutral-200 rounded dark:hover:bg-neutral-700"
+                          >
+                            {activeSlide[layer.id as ElementKey].visible ? <Eye size={12} /> : <EyeOff size={12} className="text-red-500" />}
+                          </button>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
 
-        {/* Tab 3: Export System & Settings */}
-        {activeTab === "export" && (
-          <div className="panel-card space-y-5">
-            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block border-b pb-2">Export Tools</span>
-            
-            <div className="space-y-3">
-              <button 
-                onClick={() => handleDownloadSlideSvg(activeIndex)}
-                className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border-none"
-              >
-                <Download size={13} /> Download Active SVG
-              </button>
+              </div>
+            </div>
+          )}
+
+          {/* Inspector Panel with properties matching selections */}
+          {selectedElement && (
+            <div className="space-y-6">
               
-              <button 
-                onClick={() => handleDownloadSlideRaster(activeIndex, "png")}
-                className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border-none"
-              >
-                <Download size={13} /> Download Active PNG
-              </button>
-
-              <button 
-                onClick={() => handleDownloadSlideRaster(activeIndex, "jpeg")}
-                className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border-none"
-              >
-                <Download size={13} /> Download Active JPEG
-              </button>
-
-              <button 
-                onClick={handleDownloadPdf}
-                className="w-full py-3 bg-[#0075de] hover:bg-[#0075de]/95 text-white rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 shadow border-none"
-              >
-                <FileText size={13} /> Export Carousel PDF
-              </button>
-
-              <button 
-                onClick={handleDownloadAllSlidesSvg}
-                className="w-full py-2.5 border border-neutral-300 hover:border-neutral-950 text-neutral-800 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 bg-white"
-              >
-                <LayoutGrid size={13} /> Download All SVGs
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Global Footer Branding */}
-        <div className="panel-card space-y-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block pb-2 border-b border-neutral-100 block">Global Footer</span>
-          
-          <div className="space-y-3.5">
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Brand Name</span>
-              <input
-                type="text"
-                value={activeSlide.footer.brandName}
-                onChange={(e) => updateSlideFooter({ brandName: e.target.value })}
-                className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-              />
-            </div>
-
-            <div className="flex justify-between items-center py-1">
-              <span className="text-xs font-bold text-neutral-600">Show Divider Line</span>
-              <input
-                type="checkbox"
-                checked={activeSlide.footer.dividerEnabled}
-                onChange={(e) => updateSlideFooter({ dividerEnabled: e.target.checked })}
-                className="h-4 w-4 text-[#0075de]"
-              />
-            </div>
-
-            <div className="flex justify-between items-center py-1">
-              <span className="text-xs font-bold text-neutral-600">Show Page Numbers</span>
-              <input
-                type="checkbox"
-                checked={activeSlide.footer.pageNumberEnabled}
-                onChange={(e) => updateSlideFooter({ pageNumberEnabled: e.target.checked })}
-                className="h-4 w-4 text-[#0075de]"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Footer Text Color</span>
-              <div className="flex gap-2">
-                <input
-                  type="color"
-                  value={activeSlide.footer.color}
-                  onChange={(e) => updateSlideFooter({ color: e.target.value })}
-                  className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
-                />
-                <input
-                  type="text"
-                  value={activeSlide.footer.color}
-                  onChange={(e) => updateSlideFooter({ color: e.target.value })}
-                  className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono"
-                />
+              {/* Header selection info */}
+              <div className="flex justify-between items-center pb-3 border-b">
+                <div className="flex flex-col text-left">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-neutral-900 dark:text-white">
+                    {selectedElement}
+                  </h3>
+                  <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest mt-0.5">Properties</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => updateSlideElement(selectedElement, { visible: !activeSlide[selectedElement].visible })}
+                    className="p-1.5 hover:bg-neutral-100 rounded-lg text-neutral-500 dark:hover:bg-neutral-800"
+                    title="Toggle Visibility"
+                  >
+                    {activeSlide[selectedElement].visible ? <Eye size={13} /> : <EyeOff size={13} className="text-red-500" />}
+                  </button>
+                  <button
+                    onClick={() => updateSlideElement(selectedElement, { locked: !activeSlide[selectedElement].locked })}
+                    className="p-1.5 hover:bg-neutral-100 rounded-lg text-neutral-500 dark:hover:bg-neutral-800"
+                    title="Toggle Coordinate Lock"
+                  >
+                    {activeSlide[selectedElement].locked ? <Lock size={13} /> : <Unlock size={13} />}
+                  </button>
+                </div>
               </div>
+
+              {/* Coordinates Box (Free layout mode only) */}
+              <div className="space-y-3.5">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block pb-1 border-b">Alignment & Size</span>
+                <div className="grid grid-cols-2 gap-3.5">
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Position X (px)</span>
+                    <input
+                      type="number"
+                      disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
+                      value={activeSlide[selectedElement].x}
+                      onChange={(e) => updateSlideElement(selectedElement, { x: parseInt(e.target.value) || 0 })}
+                      className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200/80 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Position Y (px)</span>
+                    <input
+                      type="number"
+                      disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
+                      value={activeSlide[selectedElement].y}
+                      onChange={(e) => updateSlideElement(selectedElement, { y: parseInt(e.target.value) || 0 })}
+                      className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200/80 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Width (px)</span>
+                    <input
+                      type="number"
+                      disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
+                      value={activeSlide[selectedElement].width}
+                      onChange={(e) => updateSlideElement(selectedElement, { width: parseInt(e.target.value) || 0 })}
+                      className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200/80 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Height (px)</span>
+                    <input
+                      type="number"
+                      disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
+                      value={activeSlide[selectedElement].height}
+                      onChange={(e) => updateSlideElement(selectedElement, { height: parseInt(e.target.value) || 0 })}
+                      className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200/80 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Typography inspector settings */}
+              {selectedElement !== "featuredImage" && selectedElement !== "divider" && (
+                <div className="space-y-4 pt-3 border-t">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block pb-1 border-b">Typography</span>
+
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Font Family</span>
+                    <select
+                      value={activeSlide[selectedElement].fontFamily}
+                      onChange={(e) => updateSlideElement(selectedElement, { fontFamily: e.target.value })}
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                    >
+                      {DEFAULT_FONTS.map(f => (
+                        <option key={f.value} value={f.value}>{f.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Font Size (px)</span>
+                      <input
+                        type="number"
+                        value={activeSlide[selectedElement].fontSize}
+                        onChange={(e) => updateSlideElement(selectedElement, { fontSize: parseInt(e.target.value) || 12 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Weight</span>
+                      <select
+                        value={activeSlide[selectedElement].fontWeight}
+                        onChange={(e) => updateSlideElement(selectedElement, { fontWeight: e.target.value })}
+                        className="w-full h-9 px-2 bg-white border border-neutral-200 rounded-lg text-xs dark:bg-neutral-800 dark:border-neutral-700"
+                      >
+                        <option value="400">Regular (400)</option>
+                        <option value="500">Medium (500)</option>
+                        <option value="600">Semibold (600)</option>
+                        <option value="700">Bold (700)</option>
+                        <option value="800">Extrabold (800)</option>
+                        <option value="900">Black (900)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Line Height</span>
+                      <input
+                        type="number"
+                        step="0.05"
+                        value={activeSlide[selectedElement].lineHeight}
+                        onChange={(e) => updateSlideElement(selectedElement, { lineHeight: parseFloat(e.target.value) || 1.2 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Color</span>
+                      <div className="flex gap-2">
+                        <input
+                          type="color"
+                          value={activeSlide[selectedElement].color}
+                          onChange={(e) => updateSlideElement(selectedElement, { color: e.target.value })}
+                          className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                        />
+                        <input
+                          type="text"
+                          value={activeSlide[selectedElement].color}
+                          onChange={(e) => updateSlideElement(selectedElement, { color: e.target.value })}
+                          className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center py-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Alignment</span>
+                    <div className="flex bg-neutral-100 p-0.5 rounded-lg border border-neutral-200/60 dark:bg-neutral-800 dark:border-neutral-700">
+                      {[
+                        { align: "left", icon: <AlignLeft size={11} /> },
+                        { align: "center", icon: <AlignCenter size={11} /> },
+                        { align: "right", icon: <AlignRight size={11} /> }
+                      ].map(opt => (
+                        <button
+                          key={opt.align}
+                          onClick={() => updateSlideElement(selectedElement, { align: opt.align as any })}
+                          className={`p-1.5 rounded-md ${
+                            activeSlide[selectedElement].align === opt.align ? "bg-white text-black shadow-sm dark:bg-neutral-700 dark:text-white" : "text-neutral-400"
+                          }`}
+                        >
+                          {opt.icon}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Image specific inputs */}
+              {selectedElement === "featuredImage" && (
+                <div className="space-y-4 pt-3 border-t">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block pb-1 border-b">Image Properties</span>
+                  
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Object Fit</span>
+                      <select
+                        value={activeSlide.featuredImage.objectFit}
+                        onChange={(e) => updateSlideElement("featuredImage", { objectFit: e.target.value as any })}
+                        className="w-full h-9 px-2 bg-white border border-neutral-200 rounded-lg text-xs dark:bg-neutral-800 dark:border-neutral-700"
+                      >
+                        <option value="cover">Cover</option>
+                        <option value="contain">Contain</option>
+                        <option value="fill">Fill</option>
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Border Radius (px)</span>
+                      <input
+                        type="number"
+                        value={activeSlide.featuredImage.borderRadius}
+                        onChange={(e) => updateSlideElement("featuredImage", { borderRadius: parseInt(e.target.value) || 0 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Brightness (%)</span>
+                      <input
+                        type="number"
+                        value={activeSlide.featuredImage.brightness}
+                        onChange={(e) => updateSlideElement("featuredImage", { brightness: parseInt(e.target.value) || 100 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Contrast (%)</span>
+                      <input
+                        type="number"
+                        value={activeSlide.featuredImage.contrast}
+                        onChange={(e) => updateSlideElement("featuredImage", { contrast: parseInt(e.target.value) || 100 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center py-1">
+                    <span className="text-xs font-bold text-neutral-600 dark:text-neutral-300">Drop Shadow</span>
+                    <input
+                      type="checkbox"
+                      checked={!!activeSlide.featuredImage.shadowEnabled}
+                      onChange={(e) => updateSlideElement("featuredImage", { shadowEnabled: e.target.checked })}
+                      className="h-4 w-4 text-neutral-900"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Quote specific inputs */}
+              {selectedElement === "quote" && (
+                <div className="space-y-4 pt-3 border-t">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block pb-1 border-b">Quote Box</span>
+                  
+                  <div className="space-y-1.5">
+                    <span className="text-[9px] font-semibold text-neutral-400">Border Color</span>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={activeSlide.quote.borderColor}
+                        onChange={(e) => updateSlideElement("quote", { borderColor: e.target.value })}
+                        className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                      />
+                      <input
+                        type="text"
+                        value={activeSlide.quote.borderColor}
+                        onChange={(e) => updateSlideElement("quote", { borderColor: e.target.value })}
+                        className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <span className="text-[9px] font-semibold text-neutral-400">Background Color</span>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={activeSlide.quote.backgroundColor}
+                        onChange={(e) => updateSlideElement("quote", { backgroundColor: e.target.value })}
+                        className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                      />
+                      <input
+                        type="text"
+                        value={activeSlide.quote.backgroundColor}
+                        onChange={(e) => updateSlideElement("quote", { backgroundColor: e.target.value })}
+                        className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Radius (px)</span>
+                      <input
+                        type="number"
+                        value={activeSlide.quote.borderRadius}
+                        onChange={(e) => updateSlideElement("quote", { borderRadius: parseInt(e.target.value) || 0 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Padding (px)</span>
+                      <input
+                        type="number"
+                        value={activeSlide.quote.padding}
+                        onChange={(e) => updateSlideElement("quote", { padding: parseInt(e.target.value) || 0 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* CTA button specific inputs */}
+              {selectedElement === "cta" && (
+                <div className="space-y-4 pt-3 border-t">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block pb-1 border-b">CTA Button</span>
+                  
+                  <div className="space-y-1.5">
+                    <span className="text-[9px] font-semibold text-neutral-400">Background</span>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={activeSlide.cta.backgroundColor}
+                        onChange={(e) => updateSlideElement("cta", { backgroundColor: e.target.value })}
+                        className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                      />
+                      <input
+                        type="text"
+                        value={activeSlide.cta.backgroundColor}
+                        onChange={(e) => updateSlideElement("cta", { backgroundColor: e.target.value })}
+                        className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <span className="text-[9px] font-semibold text-neutral-400">Text Color</span>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={activeSlide.cta.textColor}
+                        onChange={(e) => updateSlideElement("cta", { textColor: e.target.value })}
+                        className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                      />
+                      <input
+                        type="text"
+                        value={activeSlide.cta.textColor}
+                        onChange={(e) => updateSlideElement("cta", { textColor: e.target.value })}
+                        className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Radius (px)</span>
+                      <input
+                        type="number"
+                        value={activeSlide.cta.borderRadius}
+                        onChange={(e) => updateSlideElement("cta", { borderRadius: parseInt(e.target.value) || 0 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Padding (px)</span>
+                      <input
+                        type="number"
+                        value={activeSlide.cta.padding}
+                        onChange={(e) => updateSlideElement("cta", { padding: parseInt(e.target.value) || 0 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Divider specific inputs */}
+              {selectedElement === "divider" && (
+                <div className="space-y-4 pt-3 border-t">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block pb-1 border-b">Divider Line</span>
+                  
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Thickness (px)</span>
+                      <input
+                        type="number"
+                        value={activeSlide.divider.thickness}
+                        onChange={(e) => updateSlideElement("divider", { thickness: parseInt(e.target.value) || 1 })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Color</span>
+                      <div className="flex gap-2">
+                        <input
+                          type="color"
+                          value={activeSlide.divider.color}
+                          onChange={(e) => updateSlideElement("divider", { color: e.target.value })}
+                          className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Unselect layers button */}
+              <button 
+                onClick={() => setSelectedElement(null)}
+                className="w-full py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-[10px] font-bold rounded-xl uppercase tracking-wider transition-all dark:bg-neutral-800 dark:text-white"
+              >
+                Clear Selection
+              </button>
+
             </div>
-          </div>
-        </div>
+          )}
+
+        </aside>
 
       </div>
 
