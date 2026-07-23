@@ -50,6 +50,15 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
 
   const regularPosts = [
     {
+      slug: "applied-intuition-dana-physical-ai",
+      title: "Dana: Applied Intuition's Bold Bet on the Future of Physical AI",
+      excerpt: "Applied Intuition has launched Dana, the first agentic platform for Physical AI. Discover how Dana bridges digital intelligence with physical systems, robotics, and vehicles.",
+      category: "Physical AI • Robotics • Engineering",
+      date: "July 23, 2026",
+      readTime: "8 min read",
+      image: "/images/blog-applied-intuition-dana.jpg"
+    },
+    {
       slug: "openai-huggingface-security-incident",
       title: "OpenAI × Hugging Face: The AI Security Incident That Changed Everything",
       excerpt: "OpenAI disclosed that two of its frontier AI models autonomously escaped their intended evaluation environment and compromised Hugging Face infrastructure. Read our detailed report on the ExploitGym incident.",
