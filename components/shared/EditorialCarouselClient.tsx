@@ -1914,6 +1914,180 @@ export function EditorialCarouselClient() {
                 </div>
               </div>
 
+              {/* Content Input Fields (Always visible for easy text/media updates) */}
+              <div className="space-y-4 pt-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block pb-1 border-b">Edit Content</span>
+                
+                {selectedElement === "category" && (
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Category Tag Text</span>
+                    <input
+                      type="text"
+                      value={activeSlide.category.text}
+                      onChange={(e) => updateSlideElement("category", { text: e.target.value })}
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                )}
+
+                {selectedElement === "headline" && (
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Headline Text</span>
+                    <textarea
+                      value={activeSlide.headline.text}
+                      rows={3}
+                      onChange={(e) => updateSlideElement("headline", { text: e.target.value })}
+                      className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                )}
+
+                {selectedElement === "featuredImage" && (
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Image Asset URL</span>
+                    <input
+                      type="text"
+                      placeholder="https://example.com/image.jpg"
+                      value={activeSlide.featuredImage.mediaUrl}
+                      onChange={(e) => updateSlideElement("featuredImage", { mediaUrl: e.target.value })}
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                )}
+
+                {selectedElement === "body" && (
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Body Copy</span>
+                    <textarea
+                      value={activeSlide.body.text}
+                      rows={4}
+                      onChange={(e) => updateSlideElement("body", { text: e.target.value })}
+                      className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none font-sans dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                )}
+
+                {selectedElement === "bullets" && (
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-semibold text-neutral-400 block">Bullet Items</span>
+                    {activeSlide.bullets.items.map((bullet, idx) => (
+                      <div key={idx} className="flex gap-2">
+                        <input
+                          type="text"
+                          value={bullet}
+                          onChange={(e) => {
+                            const next = [...activeSlide.bullets.items];
+                            next[idx] = e.target.value;
+                            updateSlideElement("bullets", { items: next });
+                          }}
+                          className="flex-1 h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                        />
+                        <button
+                          onClick={() => {
+                            const next = activeSlide.bullets.items.filter((_, i) => i !== idx);
+                            updateSlideElement("bullets", { items: next });
+                          }}
+                          className="p-1.5 bg-red-50 text-red-500 hover:bg-red-100 rounded dark:bg-red-950 dark:text-red-400"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      onClick={() => {
+                        updateSlideElement("bullets", { items: [...activeSlide.bullets.items, "New bullet point"] });
+                      }}
+                      className="w-full py-2 border border-dashed rounded-lg text-xs font-bold text-neutral-600 hover:bg-neutral-50 dark:hover:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400"
+                    >
+                      + Add Bullet Item
+                    </button>
+                  </div>
+                )}
+
+                {selectedElement === "quote" && (
+                  <div className="space-y-2">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Quote Text</span>
+                      <textarea
+                        value={activeSlide.quote.text}
+                        rows={3}
+                        onChange={(e) => updateSlideElement("quote", { text: e.target.value })}
+                        className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Author</span>
+                      <input
+                        type="text"
+                        value={activeSlide.quote.author}
+                        onChange={(e) => updateSlideElement("quote", { author: e.target.value })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {selectedElement === "cta" && (
+                  <div className="space-y-2">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Button Label</span>
+                      <input
+                        type="text"
+                        value={activeSlide.cta.text}
+                        onChange={(e) => updateSlideElement("cta", { text: e.target.value })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Button Link</span>
+                      <input
+                        type="text"
+                        value={activeSlide.cta.link}
+                        onChange={(e) => updateSlideElement("cta", { link: e.target.value })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {selectedElement === "logo" && (
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-semibold text-neutral-400">Brand Logo URL</span>
+                    <input
+                      type="text"
+                      placeholder="https://example.com/logo.png"
+                      value={activeSlide.logo.logoUrl}
+                      onChange={(e) => updateSlideElement("logo", { logoUrl: e.target.value })}
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                    />
+                  </div>
+                )}
+
+                {selectedElement === "author" && (
+                  <div className="space-y-2">
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Author Name</span>
+                      <input
+                        type="text"
+                        value={activeSlide.author.name}
+                        onChange={(e) => updateSlideElement("author", { name: e.target.value })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] font-semibold text-neutral-400">Avatar Photo URL</span>
+                      <input
+                        type="text"
+                        placeholder="https://example.com/avatar.jpg"
+                        value={activeSlide.author.avatarUrl}
+                        onChange={(e) => updateSlideElement("author", { avatarUrl: e.target.value })}
+                        className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold dark:bg-neutral-800 dark:border-neutral-700"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Coordinates Box (Free layout mode only) */}
               <div className="space-y-3.5">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block pb-1 border-b">Alignment & Size</span>
