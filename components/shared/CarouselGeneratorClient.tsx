@@ -76,6 +76,40 @@ const renderFormattedText = (text?: string) => {
   return <span dangerouslySetInnerHTML={{ __html: text }} />;
 };
 
+const getAiNewsTypography = (titleText: string, subtitleText: string, scale = 1.0) => {
+  const rawTitle = stripHtmlTags(titleText || "");
+  const rawSub = stripHtmlTags(subtitleText || "");
+  
+  let headlineSize = Math.round(44 * scale);
+  let headlineLineHeight = 1.08;
+  
+  if (rawTitle.length > 70) {
+    headlineSize = Math.round(38 * scale);
+    headlineLineHeight = 1.05;
+  } else if (rawTitle.length > 45) {
+    headlineSize = Math.round(41 * scale);
+    headlineLineHeight = 1.06;
+  }
+  
+  let bodySize = Math.round(22 * scale);
+  let bodyLineHeight = 1.5;
+  
+  if (rawSub.length > 250) {
+    bodySize = Math.round(18 * scale);
+    bodyLineHeight = 1.35;
+  } else if (rawSub.length > 140) {
+    bodySize = Math.round(20 * scale);
+    bodyLineHeight = 1.4;
+  }
+  
+  return {
+    headlineSize,
+    headlineLineHeight,
+    bodySize,
+    bodyLineHeight
+  };
+};
+
 const renderInteractiveElementMarkup = (slide: Slide, scale = 1.0, theme = "ainews") => {
   if (!slide.interactiveType || slide.interactiveType === "none") return null;
 
@@ -1374,19 +1408,25 @@ export function CarouselGeneratorClient() {
   const renderVisualMediaCard = (slide: Slide, scale = 1.0) => {
     const mediaUrl = slide.customVideo || slide.customImage;
     const isHighRes = scale > 1.5;
-    const cardMinHeight = isHighRes ? `${Math.round(420)}px` : `${Math.round(180)}px`;
-    const radiusStr = `${Math.round(12 * (isHighRes ? 2.7 : 1.0))}px`;
-    const marginStr = `${Math.round(8 * (isHighRes ? 2.7 : 1.0))}px auto`;
+    
+    // Check if ainews theme
+    const isAiNews = theme === "ainews";
+    const cardWidthStr = isAiNews ? `${Math.round(940 * scale)}px` : "100%";
+    const cardHeightStr = isAiNews ? `${Math.round(470 * scale)}px` : (isHighRes ? `${Math.round(420)}px` : `${Math.round(180)}px`);
+    const radiusStr = isAiNews ? `${Math.round(22 * scale)}px` : `${Math.round(12 * (isHighRes ? 2.7 : 1.0))}px`;
+    const marginStr = isAiNews ? "0 auto" : `${Math.round(8 * (isHighRes ? 2.7 : 1.0))}px auto`;
 
     if (mediaUrl) {
       const isVideo = isVideoMedia(mediaUrl);
       return (
         <div 
-          className="w-full bg-[#050505] rounded-2xl border border-neutral-800 text-white my-2 flex flex-col justify-center items-center text-center overflow-hidden shrink-0 relative mx-auto"
+          className="bg-[#050505] rounded-2xl border border-neutral-800 text-white flex flex-col justify-center items-center text-center overflow-hidden shrink-0 relative"
           style={{
             borderRadius: radiusStr,
-            height: cardMinHeight,
-            margin: marginStr
+            width: cardWidthStr,
+            height: cardHeightStr,
+            margin: marginStr,
+            boxSizing: "border-box"
           }}
         >
           {isVideo ? (
@@ -1397,10 +1437,10 @@ export function CarouselGeneratorClient() {
               muted 
               playsInline 
               controls={scale < 1.5}
-              className="max-w-full h-auto object-contain block rounded-2xl mx-auto self-center"
+              className="w-full h-full block mx-auto self-center"
               style={{ 
-                maxHeight: cardMinHeight,
                 borderRadius: radiusStr,
+                objectFit: "cover",
                 margin: "0 auto"
               }}
             />
@@ -1408,10 +1448,10 @@ export function CarouselGeneratorClient() {
             <img 
               src={mediaUrl} 
               alt={stripHtmlTags(slide.title) || "Slide Media"}
-              className="max-w-full h-auto object-contain block mx-auto self-center"
+              className="w-full h-full block mx-auto self-center"
               style={{ 
-                maxHeight: cardMinHeight,
                 borderRadius: radiusStr,
+                objectFit: "cover",
                 margin: "0 auto"
               }}
             />
@@ -1427,12 +1467,13 @@ export function CarouselGeneratorClient() {
 
     return (
       <div 
-        className="w-full bg-[#050505] rounded-2xl p-5 border border-neutral-800 text-white my-2 flex flex-col justify-center items-center overflow-hidden shrink-0 box-border"
+        className="bg-[#050505] rounded-2xl p-5 border border-neutral-800 text-white flex flex-col justify-center items-center overflow-hidden shrink-0 box-border"
         style={{
           borderRadius: radiusStr,
           padding: `${Math.round(20 * (isHighRes ? 2.7 : 1.0))}px`,
-          minHeight: cardMinHeight,
-          margin: `${Math.round(8 * (isHighRes ? 2.7 : 1.0))}px 0`
+          width: cardWidthStr,
+          height: cardHeightStr,
+          margin: marginStr
         }}
       >
         {chartType === "logo" && (
@@ -2779,41 +2820,79 @@ export function CarouselGeneratorClient() {
                   paddingBottom: `${Math.round(16 * scaleMultiplier)}px`
                 }}
               >
-                {theme === "ainews" ? (
-                  <div 
-                    className="w-full text-left flex flex-col overflow-hidden"
-                    style={{ gap: `${Math.round(6 * scaleMultiplier)}px` }}
-                  >
-                    <div className="w-full flex flex-col justify-start items-start space-y-1 shrink-0">
+                {theme === "ainews" ? (() => {
+                  const typo = getAiNewsTypography(activeSlide.title, activeSlide.subtitle, liveScaleMultiplier);
+                  return (
+                    <div className="w-full h-full flex flex-col justify-start items-start text-left overflow-hidden relative" style={{ boxSizing: "border-box" }}>
+                      {/* Top Area (Fixed Height 190px) */}
                       <div 
-                        className="text-[10px] font-extrabold uppercase tracking-widest text-[#888888] font-sans"
-                        style={{ fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px` }}
+                        style={{ 
+                          height: `${Math.round(190 * liveScaleMultiplier)}px`, 
+                          width: "100%", 
+                          display: "flex", 
+                          flexDirection: "column", 
+                          justifyContent: "flex-start",
+                          gap: `${Math.round(20 * liveScaleMultiplier)}px`,
+                          margin: 0,
+                          padding: 0
+                        }}
                       >
-                        {activeSlide.categoryTag !== undefined ? activeSlide.categoryTag : "GROWX INSIGHTS"}
+                        <div 
+                          className="font-extrabold uppercase tracking-widest text-[#888888] font-sans"
+                          style={{ fontSize: `${Math.max(Math.round(18 * liveScaleMultiplier), 8)}px`, letterSpacing: "1.5px" }}
+                        >
+                          {activeSlide.categoryTag !== undefined ? activeSlide.categoryTag : "GROWX INSIGHTS"}
+                        </div>
+                        <div 
+                          className="font-black text-black leading-tight font-sans tracking-tight"
+                          style={{ 
+                            fontSize: `${typo.headlineSize}px`,
+                            lineHeight: typo.headlineLineHeight,
+                            margin: 0
+                          }}
+                        >
+                          {renderFormattedText(activeSlide.title)}
+                        </div>
                       </div>
-                      <div 
-                        className="font-black text-black leading-tight font-sans tracking-tight"
-                        style={{ fontSize: `${Math.round(16 * scaleMultiplier)}px` }}
-                      >
-                        {renderFormattedText(activeSlide.title)}
-                      </div>
-                    </div>
 
-                    {renderVisualMediaCard(activeSlide, liveScaleMultiplier) && (
-                      <div className="w-full overflow-hidden shrink-0 my-1">
+                      {/* Image Area (Fixed Y & Size: Width 940px, Height 470px, Gap 32px) */}
+                      <div 
+                        style={{ 
+                          position: "absolute",
+                          top: `${Math.round(222 * liveScaleMultiplier)}px`,
+                          left: 0,
+                          width: "100%",
+                          height: `${Math.round(470 * liveScaleMultiplier)}px`
+                        }}
+                      >
                         {renderVisualMediaCard(activeSlide, liveScaleMultiplier)}
                       </div>
-                    )}
 
-                    <div 
-                      className="w-full text-neutral-800 text-[10px] leading-snug font-sans whitespace-pre-line font-normal shrink-0"
-                      style={{ fontSize: `${Math.max(Math.round(10 * scaleMultiplier), 8)}px` }}
-                    >
-                      {renderFormattedText(activeSlide.subtitle)}
+                      {/* Body Area (Flexible starting at fixed Y offset: 222 + 470 + 40 gap = 732px) */}
+                      <div 
+                        className="w-full flex flex-col justify-start items-start text-left overflow-hidden"
+                        style={{ 
+                          position: "absolute",
+                          top: `${Math.round(732 * liveScaleMultiplier)}px`,
+                          left: 0,
+                          width: "100%",
+                          bottom: `${Math.round(30 * liveScaleMultiplier)}px`
+                        }}
+                      >
+                        <div 
+                          className="w-full text-neutral-800 font-sans whitespace-pre-line font-normal"
+                          style={{ 
+                            fontSize: `${typo.bodySize}px`,
+                            lineHeight: typo.bodyLineHeight
+                          }}
+                        >
+                          {renderFormattedText(activeSlide.subtitle)}
+                        </div>
+                        {renderInteractiveElementMarkup(activeSlide, liveScaleMultiplier, theme)}
+                      </div>
                     </div>
-                    {renderInteractiveElementMarkup(activeSlide, liveScaleMultiplier, theme)}
-                  </div>
-                ) : (
+                  );
+                })() : (
                   <>
                     {activeSlide.layout === "title-only" && (
                       <div className="w-full text-center">
@@ -3256,7 +3335,7 @@ export function CarouselGeneratorClient() {
                       justifyContent: "space-between", 
                       alignItems: "center", 
                       padding: theme === "ainews"
-                        ? `${Math.round(44 * scaleMultiplier)}px ${Math.round(64 * scaleMultiplier)}px ${Math.round(40 * scaleMultiplier)}px ${Math.round(64 * scaleMultiplier)}px`
+                        ? `${Math.round(70 * scaleMultiplier)}px`
                         : `${Math.round(80 * scaleMultiplier)}px 80px`,
                       position: "relative"
                     }}
@@ -3296,21 +3375,66 @@ export function CarouselGeneratorClient() {
                     {/* Dynamic layouts */}
                     <div style={{ width: "100%", zIndex: 10, flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                       
-                      {theme === "ainews" ? (
-                        <div style={{ width: "100%", textAlign: "left", display: "flex", flexDirection: "column", gap: `${Math.round(16 * scaleMultiplier)}px` }}>
-                          <div style={{ fontSize: `${Math.round(18 * scaleMultiplier)}px`, fontWeight: 800, textTransform: "uppercase", letterSpacing: "2px", color: "#888888", fontFamily: "'Inter', sans-serif" }}>
-                            {slide.categoryTag !== undefined ? slide.categoryTag : "GROWX INSIGHTS"}
+                      {theme === "ainews" ? (() => {
+                        const typo = getAiNewsTypography(slide.title, slide.subtitle, scaleMultiplier);
+                        return (
+                          <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start", position: "relative", boxSizing: "border-box" }}>
+                            {/* Top Area (Fixed Height 190px) */}
+                            <div 
+                              style={{ 
+                                height: `${Math.round(190 * scaleMultiplier)}px`, 
+                                width: "100%", 
+                                display: "flex", 
+                                flexDirection: "column", 
+                                justifyContent: "flex-start",
+                                gap: `${Math.round(20 * scaleMultiplier)}px`,
+                                margin: 0,
+                                padding: 0
+                              }}
+                            >
+                              <div style={{ fontSize: `${Math.round(18 * scaleMultiplier)}px`, fontWeight: 800, textTransform: "uppercase", letterSpacing: "1.5px", color: "#888888", fontFamily: "'Inter', sans-serif" }}>
+                                {slide.categoryTag !== undefined ? slide.categoryTag : "GROWX INSIGHTS"}
+                              </div>
+                              <h1 style={{ fontSize: `${typo.headlineSize}px`, fontWeight: 900, color: "#000000", lineHeight: typo.headlineLineHeight, letterSpacing: "-1px", fontFamily: "'Inter', sans-serif", margin: 0 }}>
+                                {renderFormattedText(slide.title)}
+                              </h1>
+                            </div>
+
+                            {/* Image Area (Fixed Y & Size: Width 940px, Height 470px, Gap 32px) */}
+                            <div 
+                              style={{ 
+                                position: "absolute",
+                                top: `${Math.round(222 * scaleMultiplier)}px`,
+                                left: 0,
+                                width: "100%",
+                                height: `${Math.round(470 * scaleMultiplier)}px`
+                              }}
+                            >
+                              {renderVisualMediaCard(slide, scaleMultiplier)}
+                            </div>
+
+                            {/* Body Area (Flexible starting at fixed Y offset: 222 + 470 + 40 gap = 732px) */}
+                            <div 
+                              style={{ 
+                                position: "absolute",
+                                top: `${Math.round(732 * scaleMultiplier)}px`,
+                                left: 0,
+                                width: "100%",
+                                bottom: `${Math.round(30 * scaleMultiplier)}px`,
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "flex-start",
+                                alignItems: "flex-start"
+                              }}
+                            >
+                              <p style={{ fontSize: `${typo.bodySize}px`, color: "#111827", lineHeight: typo.bodyLineHeight, whiteSpace: "pre-line", fontFamily: "'Inter', sans-serif", margin: 0 }}>
+                                {renderFormattedText(slide.subtitle)}
+                              </p>
+                              {renderInteractiveElementMarkup(slide, scaleMultiplier, theme)}
+                            </div>
                           </div>
-                          <h1 style={{ fontSize: `${Math.round(44 * scaleMultiplier)}px`, fontWeight: 900, color: "#000000", lineHeight: 1.08, letterSpacing: "-1px", fontFamily: "'Inter', sans-serif", margin: 0 }}>
-                            {renderFormattedText(slide.title)}
-                          </h1>
-                          {renderVisualMediaCard(slide, scaleMultiplier) !== null && renderVisualMediaCard(slide, scaleMultiplier)}
-                          <p style={{ fontSize: `${Math.round(22 * scaleMultiplier)}px`, color: "#111827", lineHeight: 1.5, whiteSpace: "pre-line", fontFamily: "'Inter', sans-serif", margin: 0 }}>
-                            {renderFormattedText(slide.subtitle)}
-                          </p>
-                          {renderInteractiveElementMarkup(slide, scaleMultiplier, theme)}
-                        </div>
-                      ) : (
+                        );
+                      })() : (
                         <>
                           {slide.layout === "title-only" && (
                             <div style={{ width: "100%" }}>
