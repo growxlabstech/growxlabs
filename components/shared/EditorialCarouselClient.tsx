@@ -28,7 +28,15 @@ import {
   AlignLeft, 
   AlignCenter, 
   AlignRight,
-  FileText
+  FileText,
+  MousePointer,
+  RotateCw,
+  FolderOpen,
+  Image as ImageIcon,
+  CheckSquare,
+  Quote as QuoteIcon,
+  Play,
+  Scissors
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -67,6 +75,9 @@ interface ElementStyle {
   color: string;
   fontWeight: string;
   uppercase?: boolean;
+  zIndex: number;
+  padding?: number;
+  margin?: number;
 }
 
 interface ImageElementStyle extends ElementStyle {
@@ -77,6 +88,7 @@ interface ImageElementStyle extends ElementStyle {
   borderRadius: number;
   borderWidth: number;
   borderColor: string;
+  shadowEnabled?: boolean;
 }
 
 interface BulletElementStyle extends ElementStyle {
@@ -89,7 +101,6 @@ interface QuoteElementStyle extends ElementStyle {
   text: string;
   author: string;
   borderRadius: number;
-  padding: number;
   borderColor: string;
   backgroundColor: string;
 }
@@ -100,7 +111,6 @@ interface CtaElementStyle extends ElementStyle {
   backgroundColor: string;
   textColor: string;
   borderRadius: number;
-  padding: number;
 }
 
 interface Slide {
@@ -112,6 +122,9 @@ interface Slide {
   bullets: BulletElementStyle;
   quote: QuoteElementStyle;
   cta: CtaElementStyle;
+  logo: ElementStyle & { logoUrl: string };
+  divider: ElementStyle & { color: string; thickness: number };
+  author: ElementStyle & { name: string; avatarUrl: string };
   footer: {
     brandName: string;
     logoEnabled: boolean;
@@ -119,10 +132,11 @@ interface Slide {
     pageNumberEnabled: boolean;
     opacity: number;
     color: string;
+    align: "left" | "center" | "right";
   };
 }
 
-type ElementKey = "category" | "headline" | "featuredImage" | "body" | "bullets" | "quote" | "cta";
+type ElementKey = "category" | "headline" | "featuredImage" | "body" | "bullets" | "quote" | "cta" | "logo" | "divider" | "author";
 
 // ==========================================
 // CONSTANTS & INITIAL DATA
@@ -140,8 +154,8 @@ const SAFE_WIDTH = CANVAS_WIDTH - SAFE_LEFT - SAFE_RIGHT; // 936px
 
 const DEFAULT_FONTS = [
   { name: "Inter", value: "'Inter', sans-serif" },
-  { name: "SF Mono", value: "'SF Mono', 'Fira Code', monospace" },
   { name: "Outfit", value: "'Outfit', sans-serif" },
+  { name: "SF Mono", value: "'SF Mono', 'Fira Code', monospace" },
   { name: "Playfair Display", value: "'Playfair Display', serif" },
   { name: "Neue Haas Grotesk", value: "'Neue Haas Grotesk', sans-serif" }
 ];
@@ -155,7 +169,7 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     width: SAFE_WIDTH,
     height: 30,
     visible: true,
-    locked: true,
+    locked: false,
     opacity: 1,
     rotation: 0,
     align: "left",
@@ -165,7 +179,8 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     letterSpacing: 2,
     color: "#888888",
     fontWeight: "800",
-    uppercase: true
+    uppercase: true,
+    zIndex: 10
   },
   headline: {
     text: "Moonshot built the world's largest open model",
@@ -174,7 +189,7 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     width: SAFE_WIDTH,
     height: 150,
     visible: true,
-    locked: true,
+    locked: false,
     opacity: 1,
     rotation: 0,
     align: "left",
@@ -185,7 +200,8 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     color: "#000000",
     fontWeight: "900",
     maxLines: 3,
-    autoScale: true
+    autoScale: true,
+    zIndex: 11
   },
   featuredImage: {
     mediaUrl: "",
@@ -195,12 +211,13 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     borderRadius: 22,
     borderWidth: 1,
     borderColor: "#e5e7eb",
+    shadowEnabled: true,
     x: SAFE_LEFT,
     y: 292,
     width: SAFE_WIDTH,
     height: 470,
     visible: true,
-    locked: true,
+    locked: false,
     opacity: 1,
     rotation: 0,
     align: "center",
@@ -209,7 +226,8 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     lineHeight: 1.2,
     letterSpacing: 0,
     color: "#000000",
-    fontWeight: "normal"
+    fontWeight: "normal",
+    zIndex: 5
   },
   body: {
     text: `Kimi K3 is a 2.8 trillion parameter Mixture-of-Experts model, the largest open-weight AI system ever released. It runs a 1M token context, handles text and images, and lands close to the Western frontier.`,
@@ -218,7 +236,7 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     width: SAFE_WIDTH,
     height: 180,
     visible: true,
-    locked: true,
+    locked: false,
     opacity: 1,
     rotation: 0,
     align: "left",
@@ -229,7 +247,8 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     color: "#111827",
     fontWeight: "400",
     maxLines: 6,
-    autoScale: true
+    autoScale: true,
+    zIndex: 12
   },
   bullets: {
     bulletStyle: "check",
@@ -253,13 +272,13 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     lineHeight: 1.5,
     letterSpacing: 0,
     color: "#111827",
-    fontWeight: "500"
+    fontWeight: "500",
+    zIndex: 13
   },
   quote: {
     text: "This model marks a turning point in open-source AI capabilities.",
     author: "GrowXLabs Research Team",
     borderRadius: 16,
-    padding: 24,
     borderColor: "#e5e7eb",
     backgroundColor: "#f9fafb",
     x: SAFE_LEFT,
@@ -276,7 +295,9 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     lineHeight: 1.4,
     letterSpacing: -0.5,
     color: "#000000",
-    fontWeight: "700"
+    fontWeight: "700",
+    zIndex: 14,
+    padding: 24
   },
   cta: {
     text: "Read the Full Report",
@@ -284,7 +305,6 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     backgroundColor: "#000000",
     textColor: "#ffffff",
     borderRadius: 12,
-    padding: 16,
     x: SAFE_LEFT,
     y: 1100,
     width: 320,
@@ -299,7 +319,67 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     lineHeight: 1.2,
     letterSpacing: 1,
     color: "#ffffff",
-    fontWeight: "700"
+    fontWeight: "700",
+    zIndex: 15,
+    padding: 16
+  },
+  logo: {
+    logoUrl: "",
+    x: SAFE_LEFT,
+    y: SAFE_TOP,
+    width: 48,
+    height: 48,
+    visible: false,
+    locked: false,
+    opacity: 1,
+    rotation: 0,
+    align: "left",
+    fontFamily: "inherit",
+    fontSize: 12,
+    lineHeight: 1,
+    letterSpacing: 0,
+    color: "#000000",
+    fontWeight: "normal",
+    zIndex: 8
+  },
+  divider: {
+    color: "#e5e7eb",
+    thickness: 2,
+    x: SAFE_LEFT,
+    y: 275,
+    width: SAFE_WIDTH,
+    height: 2,
+    visible: false,
+    locked: false,
+    opacity: 1,
+    rotation: 0,
+    align: "center",
+    fontFamily: "inherit",
+    fontSize: 12,
+    lineHeight: 1,
+    letterSpacing: 0,
+    fontWeight: "normal",
+    zIndex: 4
+  },
+  author: {
+    name: "Sai Varshith Naidu",
+    avatarUrl: "",
+    x: SAFE_LEFT,
+    y: 740,
+    width: 250,
+    height: 40,
+    visible: false,
+    locked: false,
+    opacity: 1,
+    rotation: 0,
+    align: "left",
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 14,
+    lineHeight: 1.2,
+    letterSpacing: 0,
+    color: "#374151",
+    fontWeight: "600",
+    zIndex: 9
   },
   footer: {
     brandName: "GrowxLabs",
@@ -307,7 +387,8 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
     dividerEnabled: true,
     pageNumberEnabled: true,
     opacity: 1,
-    color: "#000000"
+    color: "#000000",
+    align: "left"
   }
 });
 
@@ -315,7 +396,7 @@ const DEFAULT_SLIDE = (index: number): Slide => ({
 // TEMPLATE PRESETS
 // ==========================================
 
-const TEMPLATE_PRESETS = [
+const TEMPLATE_PRESETS: { id: string; name: string; setup: (slide: Slide) => Slide }[] = [
   {
     id: "ai-news",
     name: "AI News",
@@ -327,7 +408,9 @@ const TEMPLATE_PRESETS = [
       body: { ...slide.body, text: "Kimi K3 is a 2.8 trillion parameter Mixture-of-Experts model, the largest open-weight AI system ever released.", visible: true },
       bullets: { ...slide.bullets, visible: false },
       quote: { ...slide.quote, visible: false },
-      cta: { ...slide.cta, visible: false }
+      cta: { ...slide.cta, visible: false },
+      author: { ...slide.author, visible: false },
+      divider: { ...slide.divider, visible: false }
     })
   },
   {
@@ -342,6 +425,73 @@ const TEMPLATE_PRESETS = [
       bullets: { ...slide.bullets, visible: true },
       quote: { ...slide.quote, visible: false },
       cta: { ...slide.cta, visible: false }
+    })
+  },
+  {
+    id: "services",
+    name: "Our Services",
+    setup: (slide: Slide): Slide => ({
+      ...slide,
+      category: { ...slide.category, text: "SERVICES", visible: true },
+      headline: { ...slide.headline, text: "End-to-End AI Engineering & Agent Orchestration", visible: true },
+      featuredImage: { ...slide.featuredImage, visible: true, height: 350 },
+      body: { ...slide.body, text: "We configure multi-agent networks, clean pipeline nodes, and build high-performance search infrastructures tailored to your CRM workflow.", visible: true },
+      bullets: { ...slide.bullets, visible: false },
+      quote: { ...slide.quote, visible: false },
+      cta: { ...slide.cta, visible: true }
+    })
+  },
+  {
+    id: "product-launch",
+    name: "Product Launch",
+    setup: (slide: Slide): Slide => ({
+      ...slide,
+      category: { ...slide.category, text: "PRODUCT LAUNCH", visible: true },
+      headline: { ...slide.headline, text: "Introducing AstroChat v2: Native Multi-Agent Hub", visible: true },
+      featuredImage: { ...slide.featuredImage, visible: true },
+      body: { ...slide.body, text: "AstroChat integrates directly with BigQuery, features real-time vector caching, and handles user queries at 4x speed.", visible: true },
+      bullets: { ...slide.bullets, visible: false },
+      quote: { ...slide.quote, visible: false },
+      cta: { ...slide.cta, visible: true }
+    })
+  },
+  {
+    id: "case-study",
+    name: "Case Study",
+    setup: (slide: Slide): Slide => ({
+      ...slide,
+      category: { ...slide.category, text: "CASE STUDY", visible: true },
+      headline: { ...slide.headline, text: "How Lightyear scaled pipeline speeds by 400%", visible: true },
+      featuredImage: { ...slide.featuredImage, visible: false },
+      body: { ...slide.body, text: "By deploying autonomous crawlers for leads management, the product studio saved 30+ hours of engineering capacity per week.", visible: true },
+      quote: { ...slide.quote, visible: true, text: "GrowXLabs changed how we approach pipeline velocity and internal tooling.", author: "Lightyear Leadership" },
+      bullets: { ...slide.bullets, visible: false }
+    })
+  },
+  {
+    id: "timeline",
+    name: "Project Timeline",
+    setup: (slide: Slide): Slide => ({
+      ...slide,
+      category: { ...slide.category, text: "PROJECT TIMELINE", visible: true },
+      headline: { ...slide.headline, text: "Roadmap to AI-Native Operations", visible: true },
+      featuredImage: { ...slide.featuredImage, visible: false },
+      body: { ...slide.body, text: "Here is the standard 3-phase rollout pipeline for team workspaces:", visible: true },
+      bullets: { ...slide.bullets, visible: true, items: ["Phase 1: Ingestion & Vector Caching", "Phase 2: Agent Tooling & CRM Sync", "Phase 3: Automated Outbox Campaign Scheduling"] },
+      quote: { ...slide.quote, visible: false }
+    })
+  },
+  {
+    id: "comparison",
+    name: "Side Comparison",
+    setup: (slide: Slide): Slide => ({
+      ...slide,
+      category: { ...slide.category, text: "COMPARISON", visible: true },
+      headline: { ...slide.headline, text: "Decentralized vs Centralized Agent Hubs", visible: true },
+      featuredImage: { ...slide.featuredImage, visible: false },
+      body: { ...slide.body, text: "Decentralized hubs utilize local processing nodes which prevent outages, reduce token costs by 60%, and keep customer data in private containers.", visible: true },
+      bullets: { ...slide.bullets, visible: true, items: ["Decentralized: Localized, fast, cost-effective", "Centralized: High coordination latency, centralized risk"] },
+      quote: { ...slide.quote, visible: false }
     })
   },
   {
@@ -371,6 +521,46 @@ const TEMPLATE_PRESETS = [
       quote: { ...slide.quote, visible: true },
       cta: { ...slide.cta, visible: false }
     })
+  },
+  {
+    id: "hiring",
+    name: "We Are Hiring",
+    setup: (slide: Slide): Slide => ({
+      ...slide,
+      category: { ...slide.category, text: "GROWX CAREERS", visible: true },
+      headline: { ...slide.headline, text: "Join our team as an AI Security Engineer", visible: true },
+      featuredImage: { ...slide.featuredImage, visible: true },
+      body: { ...slide.body, text: "We are seeking engineers to audit agent permissions, optimize model safety guardrails, and harden double-entry ledgers.", visible: true },
+      bullets: { ...slide.bullets, visible: false },
+      quote: { ...slide.quote, visible: false },
+      cta: { ...slide.cta, visible: true, text: "Apply on Careers Portal" }
+    })
+  },
+  {
+    id: "tutorial",
+    name: "Step Tutorial",
+    setup: (slide: Slide): Slide => ({
+      ...slide,
+      category: { ...slide.category, text: "TUTORIALS", visible: true },
+      headline: { ...slide.headline, text: "How to audit token usage in 3 steps", visible: true },
+      featuredImage: { ...slide.featuredImage, visible: false },
+      body: { ...slide.body, text: "Follow these steps to configure real-time token tracking alerts:", visible: true },
+      bullets: { ...slide.bullets, visible: true, items: ["1. Connect your model client via telemetry hooks", "2. Map usage objects to double-entry ledger database", "3. Set trigger thresholds inside workflows engine"] },
+      quote: { ...slide.quote, visible: false }
+    })
+  },
+  {
+    id: "announcement",
+    name: "Announcement",
+    setup: (slide: Slide): Slide => ({
+      ...slide,
+      category: { ...slide.category, text: "ANNOUNCEMENT", visible: true },
+      headline: { ...slide.headline, text: "GrowXLabs raises seed round from top VC firms", visible: true },
+      featuredImage: { ...slide.featuredImage, visible: true },
+      body: { ...slide.body, text: "We are building the future of automated enterprise systems and CRM sales copilots. Let's make AI-native pipelines accessible to everyone.", visible: true },
+      bullets: { ...slide.bullets, visible: false },
+      quote: { ...slide.quote, visible: false }
+    })
   }
 ];
 
@@ -385,6 +575,9 @@ export function EditorialCarouselClient() {
   const [showGrid, setShowGrid] = useState(true);
   const [showSafeArea, setShowSafeArea] = useState(true);
   const [showGuides, setShowGuides] = useState(true);
+
+  // Active property tab
+  const [activeTab, setActiveTab] = useState<"style" | "content" | "export">("content");
 
   // Drag-and-Drop / Resize Tracking
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -409,31 +602,31 @@ export function EditorialCarouselClient() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Update layout positions when activeSlide changes or when layout mode toggles
+  // Update layout positions when activeSlide changes or when layout mode toggles (Fixed Layout rules)
   useEffect(() => {
     if (editorMode === "fixed") {
-      // Calculate layout automatically
       const updated = { ...activeSlide };
       
-      // Top spacing Category
+      // Strict Grid Offsets
+      // Category: Y = 60
       updated.category.x = SAFE_LEFT;
       updated.category.y = SAFE_TOP;
       updated.category.width = SAFE_WIDTH;
 
-      // Headline starts below Category with 20px gap
+      // Headline: Category bottom + 20px
       updated.headline.x = SAFE_LEFT;
       updated.headline.y = SAFE_TOP + updated.category.height + 20;
       updated.headline.width = SAFE_WIDTH;
 
-      // Image is locked at Y = 292px, Width = 936px (or safe width), Height = 470px
+      // Image: Fixed Y position at 292px, Width = 936px, Height = 470px
       updated.featuredImage.x = SAFE_LEFT;
       updated.featuredImage.y = 292;
       updated.featuredImage.width = SAFE_WIDTH;
       updated.featuredImage.height = 470;
 
-      // Body starts below Image with 40px gap
+      // Body: Image bottom + 40px
       updated.body.x = SAFE_LEFT;
-      updated.body.y = updated.featuredImage.y + updated.featuredImage.height + 40; // 292 + 470 + 40 = 802px
+      updated.body.y = updated.featuredImage.y + updated.featuredImage.height + 40; // 802px
       updated.body.width = SAFE_WIDTH;
 
       // Quote inherits same body position if active
@@ -441,14 +634,27 @@ export function EditorialCarouselClient() {
       updated.quote.y = updated.featuredImage.y + updated.featuredImage.height + 40;
       updated.quote.width = SAFE_WIDTH;
 
-      // Bullets start below body/quote with 20px gap
+      // Bullets start below body or quote
       updated.bullets.x = SAFE_LEFT;
       updated.bullets.y = updated.body.y + (updated.body.visible ? updated.body.height + 20 : 0);
       updated.bullets.width = SAFE_WIDTH;
 
-      // CTA placement
+      // CTA Button
       updated.cta.x = SAFE_LEFT;
       updated.cta.y = updated.bullets.y + (updated.bullets.visible ? updated.bullets.height + 20 : 40);
+
+      // Logo
+      updated.logo.x = SAFE_LEFT;
+      updated.logo.y = SAFE_TOP;
+
+      // Divider
+      updated.divider.x = SAFE_LEFT;
+      updated.divider.y = 275;
+      updated.divider.width = SAFE_WIDTH;
+
+      // Author
+      updated.author.x = SAFE_LEFT;
+      updated.author.y = 770;
 
       // Save back to state
       setSlides(prev => prev.map((s, i) => i === activeIndex ? updated : s));
@@ -529,16 +735,6 @@ export function EditorialCarouselClient() {
     toast.success("Deleted slide");
   };
 
-  // Reorder slides
-  const moveSlide = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 0 || toIndex >= slides.length) return;
-    const copy = [...slides];
-    const [moved] = copy.splice(fromIndex, 1);
-    copy.splice(toIndex, 0, moved);
-    setSlides(copy);
-    setActiveIndex(toIndex);
-  };
-
   // Preset Layout Selector
   const applyPreset = (presetId: string) => {
     const preset = TEMPLATE_PRESETS.find(p => p.id === presetId);
@@ -582,7 +778,7 @@ export function EditorialCarouselClient() {
     let newX = Math.round(dragStartRef.current.elemX + dx);
     let newY = Math.round(dragStartRef.current.elemY + dy);
 
-    // Grid Snapping
+    // Guide Snapping
     if (showGuides) {
       if (Math.abs(newX - SAFE_LEFT) < 10) newX = SAFE_LEFT;
       if (Math.abs((newX + activeSlide[selectedElement].width) - (CANVAS_WIDTH - SAFE_RIGHT)) < 10) {
@@ -640,11 +836,10 @@ export function EditorialCarouselClient() {
   };
 
   // ==========================================
-  // EXPORT ENGINE
+  // EXPORT ENGINE (SVG, PNG, JPEG, PDF)
   // ==========================================
 
   const buildSvgString = (slide: Slide, index: number) => {
-    // Generate inline style variables matching fonts/colors
     const fontsMarkup = DEFAULT_FONTS.map(f => 
       `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;600;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');`
     ).join("\n");
@@ -674,6 +869,7 @@ export function EditorialCarouselClient() {
           transform: rotate(${el.rotation}deg);
           box-sizing: border-box;
           overflow: hidden;
+          z-index: ${el.zIndex || 1};
         " class="${alignClass}">
           ${el.text}
         </div>
@@ -682,18 +878,9 @@ export function EditorialCarouselClient() {
 
     const renderImageMarkup = (el: ImageElementStyle) => {
       if (!el.visible) return "";
-      const fallbackColor = "#1f2937";
       const borderStyle = el.borderWidth > 0 ? `border: ${el.borderWidth}px solid ${el.borderColor};` : "";
+      const shadowStyle = el.shadowEnabled ? "box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);" : "";
       
-      // If user hasn't uploaded any custom photo, render a sleek tech-pattern gradient
-      const imgStyle = `
-        width: 100%;
-        height: 100%;
-        object-fit: ${el.objectFit};
-        border-radius: ${el.borderRadius}px;
-        filter: brightness(${el.brightness}%) contrast(${el.contrast}%);
-      `;
-
       return `
         <div style="
           position: absolute;
@@ -706,14 +893,16 @@ export function EditorialCarouselClient() {
           transform: rotate(${el.rotation}deg);
           box-sizing: border-box;
           overflow: hidden;
-          background: ${fallbackColor};
+          background: #f3f4f6;
+          z-index: ${el.zIndex || 1};
           ${borderStyle}
+          ${shadowStyle}
         ">
           ${el.mediaUrl ? `
-            <img src="${el.mediaUrl}" style="${imgStyle}" />
+            <img src="${el.mediaUrl}" style="width: 100%; height: 100%; object-fit: ${el.objectFit}; filter: brightness(${el.brightness}%) contrast(${el.contrast}%);" />
           ` : `
-            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #0f172a, #1e293b); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.4); font-family: sans-serif; font-weight: bold; font-size: 24px;">
-              ${slide.headline.text ? stripHtmlTags(slide.headline.text).substring(0, 20) : "Featured Asset"}
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #e2e8f0, #cbd5e1); display: flex; align-items: center; justify-content: center; color: #475569; font-family: sans-serif; font-weight: bold; font-size: 24px;">
+              Featured Asset
             </div>
           `}
         </div>
@@ -736,8 +925,9 @@ export function EditorialCarouselClient() {
           line-height: ${el.lineHeight};
           box-sizing: border-box;
           overflow: hidden;
+          z-index: ${el.zIndex || 1};
         ">
-          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flexDirection: column; gap: ${el.spacing}px;">
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: ${el.spacing}px;">
             ${el.items.map((item, idx) => `
               <li style="display: flex; align-items: flex-start; gap: 10px;">
                 <span style="color: #000000; font-weight: bold;">${el.bulletStyle === "check" ? "✔" : el.bulletStyle === "number" ? `${idx + 1}.` : "•"}</span>
@@ -765,7 +955,8 @@ export function EditorialCarouselClient() {
           background: ${el.backgroundColor};
           border-left: 5px solid ${el.borderColor};
           border-radius: ${el.borderRadius}px;
-          padding: ${el.padding}px;
+          padding: ${el.padding || 24}px;
+          z-index: ${el.zIndex || 1};
         ">
           <p style="margin: 0 0 10px 0; font-size: ${el.fontSize}px; font-weight: ${el.fontWeight}; line-height: ${el.lineHeight}; color: ${el.color};">
             "${el.text}"
@@ -796,11 +987,76 @@ export function EditorialCarouselClient() {
           font-size: ${el.fontSize}px;
           font-weight: ${el.fontWeight};
           border-radius: ${el.borderRadius}px;
-          padding: ${el.padding}px;
+          padding: ${el.padding || 16}px;
           box-sizing: border-box;
           text-align: center;
+          z-index: ${el.zIndex || 1};
         ">
           ${el.text}
+        </div>
+      `;
+    };
+
+    const renderLogoMarkup = (el: ElementStyle & { logoUrl: string }) => {
+      if (!el.visible) return "";
+      return `
+        <div style="
+          position: absolute;
+          left: ${el.x}px;
+          top: ${el.y}px;
+          width: ${el.width}px;
+          height: ${el.height}px;
+          opacity: ${el.opacity};
+          z-index: ${el.zIndex || 1};
+        ">
+          ${el.logoUrl ? `
+            <img src="${el.logoUrl}" style="width:100%; height:100%; object-fit:contain;" />
+          ` : `
+            <div style="width:100%; height:100%; border-radius:50%; background:#0075de; color:white; display:flex; align-items:center; justify-content:center; font-family:sans-serif; font-weight:bold; font-size:12px;">GX</div>
+          `}
+        </div>
+      `;
+    };
+
+    const renderDividerMarkup = (el: ElementStyle & { color: string; thickness: number }) => {
+      if (!el.visible) return "";
+      return `
+        <div style="
+          position: absolute;
+          left: ${el.x}px;
+          top: ${el.y}px;
+          width: ${el.width}px;
+          height: ${el.thickness}px;
+          background: ${el.color};
+          opacity: ${el.opacity};
+          z-index: ${el.zIndex || 1};
+        " />
+      `;
+    };
+
+    const renderAuthorMarkup = (el: ElementStyle & { name: string; avatarUrl: string }) => {
+      if (!el.visible) return "";
+      return `
+        <div style="
+          position: absolute;
+          left: ${el.x}px;
+          top: ${el.y}px;
+          width: ${el.width}px;
+          height: ${el.height}px;
+          opacity: ${el.opacity};
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-family: ${el.fontFamily};
+          color: ${el.color};
+          font-size: ${el.fontSize}px;
+          font-weight: ${el.fontWeight};
+          z-index: ${el.zIndex || 1};
+        ">
+          <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; background: #cbd5e1;">
+            ${el.avatarUrl ? `<img src="${el.avatarUrl}" style="width:100%; height:100%; object-fit:cover;" />` : `<div style="width:100%; height:100%; background:#0075de;"/>`}
+          </div>
+          <span>${el.name}</span>
         </div>
       `;
     };
@@ -856,6 +1112,8 @@ export function EditorialCarouselClient() {
             box-sizing: border-box;
             overflow: hidden;
           ">
+            ${renderLogoMarkup(slide.logo)}
+            ${renderDividerMarkup(slide.divider)}
             ${renderTextMarkup(slide.category)}
             ${renderTextMarkup(slide.headline)}
             ${renderImageMarkup(slide.featuredImage)}
@@ -863,11 +1121,46 @@ export function EditorialCarouselClient() {
             ${renderBulletsMarkup(slide.bullets)}
             ${renderQuoteMarkup(slide.quote)}
             ${renderCtaMarkup(slide.cta)}
+            ${renderAuthorMarkup(slide.author)}
             ${renderFooterMarkup()}
           </div>
         </foreignObject>
       </svg>
     `;
+  };
+
+  const convertSvgToRaster = async (svgString: string, type: "png" | "jpeg"): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const svgBlob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+      const DOMURL = window.URL || window.webkitURL || window;
+      const url = DOMURL.createObjectURL(svgBlob);
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          if (type === "jpeg") {
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+          }
+          ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+          const dataUrl = canvas.toDataURL(`image/${type}`, 0.95);
+          DOMURL.revokeObjectURL(url);
+          resolve(dataUrl);
+        } else {
+          DOMURL.revokeObjectURL(url);
+          reject(new Error("Canvas context error"));
+        }
+      };
+      img.onerror = (e) => {
+        DOMURL.revokeObjectURL(url);
+        reject(e);
+      };
+      img.src = url;
+    });
   };
 
   const handleDownloadSlideSvg = (idx: number) => {
@@ -885,6 +1178,45 @@ export function EditorialCarouselClient() {
       toast.success(`Exported Slide ${idx + 1} as clean vector SVG!`);
     } catch (e) {
       toast.error("SVG generation failed");
+    }
+  };
+
+  const handleDownloadSlideRaster = async (idx: number, type: "png" | "jpeg") => {
+    try {
+      const svgStr = buildSvgString(slides[idx], idx);
+      const dataUrl = await convertSvgToRaster(svgStr, type);
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `${activeSlide.footer.brandName.toLowerCase()}-slide-${idx + 1}.${type}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success(`Exported Slide ${idx + 1} as ${type.toUpperCase()}!`);
+    } catch (e) {
+      toast.error(`Failed to export slide as ${type.toUpperCase()}`);
+    }
+  };
+
+  const handleDownloadPdf = async () => {
+    try {
+      const { jsPDF } = await import("jspdf");
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: [CANVAS_WIDTH, CANVAS_HEIGHT]
+      });
+
+      for (let i = 0; i < slides.length; i++) {
+        if (i > 0) doc.addPage();
+        const svgStr = buildSvgString(slides[i], i);
+        const dataUrl = await convertSvgToRaster(svgStr, "png");
+        doc.addImage(dataUrl, "PNG", 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      }
+
+      doc.save(`${activeSlide.footer.brandName.toLowerCase()}-carousel.pdf`);
+      toast.success("Exported full carousel as PDF!");
+    } catch (e) {
+      toast.error("Failed to export PDF file");
     }
   };
 
@@ -917,7 +1249,8 @@ export function EditorialCarouselClient() {
       transform: `rotate(${elem.rotation}deg)`,
       cursor: editorMode === "free" && !elem.locked ? "move" : "pointer",
       boxSizing: "border-box",
-      userSelect: "none"
+      userSelect: "none",
+      zIndex: elem.zIndex || 1
     };
 
     return (
@@ -940,7 +1273,7 @@ export function EditorialCarouselClient() {
 
         {/* Lock Overlay */}
         {elem.locked && isSelected && (
-          <div className="absolute top-1 right-1 bg-white/90 border border-neutral-200 rounded p-1 shadow-sm flex items-center gap-0.5">
+          <div className="absolute top-1 right-1 bg-white/90 border border-neutral-200 rounded p-1 shadow-sm flex items-center gap-0.5 z-50">
             <Lock size={10} className="text-neutral-500" />
             <span className="text-[7px] font-bold text-neutral-500 uppercase tracking-widest">Locked</span>
           </div>
@@ -964,7 +1297,7 @@ export function EditorialCarouselClient() {
             </span>
           </div>
 
-          <div className="flex flex-col gap-2.5 max-h-[360px] lg:max-h-[500px] overflow-y-auto custom-scrollbar pr-1">
+          <div className="flex flex-col gap-2.5 max-h-[360px] lg:max-h-[460px] overflow-y-auto custom-scrollbar pr-1">
             {slides.map((slide, sIdx) => (
               <div 
                 key={slide.id}
@@ -978,11 +1311,11 @@ export function EditorialCarouselClient() {
                     : "bg-white border-neutral-200 hover:bg-neutral-50"
                 }`}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
                   <span className="text-xs font-mono font-bold text-neutral-400">
                     {String(sIdx + 1).padStart(2, "0")}
                   </span>
-                  <div className="flex flex-col text-left">
+                  <div className="flex flex-col text-left min-w-0">
                     <span className="text-xs font-bold text-neutral-900 truncate w-24">
                       {slide.headline.text ? stripHtmlTags(slide.headline.text) : "Empty Slide"}
                     </span>
@@ -992,16 +1325,16 @@ export function EditorialCarouselClient() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 lg:opacity-100">
+                <div className="flex items-center gap-1.5">
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
                       duplicateSlide(sIdx);
                     }}
-                    className="p-1 hover:bg-neutral-200 rounded text-neutral-500"
+                    className="p-1 hover:bg-neutral-100 rounded text-neutral-500"
                     title="Duplicate"
                   >
-                    <Copy size={10} />
+                    <Copy size={11} />
                   </button>
                   <button 
                     onClick={(e) => {
@@ -1011,7 +1344,7 @@ export function EditorialCarouselClient() {
                     className="p-1 hover:bg-red-50 hover:text-red-600 rounded text-neutral-500"
                     title="Delete"
                   >
-                    <Trash2 size={10} />
+                    <Trash2 size={11} />
                   </button>
                 </div>
               </div>
@@ -1026,15 +1359,16 @@ export function EditorialCarouselClient() {
           </button>
         </div>
 
-        {/* Templates selector */}
+        {/* Layout Presets selector */}
         <div className="panel-card space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block pb-2 border-b border-neutral-100">Templates</span>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 max-h-[220px] overflow-y-auto pr-1">
             {TEMPLATE_PRESETS.map(preset => (
               <button 
                 key={preset.id}
                 onClick={() => applyPreset(preset.id)}
-                className="py-2 px-3 border border-neutral-200 hover:border-neutral-900 rounded-lg text-[10px] font-bold text-neutral-700 bg-white hover:bg-neutral-50 text-center transition-all"
+                className="py-2 px-1 border border-neutral-200 hover:border-neutral-900 rounded-lg text-[9px] font-bold text-neutral-700 bg-white hover:bg-neutral-50 text-center truncate transition-all"
+                title={preset.name}
               >
                 {preset.name}
               </button>
@@ -1049,9 +1383,9 @@ export function EditorialCarouselClient() {
       <div className="lg:col-span-6 flex flex-col items-center">
         
         {/* Canvas Toolbar Controls */}
-        <div className="flex flex-wrap items-center justify-between w-full max-w-[520px] mb-4 gap-3 bg-white border border-neutral-200 px-4 py-2.5 rounded-2xl shadow-sm">
+        <div className="flex flex-wrap items-center justify-between w-full max-w-[540px] mb-4 gap-3 bg-white border border-neutral-200 px-4 py-2.5 rounded-2xl shadow-sm">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Mode:</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 font-mono">Layout:</span>
             <div className="flex bg-neutral-100 p-0.5 rounded-lg border border-neutral-200">
               <button 
                 onClick={() => setEditorMode("fixed")}
@@ -1059,7 +1393,7 @@ export function EditorialCarouselClient() {
                   editorMode === "fixed" ? "bg-white text-black shadow-sm" : "text-neutral-500 hover:text-black"
                 }`}
               >
-                Fixed Layout
+                Fixed
               </button>
               <button 
                 onClick={() => setEditorMode("free")}
@@ -1067,7 +1401,7 @@ export function EditorialCarouselClient() {
                   editorMode === "free" ? "bg-white text-black shadow-sm" : "text-neutral-500 hover:text-black"
                 }`}
               >
-                Free Design
+                Free
               </button>
             </div>
           </div>
@@ -1078,7 +1412,7 @@ export function EditorialCarouselClient() {
               className={`p-1.5 rounded-lg border transition-all ${
                 showSafeArea ? "bg-[#0075de]/10 border-[#0075de] text-[#0075de]" : "bg-white border-neutral-200 text-neutral-400 hover:text-neutral-900"
               }`}
-              title="Toggle Safe Area Guidelines"
+              title="Toggle Safe Area (Top 60, Bottom 70, Left 72, Right 72)"
             >
               <Maximize2 size={13} />
             </button>
@@ -1087,7 +1421,7 @@ export function EditorialCarouselClient() {
               className={`p-1.5 rounded-lg border transition-all ${
                 showGrid ? "bg-[#0075de]/10 border-[#0075de] text-[#0075de]" : "bg-white border-neutral-200 text-neutral-400 hover:text-neutral-900"
               }`}
-              title="Toggle Alignment Grid"
+              title="Toggle Grid Lines"
             >
               <Grid size={13} />
             </button>
@@ -1111,10 +1445,10 @@ export function EditorialCarouselClient() {
         </div>
 
         {/* Viewport Box container */}
-        <div className="w-full flex items-center justify-center overflow-auto p-4 bg-neutral-50 border border-neutral-200 border-dashed rounded-[32px] min-h-[500px]">
+        <div className="w-full flex items-center justify-center overflow-auto p-4 bg-[#18181b] border border-neutral-800 rounded-[32px] min-h-[500px]">
           <div 
             ref={canvasRef}
-            className="bg-white shadow-2xl relative select-none overflow-hidden shrink-0"
+            className="bg-white shadow-2xl relative select-none overflow-hidden shrink-0 border border-neutral-700/50"
             style={{
               width: `${CANVAS_WIDTH * zoomScale}px`,
               height: `${CANVAS_HEIGHT * zoomScale}px`,
@@ -1124,7 +1458,7 @@ export function EditorialCarouselClient() {
             {/* Safe Area guideline overlays */}
             {showSafeArea && (
               <div 
-                className="absolute border border-dashed border-[#0075de]/30 pointer-events-none z-40"
+                className="absolute border border-dashed border-[#0075de]/40 pointer-events-none z-40"
                 style={{
                   top: `${SAFE_TOP * zoomScale}px`,
                   bottom: `${SAFE_BOTTOM * zoomScale}px`,
@@ -1137,7 +1471,7 @@ export function EditorialCarouselClient() {
             {/* Grid background overlay */}
             {showGrid && (
               <div 
-                className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]"
+                className="absolute inset-0 pointer-events-none z-0 opacity-[0.05]"
                 style={{
                   backgroundImage: "radial-gradient(#000000 1.5px, transparent 1.5px)",
                   backgroundSize: `${30 * zoomScale}px ${30 * zoomScale}px`
@@ -1145,12 +1479,36 @@ export function EditorialCarouselClient() {
               />
             )}
 
-            {/* Slide Content elements */}
+            {/* Content Layers */}
+
+            {/* Logo */}
+            {renderCanvasElement("logo", (
+              <div className="w-full h-full">
+                {activeSlide.logo.logoUrl ? (
+                  <img src={activeSlide.logo.logoUrl} className="w-full h-full object-contain" />
+                ) : (
+                  <div className="w-full h-full rounded-full bg-[#0075de] text-white font-bold flex items-center justify-center text-[10px]" style={{ fontSize: `${12 * zoomScale}px` }}>
+                    GX
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Divider */}
+            {renderCanvasElement("divider", (
+              <div 
+                className="w-full h-full"
+                style={{
+                  background: activeSlide.divider.color,
+                  height: `${activeSlide.divider.thickness * zoomScale}px`
+                }}
+              />
+            ))}
             
-            {/* 1. Category element */}
+            {/* Category tag */}
             {renderCanvasElement("category", (
               <div 
-                className="w-full h-full font-sans uppercase tracking-widest"
+                className="w-full h-full font-sans uppercase tracking-widest truncate"
                 style={{
                   fontSize: `${activeSlide.category.fontSize * zoomScale}px`,
                   fontWeight: activeSlide.category.fontWeight,
@@ -1163,10 +1521,10 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* 2. Headline element */}
+            {/* Headline */}
             {renderCanvasElement("headline", (
               <div 
-                className="w-full h-full font-sans tracking-tight"
+                className="w-full h-full font-sans tracking-tight leading-tight"
                 style={{
                   fontSize: `${activeSlide.headline.fontSize * zoomScale}px`,
                   fontWeight: activeSlide.headline.fontWeight,
@@ -1180,7 +1538,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* 3. Featured Image */}
+            {/* Featured Image */}
             {renderCanvasElement("featuredImage", (
               <div 
                 className="w-full h-full bg-[#050505] overflow-hidden"
@@ -1214,7 +1572,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* 4. Body Content text */}
+            {/* Body copy */}
             {renderCanvasElement("body", (
               <div 
                 className="w-full h-full font-sans whitespace-pre-line text-neutral-800"
@@ -1231,7 +1589,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* 5. Bullets List */}
+            {/* Bullets */}
             {renderCanvasElement("bullets", (
               <div 
                 className="w-full h-full font-sans text-neutral-800"
@@ -1255,7 +1613,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* 6. Quote Area */}
+            {/* Quote Box */}
             {renderCanvasElement("quote", (
               <div 
                 className="w-full h-full font-sans"
@@ -1263,7 +1621,7 @@ export function EditorialCarouselClient() {
                   background: activeSlide.quote.backgroundColor,
                   borderLeft: `${5 * zoomScale}px solid ${activeSlide.quote.borderColor}`,
                   borderRadius: `${activeSlide.quote.borderRadius * zoomScale}px`,
-                  padding: `${activeSlide.quote.padding * zoomScale}px`
+                  padding: `${(activeSlide.quote.padding || 24) * zoomScale}px`
                 }}
               >
                 <p 
@@ -1283,7 +1641,7 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* 7. CTA Button overlay */}
+            {/* CTA Button */}
             {renderCanvasElement("cta", (
               <div 
                 className="w-full h-full flex items-center justify-center"
@@ -1294,7 +1652,7 @@ export function EditorialCarouselClient() {
                   fontSize: `${activeSlide.cta.fontSize * zoomScale}px`,
                   fontWeight: activeSlide.cta.fontWeight,
                   fontFamily: activeSlide.cta.fontFamily,
-                  padding: `${activeSlide.cta.padding * zoomScale}px`,
+                  padding: `${(activeSlide.cta.padding || 16) * zoomScale}px`,
                   letterSpacing: `${activeSlide.cta.letterSpacing * zoomScale}px`
                 }}
               >
@@ -1302,9 +1660,33 @@ export function EditorialCarouselClient() {
               </div>
             ))}
 
-            {/* 8. Pinned Footer */}
+            {/* Author */}
+            {renderCanvasElement("author", (
+              <div className="w-full h-full flex items-center gap-2">
+                <div 
+                  className="rounded-full bg-neutral-200 overflow-hidden shrink-0 border border-neutral-300"
+                  style={{ width: `${32 * zoomScale}px`, height: `${32 * zoomScale}px` }}
+                >
+                  {activeSlide.author.avatarUrl ? (
+                    <img src={activeSlide.author.avatarUrl} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-[#0075de]" />
+                  )}
+                </div>
+                <div className="flex flex-col text-left">
+                  <span 
+                    className="font-bold text-neutral-800 leading-tight" 
+                    style={{ fontSize: `${activeSlide.author.fontSize * zoomScale}px` }}
+                  >
+                    {activeSlide.author.name}
+                  </span>
+                </div>
+              </div>
+            ))}
+
+            {/* Pinned Footer */}
             <div 
-              className="absolute w-full flex items-center justify-between border-t border-neutral-100"
+              className="absolute w-full flex items-center justify-between border-t border-neutral-100 pointer-events-none"
               style={{
                 bottom: `${SAFE_BOTTOM * zoomScale}px`,
                 left: `${SAFE_LEFT * zoomScale}px`,
@@ -1328,22 +1710,6 @@ export function EditorialCarouselClient() {
 
           </div>
         </div>
-
-        {/* Global Action buttons */}
-        <div className="w-full max-w-[520px] grid grid-cols-2 gap-3 mt-4">
-          <button 
-            onClick={() => handleDownloadSlideSvg(activeIndex)}
-            className="w-full py-3 bg-[#0075de] hover:bg-[#0075de]/95 text-white font-bold rounded-xl flex items-center justify-center gap-2 text-xs transition-all shadow border-none"
-          >
-            <Download size={14} /> Export Slide SVG
-          </button>
-          <button 
-            onClick={handleDownloadAllSlidesSvg}
-            className="w-full py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-xl flex items-center justify-center gap-2 text-xs transition-all shadow border-none"
-          >
-            <LayoutGrid size={14} /> Export All SVG Slides
-          </button>
-        </div>
       </div>
 
       {/* ==========================================
@@ -1351,122 +1717,403 @@ export function EditorialCarouselClient() {
           ========================================== */}
       <div className="lg:col-span-4 flex flex-col space-y-4">
         
-        {/* Selection Status pill */}
+        {/* Element Selection & Tab Switchers */}
         <div className="panel-card space-y-4">
           <div className="flex justify-between items-center pb-2 border-b border-neutral-100">
-            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">Selection System</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">Selected Layer</span>
             {selectedElement ? (
               <span className="text-[10px] font-bold bg-[#0075de]/10 text-[#0075de] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                 {selectedElement}
               </span>
             ) : (
               <span className="text-[10px] font-bold bg-neutral-100 text-neutral-500 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                Nothing Selected
+                None Selected
               </span>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            {[
-              { id: "category", label: "Category Tag" },
-              { id: "headline", label: "Headline Title" },
-              { id: "featuredImage", label: "Featured Image" },
-              { id: "body", label: "Body Text" },
-              { id: "bullets", label: "Bullet Items" },
-              { id: "quote", label: "Quote Box" },
-              { id: "cta", label: "CTA Button" }
-            ].map(item => (
+          <div className="grid grid-cols-3 gap-1 bg-neutral-100 p-1 rounded-xl">
+            {(["content", "style", "export"] as const).map(tab => (
               <button
-                key={item.id}
-                onClick={() => setSelectedElement(item.id as ElementKey)}
-                className={`py-2 px-3 border rounded-xl text-xs font-bold text-left transition-all ${
-                  selectedElement === item.id 
-                    ? "bg-[#0075de]/5 border-[#0075de] text-[#0075de]" 
-                    : "bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50"
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-2 px-1 text-center font-bold text-[10px] uppercase tracking-wider rounded-lg transition-all ${
+                  activeTab === tab ? "bg-white text-black shadow-sm" : "text-neutral-500 hover:text-black"
                 }`}
               >
-                {item.label}
+                {tab}
               </button>
             ))}
           </div>
+
+          {activeTab === "content" && (
+            <div className="grid grid-cols-3 gap-1.5">
+              {[
+                { id: "category", label: "Category" },
+                { id: "headline", label: "Headline" },
+                { id: "featuredImage", label: "Image" },
+                { id: "body", label: "Body Copy" },
+                { id: "bullets", label: "Bullets" },
+                { id: "quote", label: "Quote" },
+                { id: "cta", label: "CTA" },
+                { id: "logo", label: "Logo" },
+                { id: "divider", label: "Divider" },
+                { id: "author", label: "Author" }
+              ].map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => setSelectedElement(item.id as ElementKey)}
+                  className={`py-2 px-1 border rounded-lg text-[9px] font-bold text-center transition-all ${
+                    selectedElement === item.id 
+                      ? "bg-[#0075de]/5 border-[#0075de] text-[#0075de]" 
+                      : "bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Dynamic Property Inputs panel */}
-        {selectedElement && (
-          <div className="panel-card space-y-5">
+        {/* Tab 1: Content Fields editor */}
+        {activeTab === "content" && selectedElement && (
+          <div className="panel-card space-y-4">
             <div className="flex justify-between items-center pb-2 border-b border-neutral-100">
-              <span className="text-xs font-black uppercase tracking-widest text-neutral-700">Properties</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">Edit content</span>
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => updateSlideElement(selectedElement, { visible: !activeSlide[selectedElement].visible })}
                   className="p-1 hover:bg-neutral-100 rounded text-neutral-500"
                   title="Toggle Visibility"
                 >
-                  {activeSlide[selectedElement].visible ? <Eye size={14} /> : <EyeOff size={14} className="text-red-500" />}
+                  {activeSlide[selectedElement].visible ? <Eye size={13} /> : <EyeOff size={13} className="text-red-500" />}
                 </button>
                 <button
                   onClick={() => updateSlideElement(selectedElement, { locked: !activeSlide[selectedElement].locked })}
                   className="p-1 hover:bg-neutral-100 rounded text-neutral-500"
-                  title="Toggle Coordinate Lock"
+                  title="Toggle Lock (Free Mode)"
                 >
-                  {activeSlide[selectedElement].locked ? <Lock size={14} /> : <Unlock size={14} />}
+                  {activeSlide[selectedElement].locked ? <Lock size={13} /> : <Unlock size={13} />}
                 </button>
               </div>
             </div>
 
-            {/* 1. Coordinate / Size Position properties (Free Mode only) */}
-            <div className="grid grid-cols-2 gap-3.5">
+            {selectedElement === "category" && (
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Category Tag Text</label>
+                <input
+                  type="text"
+                  value={activeSlide.category.text}
+                  onChange={(e) => updateSlideElement("category", { text: e.target.value })}
+                  className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                />
+              </div>
+            )}
+
+            {selectedElement === "headline" && (
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Headline Text</label>
+                <textarea
+                  value={activeSlide.headline.text}
+                  rows={3}
+                  onChange={(e) => updateSlideElement("headline", { text: e.target.value })}
+                  className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none"
+                />
+              </div>
+            )}
+
+            {selectedElement === "featuredImage" && (
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Image Asset URL</label>
+                <input
+                  type="text"
+                  placeholder="https://example.com/image.jpg"
+                  value={activeSlide.featuredImage.mediaUrl}
+                  onChange={(e) => updateSlideElement("featuredImage", { mediaUrl: e.target.value })}
+                  className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                />
+              </div>
+            )}
+
+            {selectedElement === "body" && (
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Body Copy</label>
+                <textarea
+                  value={activeSlide.body.text}
+                  rows={4}
+                  onChange={(e) => updateSlideElement("body", { text: e.target.value })}
+                  className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none font-sans"
+                />
+              </div>
+            )}
+
+            {selectedElement === "bullets" && (
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">Bullet Items</label>
+                {activeSlide.bullets.items.map((bullet, idx) => (
+                  <div key={idx} className="flex gap-2">
+                    <input
+                      type="text"
+                      value={bullet}
+                      onChange={(e) => {
+                        const next = [...activeSlide.bullets.items];
+                        next[idx] = e.target.value;
+                        updateSlideElement("bullets", { items: next });
+                      }}
+                      className="flex-1 h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                    />
+                    <button
+                      onClick={() => {
+                        const next = activeSlide.bullets.items.filter((_, i) => i !== idx);
+                        updateSlideElement("bullets", { items: next });
+                      }}
+                      className="p-1 bg-red-50 text-red-500 hover:bg-red-100 rounded"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  onClick={() => {
+                    updateSlideElement("bullets", { items: [...activeSlide.bullets.items, "New bullet point"] });
+                  }}
+                  className="w-full py-2 border border-dashed rounded-lg text-xs font-bold text-neutral-600 hover:bg-neutral-50"
+                >
+                  + Add Bullet Item
+                </button>
+              </div>
+            )}
+
+            {selectedElement === "quote" && (
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Quote Text</label>
+                  <textarea
+                    value={activeSlide.quote.text}
+                    rows={3}
+                    onChange={(e) => updateSlideElement("quote", { text: e.target.value })}
+                    className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Author</label>
+                  <input
+                    type="text"
+                    value={activeSlide.quote.author}
+                    onChange={(e) => updateSlideElement("quote", { author: e.target.value })}
+                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                  />
+                </div>
+              </div>
+            )}
+
+            {selectedElement === "cta" && (
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Button Label</label>
+                  <input
+                    type="text"
+                    value={activeSlide.cta.text}
+                    onChange={(e) => updateSlideElement("cta", { text: e.target.value })}
+                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Button Link</label>
+                  <input
+                    type="text"
+                    value={activeSlide.cta.link}
+                    onChange={(e) => updateSlideElement("cta", { link: e.target.value })}
+                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                  />
+                </div>
+              </div>
+            )}
+
+            {selectedElement === "logo" && (
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Brand Logo URL</label>
+                <input
+                  type="text"
+                  placeholder="https://example.com/logo.png"
+                  value={activeSlide.logo.logoUrl}
+                  onChange={(e) => updateSlideElement("logo", { logoUrl: e.target.value })}
+                  className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                />
+              </div>
+            )}
+
+            {selectedElement === "author" && (
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Author Name</label>
+                  <input
+                    type="text"
+                    value={activeSlide.author.name}
+                    onChange={(e) => updateSlideElement("author", { name: e.target.value })}
+                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Avatar Photo URL</label>
+                  <input
+                    type="text"
+                    placeholder="https://example.com/avatar.jpg"
+                    value={activeSlide.author.avatarUrl}
+                    onChange={(e) => updateSlideElement("author", { avatarUrl: e.target.value })}
+                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Tab 2: Style Panel (Color, Position, Fonts) */}
+        {activeTab === "style" && selectedElement && (
+          <div className="panel-card space-y-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block border-b pb-2">Style Properties</span>
+
+            {/* Position Controls (Always available, but disabled in Fixed Mode) */}
+            <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">X Position (px)</label>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">X (px)</span>
                 <input
                   type="number"
                   disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
                   value={activeSlide[selectedElement].x}
                   onChange={(e) => updateSlideElement(selectedElement, { x: parseInt(e.target.value) || 0 })}
-                  className="w-full h-10 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-semibold disabled:opacity-50"
+                  className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-mono"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Y Position (px)</label>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Y (px)</span>
                 <input
                   type="number"
                   disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
                   value={activeSlide[selectedElement].y}
                   onChange={(e) => updateSlideElement(selectedElement, { y: parseInt(e.target.value) || 0 })}
-                  className="w-full h-10 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-semibold disabled:opacity-50"
+                  className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-mono"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Width (px)</label>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Width (px)</span>
                 <input
                   type="number"
                   disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
                   value={activeSlide[selectedElement].width}
                   onChange={(e) => updateSlideElement(selectedElement, { width: parseInt(e.target.value) || 0 })}
-                  className="w-full h-10 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-semibold disabled:opacity-50"
+                  className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-mono"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Height (px)</label>
+                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Height (px)</span>
                 <input
                   type="number"
                   disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
                   value={activeSlide[selectedElement].height}
                   onChange={(e) => updateSlideElement(selectedElement, { height: parseInt(e.target.value) || 0 })}
-                  className="w-full h-10 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-semibold disabled:opacity-50"
+                  className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-mono"
                 />
               </div>
             </div>
 
-            {/* Typography and alignment options */}
-            {selectedElement !== "featuredImage" && (
-              <div className="space-y-4">
+            {/* Rotation and Opacity */}
+            <div className="grid grid-cols-2 gap-3 border-t pt-3">
+              <div className="space-y-1">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Rotation (deg)</span>
+                <input
+                  type="number"
+                  disabled={activeSlide[selectedElement].locked}
+                  value={activeSlide[selectedElement].rotation}
+                  onChange={(e) => updateSlideElement(selectedElement, { rotation: parseInt(e.target.value) || 0 })}
+                  className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
+                />
+              </div>
+              <div className="space-y-1">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Opacity (0-1)</span>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="1"
+                  value={activeSlide[selectedElement].opacity}
+                  onChange={(e) => updateSlideElement(selectedElement, { opacity: parseFloat(e.target.value) || 1 })}
+                  className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
+                />
+              </div>
+            </div>
+
+            {/* Image specific styles */}
+            {selectedElement === "featuredImage" && (
+              <div className="space-y-3.5 border-t pt-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Fit Mode</span>
+                    <select
+                      value={activeSlide.featuredImage.objectFit}
+                      onChange={(e) => updateSlideElement("featuredImage", { objectFit: e.target.value as any })}
+                      className="w-full h-9 px-2 bg-white border border-neutral-200 rounded-lg text-xs"
+                    >
+                      <option value="cover">Cover</option>
+                      <option value="contain">Contain</option>
+                      <option value="fill">Fill</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Radius (px)</span>
+                    <input
+                      type="number"
+                      value={activeSlide.featuredImage.borderRadius}
+                      onChange={(e) => updateSlideElement("featuredImage", { borderRadius: parseInt(e.target.value) || 0 })}
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Brightness (%)</span>
+                    <input
+                      type="number"
+                      value={activeSlide.featuredImage.brightness}
+                      onChange={(e) => updateSlideElement("featuredImage", { brightness: parseInt(e.target.value) || 100 })}
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Contrast (%)</span>
+                    <input
+                      type="number"
+                      value={activeSlide.featuredImage.contrast}
+                      onChange={(e) => updateSlideElement("featuredImage", { contrast: parseInt(e.target.value) || 100 })}
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between py-1">
+                  <span className="text-xs font-bold text-neutral-600">Shadow Overlay</span>
+                  <input
+                    type="checkbox"
+                    checked={!!activeSlide.featuredImage.shadowEnabled}
+                    onChange={(e) => updateSlideElement("featuredImage", { shadowEnabled: e.target.checked })}
+                    className="h-4 w-4 text-[#0075de]"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Typography controls */}
+            {selectedElement !== "featuredImage" && selectedElement !== "divider" && (
+              <div className="space-y-4 border-t pt-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">Font Family</label>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Font Family</span>
                   <select
                     value={activeSlide[selectedElement].fontFamily}
                     onChange={(e) => updateSlideElement(selectedElement, { fontFamily: e.target.value })}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                    className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
                   >
                     {DEFAULT_FONTS.map(f => (
                       <option key={f.value} value={f.value}>{f.name}</option>
@@ -1474,35 +2121,70 @@ export function EditorialCarouselClient() {
                   </select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Font Size (px)</label>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Size (px)</span>
                     <input
                       type="number"
                       value={activeSlide[selectedElement].fontSize}
                       onChange={(e) => updateSlideElement(selectedElement, { fontSize: parseInt(e.target.value) || 12 })}
-                      className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Line Height</label>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Weight</span>
+                    <select
+                      value={activeSlide[selectedElement].fontWeight}
+                      onChange={(e) => updateSlideElement(selectedElement, { fontWeight: e.target.value })}
+                      className="w-full h-9 px-2 bg-white border border-neutral-200 rounded-lg text-xs"
+                    >
+                      <option value="400">Regular (400)</option>
+                      <option value="500">Medium (500)</option>
+                      <option value="600">Semibold (600)</option>
+                      <option value="700">Bold (700)</option>
+                      <option value="800">Extrabold (800)</option>
+                      <option value="900">Black (900)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Line Height</span>
                     <input
                       type="number"
                       step="0.05"
                       value={activeSlide[selectedElement].lineHeight}
-                      onChange={(e) => updateSlideElement(selectedElement, { lineHeight: parseFloat(e.target.value) || 1.0 })}
-                      className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
+                      onChange={(e) => updateSlideElement(selectedElement, { lineHeight: parseFloat(e.target.value) || 1.2 })}
+                      className="w-full h-9 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-mono"
                     />
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Color</span>
+                    <div className="flex gap-2">
+                      <input
+                        type="color"
+                        value={activeSlide[selectedElement].color}
+                        onChange={(e) => updateSlideElement(selectedElement, { color: e.target.value })}
+                        className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                      />
+                      <input
+                        type="text"
+                        value={activeSlide[selectedElement].color}
+                        onChange={(e) => updateSlideElement(selectedElement, { color: e.target.value })}
+                        className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between py-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Text Align</label>
+                <div className="flex items-center justify-between">
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500">Text Align</span>
                   <div className="flex bg-neutral-100 p-0.5 rounded-lg border border-neutral-200">
                     {[
-                      { align: "left", icon: <AlignLeft size={12} /> },
-                      { align: "center", icon: <AlignCenter size={12} /> },
-                      { align: "right", icon: <AlignRight size={12} /> }
+                      { align: "left", icon: <AlignLeft size={11} /> },
+                      { align: "center", icon: <AlignCenter size={11} /> },
+                      { align: "right", icon: <AlignRight size={11} /> }
                     ].map(opt => (
                       <button
                         key={opt.align}
@@ -1518,192 +2200,60 @@ export function EditorialCarouselClient() {
                 </div>
               </div>
             )}
-
-            {/* Custom fields per element types */}
-            {selectedElement === "category" && (
-              <div className="space-y-4 pt-2 border-t border-neutral-100">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Category Tag Text</label>
-                  <input
-                    type="text"
-                    value={activeSlide.category.text}
-                    onChange={(e) => setSlides(prev => prev.map((s, i) => i === activeIndex ? { ...s, category: { ...s.category, text: e.target.value } } : s))}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Uppercase</span>
-                  <input
-                    type="checkbox"
-                    checked={!!activeSlide.category.uppercase}
-                    onChange={(e) => updateSlideElement("category", { uppercase: e.target.checked })}
-                    className="h-4 w-4 text-[#0075de]"
-                  />
-                </div>
-              </div>
-            )}
-
-            {selectedElement === "headline" && (
-              <div className="space-y-4 pt-2 border-t border-neutral-100">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Headline Text</label>
-                  <textarea
-                    value={activeSlide.headline.text}
-                    rows={3}
-                    onChange={(e) => setSlides(prev => prev.map((s, i) => i === activeIndex ? { ...s, headline: { ...s.headline, text: e.target.value } } : s))}
-                    className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none"
-                  />
-                </div>
-              </div>
-            )}
-
-            {selectedElement === "featuredImage" && (
-              <div className="space-y-4 pt-2 border-t border-neutral-100">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">Upload Custom Photo URL</label>
-                  <input
-                    type="text"
-                    placeholder="https://example.com/image.jpg"
-                    value={activeSlide.featuredImage.mediaUrl}
-                    onChange={(e) => updateSlideElement("featuredImage", { mediaUrl: e.target.value })}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-3.5">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Object Fit</label>
-                    <select
-                      value={activeSlide.featuredImage.objectFit}
-                      onChange={(e) => updateSlideElement("featuredImage", { objectFit: e.target.value as any })}
-                      className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                    >
-                      <option value="cover">Cover</option>
-                      <option value="contain">Contain</option>
-                      <option value="fill">Fill</option>
-                    </select>
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Corner Radius (px)</label>
-                    <input
-                      type="number"
-                      value={activeSlide.featuredImage.borderRadius}
-                      onChange={(e) => updateSlideElement("featuredImage", { borderRadius: parseInt(e.target.value) || 0 })}
-                      className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3.5">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Brightness (%)</label>
-                    <input
-                      type="number"
-                      value={activeSlide.featuredImage.brightness}
-                      onChange={(e) => updateSlideElement("featuredImage", { brightness: parseInt(e.target.value) || 100 })}
-                      className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Contrast (%)</label>
-                    <input
-                      type="number"
-                      value={activeSlide.featuredImage.contrast}
-                      onChange={(e) => updateSlideElement("featuredImage", { contrast: parseInt(e.target.value) || 100 })}
-                      className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {selectedElement === "body" && (
-              <div className="space-y-4 pt-2 border-t border-neutral-100">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Body Copy</label>
-                  <textarea
-                    value={activeSlide.body.text}
-                    rows={4}
-                    onChange={(e) => setSlides(prev => prev.map((s, i) => i === activeIndex ? { ...s, body: { ...s.body, text: e.target.value } } : s))}
-                    className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none"
-                  />
-                </div>
-              </div>
-            )}
-
-            {selectedElement === "bullets" && (
-              <div className="space-y-4 pt-2 border-t border-neutral-100">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 block">Bullet Style</label>
-                  <select
-                    value={activeSlide.bullets.bulletStyle}
-                    onChange={(e) => updateSlideElement("bullets", { bulletStyle: e.target.value as any })}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  >
-                    <option value="check">Checkmarks (✔)</option>
-                    <option value="dot">Bullet Dots (•)</option>
-                    <option value="number">Numeric (1, 2, 3)</option>
-                  </select>
-                </div>
-              </div>
-            )}
-
-            {selectedElement === "quote" && (
-              <div className="space-y-4 pt-2 border-t border-neutral-100">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Quote Text</label>
-                  <textarea
-                    value={activeSlide.quote.text}
-                    rows={3}
-                    onChange={(e) => setSlides(prev => prev.map((s, i) => i === activeIndex ? { ...s, quote: { ...s.quote, text: e.target.value } } : s))}
-                    className="w-full p-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold resize-none"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Author</label>
-                  <input
-                    type="text"
-                    value={activeSlide.quote.author}
-                    onChange={(e) => setSlides(prev => prev.map((s, i) => i === activeIndex ? { ...s, quote: { ...s.quote, author: e.target.value } } : s))}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-              </div>
-            )}
-
-            {selectedElement === "cta" && (
-              <div className="space-y-4 pt-2 border-t border-neutral-100">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">CTA Label</label>
-                  <input
-                    type="text"
-                    value={activeSlide.cta.text}
-                    onChange={(e) => setSlides(prev => prev.map((s, i) => i === activeIndex ? { ...s, cta: { ...s.cta, text: e.target.value } } : s))}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">CTA Link</label>
-                  <input
-                    type="text"
-                    value={activeSlide.cta.link}
-                    onChange={(e) => setSlides(prev => prev.map((s, i) => i === activeIndex ? { ...s, cta: { ...s.cta, link: e.target.value } } : s))}
-                    className="w-full h-10 px-3 bg-white border border-neutral-200 rounded-lg text-xs font-semibold"
-                  />
-                </div>
-              </div>
-            )}
-
           </div>
         )}
 
-        {/* Global Footer Settings */}
+        {/* Tab 3: Export System & Settings */}
+        {activeTab === "export" && (
+          <div className="panel-card space-y-5">
+            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block border-b pb-2">Export Tools</span>
+            
+            <div className="space-y-3">
+              <button 
+                onClick={() => handleDownloadSlideSvg(activeIndex)}
+                className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border-none"
+              >
+                <Download size={13} /> Download Active SVG
+              </button>
+              
+              <button 
+                onClick={() => handleDownloadSlideRaster(activeIndex, "png")}
+                className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border-none"
+              >
+                <Download size={13} /> Download Active PNG
+              </button>
+
+              <button 
+                onClick={() => handleDownloadSlideRaster(activeIndex, "jpeg")}
+                className="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-900 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border-none"
+              >
+                <Download size={13} /> Download Active JPEG
+              </button>
+
+              <button 
+                onClick={handleDownloadPdf}
+                className="w-full py-3 bg-[#0075de] hover:bg-[#0075de]/95 text-white rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 shadow border-none"
+              >
+                <FileText size={13} /> Export Carousel PDF
+              </button>
+
+              <button 
+                onClick={handleDownloadAllSlidesSvg}
+                className="w-full py-2.5 border border-neutral-300 hover:border-neutral-950 text-neutral-800 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 bg-white"
+              >
+                <LayoutGrid size={13} /> Download All SVGs
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Global Footer Branding */}
         <div className="panel-card space-y-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block pb-2 border-b border-neutral-100 block">Footer Branding</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 block pb-2 border-b border-neutral-100 block">Global Footer</span>
           
           <div className="space-y-3.5">
             <div className="space-y-1">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Brand Name</label>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Brand Name</span>
               <input
                 type="text"
                 value={activeSlide.footer.brandName}
@@ -1730,6 +2280,24 @@ export function EditorialCarouselClient() {
                 onChange={(e) => updateSlideFooter({ pageNumberEnabled: e.target.checked })}
                 className="h-4 w-4 text-[#0075de]"
               />
+            </div>
+
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">Footer Text Color</span>
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={activeSlide.footer.color}
+                  onChange={(e) => updateSlideFooter({ color: e.target.value })}
+                  className="w-9 h-9 border border-neutral-200 rounded-lg cursor-pointer shrink-0"
+                />
+                <input
+                  type="text"
+                  value={activeSlide.footer.color}
+                  onChange={(e) => updateSlideFooter({ color: e.target.value })}
+                  className="flex-1 h-9 px-2 border border-neutral-200 rounded-lg text-xs font-mono"
+                />
+              </div>
             </div>
           </div>
         </div>
