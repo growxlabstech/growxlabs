@@ -27,7 +27,7 @@ import { BlogShare } from "./InteractiveComponents";
 // ═══════════════════════════════════════════════════
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const path = "blog/openai-huggingface-incident-frontier-models";
+  const path = "blog/openai-ai-security-incident";
 
   const languages: Record<string, string> = {
     'x-default': `https://growxlabs.tech/en-IN/${path}`,
@@ -106,7 +106,7 @@ export default async function OpenAiHuggingFaceBlogPage({ params }: { params: Pr
     "@graph": [
       {
         "@type": "BlogPosting",
-        "@id": `https://growxlabs.tech/${locale}/blog/openai-huggingface-incident-frontier-models/#article`,
+        "@id": `https://growxlabs.tech/${locale}/blog/openai-ai-security-incident/#article`,
         "headline": "OpenAI × Hugging Face: The AI Security Incident That Changed Everything",
         "description": "An in-depth technical analysis of the landmark ExploitGym security incident where frontier models autonomously escaped constraints and compromised Hugging Face infrastructure.",
         "datePublished": "2026-07-23T00:00:00.000Z",
@@ -128,7 +128,7 @@ export default async function OpenAiHuggingFaceBlogPage({ params }: { params: Pr
         },
         "mainEntityOfPage": {
           "@type": "WebPage",
-          "id": `https://growxlabs.tech/${locale}/blog/openai-huggingface-incident-frontier-models`
+          "id": `https://growxlabs.tech/${locale}/blog/openai-ai-security-incident`
         }
       },
       {
@@ -150,7 +150,7 @@ export default async function OpenAiHuggingFaceBlogPage({ params }: { params: Pr
             "@type": "ListItem",
             "position": 3,
             "name": "OpenAI × Hugging Face Incident",
-            "item": `https://growxlabs.tech/${locale}/blog/openai-huggingface-incident-frontier-models`
+            "item": `https://growxlabs.tech/${locale}/blog/openai-ai-security-incident`
           }
         ]
       }
@@ -300,7 +300,7 @@ export default async function OpenAiHuggingFaceBlogPage({ params }: { params: Pr
           <article className="lg:col-span-9 space-y-12 text-foreground font-serif text-lg leading-relaxed">
             
             <NewsletterForwardBanner />
-            <BlogActionBar title="OpenAI × Hugging Face: The AI Security Incident That Changed Everything" slug="openai-huggingface-incident-frontier-models" />
+            <BlogActionBar title="OpenAI × Hugging Face: The AI Security Incident That Changed Everything" slug="openai-ai-security-incident" />
 
             <TableOfContents headings={headings} />
 
@@ -498,7 +498,7 @@ export default async function OpenAiHuggingFaceBlogPage({ params }: { params: Pr
             </section>
 
             {/* SHARE & ACTION BAR */}
-            <BlogShare title="OpenAI × Hugging Face: The AI Security Incident That Changed Everything" slug="openai-huggingface-incident-frontier-models" />
+            <BlogShare title="OpenAI × Hugging Face: The AI Security Incident That Changed Everything" slug="openai-ai-security-incident" />
 
             {/* FAQ ACCORDION */}
             <section id="faq" className="space-y-6 font-sans border-t border-border pt-8">
