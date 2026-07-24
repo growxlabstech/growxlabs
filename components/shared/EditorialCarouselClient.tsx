@@ -2237,7 +2237,7 @@ export function EditorialCarouselClient() {
                     <span className="text-[9px] font-semibold text-neutral-400">Height (px)</span>
                     <input
                       type="number"
-                      disabled={editorMode === "fixed" || activeSlide[selectedElement].locked}
+                      disabled={activeSlide[selectedElement].locked}
                       value={activeSlide[selectedElement].height}
                       onChange={(e) => updateSlideElement(selectedElement, { height: parseInt(e.target.value) || 0 })}
                       className="w-full h-9 px-3 bg-neutral-50 border border-neutral-200/80 rounded-lg text-xs font-mono dark:bg-neutral-800 dark:border-neutral-700"
